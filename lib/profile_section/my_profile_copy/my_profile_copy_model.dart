@@ -5,6 +5,10 @@ import 'my_profile_copy_widget.dart' show MyProfileCopyWidget;
 import 'package:flutter/material.dart';
 
 class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
+  ///  Local state fields for this page.
+
+  bool isLoading = false;
+
   ///  State fields for stateful widgets in this page.
 
   final formKey3 = GlobalKey<FormState>();
@@ -12,14 +16,14 @@ class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
   final formKey1 = GlobalKey<FormState>();
   // Stores action output result for [Backend Call - API (getProfile)] action in MyProfileCopy widget.
   ApiCallResponse? getProfileRes;
+  // State field(s) for nameField widget.
+  FocusNode? nameFieldFocusNode;
+  TextEditingController? nameFieldTextController;
+  String? Function(BuildContext, String?)? nameFieldTextControllerValidator;
   // State field(s) for emailFIeld widget.
-  FocusNode? emailFIeldFocusNode1;
-  TextEditingController? emailFIeldTextController1;
-  String? Function(BuildContext, String?)? emailFIeldTextController1Validator;
-  // State field(s) for emailFIeld widget.
-  FocusNode? emailFIeldFocusNode2;
-  TextEditingController? emailFIeldTextController2;
-  String? Function(BuildContext, String?)? emailFIeldTextController2Validator;
+  FocusNode? emailFIeldFocusNode;
+  TextEditingController? emailFIeldTextController;
+  String? Function(BuildContext, String?)? emailFIeldTextControllerValidator;
   // State field(s) for passwordField widget.
   FocusNode? passwordFieldFocusNode;
   TextEditingController? passwordFieldTextController;
@@ -32,11 +36,11 @@ class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
 
   @override
   void dispose() {
-    emailFIeldFocusNode1?.dispose();
-    emailFIeldTextController1?.dispose();
+    nameFieldFocusNode?.dispose();
+    nameFieldTextController?.dispose();
 
-    emailFIeldFocusNode2?.dispose();
-    emailFIeldTextController2?.dispose();
+    emailFIeldFocusNode?.dispose();
+    emailFIeldTextController?.dispose();
 
     passwordFieldFocusNode?.dispose();
     passwordFieldTextController?.dispose();

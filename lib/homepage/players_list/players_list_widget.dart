@@ -329,7 +329,7 @@ class _PlayersListWidgetState extends State<PlayersListWidget>
                           text: 'Tab 1',
                         ),
                         Tab(
-                          text: 'Tab 2',
+                          text: 'Tab 2dfs',
                         ),
                         Tab(
                           text: 'Tab 3',

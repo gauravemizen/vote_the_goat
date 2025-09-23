@@ -26,6 +26,10 @@ abstract class FlutterFlowTheme {
       ? _prefs?.remove(kThemeModeKey)
       : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
 
+  static const double minTextScaleFactor = 1.0;
+  static const double maxTextScaleFactor = 1.0;
+  static const double defaultTextScaleFactor = 1.0;
+
   static FlutterFlowTheme of(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? DarkModeTheme()

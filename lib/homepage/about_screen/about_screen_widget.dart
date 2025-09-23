@@ -186,198 +186,218 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                         ),
                       ],
                     ),
-                    FutureBuilder<ApiCallResponse>(
-                      future: DashboardGroup.aboutPageContentCall.call(
-                        authToken: FFAppState().authToken,
-                      ),
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 40.0,
-                              height: 40.0,
-                              child: SpinKitCubeGrid(
-                                color: FlutterFlowTheme.of(context).primary,
-                                size: 40.0,
+                    Container(
+                      height: MediaQuery.sizeOf(context).height * 0.75,
+                      decoration: BoxDecoration(),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: DashboardGroup.aboutPageContentCall.call(
+                          authToken: FFAppState().authToken,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 40.0,
+                                height: 40.0,
+                                child: SpinKitCubeGrid(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  size: 40.0,
+                                ),
                               ),
-                            ),
-                          );
-                        }
-                        final listViewAboutPageContentResponse = snapshot.data!;
+                            );
+                          }
+                          final listViewAboutPageContentResponse =
+                              snapshot.data!;
 
-                        return Builder(
-                          builder: (context) {
-                            final listItems =
-                                DashboardGroup.aboutPageContentCall
-                                        .contentList(
-                                          listViewAboutPageContentResponse
-                                              .jsonBody,
-                                        )
-                                        ?.toList() ??
-                                    [];
-                            if (listItems.isEmpty) {
-                              return Center(
-                                child: NoDataFoundWidget(),
-                              );
-                            }
+                          return Builder(
+                            builder: (context) {
+                              final listItems =
+                                  DashboardGroup.aboutPageContentCall
+                                          .contentList(
+                                            listViewAboutPageContentResponse
+                                                .jsonBody,
+                                          )
+                                          ?.toList() ??
+                                      [];
+                              if (listItems.isEmpty) {
+                                return Center(
+                                  child: NoDataFoundWidget(),
+                                );
+                              }
 
-                            return ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: listItems.length,
-                              itemBuilder: (context, listItemsIndex) {
-                                final listItemsItem = listItems[listItemsIndex];
-                                return Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 30.0, 0.0, 0.0),
-                                      child: ExpandableNotifier(
-                                        initialExpanded: false,
-                                        child: ExpandablePanel(
-                                          header: Container(),
-                                          collapsed: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              border: Border.all(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .homeBoxBorder,
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: listItems.length,
+                                itemBuilder: (context, listItemsIndex) {
+                                  final listItemsItem =
+                                      listItems[listItemsIndex];
+                                  return Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 8.0, 0.0, 0.0),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 30.0, 0.0, 0.0),
+                                        child: ExpandableNotifier(
+                                          initialExpanded: false,
+                                          child: ExpandablePanel(
+                                            header: Container(),
+                                            collapsed: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                border: Border.all(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .homeBoxBorder,
+                                                ),
                                               ),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(14.0, 10.0,
-                                                          14.0, 10.0),
-                                                  child: Text(
-                                                    getJsonField(
-                                                      listItemsItem,
-                                                      r'''$.title''',
-                                                    )
-                                                        .toString()
-                                                        .maybeHandleOverflow(
-                                                          maxChars: 32,
-                                                          replacement: '…',
-                                                        ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                14.0,
+                                                                10.0,
+                                                                14.0,
+                                                                10.0),
+                                                    child: Text(
+                                                      getJsonField(
+                                                        listItemsItem,
+                                                        r'''$.title''',
+                                                      )
+                                                          .toString()
+                                                          .maybeHandleOverflow(
+                                                            maxChars: 32,
+                                                            replacement: '…',
+                                                          ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .poppins(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .fontStyle,
+                                                                ),
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
                                                                     .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
+                                                                fontStyle: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleMedium
                                                                     .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 14.0, 0.0),
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiary,
-                                                    size: 20.0,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          expanded: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  decoration: BoxDecoration(
-                                                    color: (Theme.of(context)
-                                                                    .brightness ==
-                                                                Brightness
-                                                                    .dark) ==
-                                                            false
-                                                        ? Color(0xFFFFEDDF)
-                                                        : Colors.transparent,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                    border: Border.all(
-                                                      color: Color(0x2AFFFFFF),
+                                                              ),
                                                     ),
                                                   ),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    14.0,
-                                                                    10.0,
-                                                                    14.0,
-                                                                    0.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              getJsonField(
-                                                                listItemsItem,
-                                                                r'''$.title''',
-                                                              )
-                                                                  .toString()
-                                                                  .maybeHandleOverflow(
-                                                                    maxChars:
-                                                                        32,
-                                                                    replacement:
-                                                                        '…',
-                                                                  ),
-                                                              maxLines: 2,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleMedium
-                                                                  .override(
-                                                                    font: GoogleFonts
-                                                                        .poppins(
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                14.0, 0.0),
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .tertiary,
+                                                      size: 20.0,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            expanded: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: (Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .dark) ==
+                                                              false
+                                                          ? Color(0xFFFFEDDF)
+                                                          : Colors.transparent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                      border: Border.all(
+                                                        color:
+                                                            Color(0x2AFFFFFF),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      14.0,
+                                                                      10.0,
+                                                                      14.0,
+                                                                      0.0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                getJsonField(
+                                                                  listItemsItem,
+                                                                  r'''$.title''',
+                                                                )
+                                                                    .toString()
+                                                                    .maybeHandleOverflow(
+                                                                      maxChars:
+                                                                          32,
+                                                                      replacement:
+                                                                          '…',
+                                                                    ),
+                                                                maxLines: 2,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .override(
+                                                                      font: GoogleFonts
+                                                                          .poppins(
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight: FlutterFlowTheme.of(
                                                                               context)
                                                                           .titleMedium
@@ -387,69 +407,71 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                                                                           .titleMedium
                                                                           .fontStyle,
                                                                     ),
-                                                                    letterSpacing:
-                                                                        0.0,
+                                                              ),
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  border: Border
+                                                                      .all(
+                                                                    color: Color(
+                                                                        0xFF2F2F2F),
+                                                                  ),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0,
+                                                                          4.0),
+                                                                  child: FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .minus,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .tertiary,
+                                                                    size: 12.0,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      14.0,
+                                                                      10.0,
+                                                                      14.0,
+                                                                      10.0),
+                                                          child: Text(
+                                                            getJsonField(
+                                                              listItemsItem,
+                                                              r'''$.description''',
+                                                            ).toString(),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodySmall
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .poppins(
                                                                     fontWeight: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .titleMedium
+                                                                        .bodySmall
                                                                         .fontWeight,
                                                                     fontStyle: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .titleMedium
+                                                                        .bodySmall
                                                                         .fontStyle,
                                                                   ),
-                                                            ),
-                                                            Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                border:
-                                                                    Border.all(
-                                                                  color: Color(
-                                                                      0xFF2F2F2F),
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
-                                                                child: FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .minus,
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .tertiary,
-                                                                  size: 12.0,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    14.0,
-                                                                    10.0,
-                                                                    14.0,
-                                                                    10.0),
-                                                        child: Text(
-                                                          getJsonField(
-                                                            listItemsItem,
-                                                            r'''$.description''',
-                                                          ).toString(),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodySmall
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .poppins(
+                                                                      .lightWhite,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight: FlutterFlowTheme.of(
                                                                           context)
                                                                       .bodySmall
@@ -459,47 +481,34 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                                                                       .bodySmall
                                                                       .fontStyle,
                                                                 ),
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .lightWhite,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .fontStyle,
-                                                              ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          theme: ExpandableThemeData(
-                                            tapHeaderToExpand: true,
-                                            tapBodyToExpand: true,
-                                            tapBodyToCollapse: true,
-                                            headerAlignment:
-                                                ExpandablePanelHeaderAlignment
-                                                    .top,
-                                            hasIcon: false,
+                                              ],
+                                            ),
+                                            theme: ExpandableThemeData(
+                                              tapHeaderToExpand: true,
+                                              tapBodyToExpand: true,
+                                              tapBodyToCollapse: true,
+                                              headerAlignment:
+                                                  ExpandablePanelHeaderAlignment
+                                                      .top,
+                                              hasIcon: false,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      },
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

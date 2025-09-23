@@ -1,15 +1,23 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'active_contast_details_model.dart';
 export 'active_contast_details_model.dart';
 
 class ActiveContastDetailsWidget extends StatefulWidget {
-  const ActiveContastDetailsWidget({super.key});
+  const ActiveContastDetailsWidget({
+    super.key,
+    required this.contestId,
+  });
+
+  final int? contestId;
 
   static String routeName = 'ActiveContastDetails';
   static String routePath = '/activeContastDetails';
@@ -29,6 +37,49 @@ class _ActiveContastDetailsWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => ActiveContastDetailsModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.apiResult9k2 = await DashboardGroup.contestDetailsCall.call(
+        contestId: widget.contestId,
+        authToken: FFAppState().authToken,
+      );
+
+      if ((_model.apiResult9k2?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResult9k2?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1500),
+            backgroundColor: Colors.black,
+          ),
+        );
+        safeSetState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResult9k2?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1500),
+            backgroundColor: Colors.black,
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -40,6 +91,8 @@ class _ActiveContastDetailsWidgetState
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -221,21 +274,55 @@ class _ActiveContastDetailsWidgetState
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 16.0, 0.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFF038500),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 4.0, 12.0, 4.0),
-                                        child: Text(
-                                          'Join Contest',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        context.pushNamed(
+                                          ContestQuestionWidget.routeName,
+                                          queryParameters: {
+                                            'contestId': serializeParam(
+                                              getJsonField(
+                                                DashboardGroup
+                                                    .contestDetailsCall
+                                                    .contestDetails(
+                                                  (_model.apiResult9k2
+                                                          ?.jsonBody ??
+                                                      ''),
+                                                ),
+                                                r'''$.id''',
+                                              ),
+                                              ParamType.int,
+                                            ),
+                                          }.withoutNulls,
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF038500),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12.0, 4.0, 12.0, 4.0),
+                                          child: Text(
+                                            'Join Contest',
+                                            style: FlutterFlowTheme.of(context)
+                                                .titleMedium
+                                                .override(
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -243,13 +330,7 @@ class _ActiveContastDetailsWidgetState
                                                           .titleMedium
                                                           .fontStyle,
                                                 ),
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -262,7 +343,13 @@ class _ActiveContastDetailsWidgetState
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 20.0, 0.0, 0.0),
                             child: Text(
-                              'World Cup Legends \nQuiz',
+                              getJsonField(
+                                DashboardGroup.contestDetailsCall
+                                    .contestDetails(
+                                  (_model.apiResult9k2?.jsonBody ?? ''),
+                                ),
+                                r'''$.title''',
+                              ).toString(),
                               style: FlutterFlowTheme.of(context)
                                   .headlineLarge
                                   .override(
@@ -281,7 +368,12 @@ class _ActiveContastDetailsWidgetState
                             ),
                           ),
                           Text(
-                            'Test your knowledge about World Cup football legends and iconic moments in football history.',
+                            getJsonField(
+                              DashboardGroup.contestDetailsCall.contestDetails(
+                                (_model.apiResult9k2?.jsonBody ?? ''),
+                              ),
+                              r'''$.description''',
+                            ).toString(),
                             style: FlutterFlowTheme.of(context)
                                 .titleLarge
                                 .override(
@@ -377,7 +469,16 @@ class _ActiveContastDetailsWidgetState
                                                     .fromSTEB(
                                                         0.0, 5.0, 0.0, 0.0),
                                                 child: Text(
-                                                  'Medium',
+                                                  getJsonField(
+                                                    DashboardGroup
+                                                        .contestDetailsCall
+                                                        .contestDetails(
+                                                      (_model.apiResult9k2
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.difficulty_type''',
+                                                  ).toString(),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelMedium
@@ -490,7 +591,16 @@ class _ActiveContastDetailsWidgetState
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '2 days left',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .contestDetailsCall
+                                                          .contestDetails(
+                                                        (_model.apiResult9k2
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.days_remaining''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium
@@ -607,7 +717,16 @@ class _ActiveContastDetailsWidgetState
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '+45 XP',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .contestDetailsCall
+                                                          .contestDetails(
+                                                        (_model.apiResult9k2
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.rewards''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium
@@ -726,7 +845,16 @@ class _ActiveContastDetailsWidgetState
                                                     .fromSTEB(
                                                         0.0, 5.0, 0.0, 0.0),
                                                 child: Text(
-                                                  '275',
+                                                  getJsonField(
+                                                    DashboardGroup
+                                                        .contestDetailsCall
+                                                        .contestDetails(
+                                                      (_model.apiResult9k2
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.participants''',
+                                                  ).toString(),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelMedium
@@ -839,7 +967,16 @@ class _ActiveContastDetailsWidgetState
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '8',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .contestDetailsCall
+                                                          .contestDetails(
+                                                        (_model.apiResult9k2
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.total_questions''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium

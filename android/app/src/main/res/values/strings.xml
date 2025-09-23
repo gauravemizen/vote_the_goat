@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
     <string name="app_name">VoteForGoat</string>
-
+    <string name="facebook_app_id">1343151041146380</string>
+    <string name="fb_login_protocol_scheme">fb1343151041146380</string>
+     <string name="facebook_client_token">7846b0239f4393fd7317a253ac31c4be</string>
+          
 </resources>

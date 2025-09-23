@@ -1,9 +1,12 @@
+import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'winner_bottom_sheet_model.dart';
 export 'winner_bottom_sheet_model.dart';
 
@@ -33,6 +36,31 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => WinnerBottomSheetModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.apiResult2kw = await DashboardGroup.minionPlayerScoreCall.call(
+        authToken: FFAppState().authToken,
+      );
+
+      if ((_model.apiResult2kw?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResult2kw?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1200),
+            backgroundColor: Colors.black,
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -44,6 +72,8 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Align(
       alignment: AlignmentDirectional(0.0, 1.0),
       child: Container(
@@ -87,7 +117,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget> {
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: Text(
-                      'Your Score',
+                      'Here your result',
                       style: FlutterFlowTheme.of(context).titleLarge.override(
                             font: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,

@@ -56,3 +56,10 @@ export '/auth/log_in_copy/log_in_copy_widget.dart' show LogInCopyWidget;
 export '/profile_section/reset_password/reset_password_widget.dart'
     show ResetPasswordWidget;
 export '/player_bio/all_players/all_players_widget.dart' show AllPlayersWidget;
+export '/compare/your_comparisons/your_comparisons_widget.dart'
+    show YourComparisonsWidget;
+export '/play_with_friends/team_details/team_details_widget.dart'
+    show TeamDetailsWidget;
+export '/play_with_friends/play_with_friend_ranking/play_with_friend_ranking_widget.dart'
+    show PlayWithFriendRankingWidget;
+export '/play_with_friends/chat_page/chat_page_widget.dart' show ChatPageWidget;

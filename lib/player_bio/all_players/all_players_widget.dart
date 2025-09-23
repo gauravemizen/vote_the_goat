@@ -5,9 +5,7 @@ import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'all_players_model.dart';
 export 'all_players_model.dart';
@@ -36,13 +34,47 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.isLoading = true;
       safeSetState(() {});
-      await Future.delayed(
-        Duration(
-          milliseconds: 2000,
-        ),
+      _model.getAllPlayerRes = await DashboardGroup.getAllPlayersCall.call(
+        authToken: FFAppState().authToken,
       );
-      _model.isLoading = false;
-      safeSetState(() {});
+
+      if ((_model.getAllPlayerRes?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.getAllPlayerRes?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.getAllPlayerRes?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+      }
     });
   }
 
@@ -86,6 +118,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisSize: MainAxisSize.max,
@@ -247,94 +280,126 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> {
                       Container(
                         height: MediaQuery.sizeOf(context).height * 0.7,
                         decoration: BoxDecoration(),
-                        child:
-                            PagedListView<ApiPagingParams, dynamic>.separated(
-                          pagingController: _model.setListViewController(
-                            (nextPageMarker) =>
-                                DashboardGroup.getAllPlayersCall.call(
-                              authToken: FFAppState().authToken,
-                            ),
-                          ),
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          reverse: false,
-                          scrollDirection: Axis.vertical,
-                          separatorBuilder: (_, __) => SizedBox(height: 20.0),
-                          builderDelegate: PagedChildBuilderDelegate<dynamic>(
-                            // Customize what your widget looks like when it's loading the first page.
-                            firstPageProgressIndicatorBuilder: (_) => Center(
-                              child: SizedBox(
-                                width: 40.0,
-                                height: 40.0,
-                                child: SpinKitCubeGrid(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 40.0,
-                                ),
-                              ),
-                            ),
-                            // Customize what your widget looks like when it's loading another page.
-                            newPageProgressIndicatorBuilder: (_) => Center(
-                              child: SizedBox(
-                                width: 40.0,
-                                height: 40.0,
-                                child: SpinKitCubeGrid(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 40.0,
-                                ),
-                              ),
-                            ),
+                        child: Builder(
+                          builder: (context) {
+                            final playerList = DashboardGroup.getAllPlayersCall
+                                    .playerData(
+                                      (_model.getAllPlayerRes?.jsonBody ?? ''),
+                                    )
+                                    ?.toList() ??
+                                [];
 
-                            itemBuilder: (context, _, playerListIndex) {
-                              final playerListItem = _model
-                                  .listViewPagingController!
-                                  .itemList![playerListIndex];
-                              return Container(
-                                width: 100.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: 60.0,
-                                            height: 60.0,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.network(
-                                              getJsonField(
-                                                playerListItem,
-                                                r'''$.image''',
-                                              ).toString(),
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (context, error,
-                                                      stackTrace) =>
-                                                  Image.asset(
-                                                'assets/images/error_image.webp',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: playerList.length,
+                              itemBuilder: (context, playerListIndex) {
+                                final playerListItem =
+                                    playerList[playerListIndex];
+                                return InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    context.pushNamed(
+                                      PlayerBioWidget.routeName,
+                                      queryParameters: {
+                                        'playerId': serializeParam(
+                                          getJsonField(
+                                            playerListItem,
+                                            r'''$.player_id''',
                                           ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      20.0, 0.0, 0.0, 0.0),
-                                              child: Text(
-                                                '${getJsonField(
-                                                  playerListItem,
-                                                  r'''$.first_name''',
-                                                ).toString()} ${getJsonField(
-                                                  playerListItem,
-                                                  r'''$.last_name''',
-                                                ).toString()}',
+                                          ParamType.int,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 10.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Container(
+                                                width: 60.0,
+                                                height: 60.0,
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.network(
+                                                  getJsonField(
+                                                    playerListItem,
+                                                    r'''$.image''',
+                                                  ).toString(),
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Image.asset(
+                                                    'assets/images/error_image.webp',
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          20.0, 0.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    '${getJsonField(
+                                                      playerListItem,
+                                                      r'''$.first_name''',
+                                                    ).toString()} ${getJsonField(
+                                                      playerListItem,
+                                                      r'''$.last_name''',
+                                                    ).toString()}',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleLarge
+                                                        .override(
+                                                          font: GoogleFonts
+                                                              .poppins(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleLarge
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleLarge
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleLarge
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleLarge
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                'Age : ',
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .titleLarge
@@ -364,83 +429,54 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> {
                                                               .fontStyle,
                                                     ),
                                               ),
-                                            ),
+                                              Text(
+                                                getJsonField(
+                                                  playerListItem,
+                                                  r'''$.age''',
+                                                ).toString(),
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .titleLarge
+                                                    .override(
+                                                      font: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontStyle,
+                                                      ),
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleLarge
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleLarge
+                                                              .fontStyle,
+                                                    ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            'Age : ',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleLarge
-                                                .override(
-                                                  font: GoogleFonts.poppins(
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontStyle,
-                                                  ),
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontStyle,
-                                                ),
-                                          ),
-                                          Text(
-                                            getJsonField(
-                                              playerListItem,
-                                              r'''$.age''',
-                                            ).toString(),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleLarge
-                                                .override(
-                                                  font: GoogleFonts.poppins(
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontStyle,
-                                                  ),
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontStyle,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        Divider(
+                                          thickness: 2.0,
+                                          color: Color(0xFF4E4E4E),
+                                        ),
+                                      ],
                                     ),
-                                    Divider(
-                                      thickness: 2.0,
-                                      color: Color(0xFF4E4E4E),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                   ],

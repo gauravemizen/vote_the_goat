@@ -4,6 +4,10 @@ import 'privacy_policy_widget.dart' show PrivacyPolicyWidget;
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyModel extends FlutterFlowModel<PrivacyPolicyWidget> {
+  ///  Local state fields for this page.
+
+  bool isLoading = false;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - API (privacypolicy)] action in privacyPolicy widget.

@@ -5,9 +5,17 @@ import 'log_in_widget.dart' show LogInWidget;
 import 'package:flutter/material.dart';
 
 class LogInModel extends FlutterFlowModel<LogInWidget> {
+  ///  Local state fields for this page.
+
+  bool isLoading = false;
+
+  String deviceToken = '000';
+
   ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
+  // Stores action output result for [Custom Action - getFcmToken] action in logIn widget.
+  String? fcmToken;
   // State field(s) for emailField widget.
   FocusNode? emailFieldFocusNode;
   TextEditingController? emailFieldTextController;
@@ -48,6 +56,12 @@ class LogInModel extends FlutterFlowModel<LogInWidget> {
   bool? validate;
   // Stores action output result for [Backend Call - API (logIn)] action in Button widget.
   ApiCallResponse? logInRes;
+  // Stores action output result for [Backend Call - API (sociallogin)] action in Container widget.
+  ApiCallResponse? appleLogin;
+  // Stores action output result for [Backend Call - API (sociallogin)] action in Container widget.
+  ApiCallResponse? socialRes;
+  // Stores action output result for [Backend Call - API (sociallogin)] action in Container widget.
+  ApiCallResponse? googleLogIn;
 
   @override
   void initState(BuildContext context) {

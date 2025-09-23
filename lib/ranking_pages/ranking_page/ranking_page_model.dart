@@ -11,6 +11,15 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
 
   bool isLoading = true;
 
+  List<dynamic> playerList = [];
+  void addToPlayerList(dynamic item) => playerList.add(item);
+  void removeFromPlayerList(dynamic item) => playerList.remove(item);
+  void removeAtIndexFromPlayerList(int index) => playerList.removeAt(index);
+  void insertAtIndexInPlayerList(int index, dynamic item) =>
+      playerList.insert(index, item);
+  void updatePlayerListAtIndex(int index, Function(dynamic) updateFn) =>
+      playerList[index] = updateFn(playerList[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for searchField widget.
@@ -20,6 +29,8 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
   // Stores action output result for [Backend Call - API (rankingPost)] action in position widget.
   ApiCallResponse? apiResult156;
   Completer<ApiCallResponse>? apiRequestCompleter;
+  // Stores action output result for [Backend Call - API (finalizeRanking)] action in Button widget.
+  ApiCallResponse? apiResultxjo;
   // Model for DrawerMenu component.
   late DrawerMenuModel drawerMenuModel;
 

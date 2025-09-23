@@ -1,15 +1,24 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'contest_details_model.dart';
 export 'contest_details_model.dart';
 
 class ContestDetailsWidget extends StatefulWidget {
-  const ContestDetailsWidget({super.key});
+  const ContestDetailsWidget({
+    super.key,
+    required this.contestId,
+  });
+
+  final int? contestId;
 
   static String routeName = 'ContestDetails';
   static String routePath = '/contestDetails';
@@ -27,6 +36,56 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ContestDetailsModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.isLoading = true;
+      safeSetState(() {});
+      _model.apiResult5ic =
+          await DashboardGroup.comlpleteContestDetailsCall.call(
+        contestId: widget.contestId,
+        authToken: FFAppState().authToken,
+      );
+
+      if ((_model.apiResult5ic?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResult5ic?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 2050),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+        safeSetState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResult5ic?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 2050),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+      }
+    });
   }
 
   @override
@@ -38,6 +97,8 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -239,7 +300,13 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 20.0, 0.0, 0.0),
                             child: Text(
-                              'World Cup Legends \nQuiz',
+                              getJsonField(
+                                DashboardGroup.comlpleteContestDetailsCall
+                                    .contestResult(
+                                  (_model.apiResult5ic?.jsonBody ?? ''),
+                                ),
+                                r'''$.title''',
+                              ).toString(),
                               style: FlutterFlowTheme.of(context)
                                   .headlineLarge
                                   .override(
@@ -258,7 +325,13 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                             ),
                           ),
                           Text(
-                            'Test your knowledge about World Cup football legends and iconic moments in football history.',
+                            getJsonField(
+                              DashboardGroup.comlpleteContestDetailsCall
+                                  .contestResult(
+                                (_model.apiResult5ic?.jsonBody ?? ''),
+                              ),
+                              r'''$.description''',
+                            ).toString(),
                             style: FlutterFlowTheme.of(context)
                                 .titleLarge
                                 .override(
@@ -358,7 +431,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                     .fromSTEB(
                                                         0.0, 5.0, 0.0, 0.0),
                                                 child: Text(
-                                                  'Medium',
+                                                  getJsonField(
+                                                    DashboardGroup
+                                                        .comlpleteContestDetailsCall
+                                                        .contestResult(
+                                                      (_model.apiResult5ic
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.difficulty_type''',
+                                                  ).toString(),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelMedium
@@ -480,7 +562,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '2 days left',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .comlpleteContestDetailsCall
+                                                          .contestResult(
+                                                        (_model.apiResult5ic
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.days_remaining''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium
@@ -608,7 +699,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '+45 XP',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .comlpleteContestDetailsCall
+                                                          .contestResult(
+                                                        (_model.apiResult5ic
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.rewards''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium
@@ -738,7 +838,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                     .fromSTEB(
                                                         0.0, 5.0, 0.0, 0.0),
                                                 child: Text(
-                                                  '275',
+                                                  getJsonField(
+                                                    DashboardGroup
+                                                        .comlpleteContestDetailsCall
+                                                        .contestResult(
+                                                      (_model.apiResult5ic
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.participants''',
+                                                  ).toString(),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelMedium
@@ -860,7 +969,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                       .fromSTEB(
                                                           0.0, 5.0, 0.0, 0.0),
                                                   child: Text(
-                                                    '8',
+                                                    getJsonField(
+                                                      DashboardGroup
+                                                          .comlpleteContestDetailsCall
+                                                          .contestResult(
+                                                        (_model.apiResult5ic
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ),
+                                                      r'''$.total_questions''',
+                                                    ).toString(),
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .labelMedium
@@ -1011,7 +1129,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            '08',
+                                            getJsonField(
+                                              DashboardGroup
+                                                  .comlpleteContestDetailsCall
+                                                  .contestResult(
+                                                (_model.apiResult5ic
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ),
+                                              r'''$.total_questions''',
+                                            ).toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1105,7 +1232,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            '40 Min.',
+                                            getJsonField(
+                                              DashboardGroup
+                                                  .comlpleteContestDetailsCall
+                                                  .contestResult(
+                                                (_model.apiResult5ic
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ),
+                                              r'''$.time_spent_minutes''',
+                                            ).toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1199,7 +1335,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            '06',
+                                            getJsonField(
+                                              DashboardGroup
+                                                  .comlpleteContestDetailsCall
+                                                  .contestResult(
+                                                (_model.apiResult5ic
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ),
+                                              r'''$.correct_answers''',
+                                            ).toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1293,7 +1438,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            '0 Pts',
+                                            '${getJsonField(
+                                              DashboardGroup
+                                                  .comlpleteContestDetailsCall
+                                                  .contestResult(
+                                                (_model.apiResult5ic
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ),
+                                              r'''$.point_earned''',
+                                            ).toString()} Pts',
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1387,7 +1541,16 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 0.0, 0.0, 0.0),
                                           child: Text(
-                                            '13',
+                                            getJsonField(
+                                              DashboardGroup
+                                                  .comlpleteContestDetailsCall
+                                                  .contestResult(
+                                                (_model.apiResult5ic
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ),
+                                              r'''$.your_rank''',
+                                            ).toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1536,92 +1699,175 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                               ),
                             ),
                           ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Color(0xFF4E4E4E)
-                                  : Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 1.0,
-                                  color: Color(0x33463838),
-                                  offset: Offset(
-                                    1.0,
-                                    2.0,
-                                  ),
-                                  spreadRadius: 1.0,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 7.0, 10.0, 7.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Color(0xFFFFBC06),
-                                        size: 18.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            7.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          '4',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
+                          Builder(
+                            builder: (context) {
+                              final usersRank = getJsonField(
+                                DashboardGroup.comlpleteContestDetailsCall
+                                    .contestResult(
+                                  (_model.apiResult5ic?.jsonBody ?? ''),
+                                ),
+                                r'''$.ranking_list''',
+                              ).toList();
+
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: usersRank.length,
+                                itemBuilder: (context, usersRankIndex) {
+                                  final usersRankItem =
+                                      usersRank[usersRankIndex];
+                                  return Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: (Theme.of(context).brightness ==
+                                                  Brightness.dark) ==
+                                              true
+                                          ? Color(0xFF4E4E4E)
+                                          : Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 1.0,
+                                          color: Color(0x33463838),
+                                          offset: Offset(
+                                            1.0,
+                                            2.0,
+                                          ),
+                                          spreadRadius: 1.0,
+                                        )
+                                      ],
+                                    ),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          40.0, 0.0, 0.0, 0.0),
+                                          10.0, 7.0, 10.0, 7.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: 30.0,
-                                            height: 30.0,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.network(
-                                              'https://picsum.photos/seed/42/600',
-                                              fit: BoxFit.cover,
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidStar,
+                                                color: Color(0xFFFFBC06),
+                                                size: 18.0,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        7.0, 0.0, 0.0, 0.0),
+                                                child: Text(
+                                                  getJsonField(
+                                                    usersRankItem,
+                                                    r'''$.rank''',
+                                                  ).toString(),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleMedium
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontStyle,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      40.0, 0.0, 0.0, 0.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Container(
+                                                    width: 30.0,
+                                                    height: 30.0,
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Image.network(
+                                                      getJsonField(
+                                                        usersRankItem,
+                                                        r'''$.profile_image''',
+                                                      ).toString(),
+                                                      fit: BoxFit.cover,
+                                                      errorBuilder: (context,
+                                                              error,
+                                                              stackTrace) =>
+                                                          Image.asset(
+                                                        'assets/images/error_image.webp',
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(7.0, 0.0,
+                                                                0.0, 0.0),
+                                                    child: Text(
+                                                      getJsonField(
+                                                        usersRankItem,
+                                                        r'''$.name''',
+                                                      ).toString(),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .poppins(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .fontStyle,
+                                                                ),
+                                                                fontSize: 12.0,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Padding(
@@ -1629,7 +1875,10 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     7.0, 0.0, 0.0, 0.0),
                                             child: Text(
-                                              'Shai Gilgeous',
+                                              getJsonField(
+                                                usersRankItem,
+                                                r'''$.total_correct''',
+                                              ).toString(),
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleMedium
@@ -1665,514 +1914,10 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        7.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '98',
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 12.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Color(0xFF4E4E4E)
-                                  : Color(0xFFEAEAEA),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 7.0, 10.0, 7.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Color(0xFFFFBC06),
-                                        size: 18.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            7.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          '4',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          40.0, 0.0, 0.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: 30.0,
-                                            height: 30.0,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.network(
-                                              'https://picsum.photos/seed/42/600',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    7.0, 0.0, 0.0, 0.0),
-                                            child: Text(
-                                              'Shai Gilgeous',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                        fontSize: 12.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontStyle,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        7.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '98',
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 12.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Color(0xFF4E4E4E)
-                                  : Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 1.0,
-                                  color: Color(0x33463838),
-                                  offset: Offset(
-                                    1.0,
-                                    2.0,
-                                  ),
-                                  spreadRadius: 1.0,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 7.0, 10.0, 7.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Color(0xFFFFBC06),
-                                        size: 18.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            7.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          '4',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          40.0, 0.0, 0.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: 30.0,
-                                            height: 30.0,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.network(
-                                              'https://picsum.photos/seed/42/600',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    7.0, 0.0, 0.0, 0.0),
-                                            child: Text(
-                                              'Shai Gilgeous',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                        fontSize: 12.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontStyle,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        7.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '98',
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 12.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Color(0xFF4E4E4E)
-                                  : Color(0xFFEAEAEA),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 7.0, 10.0, 7.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Color(0xFFFFBC06),
-                                        size: 18.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            7.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          '4',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          40.0, 0.0, 0.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: 30.0,
-                                            height: 30.0,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.network(
-                                              'https://picsum.photos/seed/42/600',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    7.0, 0.0, 0.0, 0.0),
-                                            child: Text(
-                                              'Shai Gilgeous',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                        fontSize: 12.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleMedium
-                                                                .fontStyle,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        7.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      '98',
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 12.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -2181,6 +1926,19 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget> {
                 ),
               ),
             ),
+            if (_model.isLoading == true)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: custom_widgets.CubeGridLoader(
+                    width: 40.0,
+                    height: 40.0,
+                    size: 40.0,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -1,16 +1,22 @@
+import '/custom_code/actions/index.dart' as actions;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'auth/firebase_auth/firebase_user_provider.dart';
+import 'auth/firebase_auth/auth_util.dart';
 
-import 'auth/custom_auth/auth_util.dart';
-import 'auth/custom_auth/custom_auth_user_provider.dart';
-
+import 'backend/push_notifications/push_notifications_util.dart';
+import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'index.dart';
+
+import '/flutter_flow/admob_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +26,24 @@ void main() async {
   final environmentValues = FFDevEnvironmentValues();
   await environmentValues.initialize();
 
-  await FlutterFlowTheme.initialize();
+  await initFirebase();
 
-  await authManager.initialize();
+  // Start initial custom actions code
+  await actions.lockPortraitOrientation();
+  await actions.connect();
+  await actions.setupForegroundNotifications();
+  // End initial custom actions code
+
+  await FlutterFlowTheme.initialize();
+  adMobRequestConsent();
+  adMobUpdateRequestConfiguration();
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
+
+  if (!kIsWeb) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  }
 
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
@@ -44,6 +62,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = FlutterFlowTheme.themeMode;
+  double _textScaleFactor = 1.0;
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
@@ -60,7 +79,10 @@ class _MyAppState extends State<MyApp> {
       _router.routerDelegate.currentConfiguration.matches
           .map((e) => getRoute(e))
           .toList();
-  late Stream<VoteForGoatAuthUser> userStream;
+  late Stream<BaseAuthUser> userStream;
+
+  final authUserSub = authenticatedUserStream.listen((_) {});
+  final fcmTokenSub = fcmTokenUserStream.listen((_) {});
 
   @override
   void initState() {
@@ -68,21 +90,49 @@ class _MyAppState extends State<MyApp> {
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
-    userStream = voteForGoatAuthUserStream()
+    userStream = voteForGoatFirebaseUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);
       });
-
+    jwtTokenStream.listen((_) {});
     Future.delayed(
       Duration(milliseconds: 1000),
       () => _appStateNotifier.stopShowingSplashImage(),
     );
   }
 
+  @override
+  void dispose() {
+    authUserSub.cancel();
+    fcmTokenSub.cancel();
+    super.dispose();
+  }
+
   void setThemeMode(ThemeMode mode) => safeSetState(() {
         _themeMode = mode;
         FlutterFlowTheme.saveThemeMode(mode);
       });
+
+  void setTextScaleFactor(double updatedFactor) {
+    if (updatedFactor < FlutterFlowTheme.minTextScaleFactor ||
+        updatedFactor > FlutterFlowTheme.maxTextScaleFactor) {
+      return;
+    }
+    safeSetState(() {
+      _textScaleFactor = updatedFactor;
+    });
+  }
+
+  void incrementTextScaleFactor(double incrementValue) {
+    final updatedFactor = _textScaleFactor + incrementValue;
+    if (updatedFactor < FlutterFlowTheme.minTextScaleFactor ||
+        updatedFactor > FlutterFlowTheme.maxTextScaleFactor) {
+      return;
+    }
+    safeSetState(() {
+      _textScaleFactor = updatedFactor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +155,21 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: _themeMode,
       routerConfig: _router,
+      builder: (_, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler:
+              _textScaleFactor == FlutterFlowTheme.defaultTextScaleFactor
+                  ? MediaQuery.of(context).textScaler.clamp(
+                        minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
+                        maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
+                      )
+                  : TextScaler.linear(_textScaleFactor).clamp(
+                      minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
+                      maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
+                    ),
+        ),
+        child: child!,
+      ),
     );
   }
 }

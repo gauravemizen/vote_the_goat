@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'winner_bottom_sheet_widget.dart' show WinnerBottomSheetWidget;
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 class WinnerBottomSheetModel extends FlutterFlowModel<WinnerBottomSheetWidget> {
   ///  State fields for stateful widgets in this component.
 
+  // Stores action output result for [Backend Call - API (minionPlayerScore)] action in WinnerBottomSheet widget.
+  ApiCallResponse? apiResult2kw;
   // Model for gradientButtonCustom component.
   late GradientButtonCustomModel gradientButtonCustomModel;
 

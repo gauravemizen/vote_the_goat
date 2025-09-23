@@ -1,11 +1,16 @@
+import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/components/winner_bottom_sheet/winner_bottom_sheet_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
 import 'match_playerss_model.dart';
 export 'match_playerss_model.dart';
@@ -29,6 +34,53 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MatchPlayerssModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.isLoading = true;
+      safeSetState(() {});
+      _model.matchMinionRes = await DashboardGroup.matchPlayersCall.call(
+        authToken: FFAppState().authToken,
+      );
+
+      if ((_model.matchMinionRes?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.matchMinionRes?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1700),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.matchMinionRes?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1700),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+      }
+    });
   }
 
   @override
@@ -40,6 +92,8 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -211,53 +265,159 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Colors.white
-                                    : Color(0xFFA1A1A1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: FlutterFlowTheme.of(context).oposite,
-                                  size: 20.0,
+                            if (_model.questionIndex > 0)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 2.0, 0.0),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.questionIndex =
+                                        _model.questionIndex + -1;
+                                    _model.questionNo = _model.questionNo! + -1;
+                                    _model.selectedIndex = -1;
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: (Theme.of(context).brightness ==
+                                                  Brightness.dark) ==
+                                              true
+                                          ? Colors.white
+                                          : Color(0xFFA1A1A1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Icon(
+                                        Icons.arrow_back_ios_new_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .oposite,
+                                        size: 20.0,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: SvgPicture.asset(
-                                'assets/images/minions.svg',
+                              child: CachedNetworkImage(
+                                fadeInDuration: Duration(milliseconds: 500),
+                                fadeOutDuration: Duration(milliseconds: 500),
+                                imageUrl: valueOrDefault<String>(
+                                  getJsonField(
+                                    DashboardGroup.matchPlayersCall
+                                        .questions(
+                                          (_model.matchMinionRes?.jsonBody ??
+                                              ''),
+                                        )
+                                        ?.elementAtOrNull(valueOrDefault<int>(
+                                          _model.questionIndex,
+                                          0,
+                                        )),
+                                    r'''$.question_image''',
+                                  )?.toString(),
+                                  '\"\"',
+                                ),
                                 width: MediaQuery.sizeOf(context).width * 0.6,
                                 height:
                                     MediaQuery.sizeOf(context).height * 0.38,
                                 fit: BoxFit.fitHeight,
+                                errorWidget: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  'assets/images/error_image.webp',
+                                  width: MediaQuery.sizeOf(context).width * 0.6,
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 0.38,
+                                  fit: BoxFit.fitHeight,
+                                ),
                               ),
                             ),
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Colors.white
-                                    : Color(0xFFA1A1A1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: FlutterFlowTheme.of(context).oposite,
-                                  size: 20.0,
+                            Builder(
+                              builder: (context) => Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    2.0, 0.0, 0.0, 0.0),
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    if (_model.questionNo ==
+                                        DashboardGroup.matchPlayersCall
+                                            .questions(
+                                              (_model.matchMinionRes
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            )
+                                            ?.length) {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  FocusScope.of(dialogContext)
+                                                      .unfocus();
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                },
+                                                child: WinnerBottomSheetWidget(
+                                                  onContinuePress: () async {
+                                                    context.pushNamed(
+                                                        HomePageWidget
+                                                            .routeName);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      _model.questionIndex =
+                                          _model.questionIndex + 1;
+                                      _model.questionNo =
+                                          _model.questionNo! + 1;
+                                      _model.selectedIndex = -1;
+                                      safeSetState(() {});
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: (Theme.of(context).brightness ==
+                                                  Brightness.dark) ==
+                                              true
+                                          ? Colors.white
+                                          : Color(0xFFA1A1A1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .oposite,
+                                        size: 20.0,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -266,235 +426,122 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color:
-                          (Theme.of(context).brightness == Brightness.dark) ==
-                                  true
-                              ? Color(0xFF161515)
-                              : Color(0xFFA1A1A1),
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(
-                        color:
-                            (Theme.of(context).brightness == Brightness.dark) ==
-                                    true
-                                ? Colors.white
-                                : Colors.transparent,
-                        width: 2.0,
-                      ),
-                    ),
-                    child: Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Text(
-                          'Giannis Antetokounmpo',
-                          style: FlutterFlowTheme.of(context)
-                              .headlineLarge
-                              .override(
-                                font: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontStyle,
-                                ),
-                                color: Colors.white,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w600,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .headlineLarge
-                                    .fontStyle,
-                              ),
-                        ),
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 20.0, 0.0, 0.0),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0xFF4E4E4E)
-                                      : Color(0xFFE5E5E5),
-                                ),
-                              ),
-                              child: Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 15.0, 0.0, 15.0),
-                                  child: Text(
-                                    'Kareem Abdul-jabbar',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleLarge
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleLarge
-                                                    .fontStyle,
+                          if (!_model.isLoading)
+                            Builder(
+                              builder: (context) {
+                                final options = getJsonField(
+                                  DashboardGroup.matchPlayersCall
+                                      .questions(
+                                        (_model.matchMinionRes?.jsonBody ?? ''),
+                                      )
+                                      ?.elementAtOrNull(_model.questionIndex),
+                                  r'''$.options''',
+                                ).toList();
+
+                                return ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: options.length,
+                                  itemBuilder: (context, optionsIndex) {
+                                    final optionsItem = options[optionsIndex];
+                                    return InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        if (_model.selectedIndex ==
+                                            optionsIndex) {
+                                          _model.selectedIndex = -1;
+                                          safeSetState(() {});
+                                        } else {
+                                          _model.selectedIndex = optionsIndex;
+                                          _model.selectedPlayerId =
+                                              getJsonField(
+                                            optionsItem,
+                                            r'''$.id''',
+                                          );
+                                          safeSetState(() {});
+                                        }
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: _model.selectedIndex ==
+                                                  optionsIndex
+                                              ? Color(0xFF038500)
+                                              : (Theme.of(context).brightness ==
+                                                      Brightness.dark
+                                                  ? Color(0xFF1C1C22)
+                                                  : Color(0xFFF0F0F0)),
+                                          border: Border.all(
+                                            color:
+                                                (Theme.of(context).brightness ==
+                                                            Brightness.dark) ==
+                                                        true
+                                                    ? Color(0xFF4E4E4E)
+                                                    : Color(0xFFE5E5E5),
                                           ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
                                         ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF038500),
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Color(0xFF4E4E4E)
-                                    : Color(0xFFE5E5E5),
-                              ),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Giannis Antetokounmpo',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
+                                        child: Align(
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 15.0, 0.0, 15.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                getJsonField(
+                                                  optionsItem,
+                                                  r'''$.name''',
+                                                )?.toString(),
+                                                '\"\"',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleLarge
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleLarge
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleLarge
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontStyle,
+                                                      ),
+                                            ),
+                                          ),
                                         ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
                                       ),
-                                ),
-                              ),
+                                    );
+                                  },
+                                );
+                              },
                             ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Color(0xFF4E4E4E)
-                                    : Color(0xFFE5E5E5),
-                              ),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Color(0xFF4E4E4E)
-                                    : Color(0xFFE5E5E5),
-                              ),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
                           InkWell(
                             splashColor: Colors.transparent,
                             focusColor: Colors.transparent,
@@ -534,11 +581,81 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 20.0, 0.0, 0.0),
-                                child: wrapWithModel(
-                                  model: _model.gradientButtonCustomModel,
-                                  updateCallback: () => safeSetState(() {}),
-                                  child: GradientButtonCustomWidget(
-                                    text: 'Save Progress',
+                                child: InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.apiResultyli = await DashboardGroup
+                                        .submitMinionCall
+                                        .call(
+                                      authToken: FFAppState().authToken,
+                                      rightPlayerId: getJsonField(
+                                        DashboardGroup.matchPlayersCall
+                                            .questions(
+                                              (_model.matchMinionRes
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            )
+                                            ?.elementAtOrNull(
+                                                _model.questionIndex),
+                                        r'''$.correct_player_id''',
+                                      ),
+                                      selectPlayerId: _model.selectedPlayerId,
+                                    );
+
+                                    if ((_model.apiResultyli?.succeeded ??
+                                        true)) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            getJsonField(
+                                              (_model.apiResultyli?.jsonBody ??
+                                                  ''),
+                                              r'''$.message''',
+                                            ).toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 1200),
+                                          backgroundColor: Colors.black,
+                                        ),
+                                      );
+
+                                      context.goNamed(HomePageWidget.routeName);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            getJsonField(
+                                              (_model.apiResultyli?.jsonBody ??
+                                                  ''),
+                                              r'''$.message''',
+                                            ).toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 1200),
+                                          backgroundColor: Colors.black,
+                                        ),
+                                      );
+                                    }
+
+                                    safeSetState(() {});
+                                  },
+                                  child: wrapWithModel(
+                                    model: _model.gradientButtonCustomModel,
+                                    updateCallback: () => safeSetState(() {}),
+                                    child: GradientButtonCustomWidget(
+                                      text: 'Save Progress',
+                                    ),
                                   ),
                                 ),
                               ),
@@ -569,51 +686,143 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
                                           color: Color(0xFF4E4E4E),
                                         ),
                                       ),
-                                      child: Align(
-                                        alignment:
-                                            AlignmentDirectional(0.0, 0.0),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  25.0, 13.0, 25.0, 13.0),
-                                          child: Text(
-                                            'Auto Associate',
-                                            maxLines: 1,
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleLarge
-                                                .override(
-                                                  font: GoogleFonts.poppins(
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleLarge
-                                                            .fontStyle,
+                                      child: Builder(
+                                        builder: (context) => FFButtonWidget(
+                                          onPressed: () async {
+                                            _model.autoAssociateRes =
+                                                await DashboardGroup
+                                                    .autoAssociateCall
+                                                    .call(
+                                              authToken: FFAppState().authToken,
+                                            );
+
+                                            if ((_model.autoAssociateRes
+                                                    ?.succeeded ??
+                                                true)) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    getJsonField(
+                                                      (_model.autoAssociateRes
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                      r'''$.message''',
+                                                    ).toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
-                                                  color: (Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness
-                                                                  .dark) ==
-                                                          true
-                                                      ? Color(0xFFBABABA)
-                                                      : Colors.black,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontStyle,
+                                                  duration: Duration(
+                                                      milliseconds: 1250),
+                                                  backgroundColor: Colors.black,
                                                 ),
+                                              );
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child: WebViewAware(
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          FocusScope.of(
+                                                                  dialogContext)
+                                                              .unfocus();
+                                                          FocusManager.instance
+                                                              .primaryFocus
+                                                              ?.unfocus();
+                                                        },
+                                                        child:
+                                                            WinnerBottomSheetWidget(
+                                                          onContinuePress:
+                                                              () async {
+                                                            context.goNamed(
+                                                                HomePageWidget
+                                                                    .routeName);
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    getJsonField(
+                                                      (_model.autoAssociateRes
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                      r'''$.message''',
+                                                    ).toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  duration: Duration(
+                                                      milliseconds: 1250),
+                                                  backgroundColor: Colors.black,
+                                                ),
+                                              );
+                                            }
+
+                                            safeSetState(() {});
+                                          },
+                                          text: 'Auto Associate',
+                                          options: FFButtonOptions(
+                                            height: 40.0,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 0.0, 16.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0x00CD4A20),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleLarge
+                                                    .override(
+                                                      font: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .fontStyle,
+                                                      ),
+                                                      fontSize: 14.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleLarge
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleLarge
+                                                              .fontStyle,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
@@ -693,6 +902,205 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget> {
                 ],
               ),
             ),
+            if (_model.isLoading)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: custom_widgets.CubeGridLoader(
+                    width: 40.0,
+                    height: 40.0,
+                    size: 40.0,
+                  ),
+                ),
+              ),
+            if (!_model.isTapped)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional(0.0, 0.0),
+                        child: Container(
+                          height: MediaQuery.sizeOf(context).height * 1.0,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Color(0x4B000000)
+                                    : Color(0xC4000000),
+                          ),
+                          child: Align(
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 0.0, 20.0, 0.0),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: (Theme.of(context).brightness ==
+                                              Brightness.dark) ==
+                                          true
+                                      ? Color(0xFF1C1C22)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(17.0),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      16.0, 20.0, 16.0, 16.0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Aren\'t MINION GOATS awesome?',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .titleLarge
+                                              .override(
+                                                font: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleLarge
+                                                          .fontStyle,
+                                                ),
+                                                fontSize: 22.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleLarge
+                                                        .fontStyle,
+                                              ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 8.0, 0.0, 0.0),
+                                          child: Text(
+                                            '50 NBA legends brought back to their college years.Now the first part of the game: can you match each Minion to its name? If you\'re stuck, tap the Auto-Associate button to skip the manual process',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: (Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness
+                                                                  .dark) ==
+                                                          true
+                                                      ? Color(0xA6FFFFFF)
+                                                      : Color(0xFF595959),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 20.0, 0.0, 10.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              _model.isTapped = true;
+                                              safeSetState(() {});
+                                            },
+                                            child: Container(
+                                              width: 82.0,
+                                              height: 36.0,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    FlutterFlowTheme.of(context)
+                                                        .peach,
+                                                    Color(0xFFE09B6E)
+                                                  ],
+                                                  stops: [0.0, 1.0],
+                                                  begin: AlignmentDirectional(
+                                                      0.0, -1.0),
+                                                  end: AlignmentDirectional(
+                                                      0, 1.0),
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(16.0),
+                                              ),
+                                              child: Align(
+                                                alignment: AlignmentDirectional(
+                                                    0.0, 0.0),
+                                                child: Text(
+                                                  'Start',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodySmall
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodySmall
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodySmall
+                                                                  .fontStyle,
+                                                        ),
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall
+                                                                .fontStyle,
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

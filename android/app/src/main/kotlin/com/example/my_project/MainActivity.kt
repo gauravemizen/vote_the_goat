@@ -1,4 +1,4 @@
-package com.mycompany.voteforgoat
+package com.voteforgoat.app
 
 import io.flutter.embedding.android.FlutterActivity
 

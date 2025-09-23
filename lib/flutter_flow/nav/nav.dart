@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 
-import '/auth/custom_auth/custom_auth_user_provider.dart';
+import '/auth/base_auth_user_provider.dart';
 
+import '/backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 import '/main.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -23,8 +27,8 @@ class AppStateNotifier extends ChangeNotifier {
   static AppStateNotifier? _instance;
   static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
 
-  VoteForGoatAuthUser? initialUser;
-  VoteForGoatAuthUser? user;
+  BaseAuthUser? initialUser;
+  BaseAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -49,7 +53,7 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(VoteForGoatAuthUser newUser) {
+  void update(BaseAuthUser newUser) {
     final shouldUpdate =
         user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
@@ -187,7 +191,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ComparePlayersWidget.routeName,
           path: ComparePlayersWidget.routePath,
-          builder: (context, params) => ComparePlayersWidget(),
+          builder: (context, params) => ComparePlayersWidget(
+            player1Id: params.getParam(
+              'player1Id',
+              ParamType.int,
+            ),
+            player2Id: params.getParam(
+              'player2Id',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: PlayerBio2Widget.routeName,
@@ -229,22 +242,42 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ContestDetailsWidget.routeName,
           path: ContestDetailsWidget.routePath,
-          builder: (context, params) => ContestDetailsWidget(),
+          builder: (context, params) => ContestDetailsWidget(
+            contestId: params.getParam(
+              'contestId',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: ActiveContastDetailsWidget.routeName,
           path: ActiveContastDetailsWidget.routePath,
-          builder: (context, params) => ActiveContastDetailsWidget(),
+          builder: (context, params) => ActiveContastDetailsWidget(
+            contestId: params.getParam(
+              'contestId',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: ContestQuestionWidget.routeName,
           path: ContestQuestionWidget.routePath,
-          builder: (context, params) => ContestQuestionWidget(),
+          builder: (context, params) => ContestQuestionWidget(
+            contestId: params.getParam(
+              'contestId',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: ContestResultWidget.routeName,
           path: ContestResultWidget.routePath,
-          builder: (context, params) => ContestResultWidget(),
+          builder: (context, params) => ContestResultWidget(
+            contestId: params.getParam(
+              'contestId',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: PlayWithFriendsWidget.routeName,
@@ -287,6 +320,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: AllPlayersWidget.routeName,
           path: AllPlayersWidget.routePath,
           builder: (context, params) => AllPlayersWidget(),
+        ),
+        FFRoute(
+          name: YourComparisonsWidget.routeName,
+          path: YourComparisonsWidget.routePath,
+          builder: (context, params) => YourComparisonsWidget(),
+        ),
+        FFRoute(
+          name: TeamDetailsWidget.routeName,
+          path: TeamDetailsWidget.routePath,
+          builder: (context, params) => TeamDetailsWidget(
+            teamIndex: params.getParam(
+              'teamIndex',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: PlayWithFriendRankingWidget.routeName,
+          path: PlayWithFriendRankingWidget.routePath,
+          builder: (context, params) => PlayWithFriendRankingWidget(
+            teamId: params.getParam(
+              'teamId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: ChatPageWidget.routeName,
+          path: ChatPageWidget.routePath,
+          builder: (context, params) => ChatPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],
@@ -406,6 +469,8 @@ class FFParameters {
     String paramName,
     ParamType type, {
     bool isList = false,
+    List<String>? collectionNamePath,
+    StructBuilder<T>? structBuilder,
   }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -423,6 +488,8 @@ class FFParameters {
       param,
       type,
       isList,
+      collectionNamePath: collectionNamePath,
+      structBuilder: structBuilder,
     );
   }
 }
@@ -477,7 +544,7 @@ class FFRoute {
                     fit: BoxFit.scaleDown,
                   ),
                 )
-              : page;
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

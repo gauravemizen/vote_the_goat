@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "360818518046",
+    "project_id": "vtgapp-2025",
+    "storage_bucket": "vtgapp-2025.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360818518046:android:ceeb68c650007e107fa60f",
+        "android_client_info": {
+          "package_name": "com.voteforgoat.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360818518046-aibieuik5dbee5onh0fu39is9fhupghn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voteforgoat.app",
+            "certificate_hash": "c9dde1b1bcf3f2eaceb901f40e6f84bb08ddc5c1"
+          }
+        },
+        {
+          "client_id": "360818518046-dis0n4if37f0d1i5fc60sdkdch9307jr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voteforgoat.app",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "360818518046-9cd4d4vej9gf6f8v2n8pvi5m91n435tn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr9WZ2uI_UsB3AwfxTIIn_jZdoXfn7s-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360818518046-9cd4d4vej9gf6f8v2n8pvi5m91n435tn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "360818518046-0od7vdgs5re69hrdvr1mkvs0ld53fi8v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.voteforgoat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

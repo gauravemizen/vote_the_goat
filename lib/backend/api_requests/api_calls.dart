@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
@@ -27,13 +28,17 @@ class LogInCall {
   Future<ApiCallResponse> call({
     String? email = '',
     String? password = '',
+    String? fcmToken = '',
+    String? deviceType = '',
   }) async {
     final baseUrl = AuthGroup.getBaseUrl();
 
     final ffApiRequestBody = '''
 {
   "email": "${escapeStringForJson(email)}",
-  "password": "${escapeStringForJson(password)}"
+  "password": "${escapeStringForJson(password)}",
+  "fcm_token": "${escapeStringForJson(fcmToken)}",
+  "device_type": "${escapeStringForJson(deviceType)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'logIn',
@@ -91,13 +96,15 @@ class OtpVerifyCall {
   Future<ApiCallResponse> call({
     String? email = '',
     int? otp,
+    String? fcmToken = '',
   }) async {
     final baseUrl = AuthGroup.getBaseUrl();
 
     final ffApiRequestBody = '''
 {
   "email": "${escapeStringForJson(email)}",
-  "otp": ${otp}
+  "otp": ${otp},
+  "fcm_token": "${escapeStringForJson(fcmToken)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'otpVerify',
@@ -289,10 +296,37 @@ class DashboardGroup {
   static GetAllPlayersCall getAllPlayersCall = GetAllPlayersCall();
   static PositionlistCall positionlistCall = PositionlistCall();
   static RankingPostCall rankingPostCall = RankingPostCall();
+  static GetteamdetailCall getteamdetailCall = GetteamdetailCall();
+  static CompareplayersCall compareplayersCall = CompareplayersCall();
+  static ContestListCall contestListCall = ContestListCall();
+  static ContestDetailsCall contestDetailsCall = ContestDetailsCall();
+  static ContestQuestionCall contestQuestionCall = ContestQuestionCall();
+  static ContestSubmitAnswersCall contestSubmitAnswersCall =
+      ContestSubmitAnswersCall();
+  static ComlpleteContestDetailsCall comlpleteContestDetailsCall =
+      ComlpleteContestDetailsCall();
+  static ContestfinaldetailsCall contestfinaldetailsCall =
+      ContestfinaldetailsCall();
+  static CompletedContestCall completedContestCall = CompletedContestCall();
+  static ComparisonCall comparisonCall = ComparisonCall();
+  static ComparisonListCall comparisonListCall = ComparisonListCall();
+  static MatchPlayersCall matchPlayersCall = MatchPlayersCall();
+  static ApplyrankingCall applyrankingCall = ApplyrankingCall();
+  static FinalizeRankingCall finalizeRankingCall = FinalizeRankingCall();
+  static MinionPlayerScoreCall minionPlayerScoreCall = MinionPlayerScoreCall();
+  static SubmitMinionCall submitMinionCall = SubmitMinionCall();
+  static AutoAssociateCall autoAssociateCall = AutoAssociateCall();
+  static JoinTeamCall joinTeamCall = JoinTeamCall();
+  static TeamRankingDetailsCall teamRankingDetailsCall =
+      TeamRankingDetailsCall();
+  static SocialloginCall socialloginCall = SocialloginCall();
+  static TeamMemberforChatCall teamMemberforChatCall = TeamMemberforChatCall();
+  static PlayerBioStatsCall playerBioStatsCall = PlayerBioStatsCall();
 }
 
 class EligblePlayersCall {
   Future<ApiCallResponse> call({
+    String? search = '',
     String? authToken,
   }) async {
     authToken ??= '';
@@ -300,14 +334,20 @@ class EligblePlayersCall {
       authToken: authToken,
     );
 
+    final ffApiRequestBody = '''
+{
+  "search": "${escapeStringForJson(search)}"
+}''';
     return ApiManager.instance.makeApiCall(
       callName: 'eligblePlayers',
       apiUrl: '${baseUrl}/eligblePlayers',
-      callType: ApiCallType.GET,
+      callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer ${authToken}',
       },
       params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -756,6 +796,776 @@ class RankingPostCall {
   }
 }
 
+class GetteamdetailCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'getteamdetail',
+      apiUrl: '${baseUrl}/get_team_detail',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? teamList(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+  List<int>? userId(dynamic response) => (getJsonField(
+        response,
+        r'''$.data[:].members[:].user.id''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+}
+
+class CompareplayersCall {
+  Future<ApiCallResponse> call({
+    int? player1Id,
+    int? player2Id,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "player1_id": ${player1Id},
+  "player2_id": ${player2Id}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'compareplayers',
+      apiUrl: '${baseUrl}/compare_players',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic compareData(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+      );
+}
+
+class ContestListCall {
+  Future<ApiCallResponse> call({
+    String? search = '',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "search": "${escapeStringForJson(search)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestList',
+      apiUrl: '${baseUrl}/contest-list',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? contestList(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+}
+
+class ContestDetailsCall {
+  Future<ApiCallResponse> call({
+    int? contestId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "contest_id": ${contestId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestDetails',
+      apiUrl: '${baseUrl}/get-contest-details',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic contestDetails(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+      );
+}
+
+class ContestQuestionCall {
+  Future<ApiCallResponse> call({
+    int? contestId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "contest_id": ${contestId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestQuestion',
+      apiUrl: '${baseUrl}/contest-questions',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? questions(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+}
+
+class ContestSubmitAnswersCall {
+  Future<ApiCallResponse> call({
+    int? questionId,
+    String? answer = '',
+    int? optionId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "question_id": ${questionId},
+  "answer": "${escapeStringForJson(answer)}",
+  "option_id": ${optionId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestSubmitAnswers',
+      apiUrl: '${baseUrl}/contest-submit-answers',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class ComlpleteContestDetailsCall {
+  Future<ApiCallResponse> call({
+    int? contestId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "contest_id": ${contestId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'comlpleteContestDetails',
+      apiUrl: '${baseUrl}/contest-complete',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic contestResult(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+      );
+}
+
+class ContestfinaldetailsCall {
+  Future<ApiCallResponse> call({
+    int? contestId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "contest_id": ${contestId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestfinaldetails',
+      apiUrl: '${baseUrl}/contest-final-details',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic contestDetail(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+      );
+}
+
+class CompletedContestCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'completedContest',
+      apiUrl: '${baseUrl}/contest-complete-list',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? completedContest(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+}
+
+class ComparisonCall {
+  Future<ApiCallResponse> call({
+    int? winPlayerId,
+    int? lostPlayerId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "win_player_id": ${winPlayerId},
+  "lost_player_id": ${lostPlayerId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'comparison',
+      apiUrl: '${baseUrl}/comparison',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class ComparisonListCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'comparisonList',
+      apiUrl: '${baseUrl}/comparison-list',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class MatchPlayersCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'matchPlayers',
+      apiUrl: '${baseUrl}/minion-player',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? questions(dynamic response) => getJsonField(
+        response,
+        r'''$.questions''',
+        true,
+      ) as List?;
+}
+
+class ApplyrankingCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'applyranking',
+      apiUrl: '${baseUrl}/apply-ranking',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class FinalizeRankingCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'finalizeRanking',
+      apiUrl: '${baseUrl}/finalize-ranking',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class MinionPlayerScoreCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'minionPlayerScore',
+      apiUrl: '${baseUrl}/minion-player-score',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class SubmitMinionCall {
+  Future<ApiCallResponse> call({
+    int? selectPlayerId,
+    int? rightPlayerId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "select_player_id": ${selectPlayerId},
+  "right_player_id": ${rightPlayerId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'submitMinion',
+      apiUrl: '${baseUrl}/minion-player-save',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class AutoAssociateCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'autoAssociate',
+      apiUrl: '${baseUrl}/auto-associate',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class JoinTeamCall {
+  Future<ApiCallResponse> call({
+    String? inviteCode = '',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "invite_code": "${escapeStringForJson(inviteCode)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'joinTeam',
+      apiUrl: '${baseUrl}/join_team',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class TeamRankingDetailsCall {
+  Future<ApiCallResponse> call({
+    int? teamId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "team_id": ${teamId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'teamRankingDetails',
+      apiUrl: '${baseUrl}/team-ranking-details',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class SocialloginCall {
+  Future<ApiCallResponse> call({
+    String? providerId = '',
+    String? deviceType = '',
+    String? fcmToken = '',
+    String? name = '',
+    String? email = '',
+    String? providerName = '',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "provider_id": "${escapeStringForJson(providerId)}",
+  "device_type": "${escapeStringForJson(deviceType)}",
+  "fcm_token": "${escapeStringForJson(fcmToken)}",
+  "name": "${escapeStringForJson(name)}",
+  "email": "${escapeStringForJson(email)}",
+  "provider_name": "${escapeStringForJson(providerName)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'sociallogin',
+      apiUrl: '${baseUrl}/social-login',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class TeamMemberforChatCall {
+  Future<ApiCallResponse> call({
+    int? teamId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "team_id": ${teamId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'teamMemberforChat',
+      apiUrl: '${baseUrl}/team-member-for-chat',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class PlayerBioStatsCall {
+  Future<ApiCallResponse> call({
+    int? playerId = 0,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "player_id": ${playerId}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'playerBioStats',
+      apiUrl: '${baseUrl}/player-bio-stats',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 /// End dashboard Group Code
 
 class ApiPagingParams {
@@ -775,6 +1585,9 @@ class ApiPagingParams {
 }
 
 String _toEncodable(dynamic item) {
+  if (item is DocumentReference) {
+    return item.path;
+  }
   return item;
 }
 

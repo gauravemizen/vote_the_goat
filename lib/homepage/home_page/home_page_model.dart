@@ -10,6 +10,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   // Stores action output result for [Backend Call - API (getProfile)] action in homePage widget.
   ApiCallResponse? getProfileRes;
+  // Stores action output result for [AdMob - Show Interstitial Ad] action in homePage widget.
+  bool? interstitialAdSuccess;
   // Model for DrawerMenu component.
   late DrawerMenuModel drawerMenuModel;
 

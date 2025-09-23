@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,10 +32,14 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.isLoading = true;
+      safeSetState(() {});
       _model.cmsRes = await DashboardGroup.contactSupportCall.call(
         authToken: FFAppState().authToken,
       );
 
+      safeSetState(() {});
+      _model.isLoading = false;
       safeSetState(() {});
     });
   }
@@ -237,6 +242,19 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget> {
                 ),
               ),
             ),
+            if (_model.isLoading)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: custom_widgets.CubeGridLoader(
+                    width: 40.0,
+                    height: 40.0,
+                    size: 40.0,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

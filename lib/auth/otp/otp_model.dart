@@ -7,9 +7,15 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
 
 class OtpModel extends FlutterFlowModel<OtpWidget> {
+  ///  Local state fields for this page.
+
+  String deviceToken = '00';
+
   ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
+  // Stores action output result for [Custom Action - getFcmToken] action in otp widget.
+  String? fcmToken;
   // State field(s) for PinCode widget.
   TextEditingController? pinCodeController;
   FocusNode? pinCodeFocusNode;

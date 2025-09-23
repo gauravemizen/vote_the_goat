@@ -2,6 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/admob_util.dart' as admob;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -33,9 +34,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      admob.loadInterstitialAd(
+        "",
+        "ca-app-pub-3940256099942544/5224354917",
+        true,
+      );
+
       _model.getProfileRes = await DashboardGroup.getProfileCall.call(
         authToken: FFAppState().authToken,
       );
+
+      if ((_model.getProfileRes?.succeeded ?? true)) {
+        FFAppState().userName = getJsonField(
+          (_model.getProfileRes?.jsonBody ?? ''),
+          r'''$.name''',
+        ).toString();
+        safeSetState(() {});
+
+        _model.interstitialAdSuccess = await admob.showInterstitialAd();
+
+        safeSetState(() {});
+      }
     });
   }
 
@@ -75,9 +94,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.dark
                     ? 'assets/images/home_adj_dark.png'
-                    : 'assets/images/home_adj_light.png',
+                    : 'assets/images/Home_(2).png',
                 width: double.infinity,
-                fit: BoxFit.cover,
+                height: double.infinity,
+                fit: BoxFit.fill,
               ),
             ),
             Padding(
@@ -1147,6 +1167,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
               ),
             ),
+            if (Theme.of(context).brightness == Brightness.light)
+              Align(
+                alignment: AlignmentDirectional(0.0, -0.94),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.asset(
+                    'assets/images/LOGO_VTG_3.png',
+                    width: 158.0,
+                    height: 160.0,
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment(0.0, 0.0),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -42,6 +43,9 @@ class _OtpWidgetState extends State<OtpWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.fcmToken = await actions.getFcmToken();
+      _model.deviceToken = _model.fcmToken!;
+      safeSetState(() {});
       _model.timerController.onStartTimer();
     });
 
@@ -421,6 +425,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                                   email: widget.email,
                                   otp: int.tryParse(
                                       _model.pinCodeController!.text),
+                                  fcmToken: _model.deviceToken,
                                 );
 
                                 _shouldSetState = true;
@@ -467,6 +472,11 @@ class _OtpWidgetState extends State<OtpWidget> {
                                   safeSetState(() {
                                     _model.pinCodeController?.clear();
                                   });
+                                  FFAppState().authToken = getJsonField(
+                                    (_model.verifyResponse?.jsonBody ?? ''),
+                                    r'''$.token''',
+                                  ).toString();
+                                  safeSetState(() {});
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

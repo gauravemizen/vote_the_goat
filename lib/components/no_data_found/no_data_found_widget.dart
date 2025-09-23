@@ -42,37 +42,30 @@ class _NoDataFoundWidgetState extends State<NoDataFoundWidget> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-          child: Lottie.asset(
-            'assets/jsons/Empty.json',
-            width: 200.0,
-            height: 200.0,
-            fit: BoxFit.contain,
-            animate: true,
-          ),
+        Lottie.asset(
+          'assets/jsons/Empty.json',
+          width: MediaQuery.sizeOf(context).width * 0.4,
+          height: MediaQuery.sizeOf(context).height * 0.1,
+          fit: BoxFit.contain,
+          animate: true,
         ),
         Align(
           alignment: AlignmentDirectional(0.0, 0.0),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-            child: Text(
-              'No Data Found',
-              textAlign: TextAlign.center,
-              style: FlutterFlowTheme.of(context).titleLarge.override(
-                    font: GoogleFonts.poppins(
-                      fontWeight: FontWeight.normal,
-                      fontStyle:
-                          FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                    ),
-                    color: FlutterFlowTheme.of(context).customColor3,
-                    fontSize: 14.0,
-                    letterSpacing: 0.0,
+          child: Text(
+            'No Data Found',
+            textAlign: TextAlign.center,
+            style: FlutterFlowTheme.of(context).titleLarge.override(
+                  font: GoogleFonts.poppins(
                     fontWeight: FontWeight.normal,
                     fontStyle:
                         FlutterFlowTheme.of(context).titleLarge.fontStyle,
                   ),
-            ),
+                  color: FlutterFlowTheme.of(context).customColor3,
+                  fontSize: 18.0,
+                  letterSpacing: 0.0,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                ),
           ),
         ),
       ],

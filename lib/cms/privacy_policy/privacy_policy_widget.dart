@@ -2,9 +2,9 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_web_view.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'privacy_policy_model.dart';
 export 'privacy_policy_model.dart';
@@ -31,8 +31,12 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.isLoading = true;
+      safeSetState(() {});
       _model.apiResult48w = await DashboardGroup.privacypolicyCall.call();
 
+      safeSetState(() {});
+      _model.isLoading = false;
       safeSetState(() {});
     });
   }
@@ -70,12 +74,14 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Row(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                    child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -195,60 +201,42 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget> {
                         ),
                       ],
                     ),
-                    Align(
-                      alignment: AlignmentDirectional(-1.0, 0.0),
+                  ),
+                  if (!_model.isLoading)
+                    Expanded(
                       child: Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
-                        child: Text(
-                          getJsonField(
+                            EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                        child: FlutterFlowWebView(
+                          content: getJsonField(
                             DashboardGroup.privacypolicyCall.privacyPolicy(
                               (_model.apiResult48w?.jsonBody ?? ''),
                             ),
                             r'''$.description''',
                           ).toString(),
-                          style:
-                              FlutterFlowTheme.of(context).titleMedium.override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Color(0xBFFFFFFF)
-                                        : Color(0xBE000000),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
+                          height: 500.0,
+                          verticalScroll: true,
+                          horizontalScroll: true,
+                          html: true,
                         ),
                       ),
                     ),
-                    FlutterFlowWebView(
-                      content: getJsonField(
-                        DashboardGroup.privacypolicyCall.privacyPolicy(
-                          (_model.apiResult48w?.jsonBody ?? ''),
-                        ),
-                        r'''$.description''',
-                      ).toString(),
-                      height: 500.0,
-                      verticalScroll: true,
-                      horizontalScroll: true,
-                      html: true,
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
+            if (_model.isLoading)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: custom_widgets.CubeGridLoader(
+                    width: 40.0,
+                    height: 40.0,
+                    size: 40.0,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -1,17 +1,27 @@
+import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'contest_question_model.dart';
 export 'contest_question_model.dart';
 
 class ContestQuestionWidget extends StatefulWidget {
-  const ContestQuestionWidget({super.key});
+  const ContestQuestionWidget({
+    super.key,
+    required this.contestId,
+  });
+
+  final int? contestId;
 
   static String routeName = 'ContestQuestion';
   static String routePath = '/contestQuestion';
@@ -30,6 +40,65 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
     super.initState();
     _model = createModel(context, () => ContestQuestionModel());
 
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.isLoading = true;
+      safeSetState(() {});
+      _model.apiResultglp = await DashboardGroup.contestQuestionCall.call(
+        contestId: widget.contestId,
+        authToken: FFAppState().authToken,
+      );
+
+      if ((_model.apiResultglp?.succeeded ?? true)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResultglp?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1750),
+            backgroundColor: Colors.black,
+          ),
+        );
+        _model.timerController.onStartTimer();
+        _model.questionType = getJsonField(
+          DashboardGroup.contestQuestionCall
+              .questions(
+                (_model.apiResultglp?.jsonBody ?? ''),
+              )!
+              .elementAtOrNull(_model.questionIndex!),
+          r'''$.type''',
+        );
+        _model.isLoading = false;
+        safeSetState(() {});
+        safeSetState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              getJsonField(
+                (_model.apiResultglp?.jsonBody ?? ''),
+                r'''$.message''',
+              ).toString(),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            duration: Duration(milliseconds: 1750),
+            backgroundColor: Colors.black,
+          ),
+        );
+      }
+    });
+
+    _model.textController ??= TextEditingController();
+    _model.textFieldFocusNode ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
@@ -42,6 +111,8 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -63,11 +134,12 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                 fit: BoxFit.cover,
               ),
             ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
-              child: SingleChildScrollView(
+            if (!_model.isLoading)
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisSize: MainAxisSize.max,
@@ -190,7 +262,25 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 25.0, 0.0, 10.0),
                       child: LinearPercentIndicator(
-                        percent: 0.2,
+                        percent: (_model.questionIndex != null) &&
+                                (DashboardGroup.contestQuestionCall.questions(
+                                          (_model.apiResultglp?.jsonBody ?? ''),
+                                        ) !=
+                                        null &&
+                                    (DashboardGroup.contestQuestionCall
+                                            .questions(
+                                      (_model.apiResultglp?.jsonBody ?? ''),
+                                    ))!
+                                        .isNotEmpty)
+                            ? getJsonField(
+                                DashboardGroup.contestQuestionCall
+                                    .questions(
+                                      (_model.apiResultglp?.jsonBody ?? ''),
+                                    )!
+                                    .elementAtOrNull(_model.questionIndex!),
+                                r'''$.progress_value''',
+                              )
+                            : 0.0,
                         lineHeight: 8.0,
                         animation: true,
                         animateFromLastPercent: true,
@@ -200,28 +290,6 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                                     true
                                 ? Color(0xFF39393D)
                                 : Color(0xFFE5E5E5),
-                        center: Text(
-                          '50%',
-                          style: FlutterFlowTheme.of(context)
-                              .headlineSmall
-                              .override(
-                                font: GoogleFonts.poppins(
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .headlineSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineSmall
-                                      .fontStyle,
-                                ),
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .fontStyle,
-                              ),
-                        ),
                         barRadius: Radius.circular(10.0),
                         padding: EdgeInsets.zero,
                       ),
@@ -261,7 +329,7 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   2.0, 0.0, 2.0, 0.0),
                               child: Text(
-                                '1',
+                                _model.questionNo.toString(),
                                 style: FlutterFlowTheme.of(context)
                                     .bodySmall
                                     .override(
@@ -315,7 +383,15 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   2.0, 0.0, 2.0, 0.0),
                               child: Text(
-                                '8',
+                                valueOrDefault<String>(
+                                  DashboardGroup.contestQuestionCall
+                                      .questions(
+                                        (_model.apiResultglp?.jsonBody ?? ''),
+                                      )
+                                      ?.length
+                                      .toString(),
+                                  '0',
+                                ),
                                 style: FlutterFlowTheme.of(context)
                                     .bodySmall
                                     .override(
@@ -413,7 +489,25 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                       child: Text(
-                        'Who is widely considered the\ngreatest basketball player of \nall time? ',
+                        (_model.questionIndex != null) &&
+                                (DashboardGroup.contestQuestionCall.questions(
+                                          (_model.apiResultglp?.jsonBody ?? ''),
+                                        ) !=
+                                        null &&
+                                    (DashboardGroup.contestQuestionCall
+                                            .questions(
+                                      (_model.apiResultglp?.jsonBody ?? ''),
+                                    ))!
+                                        .isNotEmpty)
+                            ? getJsonField(
+                                DashboardGroup.contestQuestionCall
+                                    .questions(
+                                      (_model.apiResultglp?.jsonBody ?? ''),
+                                    )!
+                                    .elementAtOrNull(_model.questionIndex!),
+                                r'''$.question''',
+                              ).toString()
+                            : 'No Question Available',
                         textAlign: TextAlign.center,
                         style:
                             FlutterFlowTheme.of(context).headlineLarge.override(
@@ -431,53 +525,370 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                                 ),
                       ),
                     ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                  true
-                              ? Color(0xFF1C1C22)
-                              : Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark) ==
-                                    true
-                                ? Color(0xFF4E4E4E)
-                                : Color(0xFFC0C0C0),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0xFF39393D)
-                                      : Color(0xFFE5E5E5),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Color(0xFF4E4E4E)
-                                        : Colors.transparent,
-                                  ),
+                    if (!_model.isLoading)
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                        child: Builder(
+                          builder: (context) {
+                            if (_model.questionType == 2) {
+                              return Visibility(
+                                visible: _model.questionType == 2,
+                                child: Builder(
+                                  builder: (context) {
+                                    final options = getJsonField(
+                                      DashboardGroup.contestQuestionCall
+                                          .questions(
+                                            (_model.apiResultglp?.jsonBody ??
+                                                ''),
+                                          )
+                                          ?.elementAtOrNull(
+                                              _model.questionIndex!),
+                                      r'''$.options''',
+                                    ).toList();
+
+                                    return ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: options.length,
+                                      itemBuilder: (context, optionsIndex) {
+                                        final optionsItem =
+                                            options[optionsIndex];
+                                        return Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 20.0, 0.0, 0.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              if (_model.selectedIndex ==
+                                                  optionsIndex) {
+                                                _model.selectedIndex = -1;
+                                                safeSetState(() {});
+                                              } else {
+                                                _model.selectedIndex =
+                                                    optionsIndex;
+                                                _model.selectedId =
+                                                    getJsonField(
+                                                  optionsItem,
+                                                  r'''$.id''',
+                                                );
+                                                safeSetState(() {});
+                                              }
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: (Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark) ==
+                                                        true
+                                                    ? (_model.selectedIndex ==
+                                                            optionsIndex
+                                                        ? Color(0xFF038500)
+                                                        : Color(0xFF1C1C22))
+                                                    : (_model.selectedIndex ==
+                                                            optionsIndex
+                                                        ? Color(0xFF038500)
+                                                        : Color(0xFFF0F0F0)),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                border: Border.all(
+                                                  color: (Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness
+                                                                  .dark) ==
+                                                          true
+                                                      ? Color(0xFF4E4E4E)
+                                                      : Color(0xFFC0C0C0),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  if (_model.selectedIndex !=
+                                                      optionsIndex)
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: (Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark) ==
+                                                                  true
+                                                              ? Color(
+                                                                  0xFF39393D)
+                                                              : Color(
+                                                                  0xFFE5E5E5),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: (Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark) ==
+                                                                    true
+                                                                ? Color(
+                                                                    0xFF4E4E4E)
+                                                                : Colors
+                                                                    .transparent,
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      5.0,
+                                                                      12.0,
+                                                                      5.0),
+                                                          child: Text(
+                                                            getJsonField(
+                                                              optionsItem,
+                                                              r'''$.lable''',
+                                                            ).toString(),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .titleLarge
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .tertiary,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleLarge
+                                                                      .fontStyle,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  if (_model.selectedIndex ==
+                                                      optionsIndex)
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: (Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark) ==
+                                                                    true
+                                                                ? Colors.white
+                                                                : Colors.white,
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      5.0,
+                                                                      12.0,
+                                                                      5.0),
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .check,
+                                                            color: Color(
+                                                                0xFF038500),
+                                                            size: 20.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  Align(
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                            0.0, 0.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16.0,
+                                                                  15.0,
+                                                                  0.0,
+                                                                  15.0),
+                                                      child: Text(
+                                                        getJsonField(
+                                                          optionsItem,
+                                                          r'''$.options''',
+                                                        ).toString(),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .poppins(
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .titleLarge
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .titleLarge
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleLarge
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleLarge
+                                                                      .fontStyle,
+                                                                ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 5.0, 12.0, 5.0),
-                                  child: Text(
-                                    'A',
+                              );
+                            } else {
+                              return Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: TextFormField(
+                                    controller: _model.textController,
+                                    focusNode: _model.textFieldFocusNode,
+                                    autofocus: false,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            font: GoogleFonts.poppins(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontStyle,
+                                            ),
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                          ),
+                                      hintText: 'Write answer here...',
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w300,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontStyle,
+                                            ),
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w300,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Color(0x32FFFFFF)
+                                              : Color(0x33000000),
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Color(0x32FFFFFF)
+                                              : Color(0x33000000),
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                    ),
                                     style: FlutterFlowTheme.of(context)
                                         .titleLarge
                                         .override(
@@ -488,8 +899,6 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                                                     .titleLarge
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiary,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -497,386 +906,134 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                                                   .titleLarge
                                                   .fontStyle,
                                         ),
+                                    maxLines: 6,
+                                    minLines: 6,
+                                    cursorColor: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    enableInteractiveSelection: true,
+                                    validator: _model.textControllerValidator
+                                        .asValidator(context),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ],
+                              );
+                            }
+                          },
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                  true
-                              ? Color(0xFF1C1C22)
-                              : Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark) ==
-                                    true
-                                ? Color(0xFF4E4E4E)
-                                : Color(0xFFC0C0C0),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0xFF39393D)
-                                      : Color(0xFFE5E5E5),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Color(0xFF4E4E4E)
-                                        : Colors.transparent,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 5.0, 12.0, 5.0),
-                                  child: Text(
-                                    'B',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleLarge
-                                                    .fontStyle,
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional(0.0, 1.0),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 40.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {},
+                            child: Container(
+                              decoration: BoxDecoration(),
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  _model.submitAnsRes = await DashboardGroup
+                                      .contestSubmitAnswersCall
+                                      .call(
+                                    authToken: FFAppState().authToken,
+                                    questionId: getJsonField(
+                                      DashboardGroup.contestQuestionCall
+                                          .questions(
+                                            (_model.apiResultglp?.jsonBody ??
+                                                ''),
+                                          )
+                                          ?.elementAtOrNull(
+                                              _model.questionIndex!),
+                                      r'''$.id''',
+                                    ),
+                                    optionId: _model.selectedId,
+                                    answer: _model.textController.text,
+                                  );
+
+                                  if ((_model.submitAnsRes?.succeeded ??
+                                          true) ==
+                                      true) {
+                                    if (_model.questionNo ==
+                                        DashboardGroup.contestQuestionCall
+                                            .questions(
+                                              (_model.apiResultglp?.jsonBody ??
+                                                  ''),
+                                            )
+                                            ?.length) {
+                                      context.goNamed(
+                                        ContestResultWidget.routeName,
+                                        queryParameters: {
+                                          'contestId': serializeParam(
+                                            widget.contestId,
+                                            ParamType.int,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                  true
-                              ? Color(0xFF1C1C22)
-                              : Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark) ==
-                                    true
-                                ? Color(0xFF4E4E4E)
-                                : Color(0xFFC0C0C0),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0xFF39393D)
-                                      : Color(0xFFE5E5E5),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Color(0xFF4E4E4E)
-                                        : Colors.transparent,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 5.0, 12.0, 5.0),
-                                  child: Text(
-                                    'C',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleLarge
-                                                    .fontStyle,
+                                        }.withoutNulls,
+                                      );
+                                    } else {
+                                      _model.questionIndex =
+                                          _model.questionIndex! + 1;
+                                      _model.questionNo = _model.questionNo + 1;
+                                      _model.questionType = getJsonField(
+                                        DashboardGroup.contestQuestionCall
+                                            .questions(
+                                              (_model.apiResultglp?.jsonBody ??
+                                                  ''),
+                                            )!
+                                            .elementAtOrNull(
+                                                _model.questionIndex!),
+                                        r'''$.type''',
+                                      );
+                                      _model.selectedIndex = -1;
+                                      safeSetState(() {});
+                                      safeSetState(() {
+                                        _model.textController?.clear();
+                                      });
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          getJsonField(
+                                            (_model.submitAnsRes?.jsonBody ??
+                                                ''),
+                                            r'''$.message''',
+                                          ).toString(),
+                                          style: TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
                                         ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
+                                        duration: Duration(milliseconds: 1550),
+                                        backgroundColor: Colors.black,
                                       ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                  true
-                              ? Color(0xFF1C1C22)
-                              : Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                            color: (Theme.of(context).brightness ==
-                                        Brightness.dark) ==
-                                    true
-                                ? Color(0xFF4E4E4E)
-                                : Color(0xFFC0C0C0),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0xFF39393D)
-                                      : Color(0xFFE5E5E5),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Color(0xFF4E4E4E)
-                                        : Colors.transparent,
+                                    );
+                                  }
+
+                                  safeSetState(() {});
+                                },
+                                child: wrapWithModel(
+                                  model: _model.gradientButtonCustomModel,
+                                  updateCallback: () => safeSetState(() {}),
+                                  child: GradientButtonCustomWidget(
+                                    text: _model.questionNo ==
+                                            DashboardGroup.contestQuestionCall
+                                                .questions(
+                                                  (_model.apiResultglp
+                                                          ?.jsonBody ??
+                                                      ''),
+                                                )
+                                                ?.length
+                                        ? 'Finish'
+                                        : 'Continue',
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 5.0, 12.0, 5.0),
-                                  child: Text(
-                                    'D',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleLarge
-                                                    .fontStyle,
-                                          ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 15.0, 0.0, 15.0),
-                                child: Text(
-                                  'Kareem Abdul-jabbar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleLarge
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional(0.0, 1.0),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          context.pushNamed(ContestResultWidget.routeName);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0,
-                                valueOrDefault<double>(
-                                  MediaQuery.sizeOf(context).height * 0.23,
-                                  0.0,
-                                ),
-                                0.0,
-                                0.0),
-                            child: wrapWithModel(
-                              model: _model.gradientButtonCustomModel,
-                              updateCallback: () => safeSetState(() {}),
-                              child: GradientButtonCustomWidget(
-                                text: 'Continue',
                               ),
                             ),
                           ),
@@ -886,7 +1043,19 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget> {
                   ],
                 ),
               ),
-            ),
+            if (_model.isLoading)
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: custom_widgets.CubeGridLoader(
+                    width: 40.0,
+                    height: 40.0,
+                    size: 40.0,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

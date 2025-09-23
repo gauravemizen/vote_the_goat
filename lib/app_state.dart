@@ -32,6 +32,16 @@ class FFAppState extends ChangeNotifier {
       _isRememberMe =
           await secureStorage.getBool('ff_isRememberMe') ?? _isRememberMe;
     });
+    await _safeInitAsync(() async {
+      _isCreated = await secureStorage.getBool('ff_isCreated') ?? _isCreated;
+    });
+    await _safeInitAsync(() async {
+      _currentUserId =
+          await secureStorage.getString('ff_currentUserId') ?? _currentUserId;
+    });
+    await _safeInitAsync(() async {
+      _isRead = await secureStorage.getBool('ff_isRead') ?? _isRead;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -90,6 +100,39 @@ class FFAppState extends ChangeNotifier {
 
   void deleteIsRememberMe() {
     secureStorage.delete(key: 'ff_isRememberMe');
+  }
+
+  bool _isCreated = false;
+  bool get isCreated => _isCreated;
+  set isCreated(bool value) {
+    _isCreated = value;
+    secureStorage.setBool('ff_isCreated', value);
+  }
+
+  void deleteIsCreated() {
+    secureStorage.delete(key: 'ff_isCreated');
+  }
+
+  String _currentUserId = '';
+  String get currentUserId => _currentUserId;
+  set currentUserId(String value) {
+    _currentUserId = value;
+    secureStorage.setString('ff_currentUserId', value);
+  }
+
+  void deleteCurrentUserId() {
+    secureStorage.delete(key: 'ff_currentUserId');
+  }
+
+  bool _isRead = false;
+  bool get isRead => _isRead;
+  set isRead(bool value) {
+    _isRead = value;
+    secureStorage.setBool('ff_isRead', value);
+  }
+
+  void deleteIsRead() {
+    secureStorage.delete(key: 'ff_isRead');
   }
 }
 
