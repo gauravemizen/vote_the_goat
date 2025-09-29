@@ -322,6 +322,7 @@ class DashboardGroup {
   static SocialloginCall socialloginCall = SocialloginCall();
   static TeamMemberforChatCall teamMemberforChatCall = TeamMemberforChatCall();
   static PlayerBioStatsCall playerBioStatsCall = PlayerBioStatsCall();
+  static FilterplayersCall filterplayersCall = FilterplayersCall();
 }
 
 class EligblePlayersCall {
@@ -657,6 +658,11 @@ class FilterListCall {
   List? filter(dynamic response) => getJsonField(
         response,
         r'''$.data''',
+        true,
+      ) as List?;
+  List? category(dynamic response) => getJsonField(
+        response,
+        r'''$.data[:].player_category_filters''',
         true,
       ) as List?;
 }
@@ -1549,6 +1555,49 @@ class PlayerBioStatsCall {
     return ApiManager.instance.makeApiCall(
       callName: 'playerBioStats',
       apiUrl: '${baseUrl}/player-bio-stats',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class FilterplayersCall {
+  Future<ApiCallResponse> call({
+    String? titles = '',
+    String? achievements = '',
+    String? personalAwards = '',
+    String? otherGreatnessFacts = '',
+    String? combineFilters = '',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "filters": {
+    "titles": "${escapeStringForJson(titles)}",
+    "achievements": "${escapeStringForJson(achievements)}",
+    "personal_awards": "${escapeStringForJson(personalAwards)}",
+    "other_greatness_facts": "${escapeStringForJson(otherGreatnessFacts)}"
+  }
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'filterplayers',
+      apiUrl: '${baseUrl}/filter-players',
       callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer ${authToken}',

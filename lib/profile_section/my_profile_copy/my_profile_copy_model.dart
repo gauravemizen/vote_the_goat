@@ -11,7 +11,6 @@ class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final formKey3 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   final formKey1 = GlobalKey<FormState>();
   // Stores action output result for [Backend Call - API (getProfile)] action in MyProfileCopy widget.
@@ -24,10 +23,6 @@ class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
   FocusNode? emailFIeldFocusNode;
   TextEditingController? emailFIeldTextController;
   String? Function(BuildContext, String?)? emailFIeldTextControllerValidator;
-  // State field(s) for passwordField widget.
-  FocusNode? passwordFieldFocusNode;
-  TextEditingController? passwordFieldTextController;
-  String? Function(BuildContext, String?)? passwordFieldTextControllerValidator;
   // Stores action output result for [Backend Call - API (updateProfile)] action in Button widget.
   ApiCallResponse? apiResultz40;
 
@@ -41,8 +36,5 @@ class MyProfileCopyModel extends FlutterFlowModel<MyProfileCopyWidget> {
 
     emailFIeldFocusNode?.dispose();
     emailFIeldTextController?.dispose();
-
-    passwordFieldFocusNode?.dispose();
-    passwordFieldTextController?.dispose();
   }
 }

@@ -131,7 +131,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
     )..addListener(() => safeSetState(() {}));
 
     _model.expandableExpandableController1 =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: true);
     _model.expandableExpandableController2 =
         ExpandableController(initialExpanded: false);
     _model.expandableExpandableController3 =
@@ -2169,7 +2169,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                     0.0,
                                                                     9.0),
                                                         child: Text(
-                                                          'ROY',
+                                                          'ROOKIE OF THE YEAR',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .headlineLarge
@@ -2277,14 +2277,70 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                     9.0,
                                                                     0.0,
                                                                     9.0),
-                                                        child: Text(
-                                                          'ALL NBA',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .headlineLarge
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .poppins(
+                                                        child: RichText(
+                                                          textScaler:
+                                                              MediaQuery.of(
+                                                                      context)
+                                                                  .textScaler,
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'ALL ',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineLarge
+                                                                    .override(
+                                                                      font: GoogleFonts
+                                                                          .poppins(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .headlineLarge
+                                                                            .fontStyle,
+                                                                      ),
+                                                                      color: Color(
+                                                                          0xFFFF7D1F),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      fontStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .headlineLarge
+                                                                          .fontStyle,
+                                                                    ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: '1st ',
+                                                                style:
+                                                                    TextStyle(),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    'NBA TEAM',
+                                                                style:
+                                                                    TextStyle(),
+                                                              )
+                                                            ],
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .headlineLarge
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .headlineLarge
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  color: Color(
+                                                                      0xFFFF7D1F),
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -2293,18 +2349,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                       .headlineLarge
                                                                       .fontStyle,
                                                                 ),
-                                                                color: Color(
-                                                                    0xFFFF7D1F),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineLarge
-                                                                    .fontStyle,
-                                                              ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -2390,7 +2435,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                     0.0,
                                                                     9.0),
                                                         child: Text(
-                                                          'ALL DEFENSIVE',
+                                                          'ALL 1ST DEFENSIVE TEAM',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .headlineLarge
@@ -3305,7 +3350,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                     .fromSTEB(
                                                         0.0, 9.0, 0.0, 9.0),
                                                 child: Text(
-                                                  'THREE POINT LEADER',
+                                                  '3PT% LEADER',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .headlineLarge
@@ -3401,7 +3446,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                     .fromSTEB(
                                                         0.0, 9.0, 0.0, 9.0),
                                                 child: Text(
-                                                  'FREE THROW PERCENTAGE LEADER',
+                                                  'FT% LEADER',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .headlineLarge
@@ -3612,7 +3657,11 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                 collapsed: Container(
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.black,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.black
+                                                        : Color(0xFFEAEAEA),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             12.0),
@@ -3697,15 +3746,6 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                         width: double.infinity,
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  false
-                                                              ? Color(
-                                                                  0xFFFFEDDF)
-                                                              : Colors
-                                                                  .transparent,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -3725,8 +3765,14 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                             Container(
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color: Colors
-                                                                    .black,
+                                                                color: Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Color(
+                                                                        0xFFEAEAEA),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .only(
@@ -4652,7 +4698,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.regular.fgp''',
+                                                                              r'''$.stats.regular.fgp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -4705,7 +4751,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.regular.tdpg''',
+                                                                              r'''$.stats.regular.ftp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -4854,7 +4900,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.regular.bpg''',
+                                                                              r'''$.stats.regular.threept_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -4966,7 +5012,11 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                 collapsed: Container(
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.black,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.black
+                                                        : Color(0xFFEAEAEA),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             12.0),
@@ -4993,7 +5043,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                     14.0,
                                                                     10.0),
                                                         child: Text(
-                                                          'REGULAR SEASON',
+                                                          'PLAYOFF SEASON',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .titleMedium
@@ -5051,15 +5101,6 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                         width: double.infinity,
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  false
-                                                              ? Color(
-                                                                  0xFFFFEDDF)
-                                                              : Colors
-                                                                  .transparent,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -5079,8 +5120,14 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                             Container(
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color: Colors
-                                                                    .black,
+                                                                color: Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Color(
+                                                                        0xFFEAEAEA),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .only(
@@ -6006,7 +6053,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.playoff.fpg''',
+                                                                              r'''$.stats.playoff.fgp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -6059,7 +6106,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.playoff.tdpg''',
+                                                                              r'''$.stats.playoff.ftp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -6208,7 +6255,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.playoff.bpg''',
+                                                                              r'''$.stats.playoff.threept_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -6320,7 +6367,11 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                 collapsed: Container(
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.black,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.black
+                                                        : Color(0xFFEAEAEA),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             12.0),
@@ -6405,15 +6456,6 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                         width: double.infinity,
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  false
-                                                              ? Color(
-                                                                  0xFFFFEDDF)
-                                                              : Colors
-                                                                  .transparent,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -6433,8 +6475,14 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                             Container(
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color: Colors
-                                                                    .black,
+                                                                color: Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Color(
+                                                                        0xFFEAEAEA),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .only(
@@ -7360,7 +7408,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.finals.fpg''',
+                                                                              r'''$.stats.finals.fgp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -7413,7 +7461,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.finals.tdpg''',
+                                                                              r'''$.stats.finals.ftp_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(
@@ -7562,7 +7610,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                                               Text(
                                                                             getJsonField(
                                                                               (_model.playerStats?.jsonBody ?? ''),
-                                                                              r'''$.stats.finals.bpg''',
+                                                                              r'''$.stats.finals.threept_perc''',
                                                                             ).toString(),
                                                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
                                                                                   font: GoogleFonts.poppins(

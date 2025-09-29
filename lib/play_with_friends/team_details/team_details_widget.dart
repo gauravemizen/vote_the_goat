@@ -285,38 +285,48 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 10.0, 0.0, 0.0),
-                              child: Text(
-                                valueOrDefault<String>(
-                                  getJsonField(
-                                    DashboardGroup.getteamdetailCall
-                                        .teamList(
-                                          (_model.apiResultr60?.jsonBody ?? ''),
-                                        )
-                                        ?.elementAtOrNull(widget.teamIndex),
-                                    r'''$.title''',
-                                  )?.toString(),
-                                  '\"\"',
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .titleLarge
-                                    .override(
-                                      font: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .fontStyle,
-                                      ),
-                                      fontSize: 20.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontStyle,
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 10.0, 0.0, 0.0),
+                                  child: Text(
+                                    valueOrDefault<String>(
+                                      getJsonField(
+                                        DashboardGroup.getteamdetailCall
+                                            .teamList(
+                                              (_model.apiResultr60?.jsonBody ??
+                                                  ''),
+                                            )
+                                            ?.elementAtOrNull(
+                                                widget.teamIndex),
+                                        r'''$.title''',
+                                      )?.toString(),
+                                      '\"\"',
                                     ),
-                              ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .titleLarge
+                                        .override(
+                                          font: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleLarge
+                                                    .fontStyle,
+                                          ),
+                                          fontSize: 20.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleLarge
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
@@ -750,7 +760,25 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> {
                   ),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      context.pushNamed(ChatPageWidget.routeName);
+                      context.pushNamed(
+                        ChatPageWidget.routeName,
+                        queryParameters: {
+                          'teamId': serializeParam(
+                            valueOrDefault<int>(
+                              getJsonField(
+                                DashboardGroup.getteamdetailCall
+                                    .teamList(
+                                      (_model.apiResultr60?.jsonBody ?? ''),
+                                    )
+                                    ?.elementAtOrNull(widget.teamIndex),
+                                r'''$.id''',
+                              ),
+                              0,
+                            ),
+                            ParamType.int,
+                          ),
+                        }.withoutNulls,
+                      );
                     },
                     text: 'Chat With Team',
                     options: FFButtonOptions(

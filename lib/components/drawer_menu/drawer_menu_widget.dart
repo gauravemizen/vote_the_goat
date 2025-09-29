@@ -664,7 +664,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 7.0, 7.0, 7.0, 7.0),
                             child: Icon(
-                              Icons.groups_2,
+                              Icons.groups_outlined,
                               color: FlutterFlowTheme.of(context).tertiary,
                               size: 20.0,
                             ),
@@ -712,7 +712,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(ResetPasswordWidget.routeName);
+                    context.pushNamed(AllPlayersWidget.routeName);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -731,7 +731,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 7.0, 7.0, 7.0, 7.0),
                             child: Icon(
-                              Icons.lock_open_rounded,
+                              Icons.person_outline_outlined,
                               color: FlutterFlowTheme.of(context).tertiary,
                               size: 20.0,
                             ),
@@ -743,7 +743,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               15.0, 0.0, 0.0, 0.0),
                           child: Text(
-                            'Change Password',
+                            'Player Bio',
                             style: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -1062,7 +1062,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(MatchPlayerssWidget.routeName);
+                    context.pushNamed(SubscriptionPageWidget.routeName);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -1080,16 +1080,10 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 7.0, 7.0, 7.0, 7.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(0.0),
-                              child: Image.asset(
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? 'assets/images/svg5037.png'
-                                    : 'assets/images/svg5037-1.png',
-                                width: 20.0,
-                                height: 20.0,
-                                fit: BoxFit.contain,
-                              ),
+                            child: Icon(
+                              Icons.paid_outlined,
+                              color: FlutterFlowTheme.of(context).tertiary,
+                              size: 20.0,
                             ),
                           ),
                         ),
@@ -1099,7 +1093,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               15.0, 0.0, 0.0, 0.0),
                           child: Text(
-                            'Match Player',
+                            'Premium Plans',
                             style: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(

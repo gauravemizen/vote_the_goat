@@ -35,7 +35,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       admob.loadInterstitialAd(
-        "",
+        "ca-app-pub-3940256099942544/5224354917",
         "ca-app-pub-3940256099942544/5224354917",
         true,
       );

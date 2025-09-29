@@ -349,7 +349,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ChatPageWidget.routeName,
           path: ChatPageWidget.routePath,
-          builder: (context, params) => ChatPageWidget(),
+          builder: (context, params) => ChatPageWidget(
+            teamId: params.getParam(
+              'teamId',
+              ParamType.int,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

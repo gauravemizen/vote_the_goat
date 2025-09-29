@@ -1,18 +1,16 @@
 import '/backend/api_requests/api_calls.dart';
-import '/components/drawer_menu/drawer_menu_widget.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:webviewx_plus/webviewx_plus.dart';
 import 'compare_players_model.dart';
 export 'compare_players_model.dart';
 
@@ -115,6 +113,13 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
       length: 4,
       initialIndex: 0,
     )..addListener(() => safeSetState(() {}));
+
+    _model.expandableExpandableController1 =
+        ExpandableController(initialExpanded: true);
+    _model.expandableExpandableController2 =
+        ExpandableController(initialExpanded: true);
+    _model.expandableExpandableController3 =
+        ExpandableController(initialExpanded: true);
   }
 
   @override
@@ -136,16 +141,6 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).oposite,
-        drawer: Drawer(
-          elevation: 16.0,
-          child: WebViewAware(
-            child: wrapWithModel(
-              model: _model.drawerMenuModel,
-              updateCallback: () => safeSetState(() {}),
-              child: DrawerMenuWidget(),
-            ),
-          ),
-        ),
         body: Stack(
           children: [
             ClipRRect(
@@ -202,10 +197,10 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onTap: () async {
-                            scaffoldKey.currentState!.openDrawer();
+                            context.safePop();
                           },
                           child: Icon(
-                            Icons.menu,
+                            Icons.arrow_back_rounded,
                             color: FlutterFlowTheme.of(context).tertiary,
                             size: 24.0,
                           ),
@@ -609,8 +604,16 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                       ),
-                                                      child: Image.network(
-                                                        getJsonField(
+                                                      child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        fadeOutDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        imageUrl: getJsonField(
                                                           DashboardGroup
                                                               .compareplayersCall
                                                               .compareData(
@@ -621,7 +624,7 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           r'''$.player1.image''',
                                                         ).toString(),
                                                         fit: BoxFit.cover,
-                                                        errorBuilder: (context,
+                                                        errorWidget: (context,
                                                                 error,
                                                                 stackTrace) =>
                                                             Image.asset(
@@ -850,8 +853,16 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                       ),
-                                                      child: Image.network(
-                                                        getJsonField(
+                                                      child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        fadeOutDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        imageUrl: getJsonField(
                                                           DashboardGroup
                                                               .compareplayersCall
                                                               .compareData(
@@ -862,7 +873,7 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           r'''$.player2.image''',
                                                         ).toString(),
                                                         fit: BoxFit.cover,
-                                                        errorBuilder: (context,
+                                                        errorWidget: (context,
                                                                 error,
                                                                 stackTrace) =>
                                                             Image.asset(
@@ -911,9 +922,44 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                             ),
                                             child: FFButtonWidget(
                                               onPressed: () async {
-                                                context.pushNamed(
-                                                    YourComparisonsWidget
-                                                        .routeName);
+                                                _model.apiResult3as =
+                                                    await DashboardGroup
+                                                        .comparisonListCall
+                                                        .call(
+                                                  authToken:
+                                                      FFAppState().authToken,
+                                                );
+
+                                                if ((_model.apiResult3as
+                                                        ?.succeeded ??
+                                                    true)) {
+                                                  context.pushNamed(
+                                                      YourComparisonsWidget
+                                                          .routeName);
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        getJsonField(
+                                                          (_model.apiResult3as
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                          r'''$.message''',
+                                                        ).toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 2300),
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                    ),
+                                                  );
+                                                }
+
+                                                safeSetState(() {});
                                               },
                                               text: 'RESUME YOUR CHOICES\n',
                                               options: FFButtonOptions(
@@ -6673,60 +6719,4695 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryBackground,
                                         ),
-                                        child: FlutterFlowDropDown<String>(
-                                          controller: _model
-                                                  .dropDownValueController ??=
-                                              FormFieldController<String>(null),
-                                          options: [
-                                            'Option 1',
-                                            'Option 2',
-                                            'Option 3'
-                                          ],
-                                          onChanged: (val) => safeSetState(
-                                              () => _model.dropDownValue = val),
-                                          width: 200.0,
-                                          height: 40.0,
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .titleLarge
-                                              .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleLarge
-                                                          .fontStyle,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
+                                                decoration: BoxDecoration(),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 30.0,
+                                                                0.0, 0.0),
+                                                    child: ExpandableNotifier(
+                                                      controller: _model
+                                                          .expandableExpandableController1,
+                                                      child: ExpandablePanel(
+                                                        header: Container(),
+                                                        collapsed: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(context)
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .dark
+                                                                ? Colors.black
+                                                                : Color(
+                                                                    0xFFEAEAEA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                            border: Border.all(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .homeBoxBorder,
+                                                            ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        14.0,
+                                                                        10.0,
+                                                                        14.0,
+                                                                        10.0),
+                                                                child: Text(
+                                                                  'REGULAR SEASON',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            14.0,
+                                                                            0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_down,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .tertiary,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        expanded: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10.0),
+                                                                  border: Border
+                                                                      .all(
+                                                                    color: Color(
+                                                                        0x2AFFFFFF),
+                                                                  ),
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Theme.of(context).brightness ==
+                                                                                Brightness.dark
+                                                                            ? Colors.black
+                                                                            : Color(0xFFEAEAEA),
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(0.0),
+                                                                          bottomRight:
+                                                                              Radius.circular(0.0),
+                                                                          topLeft:
+                                                                              Radius.circular(10.0),
+                                                                          topRight:
+                                                                              Radius.circular(10.0),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            14.0,
+                                                                            8.0,
+                                                                            14.0,
+                                                                            8.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              'REGULAR SEASON',
+                                                                              maxLines: 2,
+                                                                              style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                    font: GoogleFonts.poppins(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                    ),
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                            Container(
+                                                                              decoration: BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                border: Border.all(
+                                                                                  color: Color(0xFF2F2F2F),
+                                                                                ),
+                                                                              ),
+                                                                              child: Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                                                                                child: Icon(
+                                                                                  Icons.keyboard_arrow_down_sharp,
+                                                                                  color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  size: 12.0,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'PPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.ppg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.ppg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'DRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.drpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.drpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'ORPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.orpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.orpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'APG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.apg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.apg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'SPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.spg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.spg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'BPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.bpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.bpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TDPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.tdpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.tdpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FGP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.fgp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.fgp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FTP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.ftp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.ftp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          '3PT%',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.three_pt_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.three_pt_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.trpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.trpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        theme:
+                                                            ExpandableThemeData(
+                                                          tapHeaderToExpand:
+                                                              true,
+                                                          tapBodyToExpand: true,
+                                                          tapBodyToCollapse:
+                                                              true,
+                                                          headerAlignment:
+                                                              ExpandablePanelHeaderAlignment
+                                                                  .top,
+                                                          hasIcon: false,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                                color: Colors.white,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.normal,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontStyle,
                                               ),
-                                          hintText: 'Select...',
-                                          icon: Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            size: 24.0,
+                                              Container(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
+                                                decoration: BoxDecoration(),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 30.0,
+                                                                0.0, 0.0),
+                                                    child: ExpandableNotifier(
+                                                      controller: _model
+                                                          .expandableExpandableController2,
+                                                      child: ExpandablePanel(
+                                                        header: Container(),
+                                                        collapsed: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(context)
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .dark
+                                                                ? Colors.black
+                                                                : Color(
+                                                                    0xFFEAEAEA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                            border: Border.all(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .homeBoxBorder,
+                                                            ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        14.0,
+                                                                        10.0,
+                                                                        14.0,
+                                                                        10.0),
+                                                                child: Text(
+                                                                  'PLAYOFF SEASON',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            14.0,
+                                                                            0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_down,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .tertiary,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        expanded: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10.0),
+                                                                  border: Border
+                                                                      .all(
+                                                                    color: Color(
+                                                                        0x2AFFFFFF),
+                                                                  ),
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Theme.of(context).brightness ==
+                                                                                Brightness.dark
+                                                                            ? Colors.black
+                                                                            : Color(0xFFEAEAEA),
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(0.0),
+                                                                          bottomRight:
+                                                                              Radius.circular(0.0),
+                                                                          topLeft:
+                                                                              Radius.circular(10.0),
+                                                                          topRight:
+                                                                              Radius.circular(10.0),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            14.0,
+                                                                            8.0,
+                                                                            14.0,
+                                                                            8.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              'PLAYOFF SEASON',
+                                                                              maxLines: 2,
+                                                                              style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                    font: GoogleFonts.poppins(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                    ),
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                            Container(
+                                                                              decoration: BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                border: Border.all(
+                                                                                  color: Color(0xFF2F2F2F),
+                                                                                ),
+                                                                              ),
+                                                                              child: Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                                                                                child: Icon(
+                                                                                  Icons.keyboard_arrow_down_sharp,
+                                                                                  color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  size: 12.0,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'PPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.ppg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.ppg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'DRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.drpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.drpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'ORPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.orpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.orpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'APG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.apg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.apg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'SPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.spg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.spg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'BPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.bpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.bpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TDPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.tdpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.tdpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FGP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.fgp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.fgp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FTP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.ftp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.ftp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          '3PT%',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.three_pt_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.three_pt_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.regular_season.trpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.play_off.trpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        theme:
+                                                            ExpandableThemeData(
+                                                          tapHeaderToExpand:
+                                                              true,
+                                                          tapBodyToExpand: true,
+                                                          tapBodyToCollapse:
+                                                              true,
+                                                          headerAlignment:
+                                                              ExpandablePanelHeaderAlignment
+                                                                  .top,
+                                                          hasIcon: false,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
+                                                decoration: BoxDecoration(),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 30.0,
+                                                                0.0, 0.0),
+                                                    child: ExpandableNotifier(
+                                                      controller: _model
+                                                          .expandableExpandableController3,
+                                                      child: ExpandablePanel(
+                                                        header: Container(),
+                                                        collapsed: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(context)
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .dark
+                                                                ? Colors.black
+                                                                : Color(
+                                                                    0xFFEAEAEA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                            border: Border.all(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .homeBoxBorder,
+                                                            ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        14.0,
+                                                                        10.0,
+                                                                        14.0,
+                                                                        10.0),
+                                                                child: Text(
+                                                                  'FINALS',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            14.0,
+                                                                            0.0),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_down,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .tertiary,
+                                                                  size: 20.0,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        expanded: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10.0),
+                                                                  border: Border
+                                                                      .all(
+                                                                    color: Color(
+                                                                        0x2AFFFFFF),
+                                                                  ),
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Theme.of(context).brightness ==
+                                                                                Brightness.dark
+                                                                            ? Colors.black
+                                                                            : Color(0xFFEAEAEA),
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(0.0),
+                                                                          bottomRight:
+                                                                              Radius.circular(0.0),
+                                                                          topLeft:
+                                                                              Radius.circular(10.0),
+                                                                          topRight:
+                                                                              Radius.circular(10.0),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            14.0,
+                                                                            8.0,
+                                                                            14.0,
+                                                                            8.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              'FINALS',
+                                                                              maxLines: 2,
+                                                                              style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                    font: GoogleFonts.poppins(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                    ),
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                            Container(
+                                                                              decoration: BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                border: Border.all(
+                                                                                  color: Color(0xFF2F2F2F),
+                                                                                ),
+                                                                              ),
+                                                                              child: Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+                                                                                child: Icon(
+                                                                                  Icons.keyboard_arrow_down_sharp,
+                                                                                  color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  size: 12.0,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'PPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.ppg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.ppg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'DRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.drpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.drpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'ORPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.orpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.orpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'APG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.apg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.apg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'SPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.spg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.spg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'BPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.bpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.bpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TDPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.tdpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.tdpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FGP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.fgp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.fgp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'FTP',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.ftp_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.ftp_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          '3PT%',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.three_pt_percentage.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.three_pt_percentage.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 9.0, 0.0, 9.0),
+                                                                                        child: Text(
+                                                                                          'TRPG',
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.normal,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                color: Color(0xFFFF7D1F),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.trpg.player1_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                  border: Border.all(
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: Align(
+                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: (Theme.of(context).brightness == Brightness.dark) == true ? Color(0xFF2A2A2A) : Color(0xFFEAEAEA),
+                                                                                    ),
+                                                                                    child: Align(
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                                                                                        child: Text(
+                                                                                          getJsonField(
+                                                                                            DashboardGroup.compareplayersCall.compareData(
+                                                                                              (_model.apiResultnyq?.jsonBody ?? ''),
+                                                                                            ),
+                                                                                            r'''$.comparison.stats.finals.trpg.player2_value''',
+                                                                                          ).toString(),
+                                                                                          style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                                font: GoogleFonts.poppins(
+                                                                                                  fontWeight: FontWeight.w600,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                                ),
+                                                                                                letterSpacing: 0.0,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        theme:
+                                                            ExpandableThemeData(
+                                                          tapHeaderToExpand:
+                                                              true,
+                                                          tapBodyToExpand: true,
+                                                          tapBodyToCollapse:
+                                                              true,
+                                                          headerAlignment:
+                                                              ExpandablePanelHeaderAlignment
+                                                                  .top,
+                                                          hasIcon: false,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryBackground,
-                                          elevation: 2.0,
-                                          borderColor: Colors.transparent,
-                                          borderWidth: 0.0,
-                                          borderRadius: 8.0,
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12.0, 0.0, 12.0, 0.0),
-                                          hidesUnderline: true,
-                                          isOverButton: false,
-                                          isSearchable: false,
-                                          isMultiSelect: false,
                                         ),
                                       ),
                                     ],
@@ -6952,10 +11633,26 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                     await DashboardGroup
                                                         .comparisonCall
                                                         .call(
-                                                  winPlayerId:
-                                                      widget.player2Id,
-                                                  lostPlayerId:
-                                                      widget.player1Id,
+                                                  winPlayerId: getJsonField(
+                                                    DashboardGroup
+                                                        .compareplayersCall
+                                                        .compareData(
+                                                      (_model.apiResultnyq
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.player1.id''',
+                                                  ),
+                                                  lostPlayerId: getJsonField(
+                                                    DashboardGroup
+                                                        .compareplayersCall
+                                                        .compareData(
+                                                      (_model.apiResultnyq
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.player2.id''',
+                                                  ),
                                                   authToken:
                                                       FFAppState().authToken,
                                                 );
@@ -7006,16 +11703,34 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           Colors.black,
                                                     ),
                                                   );
+                                                  _model.viewAlert = false;
+                                                  safeSetState(() {});
                                                 }
                                               } else {
                                                 _model.apiResult4bh =
                                                     await DashboardGroup
                                                         .comparisonCall
                                                         .call(
-                                                  winPlayerId:
-                                                      widget.player1Id,
-                                                  lostPlayerId:
-                                                      widget.player2Id,
+                                                  winPlayerId: getJsonField(
+                                                    DashboardGroup
+                                                        .compareplayersCall
+                                                        .compareData(
+                                                      (_model.apiResultnyq
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.player2.id''',
+                                                  ),
+                                                  lostPlayerId: getJsonField(
+                                                    DashboardGroup
+                                                        .compareplayersCall
+                                                        .compareData(
+                                                      (_model.apiResultnyq
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ),
+                                                    r'''$.player1.id''',
+                                                  ),
                                                   authToken:
                                                       FFAppState().authToken,
                                                 );

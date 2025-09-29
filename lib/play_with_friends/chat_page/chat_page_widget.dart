@@ -12,7 +12,12 @@ import 'chat_page_model.dart';
 export 'chat_page_model.dart';
 
 class ChatPageWidget extends StatefulWidget {
-  const ChatPageWidget({super.key});
+  const ChatPageWidget({
+    super.key,
+    this.teamId,
+  });
+
+  final int? teamId;
 
   static String routeName = 'ChatPage';
   static String routePath = '/chatPage';
@@ -36,6 +41,13 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
       _model.apiResultcv6 = await DashboardGroup.getProfileCall.call(
         authToken: FFAppState().authToken,
       );
+
+      await Future.delayed(
+        Duration(
+          milliseconds: 400,
+        ),
+      );
+      safeSetState(() {});
     });
 
     _model.textController ??= TextEditingController();
@@ -55,6 +67,10 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
 
     return StreamBuilder<List<TeamsRecord>>(
       stream: queryTeamsRecord(
+        queryBuilder: (teamsRecord) => teamsRecord.where(
+          'uid',
+          isEqualTo: widget.teamId?.toString(),
+        ),
         singleRecord: true,
       ),
       builder: (context, snapshot) {
@@ -75,6 +91,10 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
           );
         }
         List<TeamsRecord> chatPageTeamsRecordList = snapshot.data!;
+        // Return an empty Container when the item does not exist.
+        if (snapshot.data!.isEmpty) {
+          return Container();
+        }
         final chatPageTeamsRecord = chatPageTeamsRecordList.isNotEmpty
             ? chatPageTeamsRecordList.first
             : null;
@@ -149,6 +169,31 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                 size: 24.0,
                               ),
                             ),
+                          ),
+                          Text(
+                            valueOrDefault<String>(
+                              widget.teamId?.toString(),
+                              '0',
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  font: GoogleFonts.bebasNeue(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontStyle,
+                                ),
                           ),
                         ],
                       ),
@@ -325,12 +370,15 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.sizeOf(context).height * 0.65,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 16.0, 0.0, 16.0),
                           child: StreamBuilder<List<MessagesRecord>>(
                             stream: queryMessagesRecord(
                               parent: chatPageTeamsRecord.reference,
@@ -611,9 +659,9 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                                                   Brightness
                                                                       .dark
                                                               ? Color(
-                                                                  0xFF1C1C22)
+                                                                  0xFFDF7D35)
                                                               : Color(
-                                                                  0xFFEAEAEA),
+                                                                  0xFFDF7D35),
                                                           borderRadius:
                                                               BorderRadius.only(
                                                             bottomLeft:
@@ -672,8 +720,8 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                                                               .labelMedium
                                                                               .fontStyle,
                                                                         ),
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
+                                                                        color: Colors
+                                                                            .white,
                                                                         letterSpacing:
                                                                             0.0,
                                                                         fontWeight: FlutterFlowTheme.of(context)
@@ -714,8 +762,8 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                                                               .labelMedium
                                                                               .fontStyle,
                                                                         ),
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
+                                                                        color: Colors
+                                                                            .white,
                                                                         fontSize:
                                                                             12.0,
                                                                         letterSpacing:

@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "360818518046-b1ett2vn81ljea4oj1h55f2n4g4ss59b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voteforgoat.app",
+            "certificate_hash": "b3a62af24d52e9efd53223cfdd19f1632eecd126"
+          }
+        },
+        {
           "client_id": "360818518046-dis0n4if37f0d1i5fc60sdkdch9307jr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

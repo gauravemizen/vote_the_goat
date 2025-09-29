@@ -10,10 +10,25 @@ class FilterScreenModel extends FlutterFlowModel<FilterScreenWidget> {
 
   int? filterIndex = 0;
 
+  int? valueIndex;
+
+  List<dynamic> filterData = [];
+  void addToFilterData(dynamic item) => filterData.add(item);
+  void removeFromFilterData(dynamic item) => filterData.remove(item);
+  void removeAtIndexFromFilterData(int index) => filterData.removeAt(index);
+  void insertAtIndexInFilterData(int index, dynamic item) =>
+      filterData.insert(index, item);
+  void updateFilterDataAtIndex(int index, Function(dynamic) updateFn) =>
+      filterData[index] = updateFn(filterData[index]);
+
+  String? selectedTitle;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Backend Call - API (filterList)] action in filterScreen widget.
   ApiCallResponse? apiResult993;
+  // Stores action output result for [Backend Call - API (filterplayers)] action in applyFilterBtn widget.
+  ApiCallResponse? filterResult;
 
   @override
   void initState(BuildContext context) {}

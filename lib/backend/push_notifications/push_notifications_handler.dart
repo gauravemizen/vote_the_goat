@@ -190,7 +190,11 @@ final parametersBuilderMap =
           'teamId': getParameter<int>(data, 'teamId'),
         },
       ),
-  'ChatPage': ParameterData.none(),
+  'ChatPage': (data) async => ParameterData(
+        allParams: {
+          'teamId': getParameter<int>(data, 'teamId'),
+        },
+      ),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {
