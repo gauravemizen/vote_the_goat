@@ -1,1 +1,60 @@
-x
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+
+# Android related
+**/android/app/build/
+**/android/.gradle/
+**/android/.idea/
+**/android/local.properties
+**/android/.DS_Store
+
+# iOS related
+**/ios/Flutter/
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+**/ios/build/
+**/ios/.DS_Store
+
+# Web related
+**/web/.DS_Store
+
+# VS Code related
+.vscode/
+
+# macOS related
+**/macos/Flutter/
+**/macos/Pods/
+**/macos/build/
+**/macos/.DS_Store
+
+# Xcode related
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj
+
+# Misc
+.DS_Store
+*.log
+*.tmp
+*.swp
+
+# APKs and other binaries
+*.apk
+*.ipa
+*.so
+*.dylib
+*.a
+*.exe
+*.dll
+*.bin
+*.obj
+*.o
+*.class
+
+# Firebase
+**/google-services.json
+**/GoogleService-Info.plist
+
