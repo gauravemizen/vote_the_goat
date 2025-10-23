@@ -1,4 +1,6 @@
 import '../../nav/nav_widget.dart';
+import '../../subscription/ad_service.dart';
+import '../../subscription/smart_interstitial_manager.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -75,7 +77,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     final tail = (token != null && token.isNotEmpty)
         ? token.substring(token.length - (token.length >= 4 ? 4 : token.length))
         : 'n/a';
-    debugPrint('[HomePage] getProfile: start, tokenPresent=${token != null && token.isNotEmpty}, tokenTail=$tail');
+    debugPrint('[HomePage] getProfile: start, tokenPresent=${token != null &&
+        token.isNotEmpty}, tokenTail=$tail');
 
     try {
       final res = await DashboardGroup.getProfileCall.call(
@@ -83,11 +86,16 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       );
 
       debugPrint('[HomePage] getProfile: response received');
-      debugPrint('[HomePage] getProfile: status=${res?.statusCode}, succeeded=${res?.succeeded}');
+      debugPrint(
+          '[HomePage] getProfile: status=${res?.statusCode}, succeeded=${res
+              ?.succeeded}');
 
       final bodyStr = '${res?.jsonBody}';
       debugPrint(
-        '[HomePage] getProfile: body=${bodyStr.length > 800 ? bodyStr.substring(0, 800) + '...(' + bodyStr.length.toString() + ' chars)' : bodyStr}',
+        '[HomePage] getProfile: body=${bodyStr.length > 800
+            ? bodyStr.substring(0, 800) + '...(' + bodyStr.length.toString() +
+            ' chars)'
+            : bodyStr}',
       );
 
       final status = res?.statusCode;
@@ -95,7 +103,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       final unauthorized = status == 401 || status == 403;
 
       if (!succeeded || unauthorized) {
-        debugPrint('[HomePage] getProfile: failed/unauthorized -> redirecting to login');
+        debugPrint(
+            '[HomePage] getProfile: failed/unauthorized -> redirecting to login');
         FFAppState().authToken = '';
         if (!mounted) return;
         await Navigator.of(context).pushNamedAndRemoveUntil(
@@ -109,7 +118,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
         (res?.jsonBody ?? ''),
         r'$.name',
       ).toString();
-      debugPrint('[HomePage] getProfile: success, userName=${FFAppState().userName}');
+      debugPrint(
+          '[HomePage] getProfile: success, userName=${FFAppState().userName}');
       safeSetState(() {});
     } catch (e, st) {
       debugPrint('[HomePage] getProfile: exception=$e');
@@ -123,6 +133,29 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     }
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _model = createModel(context, () => HomePageModel());
+  //   debugPrint('[HomePage] initState');
+  //
+  //   SchedulerBinding.instance.addPostFrameCallback((_) async {
+  //     // Preload interstitial ad (will check subscription status internally)
+  //     await SmartInterstitialManager().preloadInterstitial();
+  //
+  //     await _loadProfileOrRedirect();
+  //     if (!mounted) return;
+  //
+  //     // Show interstitial ad (will check subscription status internally)
+  //     _model.interstitialAdSuccess =
+  //     await SmartInterstitialManager().showInterstitialIfAllowed();
+  //     debugPrint('[HomePage] Smart interstitial: shown=${_model
+  //         .interstitialAdSuccess}');
+  //     safeSetState(() {});
+  //   });
+  // }
+
+
   @override
   void initState() {
     super.initState();
@@ -130,36 +163,27 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     debugPrint('[HomePage] initState');
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      try {
-        debugPrint('[HomePage] admob: load interstitial (preload)');
-        admob.loadInterstitialAd(
-          "ca-app-pub-3940256099942544/5224354917",
-          "ca-app-pub-3940256099942544/5224354917",
-          true,
-        );
-      } catch (e) {
-        debugPrint('[HomePage] admob: load error=$e');
-      }
+      // Start page timer for 5-minute interval ads
+      AdService().startPageTimer('homePage');
+
+      // Preload interstitial ad (will check subscription status internally)
+      await SmartInterstitialManager().preloadInterstitial();
 
       await _loadProfileOrRedirect();
       if (!mounted) return;
-
-      debugPrint('[HomePage] admob: show interstitial');
-      _model.interstitialAdSuccess = await admob.showInterstitialAd();
-      debugPrint('[HomePage] admob: shown=${_model.interstitialAdSuccess}');
-      safeSetState(() {});
     });
   }
+
 
 // ...rest of the class remains unchanged...
 
 
   @override
   void dispose() {
+    // Stop the page timer when leaving the page
+    AdService().stopInterstitialTimer();
     routeObserver.unsubscribe(this);
-
     _model.dispose();
-
     super.dispose();
   }
 
@@ -167,6 +191,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
   void didUpdateWidget(HomePageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _model.widget = widget;
+    // Restart timer when widget updates
+    AdService().startPageTimer('homePage');
   }
 
   @override
@@ -183,6 +209,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      // Restart timer when returning to this page
+      AdService().startPageTimer('homePage');
       debugLogWidgetClass(_model);
     }
   }
@@ -191,6 +219,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
   void didPush() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      // Start timer when page is pushed
+      AdService().startPageTimer('homePage');
       debugLogWidgetClass(_model);
     }
   }
@@ -198,20 +228,19 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
   @override
   void didPop() {
     _model.isRouteVisible = false;
+    // Stop timer when leaving the page
+    AdService().stopInterstitialTimer();
   }
-
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
+    AdService().stopInterstitialTimer();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-
-
-    DebugFlutterFlowModelContext.maybeOf(context)
+    DebugFlutterFlowModelContext
+        .maybeOf(context)
         ?.parentModelCallback
         ?.call(_model);
     context.watch<FFAppState>();
@@ -223,7 +252,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).oposite,
+        backgroundColor: FlutterFlowTheme
+            .of(context)
+            .oposite,
         drawer: Drawer(
           elevation: 16.0,
           child: WebViewAware(
@@ -244,7 +275,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.asset(
-                Theme.of(context).brightness == Brightness.dark
+                Theme
+                    .of(context)
+                    .brightness == Brightness.dark
                     ? 'assets/images/home_adj_dark.png'
                     : 'assets/images/Home_(2).png',
                 width: double.infinity,
@@ -253,7 +286,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                  16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -266,13 +300,17 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                           width: 40.0,
                           height: 40.0,
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).backBtnClr,
+                            color: FlutterFlowTheme
+                                .of(context)
+                                .backBtnClr,
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
+                                color: (Theme
+                                    .of(context)
+                                    .brightness ==
+                                    Brightness.dark) ==
+                                    true
                                     ? const Color(0x335D4E4E)
                                     : Colors.white,
                                 offset: const Offset(
@@ -283,9 +321,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             ],
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
+                              color: (Theme
+                                  .of(context)
+                                  .brightness ==
+                                  Brightness.dark) ==
+                                  true
                                   ? Colors.transparent
                                   : const Color(0xD5999999),
                             ),
@@ -300,7 +340,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             },
                             child: Icon(
                               Icons.menu,
-                              color: FlutterFlowTheme.of(context).tertiary,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .tertiary,
                               size: 24.0,
                             ),
                           ),
@@ -312,13 +354,17 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             width: 40.0,
                             height: 40.0,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).backBtnClr,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .backBtnClr,
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 4.0,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
+                                  color: (Theme
+                                      .of(context)
+                                      .brightness ==
+                                      Brightness.dark) ==
+                                      true
                                       ? const Color(0x335D4E4E)
                                       : Colors.white,
                                   offset: const Offset(
@@ -329,16 +375,20 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                               ],
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
+                                color: (Theme
+                                    .of(context)
+                                    .brightness ==
+                                    Brightness.dark) ==
+                                    true
                                     ? Colors.transparent
                                     : const Color(0xD5999999),
                               ),
                             ),
                             child: Icon(
                               FFIcons.kgroup,
-                              color: FlutterFlowTheme.of(context).tertiary,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .tertiary,
                               size: 24.0,
                             ),
                           ),
@@ -349,34 +399,40 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                       alignment: const AlignmentDirectional(-1.0, 0.0),
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 70.0, 0.0, 0.0),
                         child: Text(
                           'Quick Access',
-                          style: FlutterFlowTheme.of(context)
+                          style: FlutterFlowTheme
+                              .of(context)
                               .headlineLarge
                               .override(
-                                font: GoogleFonts.poppins(
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontStyle,
-                                ),
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .headlineLarge
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .headlineLarge
-                                    .fontStyle,
-                              ),
+                            font: GoogleFonts.poppins(
+                              fontWeight: FlutterFlowTheme
+                                  .of(context)
+                                  .headlineLarge
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme
+                                  .of(context)
+                                  .headlineLarge
+                                  .fontStyle,
+                            ),
+                            letterSpacing: 0.0,
+                            fontWeight: FlutterFlowTheme
+                                .of(context)
+                                .headlineLarge
+                                .fontWeight,
+                            fontStyle: FlutterFlowTheme
+                                .of(context)
+                                .headlineLarge
+                                .fontStyle,
+                          ),
                         ),
                       ),
                     ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -390,17 +446,20 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                               // context.pushNamed(EligiblePlayerWidget.routeName);
                               context.pushNamed(
                                 NavWidget.routeName,
-                                queryParameters: {'initialTab': '1'}, // Pass initialTab as 1 for TabNotifications
+                                queryParameters: {
+                                  'initialTab': '1'
+                                }, // Pass initialTab as 1 for TabNotifications
                               );
-
-
                             },
                             child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.44,
+                              width: MediaQuery
+                                  .sizeOf(context)
+                                  .width * 0.44,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 border: Border.all(
-                                  color: FlutterFlowTheme.of(context)
+                                  color: FlutterFlowTheme
+                                      .of(context)
                                       .homeBoxBorder,
                                 ),
                               ),
@@ -414,7 +473,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -430,41 +490,49 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.format_list_bulleted,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Eligible Players',
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -482,11 +550,14 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                               context.pushNamed(AllPlayersWidget.routeName);
                             },
                             child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.44,
+                              width: MediaQuery
+                                  .sizeOf(context)
+                                  .width * 0.44,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 border: Border.all(
-                                  color: FlutterFlowTheme.of(context)
+                                  color: FlutterFlowTheme
+                                      .of(context)
                                       .homeBoxBorder,
                                 ),
                               ),
@@ -500,7 +571,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -516,41 +588,49 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.format_list_bulleted,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Players Bio',
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -564,19 +644,25 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: MediaQuery.sizeOf(context).width * 0.44,
-                            height: MediaQuery.sizeOf(context).height * 0.15,
+                            width: MediaQuery
+                                .sizeOf(context)
+                                .width * 0.44,
+                            height: MediaQuery
+                                .sizeOf(context)
+                                .height * 0.15,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
                                 color:
-                                    FlutterFlowTheme.of(context).homeBoxBorder,
+                                FlutterFlowTheme
+                                    .of(context)
+                                    .homeBoxBorder,
                               ),
                             ),
                             child: Padding(
@@ -592,10 +678,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                   //     .pushNamed(RankingPageWidget.routeName);
 
 
-
                                   context.pushNamed(
                                     NavWidget.routeName,
-                                    queryParameters: {'initialTab': '2'}, // Pass initialTab as 1 for TabNotifications
+                                    queryParameters: {
+                                      'initialTab': '2'
+                                    }, // Pass initialTab as 1 for TabNotifications
                                   );
                                 },
                                 child: Column(
@@ -606,7 +693,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -622,41 +710,49 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.format_list_bulleted,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Your Ranking',
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -666,13 +762,19 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.sizeOf(context).width * 0.44,
-                            height: MediaQuery.sizeOf(context).height * 0.15,
+                            width: MediaQuery
+                                .sizeOf(context)
+                                .width * 0.44,
+                            height: MediaQuery
+                                .sizeOf(context)
+                                .height * 0.15,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
                                 color:
-                                    FlutterFlowTheme.of(context).homeBoxBorder,
+                                FlutterFlowTheme
+                                    .of(context)
+                                    .homeBoxBorder,
                               ),
                             ),
                             child: Padding(
@@ -684,12 +786,14 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
 
-                                  onTap: () async {
-                                    context.pushNamed(
-                                      NavWidget.routeName,
-                                      queryParameters: {'initialTab': '3'}, // Pass initialTab as 1 for TabNotifications
-                                    );
-                                  },
+                                onTap: () async {
+                                  context.pushNamed(
+                                    NavWidget.routeName,
+                                    queryParameters: {
+                                      'initialTab': '3'
+                                    }, // Pass initialTab as 1 for TabNotifications
+                                  );
+                                },
 
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -699,7 +803,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -715,42 +820,50 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.format_list_bulleted,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'The GOAT\nGlobal Ranking',
                                           textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -764,18 +877,22 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: MediaQuery.sizeOf(context).width * 0.44,
+                            width: MediaQuery
+                                .sizeOf(context)
+                                .width * 0.44,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
                                 color:
-                                    FlutterFlowTheme.of(context).homeBoxBorder,
+                                FlutterFlowTheme
+                                    .of(context)
+                                    .homeBoxBorder,
                               ),
                             ),
                             child: Padding(
@@ -788,13 +905,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 highlightColor: Colors.transparent,
 
 
-
-                                  onTap: () async {
-                                    context.pushNamed(
-                                      NavWidget.routeName,
-                                      queryParameters: {'initialTab': '4'}, // Pass initialTab as 1 for TabNotifications
-                                    );
-
+                                onTap: () async {
+                                  context.pushNamed(
+                                    NavWidget.routeName,
+                                    queryParameters: {
+                                      'initialTab': '4'
+                                    }, // Pass initialTab as 1 for TabNotifications
+                                  );
                                 },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -803,7 +920,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -819,41 +937,49 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.groups_2_sharp,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Play with friends',
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -863,12 +989,16 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.sizeOf(context).width * 0.44,
+                            width: MediaQuery
+                                .sizeOf(context)
+                                .width * 0.44,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
                                 color:
-                                    FlutterFlowTheme.of(context).homeBoxBorder,
+                                FlutterFlowTheme
+                                    .of(context)
+                                    .homeBoxBorder,
                               ),
                             ),
                             child: Padding(
@@ -890,7 +1020,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       width: 50.0,
                                       height: 50.0,
                                       decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .brownColor,
                                         boxShadow: const [
                                           BoxShadow(
@@ -906,41 +1037,49 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                       child: Icon(
                                         Icons.emoji_events_sharp,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
+                                        color: (Theme
+                                            .of(context)
+                                            .brightness ==
+                                            Brightness.dark) ==
+                                            true
+                                            ? FlutterFlowTheme
+                                            .of(context)
+                                            .lightPeach
                                             : Colors.white,
                                         size: 24.0,
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(
                                             0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Contests',
-                                          style: FlutterFlowTheme.of(context)
+                                          style: FlutterFlowTheme
+                                              .of(context)
                                               .headlineLarge
                                               .override(
-                                                font: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle:
+                                              FlutterFlowTheme
+                                                  .of(
+                                                  context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .headlineLarge
+                                                .fontStyle,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -955,13 +1094,16 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     Flexible(
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 20.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).homeBoxBorder,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .homeBoxBorder,
                             ),
                           ),
                           child: InkWell(
@@ -984,29 +1126,34 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     children: [
                                       Text(
                                         'ABOUT VOTE THE GOAT',
-                                        style: FlutterFlowTheme.of(context)
+                                        style: FlutterFlowTheme
+                                            .of(context)
                                             .titleMedium
                                             .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
+                                          font: GoogleFonts.poppins(
+                                            fontWeight:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontWeight,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontWeight,
+                                          fontStyle:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontStyle,
+                                        ),
                                       ),
                                       const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1031,11 +1178,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
                                           6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .tertiary,
                                         size: 14.0,
                                       ),
@@ -1051,13 +1200,16 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     Flexible(
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 14.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).homeBoxBorder,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .homeBoxBorder,
                             ),
                           ),
                           child: InkWell(
@@ -1081,29 +1233,34 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     children: [
                                       Text(
                                         'PREMIUM PLANS',
-                                        style: FlutterFlowTheme.of(context)
+                                        style: FlutterFlowTheme
+                                            .of(context)
                                             .titleMedium
                                             .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
+                                          font: GoogleFonts.poppins(
+                                            fontWeight:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontWeight,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontWeight,
+                                          fontStyle:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontStyle,
+                                        ),
                                       ),
                                       const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1128,11 +1285,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
                                           6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .tertiary,
                                         size: 14.0,
                                       ),
@@ -1148,13 +1307,16 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     Flexible(
                       child: Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 14.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).homeBoxBorder,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .homeBoxBorder,
                             ),
                           ),
                           child: InkWell(
@@ -1177,29 +1339,34 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     children: [
                                       Text(
                                         'LEGAL & PRIVACY',
-                                        style: FlutterFlowTheme.of(context)
+                                        style: FlutterFlowTheme
+                                            .of(context)
                                             .titleMedium
                                             .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
+                                          font: GoogleFonts.poppins(
+                                            fontWeight:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontWeight,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontWeight,
+                                          fontStyle:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontStyle,
+                                        ),
                                       ),
                                       const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1224,11 +1391,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
                                           6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .tertiary,
                                         size: 14.0,
                                       ),
@@ -1250,7 +1419,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).homeBoxBorder,
+                              color: FlutterFlowTheme
+                                  .of(context)
+                                  .homeBoxBorder,
                             ),
                           ),
                           child: InkWell(
@@ -1274,29 +1445,34 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     children: [
                                       Text(
                                         'CONTACT & SUPPORT',
-                                        style: FlutterFlowTheme.of(context)
+                                        style: FlutterFlowTheme
+                                            .of(context)
                                             .titleMedium
                                             .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
+                                          font: GoogleFonts.poppins(
+                                            fontWeight:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontWeight,
+                                            fontStyle:
+                                            FlutterFlowTheme
+                                                .of(context)
+                                                .titleMedium
+                                                .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontWeight,
+                                          fontStyle:
+                                          FlutterFlowTheme
+                                              .of(context)
+                                              .titleMedium
+                                              .fontStyle,
+                                        ),
                                       ),
                                       const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -1321,11 +1497,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
                                           6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: FlutterFlowTheme.of(context)
+                                        color: FlutterFlowTheme
+                                            .of(context)
                                             .tertiary,
                                         size: 14.0,
                                       ),
@@ -1342,7 +1520,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                 ),
               ),
             ),
-            if (Theme.of(context).brightness == Brightness.light)
+            if (Theme
+                .of(context)
+                .brightness == Brightness.light)
               Align(
                 alignment: const AlignmentDirectional(0.0, -0.94),
                 child: ClipRRect(

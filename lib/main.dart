@@ -511,6 +511,8 @@ void main() async {
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
+  await appState.initializeSubscriptionState();
+
   debugLogAppState(appState);
   appState.addListener(() {
     debugLogAppState(appState);
