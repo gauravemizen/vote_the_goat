@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vote_for_goat/subscription/ad_service.dart';
 import '/backend/backend.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,6 +19,90 @@ class FFAppState extends ChangeNotifier {
 
   static void reset() {
     _instance = FFAppState._internal();
+  }
+
+  bool _showAds = true;
+
+  bool get showAds => _showAds;
+
+  set showAds(bool value) {
+    _showAds = value;
+    notifyListeners();
+  }
+
+  bool _isAdFree = false;
+
+  bool get isAdFree => _isAdFree;
+
+  set isAdFree(bool value) {
+    _isAdFree = value;
+    notifyListeners();
+  }
+
+  // Extra Vote Management
+  int _extraVotes = 0;
+
+  int get extraVotes => _extraVotes;
+
+  set extraVotes(int value) {
+    _extraVotes = value;
+    notifyListeners();
+  }
+
+  bool _hasUnlimitedVotes = false;
+
+  bool get hasUnlimitedVotes => _hasUnlimitedVotes;
+
+  set hasUnlimitedVotes(bool value) {
+    _hasUnlimitedVotes = value;
+    notifyListeners();
+  }
+
+  String _currentPlan = 'free';
+
+  String get currentPlan => _currentPlan;
+
+  set currentPlan(String value) {
+    _currentPlan = value;
+    notifyListeners();
+  }
+
+  // Method to initialize subscription state on app start
+  Future<void> initializeSubscriptionState() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Load subscription data
+      _currentPlan = prefs.getString('current_plan') ?? 'free';
+      _showAds = prefs.getBool('show_ads') ?? true;
+      _extraVotes = prefs.getInt('extra_votes') ?? 0;
+
+      // Update ad service with current plan
+      await AdService().updateAdSettingsForPlan(_currentPlan);
+
+      debugPrint('[FFAppState] Initialized subscription state: plan=$_currentPlan, showAds=$_showAds, extraVotes=$_extraVotes');
+      notifyListeners();
+    } catch (e) {
+      debugPrint('[FFAppState] Subscription initialization error: $e');
+    }
+  }
+  Future<void> updateSubscriptionState(String plan) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('current_plan', plan);
+      await prefs.setBool('show_ads', plan == 'free');
+
+      _currentPlan = plan;
+      _showAds = plan == 'free';
+
+      // Update ad service
+      await AdService().updateAdSettingsForPlan(plan);
+
+      debugPrint('[FFAppState] Subscription updated: plan=$_currentPlan, showAds=$_showAds');
+      notifyListeners();
+    } catch (e) {
+      debugPrint('[FFAppState] Subscription update error: $e');
+    }
   }
 
   Future initializePersistedState() async {
@@ -55,7 +141,9 @@ class FFAppState extends ChangeNotifier {
 
   /// for managing conditional routing
   int _navigationType = 1;
+
   int get navigationType => _navigationType;
+
   set navigationType(int value) {
     _navigationType = value;
 
@@ -63,7 +151,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _authToken = '';
+
   String get authToken => _authToken;
+
   set authToken(String value) {
     _authToken = value;
     secureStorage.setString('ff_authToken', value);
@@ -75,7 +165,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   bool _isLoggedIn = true;
+
   bool get isLoggedIn => _isLoggedIn;
+
   set isLoggedIn(bool value) {
     _isLoggedIn = value;
     secureStorage.setBool('ff_isLoggedIn', value);
@@ -87,7 +179,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _userName = '';
+
   String get userName => _userName;
+
   set userName(String value) {
     _userName = value;
     secureStorage.setString('ff_userName', value);
@@ -99,7 +193,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   bool _isRememberMe = false;
+
   bool get isRememberMe => _isRememberMe;
+
   set isRememberMe(bool value) {
     _isRememberMe = value;
     secureStorage.setBool('ff_isRememberMe', value);
@@ -111,7 +207,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   bool _isCreated = false;
+
   bool get isCreated => _isCreated;
+
   set isCreated(bool value) {
     _isCreated = value;
     secureStorage.setBool('ff_isCreated', value);
@@ -123,7 +221,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _currentUserId = '';
+
   String get currentUserId => _currentUserId;
+
   set currentUserId(String value) {
     _currentUserId = value;
     secureStorage.setString('ff_currentUserId', value);
@@ -135,7 +235,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   bool _isRead = false;
+
   bool get isRead => _isRead;
+
   set isRead(bool value) {
     _isRead = value;
     secureStorage.setBool('ff_isRead', value);
@@ -147,14 +249,18 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _lastFilterPayloadJson = '';
+
   String get lastFilterPayloadJson => _lastFilterPayloadJson;
+
   set lastFilterPayloadJson(String value) {
     _lastFilterPayloadJson = value;
     debugLogAppState(this);
   }
 
   String _lastFilterType = '';
+
   String get lastFilterType => _lastFilterType;
+
   set lastFilterType(String value) {
     _lastFilterType = value;
     debugLogAppState(this);
@@ -244,7 +350,8 @@ class FFAppState extends ChangeNotifier {
         'lastFilterPayloadJson': debugSerializeParam(
           lastFilterPayloadJson,
           ParamType.String,
-          link: 'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=appValues&appValuesTab=state',
+          link:
+              'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=appValues&appValuesTab=state',
           searchReference: 'reference=lastFilterPayloadJson',
           name: 'String',
           nullable: false,
@@ -252,7 +359,8 @@ class FFAppState extends ChangeNotifier {
         'lastFilterType': debugSerializeParam(
           lastFilterType,
           ParamType.String,
-          link: 'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=appValues&appValuesTab=state',
+          link:
+              'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=appValues&appValuesTab=state',
           searchReference: 'reference=lastFilterType',
           name: 'String',
           nullable: false,
@@ -283,20 +391,24 @@ extension FlutterSecureStorageExtensions on FlutterSecureStorage {
   void remove(String key) => delete(key: key);
 
   Future<String?> getString(String key) async => await read(key: key);
+
   Future<void> setString(String key, String value) async =>
       await writeSync(key: key, value: value);
 
   Future<bool?> getBool(String key) async => (await read(key: key)) == 'true';
+
   Future<void> setBool(String key, bool value) async =>
       await writeSync(key: key, value: value.toString());
 
   Future<int?> getInt(String key) async =>
       int.tryParse(await read(key: key) ?? '');
+
   Future<void> setInt(String key, int value) async =>
       await writeSync(key: key, value: value.toString());
 
   Future<double?> getDouble(String key) async =>
       double.tryParse(await read(key: key) ?? '');
+
   Future<void> setDouble(String key, double value) async =>
       await writeSync(key: key, value: value.toString());
 
@@ -311,6 +423,7 @@ extension FlutterSecureStorageExtensions on FlutterSecureStorage {
             .map((e) => e.toString())
             .toList();
       });
+
   Future<void> setStringList(String key, List<String> value) async =>
       await writeSync(key: key, value: ListToCsvConverter().convert([value]));
 }

@@ -34,14 +34,19 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => SubscriptionPageModel());
+
+    // Set up state change callback
+    _model.onStateChanged = () {
+      if (mounted) {
+        setState(() {});
+      }
+    };
   }
 
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
-
     _model.dispose();
-
     super.dispose();
   }
 
@@ -64,7 +69,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
   @override
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
-      setState(() => _model.isRouteVisible = true);
+      setState(() => _model.isVisible = true);
       debugLogWidgetClass(_model);
     }
   }
@@ -72,19 +77,232 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
   @override
   void didPush() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
-      setState(() => _model.isRouteVisible = true);
+      setState(() => _model.isVisible = true);
       debugLogWidgetClass(_model);
     }
   }
 
   @override
   void didPop() {
-    _model.isRouteVisible = false;
+    _model.isVisible = false;
   }
 
   @override
   void didPushNext() {
-    _model.isRouteVisible = false;
+    _model.isVisible = false;
+  }
+
+  Widget _buildPlanCard({
+    required String title,
+    required String subtitle,
+    required String price,
+    required bool isRecommended,
+    required bool isCurrentPlan,
+    String? productId,
+  }) {
+    bool canPurchase = productId != null ? _model.canPurchasePlan(productId) : false;
+    bool isPurchasing = productId != null ? _model.isPurchasing(productId) : false;
+    String buttonText = productId != null ? _model.getPlanButtonText(productId) : 'Current Plan';
+
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: FlutterFlowTheme.of(context).primaryBackground,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 10.0,
+                  color: Color(0x1A000000),
+                  offset: Offset(0.0, 4.0),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(16.0),
+              border: Border.all(
+                color: isCurrentPlan
+                    ? Color(0xFF4CAF50)
+                    : (isRecommended ? Color(0xFFEB6027) : Color(0xFFE0E0E0)),
+                width: isCurrentPlan ? 3.0 : (isRecommended ? 2.0 : 1.0),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Plan Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                title,
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineSmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+                              if (isCurrentPlan) ...[
+                                SizedBox(width: 8.0),
+                                Container(
+                                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 8.0, 4.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF4CAF50),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Text(
+                                    'ACTIVE',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodySmall
+                                        .override(
+                                      font: GoogleFonts.poppins(),
+                                      color: Colors.white,
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: 4.0),
+                          Text(
+                            price,
+                            style: FlutterFlowTheme.of(context)
+                                .titleLarge
+                                .override(
+                              font: GoogleFonts.poppins(),
+                              color: Color(0xFFEB6027),
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 12.0),
+
+                  // Plan Description
+                  Text(
+                    subtitle,
+                    style: FlutterFlowTheme.of(context)
+                        .bodyMedium
+                        .override(
+                      font: GoogleFonts.poppins(),
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      letterSpacing: 0.0,
+                    ),
+                  ),
+
+                  SizedBox(height: 16.0),
+
+                  // Action Button
+                  if (title != 'Free')
+                    Container(
+                      width: double.infinity,
+                      child: FFButtonWidget(
+                        onPressed: (canPurchase && !isPurchasing && !isCurrentPlan) ? () async {
+                          if (productId != null) {
+                            await _model.purchaseSubscription(productId);
+                          }
+                        } : null,
+                        text: buttonText,
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 48.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          color: isCurrentPlan
+                              ? Color(0xFF4CAF50)
+                              : (canPurchase && !isCurrentPlan ? Color(0xFFEB6027) : Colors.grey[400]),
+                          textStyle: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                            font: GoogleFonts.poppins(),
+                            color: Colors.white,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          elevation: isCurrentPlan ? 0.0 : 2.0,
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        showLoadingIndicator: isPurchasing,
+                      ),
+                    )
+                  else
+                    Container(
+                      width: double.infinity,
+                      child: FFButtonWidget(
+                        onPressed: null,
+                        text: isCurrentPlan ? 'Current Plan' : 'Free Plan',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 48.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          color: isCurrentPlan ? Color(0xFF4CAF50) : Colors.grey[300],
+                          textStyle: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                            font: GoogleFonts.poppins(),
+                            color: isCurrentPlan ? Colors.white : Colors.grey[600],
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          elevation: 0.0,
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          if (isRecommended && !isCurrentPlan)
+            Positioned(
+              top: -2,
+              right: 20,
+              child: Container(
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 6.0, 12.0, 6.0),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEB6027),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'RECOMMENDED',
+                  style: FlutterFlowTheme.of(context)
+                      .bodySmall
+                      .override(
+                    font: GoogleFonts.poppins(),
+                    color: Colors.white,
+                    fontSize: 10.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.0,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -110,7 +328,8 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                     ? 'assets/images/commonBg.png'
                     : 'assets/images/plain_whiteBg.png',
                 width: double.infinity,
-                fit: BoxFit.fill,
+                height: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
             Align(
@@ -121,6 +340,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      // Header Row
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,24 +353,17 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 4.0,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? Color(0x335D4E4E)
-                                      : Colors.white,
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                )
+                                  color: Color(0x33000000),
+                                  offset: Offset(0.0, 2.0),
+                                ),
                               ],
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Colors.transparent
-                                    : Color(0xD5999999),
+                                    Brightness.dark)
+                                    ? Color(0x4DFFFFFF)
+                                    : Color(0x33000000),
+                                width: 1.0,
                               ),
                             ),
                             child: InkWell(
@@ -173,29 +386,24 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Premium',
+                                'Choose your Plan.',
                                 style: FlutterFlowTheme.of(context)
-                                    .customTextStyle1
+                                    .headlineSmall
                                     .override(
-                                      fontFamily: 'good times',
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                      fontSize: 24.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                  font: GoogleFonts.poppins(),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               Text(
-                                'Plans',
+                                'Play your way.',
                                 style: FlutterFlowTheme.of(context)
-                                    .customTextStyle1
+                                    .headlineSmall
                                     .override(
-                                      fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
-                                      fontSize: 24.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                  font: GoogleFonts.poppins(),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
@@ -208,923 +416,234 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                context.pushNamed(AboutScreenWidget.routeName);
+                                await _model.restorePurchases();
                               },
                               child: Container(
                                 width: 40.0,
                                 height: 40.0,
                                 decoration: BoxDecoration(
-                                  color:
-                                      FlutterFlowTheme.of(context).backBtnClr,
+                                  color: FlutterFlowTheme.of(context).backBtnClr,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 4.0,
-                                      color: (Theme.of(context).brightness ==
-                                                  Brightness.dark) ==
-                                              true
-                                          ? Color(0x335D4E4E)
-                                          : Colors.white,
-                                      offset: Offset(
-                                        0.0,
-                                        2.0,
-                                      ),
-                                    )
+                                      color: Color(0x33000000),
+                                      offset: Offset(0.0, 2.0),
+                                    ),
                                   ],
                                   borderRadius: BorderRadius.circular(12.0),
                                   border: Border.all(
                                     color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Colors.transparent
-                                        : Color(0xD5999999),
+                                        Brightness.dark)
+                                        ? Color(0x4DFFFFFF)
+                                        : Color(0x33000000),
+                                    width: 1.0,
                                   ),
                                 ),
                                 child: Icon(
-                                  FFIcons.kessentialUi1,
+                                  Icons.restore,
                                   color: FlutterFlowTheme.of(context).tertiary,
-                                  size: 24.0,
+                                  size: 20.0,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
+
+                      // Subtitle
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0,
-                            valueOrDefault<double>(
-                              MediaQuery.sizeOf(context).height * 0.06,
-                              0.0,
-                            ),
-                            0.0,
-                            0.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: SvgPicture.asset(
-                            'assets/images/Group_427319864.svg',
-                            fit: BoxFit.cover,
+                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                        child: Text(
+                          'Three plans. Three ways to live the challenge.\nWhether you\'re exploring the game, mastering every move, or just playing for the thrill, there\'s a plan designed for you.',
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                            font: GoogleFonts.poppins(),
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            letterSpacing: 0.0,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.check,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              'Choose your Favorite between the 2 Players',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.check,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              'Recording of the choices of the previous point',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.check,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              'Recalling the choices in a specific section',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.check,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              'Lesser longer manual work',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.check,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 16.0,
-                              ),
-                            ),
-                            Text(
-                              'Bonus (or bonuses) to VOTE AGAIN \nafter having finalize the ranking',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional(-1.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 20.0, 0.0, 0.0),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
-                                        ? Colors.transparent
-                                        : Color(0xFFE8E8E9),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: (Theme.of(context).brightness ==
-                                                  Brightness.dark) ==
-                                              true
-                                          ? Color(0x2AFFFFFF)
-                                          : Color(0xFFD1D1D2),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 16.0, 16.0, 16.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Text(
-                                              'Yearly',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontStyle,
-                                                        ),
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleLarge
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleLarge
-                                                                .fontStyle,
-                                                      ),
-                                            ),
-                                            Text(
-                                              '3 Bonus',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodySmall
-                                                  .override(
-                                                    font: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontStyle,
-                                                    ),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiary,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodySmall
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodySmall
-                                                            .fontStyle,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Align(
-                                          alignment:
-                                              AlignmentDirectional(1.0, 0.0),
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 16.0, 16.0, 16.0),
-                                            child: Text(
-                                              '\$3.99/month',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontStyle,
-                                                        ),
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleLarge
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleLarge
-                                                                .fontStyle,
-                                                      ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.92, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 4.0, 0.0, 0.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEB6027),
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 6.0, 12.0, 6.0),
-                                    child: Text(
-                                      'Best Value',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            color: Colors.white,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-1.0, 0.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 20.0, 0.0, 0.0),
+
+                      // Current Plan Status
+                      if (_model.currentPlan != 'free')
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                           child: Container(
                             width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
                             decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Colors.transparent
-                                  : Color(0xFFE8E8E9),
+                              color: Color(0xFF4CAF50).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Color(0x2AFFFFFF)
-                                    : Color(0xFFD1D1D2),
-                              ),
+                              border: Border.all(color: Color(0xFF4CAF50)),
                             ),
                             child: Row(
-                              mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 16.0, 16.0, 16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Quarterly',
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                      Text(
-                                        '1 Bonus',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodySmall
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodySmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodySmall
-                                                        .fontStyle,
-                                              ),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Color(0xFF4CAF50),
+                                  size: 20.0,
                                 ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(1.0, 0.0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 16.0, 16.0, 16.0),
-                                      child: Text(
-                                        '\$3.99/month',
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-1.0, 0.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 20.0, 0.0, 0.0),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: (Theme.of(context).brightness ==
-                                          Brightness.dark) ==
-                                      true
-                                  ? Colors.transparent
-                                  : Color(0xFFE8E8E9),
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Colors.transparent
-                                    : Color(0xFFD1D1D2),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 16.0, 16.0, 16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Monthly',
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                      Text(
-                                        'No Bonus',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodySmall
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodySmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodySmall
-                                                        .fontStyle,
-                                              ),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(1.0, 0.0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 16.0, 16.0, 16.0),
-                                      child: Text(
-                                        '\$3.99/month',
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleLarge
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: wrapWithModel(
-                          model: _model.gradientButtonCustomModel,
-                          updateCallback: () => safeSetState(() {}),
-                          child: Builder(builder: (_) {
-                            return DebugFlutterFlowModelContext(
-                              rootModel: _model.rootModel,
-                              child: GradientButtonCustomWidget(
-                                text: 'Purchase Now',
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 0.0, 30.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional(-1.0, 0.0),
-                              child: RichText(
-                                textScaler: MediaQuery.of(context).textScaler,
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          'By placing this order, you agree to the ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 10.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                      text: 'Terms of Service ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            color: Color(0xFFEB6027),
-                                            fontSize: 10.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                      text: ' and',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            color: FlutterFlowTheme.of(context)
-                                                .tertiary,
-                                            fontSize: 10.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                      text: ' Privacy Policy',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            color: Color(0xFFEB6027),
-                                            fontSize: 10.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          ' Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 10.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                    )
-                                  ],
+                                SizedBox(width: 8.0),
+                                Text(
+                                  'Active: ${_model.getPlanDisplayName(_model.currentPlan)} Plan',
                                   style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
+                                      .titleMedium
                                       .override(
-                                        font: GoogleFonts.bebasNeue(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
+                                    font: GoogleFonts.poppins(),
+                                    color: Color(0xFF4CAF50),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
+                                Spacer(),
+                                if (_model.currentPlan != 'master')
+                                  Text(
+                                    'Extra Votes: ${_model.extraVotes}',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                      font: GoogleFonts.poppins(),
+                                      color: Color(0xFF4CAF50),
+                                      letterSpacing: 0.0,
+                                    ),
+                                  ),
+                              ],
                             ),
-                          ],
+                          ),
+                        ),
+
+                      // Free Plan
+                      _buildPlanCard(
+                        title: 'Free',
+                        subtitle: 'Ads included • Extra-Vote at ${_model.getFormattedPrice(SubscriptionPageModel.extraVoteFreeId)}',
+                        price: '\$0/month',
+                        isRecommended: false,
+                        isCurrentPlan: _model.currentPlan == 'free',
+                      ),
+
+                      // Explorer Plan
+                      _buildPlanCard(
+                        title: 'Explorer',
+                        subtitle: 'No Ads • Extra-Vote at ${_model.getFormattedPrice(SubscriptionPageModel.extraVoteExplorerId)} (save \$2 vs Free users)',
+                        price: '${_model.getFormattedPrice(SubscriptionPageModel.explorerPlanId)}/month',
+                        isRecommended: true,
+                        isCurrentPlan: _model.currentPlan == 'explorer',
+                        productId: SubscriptionPageModel.explorerPlanId,
+                      ),
+
+                      // Master Plan
+                      _buildPlanCard(
+                        title: 'Master',
+                        subtitle: 'No Ads • Unlimited Extra-Votes',
+                        price: '${_model.getFormattedPrice(SubscriptionPageModel.masterPlanId)}/month',
+                        isRecommended: false,
+                        isCurrentPlan: _model.currentPlan == 'master',
+                        productId: SubscriptionPageModel.masterPlanId,
+                      ),
+
+                      // Extra Vote Purchase Button
+                      if (_model.currentPlan != 'master')
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                          child: Container(
+                            width: double.infinity,
+                            child: FFButtonWidget(
+                              onPressed: (_model.isLoading || _model.isPurchasing('extra_vote')) ? null : () async {
+                                await _model.purchaseExtraVote();
+                              },
+                              text: (_model.isLoading || _model.isPurchasing('extra_vote'))
+                                  ? 'Processing...'
+                                  : 'Buy Extra Vote (${_model.getExtraVotePrice()})',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 50.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                color: Colors.transparent,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleMedium
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  color: Color(0xFFEB6027),
+                                  letterSpacing: 0.0,
+                                ),
+                                elevation: 0.0,
+                                borderSide: BorderSide(
+                                  color: Color(0xFFEB6027),
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              showLoadingIndicator: _model.isPurchasing('extra_vote'),
+                            ),
+                          ),
+                        ),
+
+                      // Terms and Privacy
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 30.0),
+                        child: RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'By making a purchase, you agree to the ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  fontSize: 10.0,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Terms of Service ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  color: Color(0xFFEB6027),
+                                  fontSize: 10.0,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'and ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  fontSize: 10.0,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Privacy Policy',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  color: Color(0xFFEB6027),
+                                  fontSize: 10.0,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                  font: GoogleFonts.poppins(),
+                                  fontSize: 10.0,
+                                  letterSpacing: 0.0,
+                                ),
+                              ),
+
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
