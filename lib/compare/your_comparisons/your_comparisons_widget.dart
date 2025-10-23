@@ -55,7 +55,7 @@ class _YourComparisonsWidgetState extends State<YourComparisonsWidget>
                 color: Colors.white,
               ),
             ),
-            duration: const Duration(milliseconds: 1550),
+            duration: const Duration(milliseconds: 2000),
             backgroundColor: Colors.black,
           ),
         );
@@ -74,7 +74,7 @@ class _YourComparisonsWidgetState extends State<YourComparisonsWidget>
                 color: Colors.white,
               ),
             ),
-            duration: const Duration(milliseconds: 1550),
+            duration: const Duration(milliseconds: 2000),
             backgroundColor: Colors.black,
           ),
         );

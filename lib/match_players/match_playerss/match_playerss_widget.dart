@@ -1030,154 +1030,259 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                     width: 10.0,
                                     decoration: const BoxDecoration(),
                                   ),
+                                  // Expanded(
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsetsDirectional.fromSTEB(
+                                  //         0.0, 0.0, 2.0, 0.0),
+                                  //     child: Container(
+                                  //       height: 60.0,
+                                  //       decoration: BoxDecoration(
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(12.0),
+                                  //         border: Border.all(
+                                  //           color: FlutterFlowTheme.of(context)
+                                  //               .primary,
+                                  //         ),
+                                  //       ),
+                                  //       child: Align(
+                                  //         alignment:
+                                  //             const AlignmentDirectional(0.0, 0.0),
+                                  //         child: Padding(
+                                  //           padding:
+                                  //               const EdgeInsetsDirectional.fromSTEB(
+                                  //                   25.0, 13.0, 25.0, 13.0),
+                                  //           child: InkWell(
+                                  //
+                                  //             onTap: ()async {
+                                  //
+                                  //               if (_model.selectedIndex == -1) {
+                                  //                 ScaffoldMessenger.of(context).showSnackBar(
+                                  //                   const SnackBar(
+                                  //                     content: Text('Please choose an option'),
+                                  //                     duration: Duration(seconds: 1),
+                                  //                     backgroundColor: Colors.red,
+                                  //                   ),
+                                  //                 );
+                                  //                 return;
+                                  //               }
+                                  //
+                                  //               _model.apiResultyli = await DashboardGroup
+                                  //                   .submitMinionCall
+                                  //                   .call(
+                                  //                 authToken: FFAppState().authToken,
+                                  //                 rightPlayerId: getJsonField(
+                                  //                   DashboardGroup.matchPlayersCall
+                                  //                       .questions(
+                                  //                     (_model.matchMinionRes
+                                  //                         ?.jsonBody ??
+                                  //                         ''),
+                                  //                   )
+                                  //                       ?.elementAtOrNull(
+                                  //                       _model.questionIndex),
+                                  //                   r'''$.correct_player_id''',
+                                  //                 ),
+                                  //                 selectPlayerId: _model.selectedPlayerId,
+                                  //               );
+                                  //
+                                  //               if ((_model.apiResultyli?.succeeded ??
+                                  //                   true)) {
+                                  //                 ScaffoldMessenger.of(context)
+                                  //                     .showSnackBar(
+                                  //                   SnackBar(
+                                  //                     content: Text(
+                                  //                       getJsonField(
+                                  //                         (_model.apiResultyli?.jsonBody ??
+                                  //                             ''),
+                                  //                         r'''$.message''',
+                                  //                       ).toString(),
+                                  //                       style: const TextStyle(
+                                  //                         color: Colors.white,
+                                  //                       ),
+                                  //                     ),
+                                  //                     duration:
+                                  //                     const Duration(milliseconds: 1200),
+                                  //                     backgroundColor: Colors.black,
+                                  //                   ),
+                                  //                 );
+                                  //                 // context.pushNamed(
+                                  //                 //     NavWidget
+                                  //                 //         .routeName);
+                                  //
+                                  //                 handleNextQuestion(context);
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //                 // context.goNamed(HomePageWidget.routeName);
+                                  //               } else {
+                                  //                 ScaffoldMessenger.of(context)
+                                  //                     .showSnackBar(
+                                  //                   SnackBar(
+                                  //                     content: Text(
+                                  //                       getJsonField(
+                                  //                         (_model.apiResultyli?.jsonBody ??
+                                  //                             ''),
+                                  //                         r'''$.message''',
+                                  //                       ).toString(),
+                                  //                       style: const TextStyle(
+                                  //                         color: Colors.white,
+                                  //                       ),
+                                  //                     ),
+                                  //                     duration:
+                                  //                     const Duration(milliseconds: 1200),
+                                  //                     backgroundColor: Colors.black,
+                                  //                   ),
+                                  //                 );
+                                  //               }
+                                  //
+                                  //               safeSetState(() {});
+                                  //             },
+                                  //
+                                  //
+                                  //             child: Text(
+                                  //               'Next',
+                                  //               style:
+                                  //                   FlutterFlowTheme.of(context)
+                                  //                       .titleLarge
+                                  //                       .override(
+                                  //                         font:
+                                  //                             GoogleFonts.poppins(
+                                  //                           fontWeight:
+                                  //                               FlutterFlowTheme.of(
+                                  //                                       context)
+                                  //                                   .titleLarge
+                                  //                                   .fontWeight,
+                                  //                           fontStyle:
+                                  //                               FlutterFlowTheme.of(
+                                  //                                       context)
+                                  //                                   .titleLarge
+                                  //                                   .fontStyle,
+                                  //                         ),
+                                  //                         fontSize: 14.0,
+                                  //                         letterSpacing: 0.0,
+                                  //                         fontWeight:
+                                  //                             FlutterFlowTheme.of(
+                                  //                                     context)
+                                  //                                 .titleLarge
+                                  //                                 .fontWeight,
+                                  //                         fontStyle:
+                                  //                             FlutterFlowTheme.of(
+                                  //                                     context)
+                                  //                                 .titleLarge
+                                  //                                 .fontStyle,
+                                  //                       ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+
+
+                                  ///2
+
                                   Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 2.0, 0.0),
+                                      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 2.0, 0.0),
                                       child: Container(
                                         height: 60.0,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
+                                          borderRadius: BorderRadius.circular(12.0),
                                           border: Border.all(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
+                                            color: FlutterFlowTheme.of(context).primary,
                                           ),
                                         ),
-                                        child: Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    25.0, 13.0, 25.0, 13.0),
-                                            child: InkWell(
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            if (_model.selectedIndex == -1) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text('Please choose an option'),
+                                                  duration: Duration(seconds: 1),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                              return;
+                                            }
 
-                                              onTap: ()async {
-
-                                                if (_model.selectedIndex == -1) {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text('Please choose an option'),
-                                                      duration: Duration(seconds: 1),
-                                                      backgroundColor: Colors.red,
-                                                    ),
-                                                  );
-                                                  return;
-                                                }
-
-                                                _model.apiResultyli = await DashboardGroup
-                                                    .submitMinionCall
-                                                    .call(
-                                                  authToken: FFAppState().authToken,
-                                                  rightPlayerId: getJsonField(
-                                                    DashboardGroup.matchPlayersCall
-                                                        .questions(
-                                                      (_model.matchMinionRes
-                                                          ?.jsonBody ??
-                                                          ''),
-                                                    )
-                                                        ?.elementAtOrNull(
-                                                        _model.questionIndex),
-                                                    r'''$.correct_player_id''',
-                                                  ),
-                                                  selectPlayerId: _model.selectedPlayerId,
-                                                );
-
-                                                if ((_model.apiResultyli?.succeeded ??
-                                                    true)) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        getJsonField(
-                                                          (_model.apiResultyli?.jsonBody ??
-                                                              ''),
-                                                          r'''$.message''',
-                                                        ).toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      duration:
-                                                      const Duration(milliseconds: 1200),
-                                                      backgroundColor: Colors.black,
-                                                    ),
-                                                  );
-                                                  // context.pushNamed(
-                                                  //     NavWidget
-                                                  //         .routeName);
-
-                                                  handleNextQuestion(context);
-
-
-
-
-                                                  // context.goNamed(HomePageWidget.routeName);
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        getJsonField(
-                                                          (_model.apiResultyli?.jsonBody ??
-                                                              ''),
-                                                          r'''$.message''',
-                                                        ).toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      duration:
-                                                      const Duration(milliseconds: 1200),
-                                                      backgroundColor: Colors.black,
-                                                    ),
-                                                  );
-                                                }
-
-                                                safeSetState(() {});
-                                              },
-
-
-                                              child: Text(
-                                                'Next',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.poppins(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleLarge
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleLarge
-                                                                    .fontStyle,
-                                                          ),
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleLarge
-                                                                  .fontStyle,
-                                                        ),
+                                            _model.apiResultyli = await DashboardGroup
+                                                .submitMinionCall
+                                                .call(
+                                              authToken: FFAppState().authToken,
+                                              rightPlayerId: getJsonField(
+                                                DashboardGroup.matchPlayersCall
+                                                    .questions(
+                                                  (_model.matchMinionRes?.jsonBody ?? ''),
+                                                )
+                                                    ?.elementAtOrNull(_model.questionIndex),
+                                                r'''$.correct_player_id''',
                                               ),
+                                              selectPlayerId: _model.selectedPlayerId,
+                                            );
+
+                                            if ((_model.apiResultyli?.succeeded ?? true)) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    getJsonField(
+                                                      (_model.apiResultyli?.jsonBody ?? ''),
+                                                      r'''$.message''',
+                                                    ).toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(milliseconds: 1200),
+                                                  backgroundColor: Colors.black,
+                                                ),
+                                              );
+
+                                              handleNextQuestion(context);
+                                            } else {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    getJsonField(
+                                                      (_model.apiResultyli?.jsonBody ?? ''),
+                                                      r'''$.message''',
+                                                    ).toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(milliseconds: 1200),
+                                                  backgroundColor: Colors.black,
+                                                ),
+                                              );
+                                            }
+
+                                            safeSetState(() {});
+                                          },
+                                          text: 'Next',
+                                          options: FFButtonOptions(
+                                            height: 60.0,
+                                            padding: const EdgeInsetsDirectional.fromSTEB(25.0, 13.0, 25.0, 13.0),
+                                            iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                            color: Colors.transparent,
+                                            textStyle: FlutterFlowTheme.of(context).titleLarge.override(
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                              ),
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                              fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                                             ),
+                                            elevation: 0.0,
+                                            borderRadius: BorderRadius.circular(12.0),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ),
@@ -1288,7 +1393,6 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                                                 .bodySmall
                                                                 .fontStyle
                                                         ,
-                                                        fontSize: 14
                                                       ),
                                                       color: (Theme.of(context)
                                                                       .brightness ==
@@ -1304,10 +1408,11 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                                                   context)
                                                               .bodySmall
                                                               .fontStyle,
+                                                  fontSize: 14
                                                     ),
                                               ),
 
-                                              const SizedBox(height: 6,),
+                                              const SizedBox(height: 16,),
                                               Text(
                                                 'NOTE: You will not able to access the other functions of the app until you have completed the name-icon association ',
                                                 textAlign: TextAlign.center,
@@ -1336,7 +1441,7 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                                                   context)
                                                               .bodySmall
                                                               .fontStyle,
-                                                  fontSize: 12
+                                                  fontSize: 14
                                                     ),
                                               ),
                                             ],

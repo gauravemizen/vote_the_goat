@@ -537,7 +537,7 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                               const SizedBox(height: 12),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [10, 20, 50]
+                                children: [10, 25, 50]
                                     .map(
                                       (count) => Padding(
                                         padding: const EdgeInsets.symmetric(

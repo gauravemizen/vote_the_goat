@@ -1722,19 +1722,50 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                   focusColor: Colors.transparent,
                                                                                   hoverColor: Colors.transparent,
                                                                                   highlightColor: Colors.transparent,
+                                                                                  // onTap: () async {
+                                                                                  //   unawaited(
+                                                                                  //     () async {
+                                                                                  //       await Share.share(
+                                                                                  //         getJsonField(
+                                                                                  //           teamListItem,
+                                                                                  //           r'''$.invite_code''',
+                                                                                  //         ).toString(),
+                                                                                  //         sharePositionOrigin: getWidgetBoundingBox(context),
+                                                                                  //       );
+                                                                                  //     }(),
+                                                                                  //   );
+                                                                                  // },
+
+                                                                                  ///2
                                                                                   onTap: () async {
+                                                                                    final inviteCode = getJsonField(
+                                                                                      teamListItem,
+                                                                                      r'''$.invite_code''',
+                                                                                    ).toString();
+
+                                                                                    final customInviteMessage = '''Hey! 
+Do you know the Vote The Goat app? 
+I'd like to invite you to join and discover your favorite basketball legends!
+
+Use my invite code $inviteCode to sign up and start exploring.
+
+Download the app now and join the fun! 
+You can download it here: [APP_DOWNLOAD_LINK]''';
+
+                                                                                    print('Sharing invite message: $customInviteMessage');
+
                                                                                     unawaited(
-                                                                                      () async {
+                                                                                          () async {
                                                                                         await Share.share(
-                                                                                          getJsonField(
-                                                                                            teamListItem,
-                                                                                            r'''$.invite_code''',
-                                                                                          ).toString(),
+                                                                                          customInviteMessage,
                                                                                           sharePositionOrigin: getWidgetBoundingBox(context),
                                                                                         );
                                                                                       }(),
                                                                                     );
                                                                                   },
+
+                                                                                  ///
+
                                                                                   child: Container(
                                                                                     width: MediaQuery.sizeOf(context).width * 0.42,
                                                                                     decoration: BoxDecoration(

@@ -1059,7 +1059,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                     ),
                                                   ),
                                                   duration: Duration(
-                                                      milliseconds: 1200),
+                                                      milliseconds: 2000),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );

@@ -183,6 +183,10 @@ class _MyProfileCopyWidgetState extends State<MyProfileCopyWidget>
                 fit: BoxFit.cover,
               ),
             ),
+
+
+
+
             if (!_model.isLoading)
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
@@ -339,44 +343,87 @@ class _MyProfileCopyWidgetState extends State<MyProfileCopyWidget>
                                   Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: Image.network(
-                                          _model.uploadedLocalFile_image ==
-                                                      null ||
-                                                  (_model.uploadedLocalFile_image
-                                                          .bytes?.isEmpty ??
-                                                      true)
-                                              ? getJsonField(
-                                                  DashboardGroup.getProfileCall
-                                                      .profileDetail(
-                                                    (_model.getProfileRes
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ),
-                                                  r'''$.image''',
-                                                ).toString()
-                                              : '',
-                                          width: double.infinity,
-                                          height: MediaQuery.sizeOf(context)
-                                                  .height *
-                                              0.24,
-                                          fit: BoxFit.fill,
-                                          alignment: Alignment(0.0, 0.0),
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Image.asset(
-                                            'assets/images/error_image.webp',
-                                            width: double.infinity,
-                                            height: MediaQuery.sizeOf(context)
-                                                    .height *
-                                                0.24,
-                                            fit: BoxFit.fill,
-                                            alignment: Alignment(0.0, 0.0),
+                                      // ClipRRect(
+                                      //   borderRadius:
+                                      //       BorderRadius.circular(8.0),
+                                      //   child: Image.network(
+                                      //     _model.uploadedLocalFile_image ==
+                                      //                 null ||
+                                      //             (_model.uploadedLocalFile_image
+                                      //                     .bytes?.isEmpty ??
+                                      //                 true)
+                                      //         ? getJsonField(
+                                      //             DashboardGroup.getProfileCall
+                                      //                 .profileDetail(
+                                      //               (_model.getProfileRes
+                                      //                       ?.jsonBody ??
+                                      //                   ''),
+                                      //             ),
+                                      //             r'''$.image''',
+                                      //           ).toString()
+                                      //         : '',
+                                      //     width: double.infinity,
+                                      //     height: MediaQuery.sizeOf(context)
+                                      //             .height *
+                                      //         0.24,
+                                      //     fit: BoxFit.cover,
+                                      //     alignment: Alignment(0.0, 0.0),
+                                      //     errorBuilder:
+                                      //         (context, error, stackTrace) =>
+                                      //             Image.asset(
+                                      //       'assets/images/error_image.webp',
+                                      //       width: double.infinity,
+                                      //       height: MediaQuery.sizeOf(context)
+                                      //               .height *
+                                      //           0.24,
+                                      //       fit: BoxFit.fill,
+                                      //       alignment: Alignment(0.0, 0.0),
+                                      //     ),
+                                      //   ),
+                                      // ),
+
+// Replace the image section inside the Stack with this:
+                                      if (_model.isDataUploading_image)
+                                        Center(
+                                          child: custom_widgets.CubeGridLoader(
+                                            width: 40.0,
+                                            height: 40.0,
+                                            size: 40.0,
                                           ),
-                                        ),
-                                      ),
+                                        )
+                                      else
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: _model.uploadedLocalFile_image != null &&
+                                              (_model.uploadedLocalFile_image.bytes?.isNotEmpty ?? false)
+                                              ? Image.memory(
+                                            _model.uploadedLocalFile_image.bytes!,
+                                            width: double.infinity,
+                                            height: MediaQuery.sizeOf(context).height * 0.24,
+                                            fit: BoxFit.cover,
+                                            alignment: Alignment(0.0, 0.0),
+                                          )
+                                              : Image.network(
+                                            getJsonField(
+                                              DashboardGroup.getProfileCall.profileDetail(
+                                                (_model.getProfileRes?.jsonBody ?? ''),
+                                              ),
+                                              r'''$.image''',
+                                            ).toString(),
+                                            width: double.infinity,
+                                            height: MediaQuery.sizeOf(context).height * 0.24,
+                                            fit: BoxFit.cover,
+                                            alignment: Alignment(0.0, 0.0),
+                                            errorBuilder: (context, error, stackTrace) => Image.asset(
+                                              'assets/images/error_image.webp',
+                                              width: double.infinity,
+                                              height: MediaQuery.sizeOf(context).height * 0.24,
+                                              fit: BoxFit.fill,
+                                              alignment: Alignment(0.0, 0.0),
+                                            ),
+                                          ),
+                                        )
+
                                     ],
                                   ),
                                   Align(

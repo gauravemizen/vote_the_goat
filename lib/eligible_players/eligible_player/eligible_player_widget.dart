@@ -952,72 +952,73 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                         0.0,
                                                                         0.0),
                                                             child: Row(
+
                                                               mainAxisSize:
                                                                   MainAxisSize
                                                                       .max,
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
-                                                                      .spaceBetween,
+                                                                      .end,
                                                               children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Text(
-                                                                      '#',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodySmall
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.poppins(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                            ),
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).tertiary,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                          ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          1.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        getJsonField(
-                                                                          playerListItem,
-                                                                          r'''$.position_id''',
-                                                                        ).toString(),
-                                                                        textAlign:
-                                                                            TextAlign.start,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodySmall
-                                                                            .override(
-                                                                              font: GoogleFonts.poppins(
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                              ),
-                                                                              color: FlutterFlowTheme.of(context).tertiary,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                                // Row(
+                                                                //   mainAxisSize:
+                                                                //       MainAxisSize
+                                                                //           .max,
+                                                                //   children: [
+                                                                //     Text(
+                                                                //       '#',
+                                                                //       textAlign:
+                                                                //           TextAlign
+                                                                //               .start,
+                                                                //       style: FlutterFlowTheme.of(
+                                                                //               context)
+                                                                //           .bodySmall
+                                                                //           .override(
+                                                                //             font:
+                                                                //                 GoogleFonts.poppins(
+                                                                //               fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                //               fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                //             ),
+                                                                //             color:
+                                                                //                 FlutterFlowTheme.of(context).tertiary,
+                                                                //             letterSpacing:
+                                                                //                 0.0,
+                                                                //             fontWeight:
+                                                                //                 FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                //             fontStyle:
+                                                                //                 FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                //           ),
+                                                                //     ),
+                                                                //     Padding(
+                                                                //       padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                //           1.0,
+                                                                //           0.0,
+                                                                //           0.0,
+                                                                //           0.0),
+                                                                //       child:
+                                                                //           Text(
+                                                                //         getJsonField(
+                                                                //           playerListItem,
+                                                                //           r'''$.position_id''',
+                                                                //         ).toString(),
+                                                                //         textAlign:
+                                                                //             TextAlign.start,
+                                                                //         style: FlutterFlowTheme.of(context)
+                                                                //             .bodySmall
+                                                                //             .override(
+                                                                //               font: GoogleFonts.poppins(
+                                                                //                 fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                //                 fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                //               ),
+                                                                //               color: FlutterFlowTheme.of(context).tertiary,
+                                                                //               letterSpacing: 0.0,
+                                                                //               fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                //               fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                //             ),
+                                                                //       ),
+                                                                //     ),
+                                                                //   ],
+                                                                // ),
                                                                 Align(
                                                                   alignment:
                                                                       const AlignmentDirectional(

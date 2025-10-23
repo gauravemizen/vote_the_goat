@@ -49,8 +49,17 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
           (_model.getProfileRes?.jsonBody ?? ''),
           r'''$.data.name''',
         ).toString();
+
+        FFAppState().userImage = getJsonField(
+          (_model.getProfileRes?.jsonBody ?? ''),
+          r'''$.data.image''',
+        ).toString();
         FFAppState().update(() {});
       }
+
+
+
+
     });
 
     // Initialize theme switch based on current saved theme preference / system.
@@ -158,10 +167,34 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/905/600',
+                                child:
+
+
+                                // Image.network(
+                                //   'https://picsum.photos/seed/905/600',
+                                //   errorBuilder: (context,
+                                //       error,
+                                //       stackTrace) =>
+                                //       Image.asset(
+                                //         'assets/images/error_image.webp',
+                                //         fit: BoxFit.cover,
+                                //       ),
+                                //   fit: BoxFit.cover,
+                                // ),
+
+
+                              ///2
+                                Image.network(
+                                  FFAppState().userImage.isNotEmpty
+                                      ? FFAppState().userImage
+                                      : 'assets/images/error_image.web',
+                                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                                    'assets/images/error_image.webp',
+                                    fit: BoxFit.cover,
+                                  ),
                                   fit: BoxFit.cover,
-                                ),
+                                )
+
                               ),
                             ),
                             Align(
@@ -1392,7 +1425,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               15.0, 0.0, 0.0, 0.0),
                           child: Text(
-                            'Data & Privacy',
+                            'Legal & Privacy',
                             style: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(

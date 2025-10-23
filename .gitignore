@@ -4,8 +4,13 @@
 .pub/
 build/
 
-# Android related
+# Additional build directories
+**/build/
+**/ios/build/
+**/android/build/
 **/android/app/build/
+
+# Android related
 **/android/.gradle/
 **/android/.idea/
 **/android/local.properties
@@ -57,4 +62,3 @@ build/
 # Firebase
 **/google-services.json
 **/GoogleService-Info.plist
-
