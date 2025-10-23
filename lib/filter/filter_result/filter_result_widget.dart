@@ -1081,6 +1081,7 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
 
                           Center(
                             child: Text(
+                              textAlign: TextAlign.center,
                               _selectedFilterText!,
                               style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'good times',
@@ -1093,6 +1094,8 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
                           if (_filterDescription != null && _filterDescription!.isNotEmpty) ...[
                             const SizedBox(height: 10),
                             Text(
+                              textAlign: TextAlign.center,
+
                               _filterDescription!,
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Poppins',
@@ -1205,116 +1208,118 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
                         ),
                       )
                     else
-                      Container(
-                        width: double.infinity,
-                        height: MediaQuery.sizeOf(context).height * 0.5,
-                        decoration: const BoxDecoration(),
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: _players.length,
-                          itemBuilder: (context, index) {
-                            final player = _players[index];
-                            final firstName = player['first_name']?.toString() ?? '';
-                            final lastName = player['last_name']?.toString() ?? '';
-                            final imageUrl = player['image']?.toString() ?? '';
-                            final value = player['value']?.toString() ?? '';
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          // height: MediaQuery.sizeOf(context).height * 0.5,
+                          decoration: const BoxDecoration(),
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: _players.length,
+                            itemBuilder: (context, index) {
+                              final player = _players[index];
+                              final firstName = player['first_name']?.toString() ?? '';
+                              final lastName = player['last_name']?.toString() ?? '';
+                              final imageUrl = player['image']?.toString() ?? '';
+                              final value = player['value']?.toString() ?? '';
 
-                            final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-                            final backgroundColor = isDarkMode
-                                ? (index % 2 == 0 ? const Color(0xFF131313) : const Color(0xFF3D3D3D))
-                                : (index % 2 == 0 ? const Color(0xFFFFFFFF) : const Color(0xFFEAEAEA));
+                              final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+                              final backgroundColor = isDarkMode
+                                  ? (index % 2 == 0 ? const Color(0xFF131313) : const Color(0xFF3D3D3D))
+                                  : (index % 2 == 0 ? const Color(0xFFFFFFFF) : const Color(0xFFEAEAEA));
 
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: backgroundColor,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 1.0,
-                                    color: Color(0x33463838),
-                                    offset: Offset(1.0, 2.0),
-                                    spreadRadius: 1.0,
-                                  )
-                                ],
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                              child: Row(
-                                children: [
-                                  const FaIcon(
-                                    FontAwesomeIcons.solidStar,
-                                    color: Color(0xFFFFBC06),
-                                    size: 16.0,
-                                  ),
-                                  SizedBox(width: 4,),
-                                  SizedBox(
-                                    width: 30,
-                                    child: Text(
-
-                                      '${index + 1}',
-                                      style: FlutterFlowTheme.of(context).bodyMedium.copyWith(
-                                          fontWeight: FontWeight.bold),
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: backgroundColor,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 1.0,
+                                      color: Color(0x33463838),
+                                      offset: Offset(1.0, 2.0),
+                                      spreadRadius: 1.0,
+                                    )
+                                  ],
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                child: Row(
+                                  children: [
+                                    const FaIcon(
+                                      FontAwesomeIcons.solidStar,
+                                      color: Color(0xFFFFBC06),
+                                      size: 16.0,
                                     ),
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    margin: const EdgeInsets.only(right: 12),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                                    SizedBox(width: 4,),
+                                    SizedBox(
+                                      width: 30,
+                                      child: Text(
+
+                                        '${index + 1}',
+                                        style: FlutterFlowTheme.of(context).bodyMedium.copyWith(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
-                                      child: imageUrl.isNotEmpty
-                                          ? Image.network(
-                                        imageUrl,
-                                        width: 30,
-                                        height: 30,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) => Icon(
+                                    Container(
+                                      width: 30,
+                                      height: 30,
+                                      margin: const EdgeInsets.only(right: 12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: imageUrl.isNotEmpty
+                                            ? Image.network(
+                                          imageUrl,
+                                          width: 30,
+                                          height: 30,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) => Icon(
+                                            Icons.person,
+                                            size: 30,
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                          ),
+                                        )
+                                            : Icon(
                                           Icons.person,
                                           size: 30,
                                           color: FlutterFlowTheme.of(context).secondaryText,
                                         ),
-                                      )
-                                          : Icon(
-                                        Icons.person,
-                                        size: 30,
-                                        color: FlutterFlowTheme.of(context).secondaryText,
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      '$firstName $lastName',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                        font: GoogleFonts.poppins(),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  if (value.isNotEmpty)
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    Expanded(
                                       child: Text(
-                                        value,
+                                        '$firstName $lastName',
+                                        overflow: TextOverflow.ellipsis,
                                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                                           font: GoogleFonts.poppins(),
-                                          fontWeight: FontWeight.w600,
-                                          color: FlutterFlowTheme.of(context).tertiary,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
-                                ],
-                              ),
-                            );
-                          },
+                                    if (value.isNotEmpty)
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                                        child: Text(
+                                          value,
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                            font: GoogleFonts.poppins(),
+                                            fontWeight: FontWeight.w600,
+                                            color: FlutterFlowTheme.of(context).tertiary,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
 
-                    const Spacer(),
+                    // const Spacer(),
                     Container(
                       decoration: const BoxDecoration(),
                       child: Padding(

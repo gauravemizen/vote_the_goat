@@ -94,6 +94,17 @@ class FFAppState extends ChangeNotifier {
     debugLogAppState(this);
   }
 
+
+
+  String _userImage = '';
+  String get userImage => _userImage;
+
+  set userImage(String value) {
+    _userImage = value;
+    secureStorage.setString('ff_userImage', value);
+    debugLogAppState(this);
+  }
+
   void deleteUserName() {
     secureStorage.delete(key: 'ff_userName');
   }

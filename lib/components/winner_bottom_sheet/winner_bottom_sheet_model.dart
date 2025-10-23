@@ -108,7 +108,6 @@ class WinnerBottomSheetModel extends FlutterFlowModel<WinnerBottomSheetWidget> {
   ApiCallResponse? _apiResult2kw;
   set apiResult2kw(ApiCallResponse? value) {
     _apiResult2kw = value;
-    print('[WinnerBottomSheetModel] apiResult2kw set: ${value?.jsonBody}');
     debugLogWidgetClass(this);
   }
 
@@ -117,13 +116,10 @@ class WinnerBottomSheetModel extends FlutterFlowModel<WinnerBottomSheetWidget> {
   // Model for gradientButtonCustom component.
   late GradientButtonCustomModel gradientButtonCustomModel;
 
-  // Player results with debug print on update
-  List<Map<String, dynamic>> _playerResults = [];
-  List<Map<String, dynamic>> get playerResults => _playerResults;
-  set playerResults(List<Map<String, dynamic>> value) {
-    _playerResults = value;
-    print('[WinnerBottomSheetModel] playerResults updated: $_playerResults');
-  }
+  // New properties for API data
+  int rightAnswersCount = 0;
+  int totalQuestions = 0;
+  List<Map<String, dynamic>> playerResults = [];
 
   final Map<String, DebugDataField> debugGeneratorVariables = {};
   final Map<String, DebugDataField> debugBackendQueries = {};
@@ -142,44 +138,44 @@ class WinnerBottomSheetModel extends FlutterFlowModel<WinnerBottomSheetWidget> {
 
   @override
   WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
-    widgetParameters: {
-      'onContinuePress': debugSerializeParam(
-        widget?.onContinuePress,
-        ParamType.Action,
-        link:
-        'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=WinnerBottomSheet',
-        searchReference:
-        'reference=SiEKGQoPb25Db250aW51ZVByZXNzEgZ0dWs5Z3NyBAgVIAFQAFoPb25Db250aW51ZVByZXNz',
-        name: 'Future Function()',
-        nullable: true,
-      )
-    }.withoutNulls,
-    actionOutputs: {
-      'apiResult2kw': debugSerializeParam(
-        apiResult2kw,
-        ParamType.ApiResponse,
-        link:
-        'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=WinnerBottomSheet',
-        name: 'ApiCallResponse',
-        nullable: true,
-      )
-    },
-    generatorVariables: debugGeneratorVariables,
-    backendQueries: debugBackendQueries,
-    componentStates: {
-      'gradientButtonCustomModel (gradientButtonCustom)':
-      gradientButtonCustomModel?.toWidgetClassDebugData(),
-      ...widgetBuilderComponents.map(
+        widgetParameters: {
+          'onContinuePress': debugSerializeParam(
+            widget?.onContinuePress,
+            ParamType.Action,
+            link:
+                'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=WinnerBottomSheet',
+            searchReference:
+                'reference=SiEKGQoPb25Db250aW51ZVByZXNzEgZ0dWs5Z3NyBAgVIAFQAFoPb25Db250aW51ZVByZXNz',
+            name: 'Future Function()',
+            nullable: true,
+          )
+        }.withoutNulls,
+        actionOutputs: {
+          'apiResult2kw': debugSerializeParam(
+            apiResult2kw,
+            ParamType.ApiResponse,
+            link:
+                'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=WinnerBottomSheet',
+            name: 'ApiCallResponse',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          'gradientButtonCustomModel (gradientButtonCustom)':
+              gradientButtonCustomModel?.toWidgetClassDebugData(),
+          ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
-          key,
-          value.toWidgetClassDebugData(),
-        ),
-      ),
-    }.withoutNulls,
-    link:
-    'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r/tab=uiBuilder&page=WinnerBottomSheet',
-    searchReference:
-    'reference=OhFXaW5uZXJCb3R0b21TaGVldFAAWhFXaW5uZXJCb3R0b21TaGVldA==',
-    widgetClassName: 'WinnerBottomSheet',
-  );
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r/tab=uiBuilder&page=WinnerBottomSheet',
+        searchReference:
+            'reference=OhFXaW5uZXJCb3R0b21TaGVldFAAWhFXaW5uZXJCb3R0b21TaGVldA==',
+        widgetClassName: 'WinnerBottomSheet',
+      );
 }

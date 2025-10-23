@@ -380,79 +380,167 @@ class _PrivacyPolicyWidgetState extends State<PrivacyPolicyWidget> with RouteAwa
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   // Header with back button and FAQ title
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () => context.safePop(),
-                        child: Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).backBtnClr,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Theme.of(context).brightness == Brightness.dark
-                                    ? const Color(0x335D4E4E)
-                                    : Colors.white,
-                                offset: const Offset(0.0, 2.0),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(12.0),
-                            border: Border.all(
-                              color: Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.transparent
-                                  : const Color(0xD5999999),
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.arrow_back_rounded,
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            size: 24.0,
-                          ),
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'F',
-                              style: FlutterFlowTheme.of(context).customTextStyle1.override(
-                                fontFamily: 'good times',
-                                color: FlutterFlowTheme.of(context).tertiary,
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.max,
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () => context.safePop(),
+                  //       child: Container(
+                  //         width: 40.0,
+                  //         height: 40.0,
+                  //         decoration: BoxDecoration(
+                  //           color: FlutterFlowTheme.of(context).backBtnClr,
+                  //           boxShadow: [
+                  //             BoxShadow(
+                  //               blurRadius: 4.0,
+                  //               color: Theme.of(context).brightness == Brightness.dark
+                  //                   ? const Color(0x335D4E4E)
+                  //                   : Colors.white,
+                  //               offset: const Offset(0.0, 2.0),
+                  //             )
+                  //           ],
+                  //           borderRadius: BorderRadius.circular(12.0),
+                  //           border: Border.all(
+                  //             color: Theme.of(context).brightness == Brightness.dark
+                  //                 ? Colors.transparent
+                  //                 : const Color(0xD5999999),
+                  //           ),
+                  //         ),
+                  //         child: Icon(
+                  //           Icons.arrow_back_rounded,
+                  //           color: FlutterFlowTheme.of(context).tertiary,
+                  //           size: 24.0,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       child: RichText(
+                  //         text: TextSpan(
+                  //           children: [
+                  //             TextSpan(
+                  //               text: 'LEGAL',
+                  //               style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                  //                 fontFamily: 'good times',
+                  //                 color: FlutterFlowTheme.of(context).tertiary,
+                  //
+                  //                 fontSize: 24.0,
+                  //                 letterSpacing: 0.0,
+                  //               ),
+                  //             ),
+                  //             TextSpan(
+                  //               text: ' & ',
+                  //               style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                  //                 fontFamily: 'good times',
+                  //                 color: const Color(0xFFEB6027),
+                  //                 fontSize: 24.0,
+                  //                 letterSpacing: 0.0,
+                  //               ),
+                  //             ),
+                  //             TextSpan(
+                  //               text: 'privacy',
+                  //               style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                  //                 fontFamily: 'good times',
+                  //                 color: FlutterFlowTheme.of(context).tertiary,
+                  //                 fontSize: 24.0,
+                  //                 letterSpacing: 0.0,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 40.0), // For symmetrical layout
+                  //   ],
+                  // ),
 
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
+
+
+                  ///
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Back button aligned to left
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () => context.safePop(),
+                          child: Container(
+                            width: 40.0,
+                            height: 40.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).backBtnClr,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 4.0,
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? const Color(0x335D4E4E)
+                                      : Colors.white,
+                                  offset: const Offset(0.0, 2.0),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.transparent
+                                    : const Color(0xD5999999),
                               ),
                             ),
-                            TextSpan(
-                              text: 'A',
-                              style: FlutterFlowTheme.of(context).customTextStyle1.override(
-                                fontFamily: 'good times',
-                                color: const Color(0xFFEB6027),
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
-                              ),
+                            child: Icon(
+                              Icons.arrow_back_rounded,
+                              color: FlutterFlowTheme.of(context).tertiary,
+                              size: 24.0,
                             ),
-                            TextSpan(
-                              text: 'q',
-                              style: FlutterFlowTheme.of(context).customTextStyle1.override(
-                                fontFamily: 'good times',
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 40.0), // For symmetrical layout
+
+                      // Expanded center text
+                      Expanded(
+                        child: Center(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'LEGAL',
+                                  style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                                    fontFamily: 'good times',
+                                    color: FlutterFlowTheme.of(context).tertiary,
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' & ',
+                                  style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                                    fontFamily: 'good times',
+                                    color: const Color(0xFFEB6027),
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'privacy',
+                                  style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                                    fontFamily: 'good times',
+                                    color: FlutterFlowTheme.of(context).tertiary,
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Right spacer for symmetry
+                      // const SizedBox(width: 40.0),
                     ],
                   ),
 
-
+                  ///
                   if (!_model.isLoading)
                     Expanded(
                       child: FutureBuilder<ApiCallResponse>(

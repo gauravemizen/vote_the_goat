@@ -110,11 +110,28 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
           );
         }
 
+
+
+
         final positionlistResponse = snapshot.data!;
+        // final players = DashboardGroup.positionlistCall
+        //         .positionList(positionlistResponse.jsonBody)
+        //         ?.toList() ??
+        //     [];
+
+
+
         final players = DashboardGroup.positionlistCall
-                .positionList(positionlistResponse.jsonBody)
-                ?.toList() ??
+            .positionList(positionlistResponse.jsonBody)
+            ?.toList() ??
             [];
+
+// Sort players by goat_points in descending order
+        players.sort((a, b) {
+          final aPoints = double.tryParse(getJsonField(a, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
+          final bPoints = double.tryParse(getJsonField(b, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
+          return bPoints.compareTo(aPoints); // Descending order
+        });
 
         return GestureDetector(
           onTap: () {
@@ -554,20 +571,32 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                                                   0.0,
                                                                   0.0,
                                                                   0.0),
-                                                          child: Text(
-                                                            getJsonField(player,
-                                                                    r'''$.position''')
-                                                                .toString(),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .titleMedium
-                                                                .override(
-                                                                  font: GoogleFonts
-                                                                      .poppins(),
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
+                                                          child:
+
+                                                          // Text(
+                                                          //   getJsonField(player,
+                                                          //           r'''$.position''')
+                                                          //       .toString(),
+                                                          //   style: FlutterFlowTheme
+                                                          //           .of(context)
+                                                          //       .titleMedium
+                                                          //       .override(
+                                                          //         font: GoogleFonts
+                                                          //             .poppins(),
+                                                          //         letterSpacing:
+                                                          //             0.0,
+                                                          //       ),
+                                                          // ),
+
+                                                          Text(
+                                                            (index + 1).toString(),
+                                                            style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                              font: GoogleFonts.poppins(),
+                                                              letterSpacing: 0.0,
+                                                            ),
                                                           ),
+
+
                                                         ),
                                                       ],
                                                     ),
@@ -643,7 +672,7 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                                       child: Text(
                                                         (double.tryParse(getJsonField(
                                                                             player,
-                                                                            r'''$.player.greatness_index_value''')
+                                                                            r'''$.goat_points''')
                                                                         ?.toString() ??
                                                                     '0') ??
                                                                 0.0)
@@ -848,7 +877,7 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                           //       ),
                           // ),
                           child: Text(
-                            (double.tryParse(getJsonField(player, r'''$.player.greatness_index_value''')?.toString() ?? '0') ?? 0.0).toStringAsFixed(2),
+                            (double.tryParse(getJsonField(player, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0).toStringAsFixed(2),
                             textAlign: TextAlign.center,
                             style: FlutterFlowTheme.of(context)
                                 .titleMedium

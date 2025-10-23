@@ -2257,6 +2257,22 @@ class _FilterScreenWidgetState extends State<FilterScreenWidget>
       return;
     }
 
+
+
+
+
+
+    final selectedFilterDescription = getJsonField(
+      DashboardGroup.filterListCall
+          .filter((_model.apiResult993?.jsonBody ?? ''))
+          ?.elementAtOrNull(_model.filterIndex ?? 0),
+      r'''$.description''',
+    )?.toString() ?? '';
+
+
+
+
+
     final filters = <String, dynamic>{};
     if (_selectedFilterKey == 'stats_categories') {
       final statType = _selectedFilterItem?['value'] ?? _selectedFilterItem?['name'];
@@ -2279,6 +2295,8 @@ class _FilterScreenWidgetState extends State<FilterScreenWidget>
       extra: {
         'filtersPayload': payload,
         'filterType': _selectedFilterKey,
+        'filterDescription': selectedFilterDescription, // add this
+
       },
     );
   }
