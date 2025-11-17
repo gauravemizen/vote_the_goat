@@ -3,14 +3,9 @@ import 'package:vote_for_goat/custom_code/widgets/cube_grid_loader.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
 import 'your_final_ranking_model.dart';
 export 'your_final_ranking_model.dart';
@@ -264,47 +259,47 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              8.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 40.0,
-                            height: 40.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).backBtnClr,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? const Color(0xD5999999)
-                                      : Colors.white,
-                                  offset: const Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                            Brightness.dark) ==
-                                        true
-                                    ? Colors.black
-                                    : const Color(0xD5999999),
-                              ),
-                            ),
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: FaIcon(
-                                FontAwesomeIcons.edit,
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                size: 24.0,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsetsDirectional.fromSTEB(
+                        //       8.0, 0.0, 0.0, 0.0),
+                        //   child: Container(
+                        //     width: 40.0,
+                        //     height: 40.0,
+                        //     decoration: BoxDecoration(
+                        //       color: FlutterFlowTheme.of(context).backBtnClr,
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           blurRadius: 4.0,
+                        //           color: (Theme.of(context).brightness ==
+                        //                       Brightness.dark) ==
+                        //                   true
+                        //               ? const Color(0xD5999999)
+                        //               : Colors.white,
+                        //           offset: const Offset(
+                        //             0.0,
+                        //             2.0,
+                        //           ),
+                        //         )
+                        //       ],
+                        //       borderRadius: BorderRadius.circular(12.0),
+                        //       border: Border.all(
+                        //         color: (Theme.of(context).brightness ==
+                        //                     Brightness.dark) ==
+                        //                 true
+                        //             ? Colors.black
+                        //             : const Color(0xD5999999),
+                        //       ),
+                        //     ),
+                        //     child: Align(
+                        //       alignment: const AlignmentDirectional(0.0, 0.0),
+                        //       child: FaIcon(
+                        //         FontAwesomeIcons.edit,
+                        //         color: FlutterFlowTheme.of(context).tertiary,
+                        //         size: 24.0,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -1269,8 +1264,8 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                           //   ],
                           // ),
                           _loading
-                              ? Center(child: CubeGridLoader( size: 40,))
-                              : Container(height: MediaQuery.sizeOf(context).height * 0.36,
+                              ? const Center(child: CubeGridLoader( size: 40,))
+                              : SizedBox(height: MediaQuery.sizeOf(context).height * 0.36,
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 100.0),
                                   child: ListView.builder(

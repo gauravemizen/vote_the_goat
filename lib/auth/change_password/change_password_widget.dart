@@ -2,7 +2,6 @@ import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -116,7 +115,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
         body: Stack(
           children: [
             Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
+              alignment: const AlignmentDirectional(0.0, 0.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
@@ -130,7 +129,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,9 +156,9 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                 color: (Theme.of(context).brightness ==
                                             Brightness.dark) ==
                                         true
-                                    ? Color(0x00000000)
+                                    ? const Color(0x00000000)
                                     : Colors.white,
-                                offset: Offset(
+                                offset: const Offset(
                                   0.0,
                                   2.0,
                                 ),
@@ -171,7 +170,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                           Brightness.dark) ==
                                       true
                                   ? Colors.black
-                                  : Color(0xD5999999),
+                                  : const Color(0xD5999999),
                             ),
                           ),
                           child: Icon(
@@ -183,9 +182,9 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                       ),
                       Expanded(
                         child: Align(
-                          alignment: AlignmentDirectional(0.0, 0.0),
+                          alignment: const AlignmentDirectional(0.0, 0.0),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 24.0, 0.0),
                             child: SingleChildScrollView(
                               child: Column(
@@ -211,7 +210,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                         .customTextStyle1
                                         .override(
                                           fontFamily: 'good times',
-                                          color: Color(0xFFEB6027),
+                                          color: const Color(0xFFEB6027),
                                           fontSize: 24.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
@@ -226,10 +225,10 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                     ],
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                       child: Text(
                         'Please create the new password',
                         style: FlutterFlowTheme.of(context)
@@ -257,8 +256,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 37.0, 0.0, 0.0),
-                    child: Container(
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 37.0, 0.0, 0.0),
+                    child: SizedBox(
                       width: double.infinity,
                       child: TextFormField(
                         controller: _model.passwordFieldTextController,
@@ -305,14 +304,14 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                         .fontStyle,
                                   ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0x00000000),
                               width: 1.0,
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0x00000000),
                               width: 1.0,
                             ),
@@ -336,8 +335,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                           fillColor: (Theme.of(context).brightness ==
                                       Brightness.dark) ==
                                   true
-                              ? Color(0x80050505)
-                              : Color(0x0C050505),
+                              ? const Color(0x80050505)
+                              : const Color(0x0C050505),
                           prefixIcon: Icon(
                             FFIcons.klock,
                             color: FlutterFlowTheme.of(context).tertiary,
@@ -384,8 +383,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-                    child: Container(
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                    child: SizedBox(
                       width: double.infinity,
                       child: TextFormField(
                         controller: _model.coPasswordFieldTextController,
@@ -432,14 +431,14 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                         .fontStyle,
                                   ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0x00000000),
                               width: 1.0,
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0x00000000),
                               width: 1.0,
                             ),
@@ -463,8 +462,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                           fillColor: (Theme.of(context).brightness ==
                                       Brightness.dark) ==
                                   true
-                              ? Color(0x80050505)
-                              : Color(0x0C050505),
+                              ? const Color(0x80050505)
+                              : const Color(0x0C050505),
                           prefixIcon: Icon(
                             FFIcons.klock,
                             color: FlutterFlowTheme.of(context).tertiary,
@@ -511,7 +510,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                   ),
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0.0, 1.0),
+                      alignment: const AlignmentDirectional(0.0, 1.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -519,9 +518,9 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                         highlightColor: Colors.transparent,
                         onTap: () async {},
                         child: Container(
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 40.0),
                             child: InkWell(
                               splashColor: Colors.transparent,
@@ -529,17 +528,17 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                var _shouldSetState = false;
+                                var shouldSetState = false;
                                 _model.apiResultm02 =
                                     await AuthGroup.changePasswordCall.call(
-                                  userId: widget!.userId,
+                                  userId: widget.userId,
                                   password:
                                       _model.passwordFieldTextController.text,
                                   passwordConfirmation:
                                       _model.coPasswordFieldTextController.text,
                                 );
 
-                                _shouldSetState = true;
+                                shouldSetState = true;
                                 if ((_model.apiResultm02?.succeeded ?? true)) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -573,8 +572,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                                       .fontStyle,
                                             ),
                                       ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor: Color(0xFF030303),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor: const Color(0xFF030303),
                                     ),
                                   );
 
@@ -612,11 +611,11 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                                       .fontStyle,
                                             ),
                                       ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor: Color(0xFF030303),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor: const Color(0xFF030303),
                                     ),
                                   );
-                                  if (_shouldSetState) safeSetState(() {});
+                                  if (shouldSetState) safeSetState(() {});
                                   return;
                                 }
 
@@ -624,7 +623,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                   _model.passwordFieldTextController?.clear();
                                   _model.coPasswordFieldTextController?.clear();
                                 });
-                                if (_shouldSetState) safeSetState(() {});
+                                if (shouldSetState) safeSetState(() {});
                               },
                               child: wrapWithModel(
                                 model: _model.gradientButtonCustomModel,
@@ -632,7 +631,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                                 child: Builder(builder: (_) {
                                   return DebugFlutterFlowModelContext(
                                     rootModel: _model.rootModel,
-                                    child: GradientButtonCustomWidget(
+                                    child: const GradientButtonCustomWidget(
                                       text: 'Save',
                                     ),
                                   );

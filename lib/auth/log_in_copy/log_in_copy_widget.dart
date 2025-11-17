@@ -1,14 +1,10 @@
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'log_in_copy_model.dart';
 export 'log_in_copy_model.dart';
 
@@ -113,7 +109,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
@@ -132,7 +128,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0,
@@ -145,15 +141,15 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Color(0x26FFFFFF),
+                          color: const Color(0x26FFFFFF),
                           boxShadow: [
                             BoxShadow(
                               blurRadius: 10.0,
                               color: Theme.of(context).brightness ==
                                       Brightness.dark
-                                  ? Color(0x33000000)
-                                  : Color(0x00000000),
-                              offset: Offset(
+                                  ? const Color(0x33000000)
+                                  : const Color(0x00000000),
+                              offset: const Offset(
                                 0.0,
                                 2.0,
                               ),
@@ -165,12 +161,12 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                           key: _model.formKey,
                           autovalidateMode: AutovalidateMode.disabled,
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 3.0, 5.0, 3.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: double.infinity,
                                   child: TextFormField(
                                     controller: _model.emailFieldTextController,
@@ -227,7 +223,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                                     .fontStyle,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -235,7 +231,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -265,8 +261,8 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                           (Theme.of(context).brightness ==
                                                       Brightness.dark) ==
                                                   true
-                                              ? Color(0x80050505)
-                                              : Color(0x0C050505),
+                                              ? const Color(0x80050505)
+                                              : const Color(0x0C050505),
                                       prefixIcon: Icon(
                                         FFIcons.kcomponent56,
                                         color: (Theme.of(context).brightness ==
@@ -308,9 +304,9 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: double.infinity,
                                     child: TextFormField(
                                       controller:
@@ -369,7 +365,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                                       .fontStyle,
                                             ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: Color(0x00000000),
                                             width: 1.0,
                                           ),
@@ -377,7 +373,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                               BorderRadius.circular(8.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: Color(0x00000000),
                                             width: 1.0,
                                           ),
@@ -407,8 +403,8 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                             (Theme.of(context).brightness ==
                                                         Brightness.dark) ==
                                                     true
-                                                ? Color(0x80050505)
-                                                : Color(0x0C050505),
+                                                ? const Color(0x80050505)
+                                                : const Color(0x0C050505),
                                         prefixIcon: Icon(
                                           FFIcons.klock,
                                           color:
@@ -473,7 +469,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -484,9 +480,9 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Container(
-                                            decoration: BoxDecoration(),
+                                            decoration: const BoxDecoration(),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(1.0, 0.0, 0.0, 0.0),
                                               child: Theme(
                                                 data: ThemeData(
@@ -525,7 +521,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                                           width: 2,
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .tertiary!,
+                                                              .tertiary,
                                                         )
                                                       : null,
                                                   activeColor:
@@ -623,9 +619,9 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         HomeOnboardingWidget.routeName);
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(),
+                                    decoration: const BoxDecoration(),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 16.0, 0.0, 0.0),
                                       child: wrapWithModel(
                                         model: _model.gradientButtonCustomModel,
@@ -634,7 +630,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         child: Builder(builder: (_) {
                                           return DebugFlutterFlowModelContext(
                                             rootModel: _model.rootModel,
-                                            child: GradientButtonCustomWidget(
+                                            child: const GradientButtonCustomWidget(
                                               text: 'Login',
                                             ),
                                           );
@@ -644,7 +640,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 24.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -667,12 +663,12 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                           borderRadius:
                                               BorderRadius.circular(0.0),
                                           border: Border.all(
-                                            color: Color(0xFFDFE0DF),
+                                            color: const Color(0xFFDFE0DF),
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 10.0, 0.0),
                                         child: Text(
                                           'Or',
@@ -716,15 +712,15 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                             ).image,
                                           ),
                                           border: Border.all(
-                                            color: Color(0xFFDFE0DF),
+                                            color: const Color(0xFFDFE0DF),
                                           ),
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 4.0)),
+                                    ].divide(const SizedBox(width: 4.0)),
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -742,7 +738,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         ),
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 10.0, 10.0, 10.0),
                                           child: ClipRRect(
                                             borderRadius:
@@ -757,7 +753,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             15.0, 0.0, 15.0, 0.0),
                                         child: Container(
                                           width: 54.0,
@@ -772,7 +768,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                           ),
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 10.0, 10.0, 10.0),
                                             child: ClipRRect(
                                               borderRadius:
@@ -799,7 +795,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         ),
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   10.0, 10.0, 10.0, 10.0),
                                           child: ClipRRect(
                                             borderRadius:
@@ -820,14 +816,14 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 22.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 16.0, 0.0, 0.0),
                                         child: Text(
                                           'Don’t have an account?',
@@ -862,7 +858,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 16.0, 0.0, 0.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,

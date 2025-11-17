@@ -13,18 +13,27 @@ abstract class FlutterFlowTheme {
   static Future initialize() async =>
       _prefs = await SharedPreferences.getInstance();
 
+  // static ThemeMode get themeMode {
+  //   final darkMode = _prefs?.getBool(kThemeModeKey);
+  //   return darkMode == null
+  //       ? ThemeMode.system
+  //       : darkMode
+  //           ? ThemeMode.dark
+  //           : ThemeMode.light;
+  // }
   static ThemeMode get themeMode {
     final darkMode = _prefs?.getBool(kThemeModeKey);
     return darkMode == null
-        ? ThemeMode.system
+        ? ThemeMode.dark  // Changed from ThemeMode.system
         : darkMode
-            ? ThemeMode.dark
-            : ThemeMode.light;
+        ? ThemeMode.dark
+        : ThemeMode.light;
   }
-
-  static void saveThemeMode(ThemeMode mode) => mode == ThemeMode.system
-      ? _prefs?.remove(kThemeModeKey)
-      : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
+  // static void saveThemeMode(ThemeMode mode) => mode == ThemeMode.system
+  //     ? _prefs?.remove(kThemeModeKey)
+  //     : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
+  static void saveThemeMode(ThemeMode mode) =>
+      _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
 
   static const double minTextScaleFactor = 1.0;
   static const double maxTextScaleFactor = 1.0;
@@ -182,7 +191,7 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color lightWhite = const Color(0xBF000000);
   late Color peach = const Color(0xFFDD7325);
   late Color skipGrey = const Color(0xFF262421);
-  late Color backBtnClr = const Color(0xFFFFFFFFF);
+  late Color backBtnClr = const Color(0xfffffffff);
   late Color brownColor = const Color(0xFFEB6027);
   late Color customColor1 = const Color(0xFF8429AF);
   late Color lightPeach = const Color(0xFFE48D4C);
@@ -355,7 +364,7 @@ class ThemeTypography extends Typography {
         fontSize: 12.0,
       );
   String get customTextStyle1Family => 'good times';
-  TextStyle get customTextStyle1 => TextStyle(
+  TextStyle get customTextStyle1 => const TextStyle(
         fontFamily: 'good times',
         color: Colors.white,
         fontWeight: FontWeight.normal,

@@ -1,12 +1,11 @@
 
 
 import 'package:vote_for_goat/custom_code/widgets/cube_grid_loader.dart';
+import '../../nav/nav_widget.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'dart:ui';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,14 +28,21 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
     with RouteAware {
   late SaveProgressRankingModel _model;
 
+  Future<ApiCallResponse>? _positionListFuture;
+
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool _loading = false;
+  final bool _loading = false;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => SaveProgressRankingModel());
+
+    _positionListFuture = DashboardGroup.positionlistCall.call(
+      authToken: FFAppState().authToken,
+    );
   }
 
   @override
@@ -95,9 +101,9 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
         ?.call(_model);
 
     return FutureBuilder<ApiCallResponse>(
-      future: DashboardGroup.positionlistCall.call(
-        authToken: FFAppState().authToken,
-      ),
+      future: _positionListFuture,
+
+
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Scaffold(
@@ -127,11 +133,11 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
             [];
 
 // Sort players by goat_points in descending order
-        players.sort((a, b) {
-          final aPoints = double.tryParse(getJsonField(a, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
-          final bPoints = double.tryParse(getJsonField(b, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
-          return bPoints.compareTo(aPoints); // Descending order
-        });
+//         players.sort((a, b) {
+//           final aPoints = double.tryParse(getJsonField(a, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
+//           final bPoints = double.tryParse(getJsonField(b, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0;
+//           return bPoints.compareTo(aPoints); // Descending order
+//         });
 
         return GestureDetector(
           onTap: () {
@@ -247,7 +253,13 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pop();
+                                        // context.pop();
+
+
+                                        context.pushNamed(
+                                          NavWidget.routeName,
+                                          queryParameters: {'initialTab': '0'},
+                                        );
                                       },
                                       child: Icon(
                                         Icons.arrow_back,
@@ -263,7 +275,11 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                             8.0, 0.0, 0.0, 0.0),
                                     child: InkWell(
                                       onTap: (){
-                                        context.pop();
+                                        // context.pop();
+                                        
+                                        
+                                        
+                                        print('shi h');
                                       },
                                       child: Container(
                                         width: 40.0,
@@ -484,27 +500,27 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                                                 ),
                                                       ),
                                                     ),
-                                                    Text(
-                                                      'GOAT Points',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .baloo2(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                            ),
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .oposite,
-                                                            fontSize: 16.0,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                          ),
-                                                    ),
+                                                    // Text(
+                                                    //   'GOAT Points',
+                                                    //   style: FlutterFlowTheme
+                                                    //           .of(context)
+                                                    //       .bodyMedium
+                                                    //       .override(
+                                                    //         font: GoogleFonts
+                                                    //             .baloo2(
+                                                    //           fontWeight:
+                                                    //               FontWeight
+                                                    //                   .w800,
+                                                    //         ),
+                                                    //         color: FlutterFlowTheme
+                                                    //                 .of(context)
+                                                    //             .oposite,
+                                                    //         fontSize: 16.0,
+                                                    //         letterSpacing: 0.0,
+                                                    //         fontWeight:
+                                                    //             FontWeight.w800,
+                                                    //       ),
+                                                    // ),
                                                   ],
                                                 ),
                                               ),
@@ -664,31 +680,31 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                                         ),
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(7.0,
-                                                              0.0, 0.0, 0.0),
-                                                      child: Text(
-                                                        (double.tryParse(getJsonField(
-                                                                            player,
-                                                                            r'''$.goat_points''')
-                                                                        ?.toString() ??
-                                                                    '0') ??
-                                                                0.0)
-                                                            .toStringAsFixed(2),
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .titleMedium
-                                                            .override(
-                                                              font: GoogleFonts
-                                                                  .poppins(),
-                                                              fontSize: 12.0,
-                                                              letterSpacing:
-                                                                  0.0,
-                                                            ),
-                                                      ),
-                                                    ),
+                                                    // Padding(
+                                                    //   padding:
+                                                    //       const EdgeInsetsDirectional
+                                                    //           .fromSTEB(7.0,
+                                                    //           0.0, 0.0, 0.0),
+                                                    //   child: Text(
+                                                    //     (double.tryParse(getJsonField(
+                                                    //                         player,
+                                                    //                         r'''$.goat_points''')
+                                                    //                     ?.toString() ??
+                                                    //                 '0') ??
+                                                    //             0.0)
+                                                    //         .toStringAsFixed(2),
+                                                    //     style: FlutterFlowTheme
+                                                    //             .of(context)
+                                                    //         .titleMedium
+                                                    //         .override(
+                                                    //           font: GoogleFonts
+                                                    //               .poppins(),
+                                                    //           fontSize: 12.0,
+                                                    //           letterSpacing:
+                                                    //               0.0,
+                                                    //         ),
+                                                    //   ),
+                                                    // ),
                                                   ],
                                                 ),
                                               ),
@@ -696,7 +712,8 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                           },
                                         ),
                                       ),
-                                    )
+                                    ),
+                                    const SizedBox(height: 70,)
                                   ],
                                 ),
                               ),
@@ -856,8 +873,8 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                 ),
                           ),
                         ),
-                        Align(
-                          alignment: const AlignmentDirectional(0.0, 0.0),
+                        const Align(
+                          alignment: AlignmentDirectional(0.0, 0.0),
                           // child: Text(
                           //   getJsonField(player, r'''$.player.greatness_index_value''')
                           //           ?.toString() ??
@@ -876,22 +893,25 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                           //         fontWeight: FontWeight.bold,
                           //       ),
                           // ),
-                          child: Text(
-                            (double.tryParse(getJsonField(player, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0).toStringAsFixed(2),
-                            textAlign: TextAlign.center,
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                              font: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              color: rank == 2
-                                  ? Colors.black
-                                  : FlutterFlowTheme.of(context).tertiary,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+
+
+                          ///goat points
+                          // child: Text(
+                          //   (double.tryParse(getJsonField(player, r'''$.goat_points''')?.toString() ?? '0') ?? 0.0).toStringAsFixed(2),
+                          //   textAlign: TextAlign.center,
+                          //   style: FlutterFlowTheme.of(context)
+                          //       .titleMedium
+                          //       .override(
+                          //     font: GoogleFonts.poppins(
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //     color: rank == 2
+                          //         ? Colors.black
+                          //         : FlutterFlowTheme.of(context).tertiary,
+                          //     letterSpacing: 0.0,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
 
 
 

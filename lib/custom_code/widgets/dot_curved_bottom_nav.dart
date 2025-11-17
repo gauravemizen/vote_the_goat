@@ -1,5 +1,4 @@
 // Automatic FlutterFlow imports
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class DotCurvedBottomNav extends StatefulWidget {
   final bool hideOnScroll;
 
   DotCurvedBottomNav({
-    Key? key,
+    super.key,
     required this.items,
     this.scrollController,
     this.hideOnScroll = false,
@@ -79,8 +78,7 @@ class DotCurvedBottomNav extends StatefulWidget {
         assert(0 <= height && height <= 75.0),
         assert(hideOnScroll ? scrollController != null : true,
             "You need to provide [scrollController] parameter to enable hide on scroll"),
-        assert(borderRadius >= 0 && borderRadius <= 30),
-        super(key: key);
+        assert(borderRadius >= 0 && borderRadius <= 30);
 
   @override
   State<DotCurvedBottomNav> createState() => _DotCurvedBottomNavState();
@@ -146,7 +144,7 @@ class _DotCurvedBottomNavState extends State<DotCurvedBottomNav>
     //   return perItemWidth * _pos + (perItemWidth - 20) / 2; // 40 is the image width
     // }
 
-    double _calculateIndicatorOffset(BuildContext context) {
+    double calculateIndicatorOffset(BuildContext context) {
       final totalWidth = MediaQuery.of(context).size.width;
       final perItemWidth = totalWidth / widget.items.length;
       return perItemWidth * _pos + (perItemWidth - 24) / 2;
@@ -192,7 +190,7 @@ class _DotCurvedBottomNavState extends State<DotCurvedBottomNav>
         startingLoc: _pos,
         itemsLength: widget.items.length,
         // color: widget.backgroundColor,
-        color: Theme.of(context).brightness == Brightness.dark? const Color(0xff282828) :Color(0xffEB6027) ,
+        color: Theme.of(context).brightness == Brightness.dark? const Color(0xff282828) :const Color(0xffEB6027) ,
         indicatorColor: Colors.transparent, // we'll use image instead
         textDirection: TextDirection.LTR,
         indicatorSize: widget.indicatorSize,
@@ -204,7 +202,7 @@ class _DotCurvedBottomNavState extends State<DotCurvedBottomNav>
 
         // Image-based indicator
         Positioned(
-        left: _calculateIndicatorOffset(context),
+        left: calculateIndicatorOffset(context),
         bottom: widget.height - 11, // adjust vertical position of image
         child: Image.asset(
           // 'assets/images/basketball.png',
@@ -220,7 +218,7 @@ class _DotCurvedBottomNavState extends State<DotCurvedBottomNav>
         left: 0,
         right: 0,
         bottom: 0,
-        child: Container(
+        child: SizedBox(
         height: widget.height,
         // padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(

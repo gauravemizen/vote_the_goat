@@ -1,13 +1,9 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'player_bio2_model.dart';
 export 'player_bio2_model.dart';
 
@@ -120,16 +116,16 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
+              alignment: const AlignmentDirectional(0.0, 0.0),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,7 +135,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                             height: 40.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).backBtnClr,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: Color(0x335D4E4E),
@@ -159,7 +155,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                               onTap: () async {
                                 context.safePop();
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_back_rounded,
                                 color: Colors.white,
                                 size: 24.0,
@@ -175,7 +171,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                     .customTextStyle1
                                     .override(
                                       fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
+                                      color: const Color(0xFFEB6027),
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -196,14 +192,14 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 8.0, 0.0, 0.0, 0.0),
                             child: Container(
                               width: 40.0,
                               height: 40.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).backBtnClr,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x335D4E4E),
@@ -224,7 +220,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                   context
                                       .pushNamed(AboutScreenWidget.routeName);
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   FFIcons.kessentialUi1,
                                   color: Colors.white,
                                   size: 24.0,
@@ -237,7 +233,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                     ),
                     Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,7 +270,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                       ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 3.0, 0.0, 3.0),
                                   child: Text(
                                     'Jo',
@@ -329,7 +325,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                           ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           4.0, 0.0, 0.0, 0.0),
                                       child: Text(
                                         '16 March 1994',
@@ -390,7 +386,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                           ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           4.0, 0.0, 0.0, 0.0),
                                       child: Text(
                                         '30Y  10M  13D',
@@ -443,12 +439,12 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             16.0, 0.0, 16.0, 0.0),
                         child: Column(
                           children: [
                             Align(
-                              alignment: Alignment(0.0, 0),
+                              alignment: const Alignment(0.0, 0),
                               child: TabBar(
                                 isScrollable: true,
                                 labelColor: FlutterFlowTheme.of(context).peach,
@@ -491,7 +487,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                     ),
                                 indicatorColor:
                                     FlutterFlowTheme.of(context).primary,
-                                tabs: [
+                                tabs: const [
                                   Tab(
                                     text: 'Profile',
                                   ),
@@ -522,9 +518,9 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: [
                                   Container(
-                                    decoration: BoxDecoration(),
+                                    decoration: const BoxDecoration(),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 16.0, 0.0, 0.0),
                                       child: SingleChildScrollView(
                                         child: Column(
@@ -552,13 +548,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                     .circular(
                                                                         8.0),
                                                             border: Border.all(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xFF282727),
                                                             ),
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         6.0,
                                                                         8.0,
@@ -587,7 +583,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -618,7 +614,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -654,7 +650,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                 ),
                                                 Container(
                                                   width: 10.0,
-                                                  decoration: BoxDecoration(),
+                                                  decoration: const BoxDecoration(),
                                                 ),
                                                 Expanded(
                                                   child: Column(
@@ -672,13 +668,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                     .circular(
                                                                         8.0),
                                                             border: Border.all(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xFF282727),
                                                             ),
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         6.0,
                                                                         8.0,
@@ -707,7 +703,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -738,7 +734,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -774,7 +770,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                 ),
                                                 Container(
                                                   width: 10.0,
-                                                  decoration: BoxDecoration(),
+                                                  decoration: const BoxDecoration(),
                                                 ),
                                                 Expanded(
                                                   child: Column(
@@ -792,13 +788,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                     .circular(
                                                                         8.0),
                                                             border: Border.all(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xFF282727),
                                                             ),
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                EdgeInsetsDirectional
+                                                                const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         6.0,
                                                                         8.0,
@@ -827,7 +823,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -858,7 +854,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                 ),
                                                                 Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           -1.0,
                                                                           0.0),
                                                                   child: Text(
@@ -895,7 +891,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ],
                                             ),
                                             Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       0.0, 20.0, 0.0, 0.0),
                                               child: Container(
@@ -904,7 +900,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                       BorderRadius.circular(
                                                           8.0),
                                                   border: Border.all(
-                                                    color: Color(0xFF282727),
+                                                    color: const Color(0xFF282727),
                                                   ),
                                                 ),
                                                 child: SingleChildScrollView(
@@ -919,19 +915,19 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(),
+                                                                    const BoxDecoration(),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -949,7 +945,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                             ),
                                                                             color:
-                                                                                Color(0xFFFF7D1F),
+                                                                                const Color(0xFFFF7D1F),
                                                                             letterSpacing:
                                                                                 0.0,
                                                                             fontWeight:
@@ -966,24 +962,24 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Container(
                                                             width: 10.0,
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                           ),
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(),
+                                                                    const BoxDecoration(),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -1001,7 +997,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                             ),
                                                                             color:
-                                                                                Color(0xFFFF7D1F),
+                                                                                const Color(0xFFFF7D1F),
                                                                             letterSpacing:
                                                                                 0.0,
                                                                             fontWeight:
@@ -1024,22 +1020,22 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                    const BoxDecoration(
                                                                   color: Color(
                                                                       0xFF2A2A2A),
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,
@@ -1072,27 +1068,27 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Container(
                                                             width: 1.0,
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                           ),
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                    const BoxDecoration(
                                                                   color: Color(
                                                                       0xFF2A2A2A),
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,
@@ -1131,19 +1127,19 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(),
+                                                                    const BoxDecoration(),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -1161,7 +1157,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                             ),
                                                                             color:
-                                                                                Color(0xFFFF7D1F),
+                                                                                const Color(0xFFFF7D1F),
                                                                             letterSpacing:
                                                                                 0.0,
                                                                             fontWeight:
@@ -1178,24 +1174,24 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Container(
                                                             width: 10.0,
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                           ),
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(),
+                                                                    const BoxDecoration(),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -1213,7 +1209,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                             ),
                                                                             color:
-                                                                                Color(0xFFFF7D1F),
+                                                                                const Color(0xFFFF7D1F),
                                                                             letterSpacing:
                                                                                 0.0,
                                                                             fontWeight:
@@ -1236,22 +1232,22 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                    const BoxDecoration(
                                                                   color: Color(
                                                                       0xFF2A2A2A),
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,
@@ -1284,27 +1280,27 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                           Container(
                                                             width: 1.0,
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                           ),
                                                           Expanded(
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                    const BoxDecoration(
                                                                   color: Color(
                                                                       0xFF2A2A2A),
                                                                 ),
                                                                 child: Align(
                                                                   alignment:
-                                                                      AlignmentDirectional(
+                                                                      const AlignmentDirectional(
                                                                           0.0,
                                                                           0.0),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsetsDirectional
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             10.0,
@@ -1339,18 +1335,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                       Expanded(
                                                         child: Align(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   0.0, 0.0),
                                                           child: Container(
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -1370,7 +1366,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               .headlineLarge
                                                                               .fontStyle,
                                                                         ),
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0xFFFF7D1F),
                                                                         letterSpacing:
                                                                             0.0,
@@ -1389,17 +1385,17 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                       Expanded(
                                                         child: Align(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   0.0, 0.0),
                                                           child: Container(
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
-                                                                padding: EdgeInsetsDirectional
+                                                                padding: const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         10.0,
@@ -1436,18 +1432,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                       Expanded(
                                                         child: Align(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   0.0, 0.0),
                                                           child: Container(
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsetsDirectional
+                                                                    const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             9.0,
@@ -1467,7 +1463,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                               .headlineLarge
                                                                               .fontStyle,
                                                                         ),
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0xFFFF7D1F),
                                                                         letterSpacing:
                                                                             0.0,
@@ -1486,17 +1482,17 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                       Expanded(
                                                         child: Align(
                                                           alignment:
-                                                              AlignmentDirectional(
+                                                              const AlignmentDirectional(
                                                                   0.0, 0.0),
                                                           child: Container(
                                                             decoration:
-                                                                BoxDecoration(),
+                                                                const BoxDecoration(),
                                                             child: Align(
                                                               alignment:
-                                                                  AlignmentDirectional(
+                                                                  const AlignmentDirectional(
                                                                       0.0, 0.0),
                                                               child: Padding(
-                                                                padding: EdgeInsetsDirectional
+                                                                padding: const EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         10.0,
@@ -1541,7 +1537,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 16.0, 0.0, 0.0),
                                     child: SingleChildScrollView(
                                       child: Column(
@@ -1568,13 +1564,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -1603,7 +1599,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1636,7 +1632,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1673,7 +1669,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -1691,13 +1687,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -1726,7 +1722,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1759,7 +1755,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1796,7 +1792,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -1814,13 +1810,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -1849,7 +1845,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1882,7 +1878,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -1921,14 +1917,14 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 20.0, 0.0, 0.0),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 border: Border.all(
-                                                  color: Color(0xFF282727),
+                                                  color: const Color(0xFF282727),
                                                 ),
                                               ),
                                               child: SingleChildScrollView(
@@ -1943,18 +1939,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -1974,7 +1970,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -1992,23 +1988,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -2028,7 +2024,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -2052,21 +2048,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2102,26 +2098,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2163,18 +2159,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -2194,7 +2190,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -2212,23 +2208,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -2248,7 +2244,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -2272,21 +2268,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2322,26 +2318,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2379,18 +2375,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -2410,7 +2406,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -2431,18 +2427,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2481,18 +2477,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -2512,7 +2508,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -2533,18 +2529,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -2590,7 +2586,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 16.0, 0.0, 0.0),
                                     child: SingleChildScrollView(
                                       child: Column(
@@ -2617,13 +2613,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -2652,7 +2648,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2685,7 +2681,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2722,7 +2718,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -2740,13 +2736,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -2775,7 +2771,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2808,7 +2804,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2845,7 +2841,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -2863,13 +2859,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -2898,7 +2894,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2931,7 +2927,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -2970,14 +2966,14 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 20.0, 0.0, 0.0),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 border: Border.all(
-                                                  color: Color(0xFF282727),
+                                                  color: const Color(0xFF282727),
                                                 ),
                                               ),
                                               child: SingleChildScrollView(
@@ -2992,18 +2988,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3023,7 +3019,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -3041,23 +3037,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3077,7 +3073,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -3101,21 +3097,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3151,26 +3147,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3212,18 +3208,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3243,7 +3239,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -3261,23 +3257,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3297,7 +3293,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -3321,21 +3317,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3371,26 +3367,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3428,18 +3424,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3459,7 +3455,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -3480,18 +3476,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3530,18 +3526,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -3561,7 +3557,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -3582,18 +3578,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -3639,7 +3635,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 16.0, 0.0, 0.0),
                                     child: SingleChildScrollView(
                                       child: Column(
@@ -3666,13 +3662,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -3701,7 +3697,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -3734,7 +3730,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -3771,7 +3767,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -3789,13 +3785,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -3824,7 +3820,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -3857,7 +3853,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -3894,7 +3890,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                               ),
                                               Container(
                                                 width: 10.0,
-                                                decoration: BoxDecoration(),
+                                                decoration: const BoxDecoration(),
                                               ),
                                               Expanded(
                                                 child: Column(
@@ -3912,13 +3908,13 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                   .circular(
                                                                       8.0),
                                                           border: Border.all(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xFF282727),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsetsDirectional
+                                                              const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       6.0,
                                                                       8.0,
@@ -3947,7 +3943,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -3980,7 +3976,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                               ),
                                                               Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         -1.0,
                                                                         0.0),
                                                                 child: Text(
@@ -4019,14 +4015,14 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 20.0, 0.0, 0.0),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 border: Border.all(
-                                                  color: Color(0xFF282727),
+                                                  color: const Color(0xFF282727),
                                                 ),
                                               ),
                                               child: SingleChildScrollView(
@@ -4041,18 +4037,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4072,7 +4068,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -4090,23 +4086,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4126,7 +4122,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -4150,21 +4146,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -4200,26 +4196,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -4261,18 +4257,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4292,7 +4288,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -4310,23 +4306,23 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 10.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(),
+                                                                  const BoxDecoration(),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4346,7 +4342,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                                 FlutterFlowTheme.of(context).headlineLarge.fontStyle,
                                                                           ),
                                                                           color:
-                                                                              Color(0xFFFF7D1F),
+                                                                              const Color(0xFFFF7D1F),
                                                                           letterSpacing:
                                                                               0.0,
                                                                           fontWeight:
@@ -4370,21 +4366,21 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -4420,26 +4416,26 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                         Container(
                                                           width: 1.0,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                         ),
                                                         Expanded(
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Container(
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 color: Color(
                                                                     0xFF2A2A2A),
                                                               ),
                                                               child: Align(
                                                                 alignment:
-                                                                    AlignmentDirectional(
+                                                                    const AlignmentDirectional(
                                                                         0.0,
                                                                         0.0),
                                                                 child: Padding(
-                                                                  padding: EdgeInsetsDirectional
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -4477,18 +4473,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4508,7 +4504,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -4529,18 +4525,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,
@@ -4579,18 +4575,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           9.0,
@@ -4610,7 +4606,7 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                                             .headlineLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                      color: Color(
+                                                                      color: const Color(
                                                                           0xFFFF7D1F),
                                                                       letterSpacing:
                                                                           0.0,
@@ -4631,18 +4627,18 @@ class _PlayerBio2WidgetState extends State<PlayerBio2Widget>
                                                     Expanded(
                                                       child: Align(
                                                         alignment:
-                                                            AlignmentDirectional(
+                                                            const AlignmentDirectional(
                                                                 0.0, 0.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Align(
                                                             alignment:
-                                                                AlignmentDirectional(
+                                                                const AlignmentDirectional(
                                                                     0.0, 0.0),
                                                             child: Padding(
                                                               padding:
-                                                                  EdgeInsetsDirectional
+                                                                  const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
                                                                           10.0,

@@ -1,8 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -93,7 +91,7 @@ class _ActiveContastDetailsWidgetState extends State<ActiveContastDetailsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.apiResult9k2 = await DashboardGroup.contestDetailsCall.call(
-        contestId: widget!.contestId,
+        contestId: widget.contestId,
         authToken: FFAppState().authToken,
       );
 
@@ -480,7 +478,7 @@ class _ActiveContastDetailsWidgetState extends State<ActiveContastDetailsWidget>
                                                             .height *
                                                         0.24,
                                                 fit: BoxFit.fill,
-                                                alignment: Alignment(0.0, 0.0),
+                                                alignment: const Alignment(0.0, 0.0),
                                               ),
                                               getJsonField(
                                                 DashboardGroup
@@ -1286,7 +1284,7 @@ class _ActiveContastDetailsWidgetState extends State<ActiveContastDetailsWidget>
                   ),
             _model.isLoading
                 ? Center(
-                    child: Container(
+                    child: SizedBox(
                       height: 40,
                       child: SpinKitCubeGrid(
                         color: FlutterFlowTheme.of(context).primary,

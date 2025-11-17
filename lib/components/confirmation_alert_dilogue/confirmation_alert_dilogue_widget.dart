@@ -2,12 +2,9 @@ import '/components/confirm_dilogue/confirm_dilogue_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import 'confirmation_alert_dilogue_model.dart';
 export 'confirmation_alert_dilogue_model.dart';
 
@@ -93,17 +90,17 @@ class _ConfirmationAlertDilogueWidgetState
         ?.call(_model);
 
     return Align(
-      alignment: AlignmentDirectional(0.0, 0.0),
+      alignment: const AlignmentDirectional(0.0, 0.0),
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+        padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
         child: Container(
           width: double.infinity,
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 530.0,
           ),
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 3.0,
                 color: Color(0x33000000),
@@ -120,20 +117,20 @@ class _ConfirmationAlertDilogueWidgetState
             ),
           ),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 16.0),
+                      const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
+                        alignment: const AlignmentDirectional(0.0, 0.0),
                         child: Lottie.asset(
                           'assets/jsons/Bouncing_Basket_Ball.json',
                           width: 100.0,
@@ -143,9 +140,9 @@ class _ConfirmationAlertDilogueWidgetState
                         ),
                       ),
                       Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
+                        alignment: const AlignmentDirectional(0.0, 0.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 8.0),
                           child: Text(
                             'Confirm Player Choice',
@@ -171,9 +168,9 @@ class _ConfirmationAlertDilogueWidgetState
                         ),
                       ),
                       Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
+                        alignment: const AlignmentDirectional(0.0, 0.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 12.0, 0.0, 0.0),
                           child: Text(
                             'Are you sure you want to choose this player?',
@@ -202,14 +199,14 @@ class _ConfirmationAlertDilogueWidgetState
                 ),
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 10.0),
+                      const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 10.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
                         child: FFButtonWidget(
                           onPressed: () async {
                             Navigator.pop(context);
@@ -217,9 +214,9 @@ class _ConfirmationAlertDilogueWidgetState
                           text: 'NO',
                           options: FFButtonOptions(
                             height: 40.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 20.0, 0.0, 20.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Colors.white,
                             textStyle: FlutterFlowTheme.of(context)
@@ -254,7 +251,7 @@ class _ConfirmationAlertDilogueWidgetState
                         child: Builder(builder: (_) {
                           return DebugFlutterFlowModelContext(
                             rootModel: _model.rootModel,
-                            child: ConfirmDilogueWidget(),
+                            child: const ConfirmDilogueWidget(),
                           );
                         }),
                       ),

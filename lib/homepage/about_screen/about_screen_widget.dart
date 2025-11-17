@@ -3,8 +3,6 @@ import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/components/no_data_found/no_data_found_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -569,7 +567,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                         // ),
 
                                                         Padding(
-                                                          padding:  EdgeInsetsDirectional.fromSTEB(14.0, 10.0, 14.0, 10.0),
+                                                          padding:  const EdgeInsetsDirectional.fromSTEB(14.0, 10.0, 14.0, 10.0),
                                                           child: Html(
                                                             data: getJsonField(
                                                               listItemsItem,

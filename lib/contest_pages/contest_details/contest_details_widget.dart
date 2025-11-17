@@ -1,13 +1,10 @@
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +44,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
       safeSetState(() {});
       _model.apiResult5ic =
           await DashboardGroup.comlpleteContestDetailsCall.call(
-        contestId: widget!.contestId,
+        contestId: widget.contestId,
         authToken: FFAppState().authToken,
       );
 
@@ -400,681 +397,681 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                       .fontStyle,
                                 ),
                           ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 20.0, 0.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: (Theme.of(context).brightness ==
-                                                  Brightness.dark) ==
-                                              true
-                                          ? const Color(0xFF4E4E4E)
-                                          : Colors.transparent,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 10.0, 10.0, 10.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Icon(
-                                              Icons.tornado_outlined,
-                                              color: Color(0xFFC0BFBF),
-                                              size: 16.0,
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  5.0, 0.0, 0.0, 0.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Text(
-                                                'Difficulty',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodySmall
-                                                    .override(
-                                                      font: GoogleFonts.poppins(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontStyle,
-                                                      ),
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .tertiary,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontStyle,
-                                                    ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 5.0, 0.0, 0.0),
-                                                child: Text(
-                                                  getJsonField(
-                                                    DashboardGroup
-                                                        .comlpleteContestDetailsCall
-                                                        .contestResult(
-                                                      (_model.apiResult5ic
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    ),
-                                                    r'''$.difficulty_type''',
-                                                  ).toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .labelMedium
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                        color: (Theme.of(context)
-                                                                        .brightness ==
-                                                                    Brightness
-                                                                        .dark) ==
-                                                                true
-                                                            ? const Color(0xFFDBDBDB)
-                                                            : const Color(0xFC000000),
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .fontStyle,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      10.0, 0.0, 10.0, 0.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? const Color(0xFF4E4E4E)
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 10.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Icon(
-                                                Icons.calendar_month,
-                                                color: Color(0xFFC0BFBF),
-                                                size: 16.0,
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    5.0, 0.0, 0.0, 0.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Valid',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodySmall
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontStyle,
-                                                        ),
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .tertiary,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontStyle,
-                                                      ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 5.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    getJsonField(
-                                                      DashboardGroup
-                                                          .comlpleteContestDetailsCall
-                                                          .contestResult(
-                                                        (_model.apiResult5ic
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      ),
-                                                      r'''$.days_remaining''',
-                                                    ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  true
-                                                              ? const Color(
-                                                                  0xFFDBDBDB)
-                                                              : const Color(
-                                                                  0xFC000000),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 10.0, 0.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? const Color(0xFF4E4E4E)
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 10.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: SvgPicture.asset(
-                                                  'assets/images/Group_(3).svg',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    5.0, 0.0, 0.0, 0.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Rewards',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodySmall
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontStyle,
-                                                        ),
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .tertiary,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontStyle,
-                                                      ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 5.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    getJsonField(
-                                                      DashboardGroup
-                                                          .comlpleteContestDetailsCall
-                                                          .contestResult(
-                                                        (_model.apiResult5ic
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      ),
-                                                      r'''$.rewards''',
-                                                    ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  true
-                                                              ? const Color(
-                                                                  0xFFDBDBDB)
-                                                              : const Color(
-                                                                  0xFC000000),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 10.0, 0.0, 0.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: (Theme.of(context).brightness ==
-                                                  Brightness.dark) ==
-                                              true
-                                          ? const Color(0xFF4E4E4E)
-                                          : Colors.transparent,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 10.0, 10.0, 10.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Icon(
-                                              Icons.groups_2,
-                                              color: Color(0xFFC0BFBF),
-                                              size: 16.0,
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  5.0, 0.0, 0.0, 0.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Participants',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodySmall
-                                                    .override(
-                                                      font: GoogleFonts.poppins(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontStyle,
-                                                      ),
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .tertiary,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .fontStyle,
-                                                    ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 5.0, 0.0, 0.0),
-                                                child: Text(
-                                                  getJsonField(
-                                                    DashboardGroup
-                                                        .comlpleteContestDetailsCall
-                                                        .contestResult(
-                                                      (_model.apiResult5ic
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    ),
-                                                    r'''$.participants''',
-                                                  ).toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .labelMedium
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                        color: (Theme.of(context)
-                                                                        .brightness ==
-                                                                    Brightness
-                                                                        .dark) ==
-                                                                true
-                                                            ? const Color(0xFFDBDBDB)
-                                                            : const Color(0xFC000000),
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .fontStyle,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      10.0, 0.0, 0.0, 0.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? const Color(0xFF4E4E4E)
-                                            : Colors.transparent,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 10.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.questionCircle,
-                                                color: Color(0xFFC0BFBF),
-                                                size: 16.0,
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    5.0, 0.0, 0.0, 0.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Total Questions',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodySmall
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodySmall
-                                                                  .fontStyle,
-                                                        ),
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .tertiary,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodySmall
-                                                                .fontStyle,
-                                                      ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 5.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    getJsonField(
-                                                      DashboardGroup
-                                                          .comlpleteContestDetailsCall
-                                                          .contestResult(
-                                                        (_model.apiResult5ic
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      ),
-                                                      r'''$.total_questions''',
-                                                    ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: (Theme.of(context)
-                                                                          .brightness ==
-                                                                      Brightness
-                                                                          .dark) ==
-                                                                  true
-                                                              ? const Color(
-                                                                  0xFFDBDBDB)
-                                                              : const Color(
-                                                                  0xFC000000),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       0.0, 20.0, 0.0, 0.0),
+                          //   child: Row(
+                          //     mainAxisSize: MainAxisSize.max,
+                          //     children: [
+                          //       Container(
+                          //         decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(8.0),
+                          //           border: Border.all(
+                          //             color: (Theme.of(context).brightness ==
+                          //                         Brightness.dark) ==
+                          //                     true
+                          //                 ? const Color(0xFF4E4E4E)
+                          //                 : Colors.transparent,
+                          //           ),
+                          //         ),
+                          //         child: Padding(
+                          //           padding: const EdgeInsetsDirectional.fromSTEB(
+                          //               10.0, 10.0, 10.0, 10.0),
+                          //           child: Row(
+                          //             mainAxisSize: MainAxisSize.max,
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //             children: [
+                          //               const Column(
+                          //                 mainAxisSize: MainAxisSize.max,
+                          //                 children: [
+                          //                   Icon(
+                          //                     Icons.tornado_outlined,
+                          //                     color: Color(0xFFC0BFBF),
+                          //                     size: 16.0,
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //               Padding(
+                          //                 padding:
+                          //                     const EdgeInsetsDirectional.fromSTEB(
+                          //                         5.0, 0.0, 0.0, 0.0),
+                          //                 child: Column(
+                          //                   mainAxisSize: MainAxisSize.max,
+                          //                   children: [
+                          //                     Text(
+                          //                       'Difficulty',
+                          //                       style: FlutterFlowTheme.of(
+                          //                               context)
+                          //                           .bodySmall
+                          //                           .override(
+                          //                             font: GoogleFonts.poppins(
+                          //                               fontWeight:
+                          //                                   FlutterFlowTheme.of(
+                          //                                           context)
+                          //                                       .bodySmall
+                          //                                       .fontWeight,
+                          //                               fontStyle:
+                          //                                   FlutterFlowTheme.of(
+                          //                                           context)
+                          //                                       .bodySmall
+                          //                                       .fontStyle,
+                          //                             ),
+                          //                             color:
+                          //                                 FlutterFlowTheme.of(
+                          //                                         context)
+                          //                                     .tertiary,
+                          //                             letterSpacing: 0.0,
+                          //                             fontWeight:
+                          //                                 FlutterFlowTheme.of(
+                          //                                         context)
+                          //                                     .bodySmall
+                          //                                     .fontWeight,
+                          //                             fontStyle:
+                          //                                 FlutterFlowTheme.of(
+                          //                                         context)
+                          //                                     .bodySmall
+                          //                                     .fontStyle,
+                          //                           ),
+                          //                     ),
+                          //                     Padding(
+                          //                       padding: const EdgeInsetsDirectional
+                          //                           .fromSTEB(
+                          //                               0.0, 5.0, 0.0, 0.0),
+                          //                       child: Text(
+                          //                         getJsonField(
+                          //                           DashboardGroup
+                          //                               .comlpleteContestDetailsCall
+                          //                               .contestResult(
+                          //                             (_model.apiResult5ic
+                          //                                     ?.jsonBody ??
+                          //                                 ''),
+                          //                           ),
+                          //                           r'''$.difficulty_type''',
+                          //                         ).toString(),
+                          //                         style: FlutterFlowTheme.of(
+                          //                                 context)
+                          //                             .labelMedium
+                          //                             .override(
+                          //                               font:
+                          //                                   GoogleFonts.poppins(
+                          //                                 fontWeight:
+                          //                                     FontWeight.w600,
+                          //                                 fontStyle:
+                          //                                     FlutterFlowTheme.of(
+                          //                                             context)
+                          //                                         .labelMedium
+                          //                                         .fontStyle,
+                          //                               ),
+                          //                               color: (Theme.of(context)
+                          //                                               .brightness ==
+                          //                                           Brightness
+                          //                                               .dark) ==
+                          //                                       true
+                          //                                   ? const Color(0xFFDBDBDB)
+                          //                                   : const Color(0xFC000000),
+                          //                               letterSpacing: 0.0,
+                          //                               fontWeight:
+                          //                                   FontWeight.w600,
+                          //                               fontStyle:
+                          //                                   FlutterFlowTheme.of(
+                          //                                           context)
+                          //                                       .labelMedium
+                          //                                       .fontStyle,
+                          //                             ),
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       // Padding(
+                          //       //   padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //       10.0, 0.0, 10.0, 0.0),
+                          //       //   child: Container(
+                          //       //     decoration: BoxDecoration(
+                          //       //       borderRadius: BorderRadius.circular(8.0),
+                          //       //       border: Border.all(
+                          //       //         color: (Theme.of(context).brightness ==
+                          //       //                     Brightness.dark) ==
+                          //       //                 true
+                          //       //             ? const Color(0xFF4E4E4E)
+                          //       //             : Colors.transparent,
+                          //       //       ),
+                          //       //     ),
+                          //       //     child: Padding(
+                          //       //       padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //           10.0, 10.0, 10.0, 10.0),
+                          //       //       child: Row(
+                          //       //         mainAxisSize: MainAxisSize.max,
+                          //       //         crossAxisAlignment:
+                          //       //             CrossAxisAlignment.start,
+                          //       //         children: [
+                          //       //           const Column(
+                          //       //             mainAxisSize: MainAxisSize.max,
+                          //       //             children: [
+                          //       //               Icon(
+                          //       //                 Icons.calendar_month,
+                          //       //                 color: Color(0xFFC0BFBF),
+                          //       //                 size: 16.0,
+                          //       //               ),
+                          //       //             ],
+                          //       //           ),
+                          //       //           Padding(
+                          //       //             padding:
+                          //       //                 const EdgeInsetsDirectional.fromSTEB(
+                          //       //                     5.0, 0.0, 0.0, 0.0),
+                          //       //             child: Column(
+                          //       //               mainAxisSize: MainAxisSize.max,
+                          //       //               crossAxisAlignment:
+                          //       //                   CrossAxisAlignment.start,
+                          //       //               children: [
+                          //       //                 Text(
+                          //       //                   'Valid',
+                          //       //                   style: FlutterFlowTheme.of(
+                          //       //                           context)
+                          //       //                       .bodySmall
+                          //       //                       .override(
+                          //       //                         font:
+                          //       //                             GoogleFonts.poppins(
+                          //       //                           fontWeight:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontWeight,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                         color:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .tertiary,
+                          //       //                         letterSpacing: 0.0,
+                          //       //                         fontWeight:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontWeight,
+                          //       //                         fontStyle:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontStyle,
+                          //       //                       ),
+                          //       //                 ),
+                          //       //                 Padding(
+                          //       //                   padding: const EdgeInsetsDirectional
+                          //       //                       .fromSTEB(
+                          //       //                           0.0, 5.0, 0.0, 0.0),
+                          //       //                   child: Text(
+                          //       //                     getJsonField(
+                          //       //                       DashboardGroup
+                          //       //                           .comlpleteContestDetailsCall
+                          //       //                           .contestResult(
+                          //       //                         (_model.apiResult5ic
+                          //       //                                 ?.jsonBody ??
+                          //       //                             ''),
+                          //       //                       ),
+                          //       //                       r'''$.days_remaining''',
+                          //       //                     ).toString(),
+                          //       //                     style: FlutterFlowTheme.of(
+                          //       //                             context)
+                          //       //                         .labelMedium
+                          //       //                         .override(
+                          //       //                           font: GoogleFonts
+                          //       //                               .poppins(
+                          //       //                             fontWeight:
+                          //       //                                 FontWeight.w600,
+                          //       //                             fontStyle:
+                          //       //                                 FlutterFlowTheme.of(
+                          //       //                                         context)
+                          //       //                                     .labelMedium
+                          //       //                                     .fontStyle,
+                          //       //                           ),
+                          //       //                           color: (Theme.of(context)
+                          //       //                                           .brightness ==
+                          //       //                                       Brightness
+                          //       //                                           .dark) ==
+                          //       //                                   true
+                          //       //                               ? const Color(
+                          //       //                                   0xFFDBDBDB)
+                          //       //                               : const Color(
+                          //       //                                   0xFC000000),
+                          //       //                           letterSpacing: 0.0,
+                          //       //                           fontWeight:
+                          //       //                               FontWeight.w600,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .labelMedium
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                   ),
+                          //       //                 ),
+                          //       //               ],
+                          //       //             ),
+                          //       //           ),
+                          //       //         ],
+                          //       //       ),
+                          //       //     ),
+                          //       //   ),
+                          //       // ),
+                          //       // Padding(
+                          //       //   padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //       0.0, 0.0, 10.0, 0.0),
+                          //       //   child: Container(
+                          //       //     decoration: BoxDecoration(
+                          //       //       borderRadius: BorderRadius.circular(8.0),
+                          //       //       border: Border.all(
+                          //       //         color: (Theme.of(context).brightness ==
+                          //       //                     Brightness.dark) ==
+                          //       //                 true
+                          //       //             ? const Color(0xFF4E4E4E)
+                          //       //             : Colors.transparent,
+                          //       //       ),
+                          //       //     ),
+                          //       //     child: Padding(
+                          //       //       padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //           10.0, 10.0, 10.0, 10.0),
+                          //       //       child: Row(
+                          //       //         mainAxisSize: MainAxisSize.max,
+                          //       //         crossAxisAlignment:
+                          //       //             CrossAxisAlignment.start,
+                          //       //         children: [
+                          //       //           Column(
+                          //       //             mainAxisSize: MainAxisSize.max,
+                          //       //             children: [
+                          //       //               ClipRRect(
+                          //       //                 borderRadius:
+                          //       //                     BorderRadius.circular(8.0),
+                          //       //                 child: SvgPicture.asset(
+                          //       //                   'assets/images/Group_(3).svg',
+                          //       //                   fit: BoxFit.cover,
+                          //       //                 ),
+                          //       //               ),
+                          //       //             ],
+                          //       //           ),
+                          //       //           Padding(
+                          //       //             padding:
+                          //       //                 const EdgeInsetsDirectional.fromSTEB(
+                          //       //                     5.0, 0.0, 0.0, 0.0),
+                          //       //             child: Column(
+                          //       //               mainAxisSize: MainAxisSize.max,
+                          //       //               crossAxisAlignment:
+                          //       //                   CrossAxisAlignment.start,
+                          //       //               children: [
+                          //       //                 Text(
+                          //       //                   'Rewards',
+                          //       //                   style: FlutterFlowTheme.of(
+                          //       //                           context)
+                          //       //                       .bodySmall
+                          //       //                       .override(
+                          //       //                         font:
+                          //       //                             GoogleFonts.poppins(
+                          //       //                           fontWeight:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontWeight,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                         color:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .tertiary,
+                          //       //                         letterSpacing: 0.0,
+                          //       //                         fontWeight:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontWeight,
+                          //       //                         fontStyle:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontStyle,
+                          //       //                       ),
+                          //       //                 ),
+                          //       //                 Padding(
+                          //       //                   padding: const EdgeInsetsDirectional
+                          //       //                       .fromSTEB(
+                          //       //                           0.0, 5.0, 0.0, 0.0),
+                          //       //                   child: Text(
+                          //       //                     getJsonField(
+                          //       //                       DashboardGroup
+                          //       //                           .comlpleteContestDetailsCall
+                          //       //                           .contestResult(
+                          //       //                         (_model.apiResult5ic
+                          //       //                                 ?.jsonBody ??
+                          //       //                             ''),
+                          //       //                       ),
+                          //       //                       r'''$.rewards''',
+                          //       //                     ).toString(),
+                          //       //                     style: FlutterFlowTheme.of(
+                          //       //                             context)
+                          //       //                         .labelMedium
+                          //       //                         .override(
+                          //       //                           font: GoogleFonts
+                          //       //                               .poppins(
+                          //       //                             fontWeight:
+                          //       //                                 FontWeight.w600,
+                          //       //                             fontStyle:
+                          //       //                                 FlutterFlowTheme.of(
+                          //       //                                         context)
+                          //       //                                     .labelMedium
+                          //       //                                     .fontStyle,
+                          //       //                           ),
+                          //       //                           color: (Theme.of(context)
+                          //       //                                           .brightness ==
+                          //       //                                       Brightness
+                          //       //                                           .dark) ==
+                          //       //                                   true
+                          //       //                               ? const Color(
+                          //       //                                   0xFFDBDBDB)
+                          //       //                               : const Color(
+                          //       //                                   0xFC000000),
+                          //       //                           letterSpacing: 0.0,
+                          //       //                           fontWeight:
+                          //       //                               FontWeight.w600,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .labelMedium
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                   ),
+                          //       //                 ),
+                          //       //               ],
+                          //       //             ),
+                          //       //           ),
+                          //       //         ],
+                          //       //       ),
+                          //       //     ),
+                          //       //   ),
+                          //       // ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // Padding(
+                          //   padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       0.0, 10.0, 0.0, 0.0),
+                          //   child: Row(
+                          //     mainAxisSize: MainAxisSize.max,
+                          //     children: [
+                          //       Container(
+                          //         decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(8.0),
+                          //           border: Border.all(
+                          //             color: (Theme.of(context).brightness ==
+                          //                         Brightness.dark) ==
+                          //                     true
+                          //                 ? const Color(0xFF4E4E4E)
+                          //                 : Colors.transparent,
+                          //           ),
+                          //         ),
+                          //         child: Padding(
+                          //           padding: const EdgeInsetsDirectional.fromSTEB(
+                          //               10.0, 10.0, 10.0, 10.0),
+                          //           child: Row(
+                          //             mainAxisSize: MainAxisSize.max,
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //             children: [
+                          //               const Column(
+                          //                 mainAxisSize: MainAxisSize.max,
+                          //                 children: [
+                          //                   Icon(
+                          //                     Icons.groups_2,
+                          //                     color: Color(0xFFC0BFBF),
+                          //                     size: 16.0,
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //               // Padding(
+                          //               //   padding:
+                          //               //       const EdgeInsetsDirectional.fromSTEB(
+                          //               //           5.0, 0.0, 0.0, 0.0),
+                          //               //   child: Column(
+                          //               //     mainAxisSize: MainAxisSize.max,
+                          //               //     crossAxisAlignment:
+                          //               //         CrossAxisAlignment.start,
+                          //               //     children: [
+                          //               //       Text(
+                          //               //         'Participants',
+                          //               //         style: FlutterFlowTheme.of(
+                          //               //                 context)
+                          //               //             .bodySmall
+                          //               //             .override(
+                          //               //               font: GoogleFonts.poppins(
+                          //               //                 fontWeight:
+                          //               //                     FlutterFlowTheme.of(
+                          //               //                             context)
+                          //               //                         .bodySmall
+                          //               //                         .fontWeight,
+                          //               //                 fontStyle:
+                          //               //                     FlutterFlowTheme.of(
+                          //               //                             context)
+                          //               //                         .bodySmall
+                          //               //                         .fontStyle,
+                          //               //               ),
+                          //               //               color:
+                          //               //                   FlutterFlowTheme.of(
+                          //               //                           context)
+                          //               //                       .tertiary,
+                          //               //               letterSpacing: 0.0,
+                          //               //               fontWeight:
+                          //               //                   FlutterFlowTheme.of(
+                          //               //                           context)
+                          //               //                       .bodySmall
+                          //               //                       .fontWeight,
+                          //               //               fontStyle:
+                          //               //                   FlutterFlowTheme.of(
+                          //               //                           context)
+                          //               //                       .bodySmall
+                          //               //                       .fontStyle,
+                          //               //             ),
+                          //               //       ),
+                          //               //       // Padding(
+                          //               //       //   padding: const EdgeInsetsDirectional
+                          //               //       //       .fromSTEB(
+                          //               //       //           0.0, 5.0, 0.0, 0.0),
+                          //               //       //   child: Text(
+                          //               //       //     getJsonField(
+                          //               //       //       DashboardGroup
+                          //               //       //           .comlpleteContestDetailsCall
+                          //               //       //           .contestResult(
+                          //               //       //         (_model.apiResult5ic
+                          //               //       //                 ?.jsonBody ??
+                          //               //       //             ''),
+                          //               //       //       ),
+                          //               //       //       r'''$.participants''',
+                          //               //       //     ).toString(),
+                          //               //       //     style: FlutterFlowTheme.of(
+                          //               //       //             context)
+                          //               //       //         .labelMedium
+                          //               //       //         .override(
+                          //               //       //           font:
+                          //               //       //               GoogleFonts.poppins(
+                          //               //       //             fontWeight:
+                          //               //       //                 FontWeight.w600,
+                          //               //       //             fontStyle:
+                          //               //       //                 FlutterFlowTheme.of(
+                          //               //       //                         context)
+                          //               //       //                     .labelMedium
+                          //               //       //                     .fontStyle,
+                          //               //       //           ),
+                          //               //       //           color: (Theme.of(context)
+                          //               //       //                           .brightness ==
+                          //               //       //                       Brightness
+                          //               //       //                           .dark) ==
+                          //               //       //                   true
+                          //               //       //               ? const Color(0xFFDBDBDB)
+                          //               //       //               : const Color(0xFC000000),
+                          //               //       //           letterSpacing: 0.0,
+                          //               //       //           fontWeight:
+                          //               //       //               FontWeight.w600,
+                          //               //       //           fontStyle:
+                          //               //       //               FlutterFlowTheme.of(
+                          //               //       //                       context)
+                          //               //       //                   .labelMedium
+                          //               //       //                   .fontStyle,
+                          //               //       //         ),
+                          //               //       //   ),
+                          //               //       // ),
+                          //               //     ],
+                          //               //   ),
+                          //               // ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       // Padding(
+                          //       //   padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //       10.0, 0.0, 0.0, 0.0),
+                          //       //   child: Container(
+                          //       //     decoration: BoxDecoration(
+                          //       //       borderRadius: BorderRadius.circular(8.0),
+                          //       //       border: Border.all(
+                          //       //         color: (Theme.of(context).brightness ==
+                          //       //                     Brightness.dark) ==
+                          //       //                 true
+                          //       //             ? const Color(0xFF4E4E4E)
+                          //       //             : Colors.transparent,
+                          //       //       ),
+                          //       //     ),
+                          //       //     child: Padding(
+                          //       //       padding: const EdgeInsetsDirectional.fromSTEB(
+                          //       //           10.0, 10.0, 10.0, 10.0),
+                          //       //       child: Row(
+                          //       //         mainAxisSize: MainAxisSize.max,
+                          //       //         crossAxisAlignment:
+                          //       //             CrossAxisAlignment.start,
+                          //       //         children: [
+                          //       //           const Column(
+                          //       //             mainAxisSize: MainAxisSize.max,
+                          //       //             children: [
+                          //       //               FaIcon(
+                          //       //                 FontAwesomeIcons.questionCircle,
+                          //       //                 color: Color(0xFFC0BFBF),
+                          //       //                 size: 16.0,
+                          //       //               ),
+                          //       //             ],
+                          //       //           ),
+                          //       //           Padding(
+                          //       //             padding:
+                          //       //                 const EdgeInsetsDirectional.fromSTEB(
+                          //       //                     5.0, 0.0, 0.0, 0.0),
+                          //       //             child: Column(
+                          //       //               mainAxisSize: MainAxisSize.max,
+                          //       //               crossAxisAlignment:
+                          //       //                   CrossAxisAlignment.start,
+                          //       //               children: [
+                          //       //                 Text(
+                          //       //                   'Total Questions',
+                          //       //                   style: FlutterFlowTheme.of(
+                          //       //                           context)
+                          //       //                       .bodySmall
+                          //       //                       .override(
+                          //       //                         font:
+                          //       //                             GoogleFonts.poppins(
+                          //       //                           fontWeight:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontWeight,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .bodySmall
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                         color:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .tertiary,
+                          //       //                         letterSpacing: 0.0,
+                          //       //                         fontWeight:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontWeight,
+                          //       //                         fontStyle:
+                          //       //                             FlutterFlowTheme.of(
+                          //       //                                     context)
+                          //       //                                 .bodySmall
+                          //       //                                 .fontStyle,
+                          //       //                       ),
+                          //       //                 ),
+                          //       //                 Padding(
+                          //       //                   padding: const EdgeInsetsDirectional
+                          //       //                       .fromSTEB(
+                          //       //                           0.0, 5.0, 0.0, 0.0),
+                          //       //                   child: Text(
+                          //       //                     getJsonField(
+                          //       //                       DashboardGroup
+                          //       //                           .comlpleteContestDetailsCall
+                          //       //                           .contestResult(
+                          //       //                         (_model.apiResult5ic
+                          //       //                                 ?.jsonBody ??
+                          //       //                             ''),
+                          //       //                       ),
+                          //       //                       r'''$.total_questions''',
+                          //       //                     ).toString(),
+                          //       //                     style: FlutterFlowTheme.of(
+                          //       //                             context)
+                          //       //                         .labelMedium
+                          //       //                         .override(
+                          //       //                           font: GoogleFonts
+                          //       //                               .poppins(
+                          //       //                             fontWeight:
+                          //       //                                 FontWeight.w600,
+                          //       //                             fontStyle:
+                          //       //                                 FlutterFlowTheme.of(
+                          //       //                                         context)
+                          //       //                                     .labelMedium
+                          //       //                                     .fontStyle,
+                          //       //                           ),
+                          //       //                           color: (Theme.of(context)
+                          //       //                                           .brightness ==
+                          //       //                                       Brightness
+                          //       //                                           .dark) ==
+                          //       //                                   true
+                          //       //                               ? const Color(
+                          //       //                                   0xFFDBDBDB)
+                          //       //                               : const Color(
+                          //       //                                   0xFC000000),
+                          //       //                           letterSpacing: 0.0,
+                          //       //                           fontWeight:
+                          //       //                               FontWeight.w600,
+                          //       //                           fontStyle:
+                          //       //                               FlutterFlowTheme.of(
+                          //       //                                       context)
+                          //       //                                   .labelMedium
+                          //       //                                   .fontStyle,
+                          //       //                         ),
+                          //       //                   ),
+                          //       //                 ),
+                          //       //               ],
+                          //       //             ),
+                          //       //           ),
+                          //       //         ],
+                          //       //       ),
+                          //       //     ),
+                          //       //   ),
+                          //       // ),
+                          //     ],
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 20.0, 0.0, 0.0),
@@ -1251,7 +1248,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 0.0, 0.0, 0.0),
                                             child: Text(
-                                              'Total time spent',
+                                              'Total time',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleLarge
@@ -1354,7 +1351,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                 const EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 0.0, 0.0, 0.0),
                                             child: Text(
-                                              'Total correct question',
+                                              'Total correct answers',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .titleLarge
@@ -1688,7 +1685,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              'Player',
+                                              'User',
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .bodyMedium
@@ -1717,7 +1714,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                             ),
                                           ),
                                           Text(
-                                            'GOAT Points',
+                                            'Earned Points',
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -1752,13 +1749,21 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                           ),
                           Builder(
                             builder: (context) {
-                              final usersRank = getJsonField(
-                                DashboardGroup.comlpleteContestDetailsCall
-                                    .contestResult(
+                              // final usersRank = getJsonField(
+                              //   DashboardGroup.comlpleteContestDetailsCall
+                              //       .contestResult(
+                              //     (_model.apiResult5ic?.jsonBody ?? ''),
+                              //   ),
+                              //   r'''$.ranking_list''',
+                              // ).toList();
+
+                              final usersRank = (getJsonField(
+                                DashboardGroup.comlpleteContestDetailsCall.contestResult(
                                   (_model.apiResult5ic?.jsonBody ?? ''),
                                 ),
                                 r'''$.ranking_list''',
-                              ).toList();
+                              ) as List?) ?? [];
+
                               _model.debugGeneratorVariables[
                                       'usersRank${usersRank.length > 100 ? ' (first 100)' : ''}'] =
                                   debugSerializeParam(
@@ -1788,8 +1793,8 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                               true
                                           ? const Color(0xFF4E4E4E)
                                           : Colors.white,
-                                      boxShadow: [
-                                        const BoxShadow(
+                                      boxShadow: const [
+                                        BoxShadow(
                                           blurRadius: 1.0,
                                           color: Color(0x33463838),
                                           offset: Offset(
@@ -1940,7 +1945,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                             child: Text(
                                               getJsonField(
                                                 usersRankItem,
-                                                r'''$.total_correct''',
+                                                r'''$.reward_point''',
                                               ).toString(),
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -1990,12 +1995,12 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
               ),
             ),
             if (_model.isLoading == true)
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Container(
+              const Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
-                  child: const custom_widgets.CubeGridLoader(
+                  child: custom_widgets.CubeGridLoader(
                     width: 40.0,
                     height: 40.0,
                     size: 40.0,

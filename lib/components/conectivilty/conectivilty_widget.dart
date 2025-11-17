@@ -1,13 +1,10 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'conectivilty_model.dart';
 export 'conectivilty_model.dart';
 
@@ -94,15 +91,15 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
         ?.call(_model);
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.transparent,
       ),
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+        padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 12.0,
                 color: Color(0x33000000),
@@ -116,7 +113,7 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -127,10 +124,10 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
                       width: 100.0,
                       height: 100.0,
                       decoration: BoxDecoration(
-                        color: Color(0xFFDDDDDD),
+                        color: const Color(0xFFDDDDDD),
                         borderRadius: BorderRadius.circular(3000.0),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.wifi_off_rounded,
                         color: Colors.black,
                         size: 40.0,
@@ -186,9 +183,9 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
                                         .fontStyle,
                                   ),
                         ),
-                      ].divide(SizedBox(height: 8.0)),
+                      ].divide(const SizedBox(height: 8.0)),
                     ),
-                  ].divide(SizedBox(height: 12.0)),
+                  ].divide(const SizedBox(height: 12.0)),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -201,7 +198,7 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
                           context.goNamed(SplashWidget.routeName);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text(
                                 'Please check your internet connection',
                                 style: TextStyle(
@@ -220,9 +217,9 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
                       options: FFButtonOptions(
                         width: 120.0,
                         height: 44.0,
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
@@ -244,16 +241,16 @@ class _ConectiviltyWidgetState extends State<ConectiviltyWidget>
                                       .fontStyle,
                                 ),
                         elevation: 0.0,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.transparent,
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                  ].divide(SizedBox(width: 12.0)),
+                  ].divide(const SizedBox(width: 12.0)),
                 ),
-              ].divide(SizedBox(height: 16.0)),
+              ].divide(const SizedBox(height: 16.0)),
             ),
           ),
         ),

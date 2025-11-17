@@ -101,7 +101,7 @@ class ChangePasswordModel extends FlutterFlowModel<ChangePasswordWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'gradientButtonCustomModel (gradientButtonCustom)':
-              gradientButtonCustomModel?.toWidgetClassDebugData(),
+              gradientButtonCustomModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

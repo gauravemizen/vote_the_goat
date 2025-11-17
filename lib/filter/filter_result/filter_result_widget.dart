@@ -760,16 +760,11 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../backend/api_requests/api_manager.dart';
-import '/backend/api_requests/api_calls.dart';
-import 'package:go_router/go_router.dart';
 
 class FilteredResultsWidget extends StatefulWidget {
   const FilteredResultsWidget({
@@ -928,7 +923,7 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
     setState(() => isLoading = true);
     try {
       final payload = _filtersPayload ?? {};
-      debugPrint('Result screen fetching players with payload: ' + const JsonEncoder.withIndent('  ').convert(payload));
+      debugPrint('Result screen fetching players with payload: ${const JsonEncoder.withIndent('  ').convert(payload)}');
       final resp = await ApiManager.instance.makeApiCall(
         callName: 'filterplayersDynamic',
         apiUrl: 'https://votethegoat.ezxdemo.com/api/filter-players',
@@ -1040,7 +1035,7 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.sizeOf(context).width * 0.7,
                                 child: Text(
                                   _filterType?.toUpperCase().replaceAll('_', ' ') ?? 'RESULTS',
@@ -1248,7 +1243,7 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
                                       color: Color(0xFFFFBC06),
                                       size: 16.0,
                                     ),
-                                    SizedBox(width: 4,),
+                                    const SizedBox(width: 4,),
                                     SizedBox(
                                       width: 30,
                                       child: Text(
@@ -1377,12 +1372,12 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
               ),
             ),
             if (isLoading)
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Container(
+              const Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
-                  child: const custom_widgets.CubeGridLoader(
+                  child: custom_widgets.CubeGridLoader(
                     width: 40.0,
                     height: 40.0,
                     size: 40.0,

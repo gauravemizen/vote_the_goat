@@ -733,11 +733,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../filter/filter_result/filter_result_widget.dart';
+import '../../match_players/match_playerss/resume_to_match_players_widget.dart';
 import '../../nav/nav_widget.dart';
 import '../../ranking_pages/save_progress/save_progress_ranking_widget.dart';
 import '/backend/backend.dart';
@@ -747,12 +745,7 @@ import '/auth/base_auth_user_provider.dart';
 
 import '/backend/push_notifications/push_notifications_handler.dart'
     show PushNotificationsHandler;
-import '/main.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'serialization_util.dart';
 
 import '/index.dart';
 
@@ -922,22 +915,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: SplashWidget.routeName,
       path: SplashWidget.routePath,
-      builder: (context, params) => SplashWidget(),
+      builder: (context, params) => const SplashWidget(),
     ),
     FFRoute(
       name: LogInWidget.routeName,
       path: LogInWidget.routePath,
-      builder: (context, params) => LogInWidget(),
+      builder: (context, params) => const LogInWidget(),
     ),
     FFRoute(
       name: SignUpWidget.routeName,
       path: SignUpWidget.routePath,
-      builder: (context, params) => SignUpWidget(),
+      builder: (context, params) => const SignUpWidget(),
     ),
     FFRoute(
       name: ForgotPasswordWidget.routeName,
       path: ForgotPasswordWidget.routePath,
-      builder: (context, params) => ForgotPasswordWidget(),
+      builder: (context, params) => const ForgotPasswordWidget(),
     ),
     FFRoute(
       name: OtpWidget.routeName,
@@ -966,47 +959,47 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: HomeOnboardingWidget.routeName,
       path: HomeOnboardingWidget.routePath,
-      builder: (context, params) => HomeOnboardingWidget(),
+      builder: (context, params) => const HomeOnboardingWidget(),
     ),
     FFRoute(
       name: PrivacyPolicyWidget.routeName,
       path: PrivacyPolicyWidget.routePath,
-      builder: (context, params) => PrivacyPolicyWidget(),
+      builder: (context, params) => const PrivacyPolicyWidget(),
     ),
     FFRoute(
       name: NewPasswordWidget.routeName,
       path: NewPasswordWidget.routePath,
-      builder: (context, params) => NewPasswordWidget(),
+      builder: (context, params) => const NewPasswordWidget(),
     ),
     FFRoute(
       name: SettingPageWidget.routeName,
       path: SettingPageWidget.routePath,
-      builder: (context, params) => SettingPageWidget(),
+      builder: (context, params) => const SettingPageWidget(),
     ),
     FFRoute(
       name: PlayersListWidget.routeName,
       path: PlayersListWidget.routePath,
-      builder: (context, params) => PlayersListWidget(),
+      builder: (context, params) => const PlayersListWidget(),
     ),
     FFRoute(
       name: HomePageWidget.routeName,
       path: HomePageWidget.routePath,
-      builder: (context, params) => HomePageWidget(),
+      builder: (context, params) => const HomePageWidget(),
     ),
     FFRoute(
       name: AboutScreenWidget.routeName,
       path: AboutScreenWidget.routePath,
-      builder: (context, params) => AboutScreenWidget(),
+      builder: (context, params) => const AboutScreenWidget(),
     ),
     FFRoute(
       name: EligiblePlayerWidget.routeName,
       path: EligiblePlayerWidget.routePath,
-      builder: (context, params) => EligiblePlayerWidget(),
+      builder: (context, params) => const EligiblePlayerWidget(),
     ),
     FFRoute(
       name: RankingPageWidget.routeName,
       path: RankingPageWidget.routePath,
-      builder: (context, params) => RankingPageWidget(),
+      builder: (context, params) => const RankingPageWidget(),
     ),
 
 
@@ -1015,7 +1008,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: SaveProgressRankingWidget.routeName,
       path: SaveProgressRankingWidget.routePath,
-      builder: (context, params) => SaveProgressRankingWidget(),
+      builder: (context, params) => const SaveProgressRankingWidget(),
     ),
 
 
@@ -1025,7 +1018,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: FilterScreenWidget.routeName,
       path: FilterScreenWidget.routePath,
-      builder: (context, params) => FilterScreenWidget(),
+      builder: (context, params) => const FilterScreenWidget(),
     ),
     FFRoute(
       name: ComparePlayersWidget.routeName,
@@ -1044,37 +1037,37 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: PlayerBio2Widget.routeName,
       path: PlayerBio2Widget.routePath,
-      builder: (context, params) => PlayerBio2Widget(),
+      builder: (context, params) => const PlayerBio2Widget(),
     ),
     FFRoute(
       name: YourFinalRankingWidget.routeName,
       path: YourFinalRankingWidget.routePath,
-      builder: (context, params) => YourFinalRankingWidget(),
+      builder: (context, params) => const YourFinalRankingWidget(),
     ),
     FFRoute(
       name: SubscriptionPageWidget.routeName,
       path: SubscriptionPageWidget.routePath,
-      builder: (context, params) => SubscriptionPageWidget(),
+      builder: (context, params) => const SubscriptionPageWidget(),
     ),
     FFRoute(
       name: ContactAndSupportWidget.routeName,
       path: ContactAndSupportWidget.routePath,
-      builder: (context, params) => ContactAndSupportWidget(),
+      builder: (context, params) => const ContactAndSupportWidget(),
     ),
     FFRoute(
       name: MyProfileWidget.routeName,
       path: MyProfileWidget.routePath,
-      builder: (context, params) => MyProfileWidget(),
+      builder: (context, params) => const MyProfileWidget(),
     ),
     FFRoute(
       name: MatchPlayersWidget.routeName,
       path: MatchPlayersWidget.routePath,
-      builder: (context, params) => MatchPlayersWidget(),
+      builder: (context, params) => const MatchPlayersWidget(),
     ),
     FFRoute(
       name: ContestPageWidget.routeName,
       path: ContestPageWidget.routePath,
-      builder: (context, params) => ContestPageWidget(),
+      builder: (context, params) => const ContestPageWidget(),
     ),
     FFRoute(
       name: ContestDetailsWidget.routeName,
@@ -1119,17 +1112,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: PlayWithFriendsWidget.routeName,
       path: PlayWithFriendsWidget.routePath,
-      builder: (context, params) => PlayWithFriendsWidget(),
+      builder: (context, params) => const PlayWithFriendsWidget(),
     ),
     FFRoute(
       name: MatchPlayerssWidget.routeName,
       path: MatchPlayerssWidget.routePath,
-      builder: (context, params) => MatchPlayerssWidget(),
+      builder: (context, params) => const MatchPlayerssWidget(),
     ),
     FFRoute(
       name: MyProfileCopyWidget.routeName,
       path: MyProfileCopyWidget.routePath,
-      builder: (context, params) => MyProfileCopyWidget(),
+      builder: (context, params) => const MyProfileCopyWidget(),
     ),
     FFRoute(
       name: PlayerBioWidget.routeName,
@@ -1144,23 +1137,32 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: LogInCopyWidget.routeName,
       path: LogInCopyWidget.routePath,
-      builder: (context, params) => LogInCopyWidget(),
+      builder: (context, params) => const LogInCopyWidget(),
     ),
     FFRoute(
       name: ResetPasswordWidget.routeName,
       path: ResetPasswordWidget.routePath,
-      builder: (context, params) => ResetPasswordWidget(),
+      builder: (context, params) => const ResetPasswordWidget(),
     ),
     FFRoute(
       name: AllPlayersWidget.routeName,
       path: AllPlayersWidget.routePath,
-      builder: (context, params) => AllPlayersWidget(),
+      builder: (context, params) => const AllPlayersWidget(),
     ),
     FFRoute(
       name: YourComparisonsWidget.routeName,
       path: YourComparisonsWidget.routePath,
-      builder: (context, params) => YourComparisonsWidget(),
+      builder: (context, params) => const YourComparisonsWidget(),
     ),
+    ///
+    FFRoute(
+      name: ResumeToMatchPlayersWidget.routeName,
+      path: ResumeToMatchPlayersWidget.routePath,
+      builder: (context, params) => const ResumeToMatchPlayersWidget(),
+    ),
+
+    ///
+
     FFRoute(
       name: TeamDetailsWidget.routeName,
       path: TeamDetailsWidget.routePath,
@@ -1456,7 +1458,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

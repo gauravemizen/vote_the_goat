@@ -580,23 +580,522 @@
 // }
 
 ///3
+library;
+
+// import '../../backend/api_requests/api_calls.dart';
+// import '../../nav/nav_widget.dart';
+// import '/components/conectivilty/conectivilty_widget.dart';
+// import '/flutter_flow/flutter_flow_theme.dart';
+// import '/flutter_flow/flutter_flow_util.dart';
+// import '/flutter_flow/flutter_flow_video_player.dart';
+// import '/flutter_flow/flutter_flow_widgets.dart';
+// import 'dart:ui';
+// import '/custom_code/actions/index.dart' as actions;
+// import '/index.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/scheduler.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:provider/provider.dart';
+// import 'package:webviewx_plus/webviewx_plus.dart';
+// import 'splash_model.dart';
+// export 'splash_model.dart';
+//
+// class SplashWidget extends StatefulWidget {
+//   const SplashWidget({super.key});
+//
+//   static String routeName = 'splash';
+//   static String routePath = '/splash';
+//
+//   @override
+//   State<SplashWidget> createState() => _SplashWidgetState();
+// }
+//
+// class _SplashWidgetState extends State<SplashWidget> with RouteAware {
+//   late SplashModel _model;
+//
+//   final scaffoldKey = GlobalKey<ScaffoldState>();
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     print('🟢 [Splash] initState() called.');
+//     _model = createModel(context, () => SplashModel());
+//     print('🟢 [Splash] SplashModel created.');
+//
+//     // SchedulerBinding.instance.addPostFrameCallback((_) async {
+//     //   print('🔵 [Splash] Post frame callback started.');
+//     //   print('🌍 [Splash] Checking internet connectivity...');
+//     //
+//     //   try {
+//     //     _model.isConnected = await actions.connect();
+//     //     print('🌐 [Splash] Connectivity check result: ${_model.isConnected}');
+//     //   } catch (e) {
+//     //     print('❌ [Splash] Error during connectivity check: $e');
+//     //   }
+//     //
+//     //   if (_model.isConnected == true) {
+//     //     print('✅ [Splash] Device is connected to the internet.');
+//     //     print('⏱ [Splash] Starting 4-second splash delay...');
+//     //     await Future.delayed(const Duration(milliseconds: 4000));
+//     //     print('⏱ [Splash] 4-second delay completed.');
+//     //
+//     //     if (!mounted) {
+//     //       print('⚠️ [Splash] Widget is unmounted after delay. Navigation aborted.');
+//     //       return;
+//     //     }
+//     //
+//     //     print('🟢 [Splash] Checking authentication token in FFAppState...');
+//     //     print('🔑 [Splash] Token value: "${FFAppState().authToken}"');
+//     //
+//     //     if (FFAppState().authToken != null && FFAppState().authToken != '') {
+//     //       print('🏠 [Splash] Token found. Navigating to NavWidget (Home).');
+//     //       try {
+//     //         context.goNamed(NavWidget.routeName);
+//     //         print('✅ [Splash] Navigation to NavWidget triggered.');
+//     //       } catch (e) {
+//     //         print('❌ [Splash] Error navigating to NavWidget: $e');
+//     //       }
+//     //     } else {
+//     //       print('🔐 [Splash] No token found. Navigating to LogInWidget.');
+//     //       try {
+//     //         context.goNamed(LogInWidget.routeName);
+//     //         print('✅ [Splash] Navigation to LogInWidget triggered.');
+//     //       } catch (e) {
+//     //         print('❌ [Splash] Error navigating to LogInWidget: $e');
+//     //       }
+//     //     }
+//     //   } else {
+//     //
+//     //
+//     //     print('🚫 [Splash] No internet connection detected.');
+//     //     print('💬 [Splash] Showing connectivity dialog.');
+//     //     try {
+//     //       await showDialog(
+//     //         context: context,
+//     //         builder: (dialogContext) {
+//     //           return Dialog(
+//     //             elevation: 0,
+//     //             insetPadding: EdgeInsets.zero,
+//     //             backgroundColor: Colors.transparent,
+//     //             alignment: const AlignmentDirectional(0.0, 0.0)
+//     //                 .resolve(Directionality.of(context)),
+//     //             child: WebViewAware(
+//     //               child: GestureDetector(
+//     //                 onTap: () {
+//     //                   print('🖱 [Splash] Connectivity dialog tapped.');
+//     //                   FocusScope.of(dialogContext).unfocus();
+//     //                   FocusManager.instance.primaryFocus?.unfocus();
+//     //                 },
+//     //                 child: const ConectiviltyWidget(),
+//     //               ),
+//     //             ),
+//     //           );
+//     //         },
+//     //       );
+//     //       print('✅ [Splash] Connectivity dialog closed.');
+//     //     } catch (e) {
+//     //       print('❌ [Splash] Error showing connectivity dialog: $e');
+//     //     }
+//     //   }
+//     //
+//     //   print('🏁 [Splash] Post frame callback finished.');
+//     // });
+//
+//
+//
+//
+//     ///2
+//     SchedulerBinding.instance.addPostFrameCallback((_) async {
+//       print('🔵 [Splash] Post frame callback started.');
+//       print('🌍 [Splash] Checking internet connectivity...');
+//
+//       try {
+//         _model.isConnected = await actions.connect();
+//         print('🌐 [Splash] Connectivity check result: ${_model.isConnected}');
+//       } catch (e) {
+//         print('❌ [Splash] Error during connectivity check: $e');
+//       }
+//
+//       if (_model.isConnected == true) {
+//         print('✅ [Splash] Device is connected to the internet.');
+//         print('⏱ [Splash] Starting 4-second splash delay...');
+//         await Future.delayed(const Duration(milliseconds: 4000));
+//         print('⏱ [Splash] 4-second delay completed.');
+//
+//         if (!mounted) {
+//           print('⚠️ [Splash] Widget is unmounted after delay. Navigation aborted.');
+//           return;
+//         }
+//
+//         print('🟢 [Splash] Checking authentication token in FFAppState...');
+//         print('🔑 [Splash] Token value: "${FFAppState().authToken}"');
+//
+//         if (FFAppState().authToken != null && FFAppState().authToken != '') {
+//           print('🔍 [Splash] Token found. Validating user profile...');
+//
+//           try {
+//             _model.getProfileRes = await DashboardGroup.getProfileCall.call(
+//               authToken: FFAppState().authToken,
+//             );
+//
+//             if (_model.getProfileRes?.succeeded ?? false) {
+//               final isAttempt = getJsonField(
+//                 _model.getProfileRes?.jsonBody ?? '',
+//                 r'''$.data.is_attempt''',
+//               );
+//
+//               print('🎯 [Splash] Profile API success. is_attempt: $isAttempt');
+//
+//               if (isAttempt == 0) {
+//                 print('🏠 [Splash] is_attempt = 0. Navigating to NavWidget.');
+//                 context.goNamed(HomeOnboardingWidget.routeName);
+//               } else if (isAttempt == 1) {
+//                 print('📚 [Splash] is_attempt = 1. Navigating to HomeOnboardingWidget.');
+//                 context.goNamed(NavWidget.routeName);
+//               } else {
+//                 print('❓ [Splash] Unexpected is_attempt value: $isAttempt. Navigating to NavWidget.');
+//                 context.goNamed(NavWidget.routeName);
+//               }
+//             } else {
+//               print('❌ [Splash] Profile API failed. Navigating to Login.');
+//               context.goNamed(LogInWidget.routeName);
+//             }
+//           } catch (e) {
+//             print('❌ [Splash] Error calling profile API: $e. Navigating to Login.');
+//             context.goNamed(LogInWidget.routeName);
+//           }
+//         } else {
+//           print('🔐 [Splash] No token found. Navigating to LogInWidget.');
+//           context.goNamed(LogInWidget.routeName);
+//         }
+//       } else {
+//         print('🚫 [Splash] No internet connection detected.');
+//         await showDialog(
+//           context: context,
+//           builder: (dialogContext) {
+//             return Dialog(
+//               elevation: 0,
+//               insetPadding: EdgeInsets.zero,
+//               backgroundColor: Colors.transparent,
+//               alignment: const AlignmentDirectional(0.0, 0.0)
+//                   .resolve(Directionality.of(context)),
+//               child: WebViewAware(
+//                 child: GestureDetector(
+//                   onTap: () {
+//                     FocusScope.of(dialogContext).unfocus();
+//                     FocusManager.instance.primaryFocus?.unfocus();
+//                   },
+//                   child: const ConectiviltyWidget(),
+//                 ),
+//               ),
+//             );
+//           },
+//         );
+//       }
+//
+//       print('🏁 [Splash] Post frame callback finished.');
+//     });
+//     ///
+//
+//
+//   }
+//
+//   @override
+//   void dispose() {
+//     print('🧹 [Splash] dispose() called.');
+//     routeObserver.unsubscribe(this);
+//     _model.dispose();
+//     print('🧹 [Splash] SplashModel disposed.');
+//     super.dispose();
+//   }
+//
+//   @override
+//   void didUpdateWidget(SplashWidget oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     print('🔄 [Splash] didUpdateWidget() called.');
+//     _model.widget = widget;
+//   }
+//
+//   @override
+//   void didChangeDependencies() {
+//     super.didChangeDependencies();
+//     print('🔄 [Splash] didChangeDependencies() called.');
+//     final route = DebugModalRoute.of(context);
+//     if (route != null) {
+//       print('📍 [Splash] Route subscribed to routeObserver.');
+//       routeObserver.subscribe(this, route);
+//     }
+//     debugLogGlobalProperty(context);
+//   }
+//
+//   @override
+//   void didPopNext() {
+//     print('↩️ [Splash] didPopNext() called.');
+//     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+//       setState(() => _model.isRouteVisible = true);
+//       debugLogWidgetClass(_model);
+//     }
+//   }
+//
+//   @override
+//   void didPush() {
+//     print('➡️ [Splash] didPush() called.');
+//     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+//       setState(() => _model.isRouteVisible = true);
+//       debugLogWidgetClass(_model);
+//     }
+//   }
+//
+//   @override
+//   void didPop() {
+//     print('⬅️ [Splash] didPop() called.');
+//     _model.isRouteVisible = false;
+//   }
+//
+//   @override
+//   void didPushNext() {
+//     print('⏩ [Splash] didPushNext() called.');
+//     _model.isRouteVisible = false;
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     print('🧱 [Splash] build() called.');
+//     DebugFlutterFlowModelContext.maybeOf(context)
+//         ?.parentModelCallback
+//         ?.call(_model);
+//     context.watch<FFAppState>();
+//
+//     return Builder(
+//       builder: (context) => GestureDetector(
+//         onTap: () {
+//           print('👆 [Splash] Screen tapped.');
+//           FocusScope.of(context).unfocus();
+//           FocusManager.instance.primaryFocus?.unfocus();
+//         },
+//         child: Scaffold(
+//           key: scaffoldKey,
+//           backgroundColor: Colors.black, // Changed from FlutterFlowTheme to black
+//           body: Container(
+//             color: Colors.black, // Add container with black background
+//             width: double.infinity,
+//             height: double.infinity,
+//             child: const FlutterFlowVideoPlayer(
+//               path: 'assets/videos/MicrosoftTeams-video.mp4',
+//               videoType: VideoType.asset,
+//               autoPlay: true,
+//               looping: false,
+//               showControls: false,
+//               allowFullScreen: true,
+//               allowPlaybackSpeedMenu: false,
+//               lazyLoad: false,
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+// 4 done by umar
+// import '../../backend/api_requests/api_calls.dart';
+// import '../../nav/nav_widget.dart';
+// import '/flutter_flow/flutter_flow_util.dart';
+// import '/index.dart';
+// import '/components/conectivilty/conectivilty_widget.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/scheduler.dart';
+// import 'package:video_player/video_player.dart';
+// import '/custom_code/actions/index.dart' as actions;
+//
+// class SplashWidget extends StatefulWidget {
+//   const SplashWidget({super.key});
+//
+//   static String routeName = 'splash';
+//   static String routePath = '/splash';
+//
+//   @override
+//   State<SplashWidget> createState() => _SplashWidgetState();
+// }
+//
+// class _SplashWidgetState extends State<SplashWidget> {
+//   VideoPlayerController? _videoController;
+//   bool _isVideoInitialized = false;
+//
+//   @override
+//   void initState() {
+//
+//
+//     print('token is >> ${FFAppState().authToken}');
+//     super.initState();
+//     _initializeVideo();
+//     _handleNavigation();
+//   }
+//
+//   void _initializeVideo() async {
+//     print('token is >> ${FFAppState().authToken}');
+//
+//     try {
+//       _videoController = VideoPlayerController.asset(
+//         'assets/videos/MicrosoftTeams-video.mp4',
+//       );
+//
+//       await _videoController!.initialize();
+//
+//       if (mounted) {
+//         setState(() {
+//           _isVideoInitialized = true;
+//         });
+//
+//         _videoController!.play();
+//       }
+//     } catch (e) {
+//       print('❌ [Splash] Error initializing video: $e');
+//       if (mounted) {
+//         setState(() {
+//           _isVideoInitialized = true; // Show fallback
+//         });
+//       }
+//     }
+//   }
+//
+//   void _handleNavigation() {
+//     SchedulerBinding.instance.addPostFrameCallback((_) async {
+//       print('🔵 [Splash] Starting navigation logic...');
+//
+//       try {
+//         // Check connectivity
+//         final isConnected = await actions.connect();
+//         print('🌐 [Splash] Connectivity: $isConnected');
+//
+//         if (!isConnected) {
+//           print('🚫 [Splash] No internet connection.');
+//           if (mounted) {
+//             await showDialog(
+//               context: context,
+//               barrierDismissible: false,
+//               builder: (dialogContext) => const Dialog(
+//                 elevation: 0,
+//                 backgroundColor: Colors.transparent,
+//                 child: ConectiviltyWidget(),
+//               ),
+//             );
+//           }
+//           return;
+//         }
+//
+//         // Wait for minimum splash duration
+//         await Future.delayed(const Duration(milliseconds: 4000));
+//
+//         if (!mounted) return;
+//
+//         // Check authentication
+//         final authToken = FFAppState().authToken;
+//         print('🔑 [Splash] Token: "$authToken"');
+//
+//         if (authToken.isEmpty) {
+//           print('🔐 [Splash] No token. Going to login.');
+//           context.goNamed(LogInWidget.routeName);
+//           return;
+//         }
+//
+//         // Validate profile
+//         print('🔍 [Splash] Validating profile...');
+//         final profileRes = await DashboardGroup.getProfileCall.call(
+//           authToken: authToken,
+//         );
+//
+//         if (!mounted) return;
+//
+//         if (profileRes.succeeded) {
+//           final isAttempt = getJsonField(
+//             profileRes.jsonBody,
+//             r'$.data.is_attempt',
+//           );
+//           print('🎯 [Splash] is_attempt: $isAttempt');
+//
+//           if (isAttempt == 0) {
+//             context.goNamed(HomeOnboardingWidget.routeName);
+//           } else {
+//             context.goNamed(NavWidget.routeName);
+//           }
+//         } else {
+//           print('❌ [Splash] Profile validation failed.');
+//           context.goNamed(LogInWidget.routeName);
+//         }
+//       } catch (e) {
+//         print('❌ [Splash] Error: $e');
+//         if (mounted) {
+//           context.goNamed(LogInWidget.routeName);
+//         }
+//       }
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     _videoController?.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.black,
+//       body: Container(
+//         width: double.infinity,
+//         height: double.infinity,
+//         color: Colors.black,
+//         child: _isVideoInitialized && _videoController != null
+//             ? AspectRatio(
+//           aspectRatio: _videoController!.value.aspectRatio,
+//           child: VideoPlayer(_videoController!),
+//         )
+//             : Center(
+//           child: Image.asset(
+//             'assets/images/splash_placeholder.png',
+//             fit: BoxFit.cover,
+//             width: double.infinity,
+//             height: double.infinity,
+//             errorBuilder: (context, error, stackTrace) {
+//               return Container(
+//                 color: Colors.black,
+//                 child: const Center(
+//                   child: CircularProgressIndicator(
+//                     color: Colors.white,
+//                   ),
+//                 ),
+//               );
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+///5
+// ---------persisted ios issue---------//
+
+
+// 4 done by umar
+import '../../backend/api_requests/api_calls.dart';
 import '../../nav/nav_widget.dart';
-import '/components/conectivilty/conectivilty_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_video_player.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
+import '/components/conectivilty/conectivilty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:webviewx_plus/webviewx_plus.dart';
-import 'splash_model.dart';
-export 'splash_model.dart';
+import 'package:video_player/video_player.dart';
+import '/custom_code/actions/index.dart' as actions;
 
 class SplashWidget extends StatefulWidget {
   const SplashWidget({super.key});
@@ -608,186 +1107,176 @@ class SplashWidget extends StatefulWidget {
   State<SplashWidget> createState() => _SplashWidgetState();
 }
 
-class _SplashWidgetState extends State<SplashWidget> with RouteAware {
-  late SplashModel _model;
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+class _SplashWidgetState extends State<SplashWidget> {
+  VideoPlayerController? _videoController;
+  bool _isVideoInitialized = false;
 
   @override
   void initState() {
+    print('token is >> ${FFAppState().authToken}');
     super.initState();
-    print('🟢 [Splash] initState() called.');
-    _model = createModel(context, () => SplashModel());
-    print('🟢 [Splash] SplashModel created.');
+    _initializeVideo();
+    _handleNavigation();
+  }
 
+  void _initializeVideo() async {
+    print('token is >> ${FFAppState().authToken}');
+
+    try {
+      _videoController = VideoPlayerController.asset(
+        'assets/videos/MicrosoftTeams-video.mp4',
+      );
+
+      await _videoController!.initialize();
+
+      if (mounted) {
+        setState(() {
+          _isVideoInitialized = true;
+        });
+
+        _videoController!.play();
+      }
+    } catch (e) {
+      print('❌ [Splash] Error initializing video: $e');
+      if (mounted) {
+        setState(() {
+          _isVideoInitialized = true; // Show fallback
+        });
+      }
+    }
+  }
+
+  void _handleNavigation() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      print('🔵 [Splash] Post frame callback started.');
-      print('🌍 [Splash] Checking internet connectivity...');
+      print('🔵 [Splash] Starting navigation logic...');
 
       try {
-        _model.isConnected = await actions.connect();
-        print('🌐 [Splash] Connectivity check result: ${_model.isConnected}');
-      } catch (e) {
-        print('❌ [Splash] Error during connectivity check: $e');
-      }
+        // ---------------------------------------------------------
+        // 🔥 FIX FOR iOS REINSTALL LOGIN ISSUE
+        // ---------------------------------------------------------
+        if (FFAppState().isFirstInstall) {
+          print('🧹 [Splash] First install detected. Clearing persisted values...');
 
-      if (_model.isConnected == true) {
-        print('✅ [Splash] Device is connected to the internet.');
-        print('⏱ [Splash] Starting 4-second splash delay...');
-        await Future.delayed(const Duration(milliseconds: 4000));
-        print('⏱ [Splash] 4-second delay completed.');
+          // Clear ALL persisted values here
+          FFAppState().authToken = '';
+          // Add any additional persisted vars you want to clear
+          // FFAppState().userId = '';
+          // FFAppState().profileData = null;
 
-        if (!mounted) {
-          print('⚠️ [Splash] Widget is unmounted after delay. Navigation aborted.');
+          // Mark as no longer first install
+          FFAppState().isFirstInstall = false;
+
+          // Redirect to login
+          if (mounted) {
+            context.goNamed(LogInWidget.routeName);
+          }
+          return; // stop here
+        }
+        // ---------------------------------------------------------
+
+        // Check connectivity
+        final isConnected = await actions.connect();
+        print('🌐 [Splash] Connectivity: $isConnected');
+
+        if (!isConnected) {
+          print('🚫 [Splash] No internet connection.');
+          if (mounted) {
+            await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (dialogContext) => const Dialog(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                child: ConectiviltyWidget(),
+              ),
+            );
+          }
           return;
         }
 
-        print('🟢 [Splash] Checking authentication token in FFAppState...');
-        print('🔑 [Splash] Token value: "${FFAppState().authToken}"');
+        // Wait for minimum splash duration
+        await Future.delayed(const Duration(milliseconds: 4000));
 
-        if (FFAppState().authToken != null && FFAppState().authToken != '') {
-          print('🏠 [Splash] Token found. Navigating to NavWidget (Home).');
-          try {
+        if (!mounted) return;
+
+        // Check authentication
+        final authToken = FFAppState().authToken;
+        print('🔑 [Splash] Token: "$authToken"');
+
+        if (authToken.isEmpty) {
+          print('🔐 [Splash] No token. Going to login.');
+          context.goNamed(LogInWidget.routeName);
+          return;
+        }
+
+        // Validate profile
+        print('🔍 [Splash] Validating profile...');
+        final profileRes = await DashboardGroup.getProfileCall.call(
+          authToken: authToken,
+        );
+
+        if (!mounted) return;
+
+        if (profileRes.succeeded) {
+          final isAttempt = getJsonField(
+            profileRes.jsonBody,
+            r'$.data.is_attempt',
+          );
+          print('🎯 [Splash] is_attempt: $isAttempt');
+
+          if (isAttempt == 0) {
+            context.goNamed(HomeOnboardingWidget.routeName);
+          } else {
             context.goNamed(NavWidget.routeName);
-            print('✅ [Splash] Navigation to NavWidget triggered.');
-          } catch (e) {
-            print('❌ [Splash] Error navigating to NavWidget: $e');
           }
         } else {
-          print('🔐 [Splash] No token found. Navigating to LogInWidget.');
-          try {
-            context.goNamed(LogInWidget.routeName);
-            print('✅ [Splash] Navigation to LogInWidget triggered.');
-          } catch (e) {
-            print('❌ [Splash] Error navigating to LogInWidget: $e');
-          }
+          print('❌ [Splash] Profile validation failed.');
+          context.goNamed(LogInWidget.routeName);
         }
-      } else {
-        print('🚫 [Splash] No internet connection detected.');
-        print('💬 [Splash] Showing connectivity dialog.');
-        try {
-          await showDialog(
-            context: context,
-            builder: (dialogContext) {
-              return Dialog(
-                elevation: 0,
-                insetPadding: EdgeInsets.zero,
-                backgroundColor: Colors.transparent,
-                alignment: const AlignmentDirectional(0.0, 0.0)
-                    .resolve(Directionality.of(context)),
-                child: WebViewAware(
-                  child: GestureDetector(
-                    onTap: () {
-                      print('🖱 [Splash] Connectivity dialog tapped.');
-                      FocusScope.of(dialogContext).unfocus();
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    child: const ConectiviltyWidget(),
-                  ),
-                ),
-              );
-            },
-          );
-          print('✅ [Splash] Connectivity dialog closed.');
-        } catch (e) {
-          print('❌ [Splash] Error showing connectivity dialog: $e');
+      } catch (e) {
+        print('❌ [Splash] Error: $e');
+        if (mounted) {
+          context.goNamed(LogInWidget.routeName);
         }
       }
-
-      print('🏁 [Splash] Post frame callback finished.');
     });
   }
 
   @override
   void dispose() {
-    print('🧹 [Splash] dispose() called.');
-    routeObserver.unsubscribe(this);
-    _model.dispose();
-    print('🧹 [Splash] SplashModel disposed.');
+    _videoController?.dispose();
     super.dispose();
   }
 
   @override
-  void didUpdateWidget(SplashWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('🔄 [Splash] didUpdateWidget() called.');
-    _model.widget = widget;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('🔄 [Splash] didChangeDependencies() called.');
-    final route = DebugModalRoute.of(context);
-    if (route != null) {
-      print('📍 [Splash] Route subscribed to routeObserver.');
-      routeObserver.subscribe(this, route);
-    }
-    debugLogGlobalProperty(context);
-  }
-
-  @override
-  void didPopNext() {
-    print('↩️ [Splash] didPopNext() called.');
-    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
-      setState(() => _model.isRouteVisible = true);
-      debugLogWidgetClass(_model);
-    }
-  }
-
-  @override
-  void didPush() {
-    print('➡️ [Splash] didPush() called.');
-    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
-      setState(() => _model.isRouteVisible = true);
-      debugLogWidgetClass(_model);
-    }
-  }
-
-  @override
-  void didPop() {
-    print('⬅️ [Splash] didPop() called.');
-    _model.isRouteVisible = false;
-  }
-
-  @override
-  void didPushNext() {
-    print('⏩ [Splash] didPushNext() called.');
-    _model.isRouteVisible = false;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print('🧱 [Splash] build() called.');
-    DebugFlutterFlowModelContext.maybeOf(context)
-        ?.parentModelCallback
-        ?.call(_model);
-    context.watch<FFAppState>();
-
-    return Builder(
-      builder: (context) => GestureDetector(
-        onTap: () {
-          print('👆 [Splash] Screen tapped.');
-          FocusScope.of(context).unfocus();
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Scaffold(
-          key: scaffoldKey,
-          backgroundColor: Colors.black, // Changed from FlutterFlowTheme to black
-          body: Container(
-            color: Colors.black, // Add container with black background
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black,
+        child: _isVideoInitialized && _videoController != null
+            ? AspectRatio(
+          aspectRatio: _videoController!.value.aspectRatio,
+          child: VideoPlayer(_videoController!),
+        )
+            : Center(
+          child: Image.asset(
+            'assets/images/splash_placeholder.png',
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
-            child: const FlutterFlowVideoPlayer(
-              path: 'assets/videos/MicrosoftTeams-video.mp4',
-              videoType: VideoType.asset,
-              autoPlay: true,
-              looping: false,
-              showControls: false,
-              allowFullScreen: true,
-              allowPlaybackSpeedMenu: false,
-              lazyLoad: false,
-            ),
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.black,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

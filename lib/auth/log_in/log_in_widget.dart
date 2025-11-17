@@ -1,16 +1,16 @@
+import 'package:vote_for_goat/nav/nav_widget.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -127,7 +127,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
@@ -146,7 +146,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0,
@@ -159,15 +159,15 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Color(0x26FFFFFF),
+                          color: const Color(0x26FFFFFF),
                           boxShadow: [
                             BoxShadow(
                               blurRadius: 10.0,
                               color: Theme.of(context).brightness ==
                                       Brightness.dark
-                                  ? Color(0x33000000)
-                                  : Color(0x00000000),
-                              offset: Offset(
+                                  ? const Color(0x33000000)
+                                  : const Color(0x00000000),
+                              offset: const Offset(
                                 0.0,
                                 2.0,
                               ),
@@ -179,12 +179,12 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                           key: _model.formKey,
                           autovalidateMode: AutovalidateMode.disabled,
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 3.0, 5.0, 3.0, 0.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: double.infinity,
                                   child: TextFormField(
                                     controller: _model.emailFieldTextController,
@@ -241,7 +241,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                     .fontStyle,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -249,7 +249,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -279,8 +279,8 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           (Theme.of(context).brightness ==
                                                       Brightness.dark) ==
                                                   true
-                                              ? Color(0x80050505)
-                                              : Color(0x0C050505),
+                                              ? const Color(0x80050505)
+                                              : const Color(0x0C050505),
                                       prefixIcon: Icon(
                                         FFIcons.kcomponent56,
                                         color: (Theme.of(context).brightness ==
@@ -322,9 +322,9 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: double.infinity,
                                     child: TextFormField(
                                       controller:
@@ -383,7 +383,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                       .fontStyle,
                                             ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: Color(0x00000000),
                                             width: 1.0,
                                           ),
@@ -391,7 +391,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               BorderRadius.circular(8.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: Color(0x00000000),
                                             width: 1.0,
                                           ),
@@ -421,8 +421,8 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             (Theme.of(context).brightness ==
                                                         Brightness.dark) ==
                                                     true
-                                                ? Color(0x80050505)
-                                                : Color(0x0C050505),
+                                                ? const Color(0x80050505)
+                                                : const Color(0x0C050505),
                                         prefixIcon: Icon(
                                           FFIcons.klock,
                                           color:
@@ -487,7 +487,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 16.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -498,9 +498,9 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Container(
-                                            decoration: BoxDecoration(),
+                                            decoration: const BoxDecoration(),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
+                                              padding: const EdgeInsetsDirectional
                                                   .fromSTEB(1.0, 0.0, 0.0, 0.0),
                                               child: Theme(
                                                 data: ThemeData(
@@ -540,7 +540,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                           width: 2,
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .tertiary!,
+                                                              .tertiary,
                                                         )
                                                       : null,
                                                   activeColor:
@@ -629,9 +629,9 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                   ),
                                 ),
                                 Container(
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 16.0, 0.0, 0.0),
                                     child: Container(
                                       width: double.infinity,
@@ -640,193 +640,317 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                         gradient: LinearGradient(
                                           colors: [
                                             FlutterFlowTheme.of(context).peach,
-                                            Color(0xFFE09B6E)
+                                            const Color(0xFFE09B6E)
                                           ],
-                                          stops: [0.0, 1.0],
+                                          stops: const [0.0, 1.0],
                                           begin:
-                                              AlignmentDirectional(0.0, -1.0),
-                                          end: AlignmentDirectional(0, 1.0),
+                                              const AlignmentDirectional(0.0, -1.0),
+                                          end: const AlignmentDirectional(0, 1.0),
                                         ),
                                         borderRadius:
                                             BorderRadius.circular(12.0),
                                       ),
                                       child: FFButtonWidget(
+                                        // onPressed: () async {
+                                        //   var _shouldSetState = false;
+                                        //   _model.validate = true;
+                                        //   if (_model.formKey.currentState ==
+                                        //           null ||
+                                        //       !_model.formKey.currentState!
+                                        //           .validate()) {
+                                        //     safeSetState(
+                                        //         () => _model.validate = false);
+                                        //     return;
+                                        //   }
+                                        //   _shouldSetState = true;
+                                        //   if (_model.validate == true) {
+                                        //     _model.logInRes =
+                                        //         await AuthGroup.logInCall.call(
+                                        //       email: _model
+                                        //           .emailFieldTextController
+                                        //           .text,
+                                        //       password: _model
+                                        //           .passwordFiedTextController
+                                        //           .text,
+                                        //       fcmToken: _model.deviceToken,
+                                        //       deviceType:
+                                        //           isiOS ? 'ios' : 'android',
+                                        //     );
+                                        //
+                                        //     _shouldSetState = true;
+                                        //     if ((_model.logInRes?.succeeded ??
+                                        //             true) !=
+                                        //         true) {
+                                        //       ScaffoldMessenger.of(context)
+                                        //           .showSnackBar(
+                                        //         SnackBar(
+                                        //           content: Text(
+                                        //             getJsonField(
+                                        //               (_model.logInRes
+                                        //                       ?.jsonBody ??
+                                        //                   ''),
+                                        //               r'''$.message''',
+                                        //             ).toString(),
+                                        //             style: FlutterFlowTheme.of(
+                                        //                     context)
+                                        //                 .labelMedium
+                                        //                 .override(
+                                        //                   font: GoogleFonts
+                                        //                       .poppins(
+                                        //                     fontWeight:
+                                        //                         FlutterFlowTheme.of(
+                                        //                                 context)
+                                        //                             .labelMedium
+                                        //                             .fontWeight,
+                                        //                     fontStyle:
+                                        //                         FlutterFlowTheme.of(
+                                        //                                 context)
+                                        //                             .labelMedium
+                                        //                             .fontStyle,
+                                        //                   ),
+                                        //                   color: Colors.white,
+                                        //                   letterSpacing: 0.0,
+                                        //                   fontWeight:
+                                        //                       FlutterFlowTheme.of(
+                                        //                               context)
+                                        //                           .labelMedium
+                                        //                           .fontWeight,
+                                        //                   fontStyle:
+                                        //                       FlutterFlowTheme.of(
+                                        //                               context)
+                                        //                           .labelMedium
+                                        //                           .fontStyle,
+                                        //                 ),
+                                        //           ),
+                                        //           duration: Duration(
+                                        //               milliseconds: 3800),
+                                        //           backgroundColor: Colors.black,
+                                        //         ),
+                                        //       );
+                                        //       if (_shouldSetState)
+                                        //         safeSetState(() {});
+                                        //       return;
+                                        //     }
+                                        //     await Future.wait([
+                                        //       Future(() async {
+                                        //         ScaffoldMessenger.of(context)
+                                        //             .showSnackBar(
+                                        //           SnackBar(
+                                        //             content: Text(
+                                        //               getJsonField(
+                                        //                 (_model.logInRes
+                                        //                         ?.jsonBody ??
+                                        //                     ''),
+                                        //                 r'''$.message''',
+                                        //               ).toString(),
+                                        //               style: FlutterFlowTheme
+                                        //                       .of(context)
+                                        //                   .labelMedium
+                                        //                   .override(
+                                        //                     font: GoogleFonts
+                                        //                         .poppins(
+                                        //                       fontWeight:
+                                        //                           FlutterFlowTheme.of(
+                                        //                                   context)
+                                        //                               .labelMedium
+                                        //                               .fontWeight,
+                                        //                       fontStyle:
+                                        //                           FlutterFlowTheme.of(
+                                        //                                   context)
+                                        //                               .labelMedium
+                                        //                               .fontStyle,
+                                        //                     ),
+                                        //                     color: Colors.white,
+                                        //                     letterSpacing: 0.0,
+                                        //                     fontWeight:
+                                        //                         FlutterFlowTheme.of(
+                                        //                                 context)
+                                        //                             .labelMedium
+                                        //                             .fontWeight,
+                                        //                     fontStyle:
+                                        //                         FlutterFlowTheme.of(
+                                        //                                 context)
+                                        //                             .labelMedium
+                                        //                             .fontStyle,
+                                        //                   ),
+                                        //             ),
+                                        //             duration: Duration(
+                                        //                 milliseconds: 3800),
+                                        //             backgroundColor:
+                                        //                 Colors.black,
+                                        //           ),
+                                        //         );
+                                        //       }),
+                                        //       Future(() async {
+                                        //         context.pushNamed(
+                                        //             HomeOnboardingWidget
+                                        //                 .routeName);
+                                        //
+                                        //         FFAppState().authToken =
+                                        //             getJsonField(
+                                        //           (_model.logInRes?.jsonBody ??
+                                        //               ''),
+                                        //           r'''$.token''',
+                                        //         ).toString();
+                                        //         FFAppState().userName =
+                                        //             getJsonField(
+                                        //           (_model.logInRes?.jsonBody ??
+                                        //               ''),
+                                        //           r'''$.data.user.name''',
+                                        //         ).toString();
+                                        //         FFAppState().currentUserId =
+                                        //             getJsonField(
+                                        //           (_model.logInRes?.jsonBody ??
+                                        //               ''),
+                                        //           r'''$.data.user.id''',
+                                        //         ).toString();
+                                        //         safeSetState(() {});
+                                        //       }),
+                                        //     ]);
+                                        //   } else {
+                                        //     if (_shouldSetState)
+                                        //       safeSetState(() {});
+                                        //     return;
+                                        //   }
+                                        //
+                                        //   if (_shouldSetState)
+                                        //     safeSetState(() {});
+                                        // },
+
+                                    ///2
                                         onPressed: () async {
-                                          var _shouldSetState = false;
+                                          var shouldSetState = false;
                                           _model.validate = true;
-                                          if (_model.formKey.currentState ==
-                                                  null ||
-                                              !_model.formKey.currentState!
-                                                  .validate()) {
-                                            safeSetState(
-                                                () => _model.validate = false);
+                                          if (_model.formKey.currentState == null ||
+                                              !_model.formKey.currentState!.validate()) {
+                                            safeSetState(() => _model.validate = false);
                                             return;
                                           }
-                                          _shouldSetState = true;
+                                          shouldSetState = true;
                                           if (_model.validate == true) {
-                                            _model.logInRes =
-                                                await AuthGroup.logInCall.call(
-                                              email: _model
-                                                  .emailFieldTextController
-                                                  .text,
-                                              password: _model
-                                                  .passwordFiedTextController
-                                                  .text,
+                                            _model.logInRes = await AuthGroup.logInCall.call(
+                                              email: _model.emailFieldTextController.text,
+                                              password: _model.passwordFiedTextController.text,
                                               fcmToken: _model.deviceToken,
-                                              deviceType:
-                                                  isiOS ? 'ios' : 'android',
+                                              deviceType: isiOS ? 'ios' : 'android',
                                             );
 
-                                            _shouldSetState = true;
-                                            if ((_model.logInRes?.succeeded ??
-                                                    true) !=
-                                                true) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                            shouldSetState = true;
+                                            if ((_model.logInRes?.succeeded ?? true) != true) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.logInRes
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.logInRes?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .fontStyle,
-                                                        ),
+                                                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                      font: GoogleFonts.poppins(),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
+                                                    ),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 3800),
+                                                  duration: const Duration(milliseconds: 3800),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
-                                              if (_shouldSetState)
-                                                safeSetState(() {});
+                                              if (shouldSetState) safeSetState(() {});
                                               return;
                                             }
+
+                                            // Check isAttempt value from response (0 or 1)
+                                            final isAttempt = getJsonField(
+                                              (_model.logInRes?.jsonBody ?? ''),
+                                              r'''$.data.is_attempt''',
+                                            );
+
+                                            final minionStatus =getJsonField(
+                                              (_model.logInRes?.jsonBody ?? ''),
+                                              r'''$.data.minion_status''',
+                                            );
+
+
                                             await Future.wait([
                                               Future(() async {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                   SnackBar(
                                                     content: Text(
                                                       getJsonField(
-                                                        (_model.logInRes
-                                                                ?.jsonBody ??
-                                                            ''),
+                                                        (_model.logInRes?.jsonBody ?? ''),
                                                         r'''$.message''',
                                                       ).toString(),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .labelMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .poppins(
-                                                              fontWeight:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .fontWeight,
-                                                              fontStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .fontStyle,
-                                                            ),
-                                                            color: Colors.white,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                          ),
+                                                      style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                        font: GoogleFonts.poppins(),
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                      ),
                                                     ),
-                                                    duration: Duration(
-                                                        milliseconds: 3800),
-                                                    backgroundColor:
-                                                        Colors.black,
+                                                    duration: const Duration(milliseconds: 3800),
+                                                    backgroundColor: Colors.black,
                                                   ),
                                                 );
                                               }),
                                               Future(() async {
-                                                context.pushNamed(
-                                                    HomeOnboardingWidget
-                                                        .routeName);
-
-                                                FFAppState().authToken =
-                                                    getJsonField(
-                                                  (_model.logInRes?.jsonBody ??
-                                                      ''),
+                                                // Set app state values
+                                                FFAppState().authToken = getJsonField(
+                                                  (_model.logInRes?.jsonBody ?? ''),
                                                   r'''$.token''',
                                                 ).toString();
-                                                FFAppState().userName =
-                                                    getJsonField(
-                                                  (_model.logInRes?.jsonBody ??
-                                                      ''),
+                                                FFAppState().userName = getJsonField(
+                                                  (_model.logInRes?.jsonBody ?? ''),
                                                   r'''$.data.user.name''',
                                                 ).toString();
-                                                FFAppState().currentUserId =
-                                                    getJsonField(
-                                                  (_model.logInRes?.jsonBody ??
-                                                      ''),
+                                                FFAppState().currentUserId = getJsonField(
+                                                  (_model.logInRes?.jsonBody ?? ''),
                                                   r'''$.data.user.id''',
                                                 ).toString();
                                                 safeSetState(() {});
+
+                                                // // Navigate based on isAttempt value (0 = false, 1 = true)
+                                                // if (isAttempt == 0) {
+                                                //   context.goNamed(HomeOnboardingWidget.routeName);
+                                                //
+                                                //   // Navigate to nav.dart when isAttempt is 0 (false)
+                                                // } else {
+                                                //   // Navigate to current flow when isAttempt is 1 (true)
+                                                //   context.goNamed(NavWidget.routeName);
+                                                //
+                                                // }
+
+
+
+
+                                                if (isAttempt == 1 || minionStatus == 0) {
+                                                  // If ANY is 1 → go to Nav
+                                                  context.goNamed(NavWidget.routeName);
+                                                } else {
+                                                  // Both are 0 → go to onboarding
+                                                  context.goNamed(HomeOnboardingWidget.routeName);
+                                                }
+
                                               }),
                                             ]);
                                           } else {
-                                            if (_shouldSetState)
-                                              safeSetState(() {});
+                                            if (shouldSetState) safeSetState(() {});
                                             return;
                                           }
 
-                                          if (_shouldSetState)
-                                            safeSetState(() {});
+                                          if (shouldSetState) safeSetState(() {});
                                         },
+
+                                        ///
+
                                         text: 'Login',
                                         options: FFButtonOptions(
                                           width: double.infinity,
                                           height: 47.0,
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 0.0, 16.0, 0.0),
                                           iconPadding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 0.0),
-                                          color: Color(0x00CD4A20),
+                                          color: const Color(0x00CD4A20),
                                           textStyle: FlutterFlowTheme.of(
                                                   context)
                                               .titleLarge
@@ -863,7 +987,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 24.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -881,7 +1005,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                       true
                                                   ? FlutterFlowTheme.of(context)
                                                       .lightWhite
-                                                  : Color(0xF1000000),
+                                                  : const Color(0xF1000000),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: Image.asset(
@@ -897,12 +1021,12 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                     true
                                                 ? FlutterFlowTheme.of(context)
                                                     .lightWhite
-                                                : Color(0xC0000000),
+                                                : const Color(0xC0000000),
                                           ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 10.0, 0.0),
                                         child: Text(
                                           'Or',
@@ -943,7 +1067,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                       true
                                                   ? FlutterFlowTheme.of(context)
                                                       .lightWhite
-                                                  : Color(0xF1000000),
+                                                  : const Color(0xF1000000),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: Image.asset(
@@ -959,16 +1083,412 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                     true
                                                 ? FlutterFlowTheme.of(context)
                                                     .lightWhite
-                                                : Color(0xC0000000),
+                                                : const Color(0xC0000000),
                                           ),
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 4.0)),
+                                    ].divide(const SizedBox(width: 4.0)),
                                   ),
                                 ),
+                                // Padding(
+                                //   padding: EdgeInsetsDirectional.fromSTEB(
+                                //       0.0, 16.0, 0.0, 0.0),
+                                //   child: Row(
+                                //     mainAxisSize: MainAxisSize.max,
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       if (isiOS)
+                                //         InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context)
+                                //                 .prepareAuthEvent();
+                                //             final user = await authManager
+                                //                 .signInWithApple(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //             _model.appleLogin =
+                                //                 await DashboardGroup
+                                //                     .socialloginCall
+                                //                     .call(
+                                //               providerId: currentUserUid,
+                                //               deviceType:
+                                //                   isiOS ? 'ios' : 'android',
+                                //               name: currentUserDisplayName,
+                                //               email: currentUserEmail,
+                                //               fcmToken: _model.deviceToken,
+                                //               providerName: 'apple',
+                                //               authToken: _model.fcmToken,
+                                //             );
+                                //
+                                //             if ((_model.appleLogin?.succeeded ??
+                                //                 true)) {
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.appleLogin
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 1200),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //               FFAppState().authToken =
+                                //                   getJsonField(
+                                //                 (_model.appleLogin?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId =
+                                //                   getJsonField(
+                                //                 (_model.appleLogin?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //               safeSetState(() {});
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //
+                                //               context.goNamedAuth(
+                                //                   HomePageWidget.routeName,
+                                //                   context.mounted);
+                                //             } else {
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.appleLogin
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 2000),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.appleLogin
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 1200),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //             }
+                                //
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color:
+                                //                     FlutterFlowTheme.of(context)
+                                //                         .tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: EdgeInsetsDirectional
+                                //                   .fromSTEB(
+                                //                       10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(8.0),
+                                //                 child: Image.asset(
+                                //                   Theme.of(context)
+                                //                               .brightness ==
+                                //                           Brightness.dark
+                                //                       ? 'assets/images/Frame_(4).png'
+                                //                       : 'assets/images/apple_logo.png',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       Padding(
+                                //         padding: EdgeInsetsDirectional.fromSTEB(
+                                //             15.0, 0.0, 0.0, 0.0),
+                                //         child: InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context)
+                                //                 .prepareAuthEvent();
+                                //             final user = await authManager
+                                //                 .signInWithFacebook(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //             _model.socialRes =
+                                //                 await DashboardGroup
+                                //                     .socialloginCall
+                                //                     .call(
+                                //               deviceType:
+                                //                   isiOS ? 'ios' : 'android',
+                                //               name: currentUserDisplayName,
+                                //               providerId: currentUserUid,
+                                //               email: currentUserEmail,
+                                //               fcmToken: _model.deviceToken,
+                                //               providerName: 'facebook',
+                                //               authToken: _model.fcmToken,
+                                //             );
+                                //
+                                //             if ((_model.socialRes?.succeeded ??
+                                //                 true)) {
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //               FFAppState().isLoggedIn = true;
+                                //               FFAppState().authToken =
+                                //                   getJsonField(
+                                //                 (_model.socialRes?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId =
+                                //                   getJsonField(
+                                //                 (_model.socialRes?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.socialRes
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 1100),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //
+                                //               context.goNamedAuth(
+                                //                   HomeOnboardingWidget
+                                //                       .routeName,
+                                //                   context.mounted);
+                                //             } else {
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //               context.safePop();
+                                //             }
+                                //
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color:
+                                //                     FlutterFlowTheme.of(context)
+                                //                         .tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: EdgeInsetsDirectional
+                                //                   .fromSTEB(
+                                //                       10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(8.0),
+                                //                 child: SvgPicture.asset(
+                                //                   'assets/images/Frame.svg',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       Padding(
+                                //         padding: EdgeInsetsDirectional.fromSTEB(
+                                //             15.0, 0.0, 0.0, 0.0),
+                                //         child: InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context)
+                                //                 .prepareAuthEvent();
+                                //             final user = await authManager
+                                //                 .signInWithGoogle(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //             _model.googleLogIn =
+                                //                 await DashboardGroup
+                                //                     .socialloginCall
+                                //                     .call(
+                                //               fcmToken: _model.deviceToken,
+                                //               name: currentUserDisplayName,
+                                //               email: currentUserEmail,
+                                //               providerId: currentUserUid,
+                                //               deviceType:
+                                //                   isiOS ? 'ios' : 'android',
+                                //               authToken: _model.fcmToken,
+                                //               providerName: 'google',
+                                //             );
+                                //
+                                //             if ((_model
+                                //                     .googleLogIn?.succeeded ??
+                                //                 true)) {
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.googleLogIn
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 1350),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //               FFAppState().authToken =
+                                //                   getJsonField(
+                                //                 (_model.googleLogIn?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId =
+                                //                   getJsonField(
+                                //                 (_model.googleLogIn?.jsonBody ??
+                                //                     ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //               safeSetState(() {});
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //
+                                //               context.goNamedAuth(
+                                //                   HomeOnboardingWidget
+                                //                       .routeName,
+                                //                   context.mounted);
+                                //             } else {
+                                //               ScaffoldMessenger.of(context)
+                                //                   .showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.googleLogIn
+                                //                               ?.jsonBody ??
+                                //                           ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: TextStyle(
+                                //                       color: Colors.white,
+                                //                     ),
+                                //                   ),
+                                //                   duration: Duration(
+                                //                       milliseconds: 1350),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //             }
+                                //
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color:
+                                //                     FlutterFlowTheme.of(context)
+                                //                         .tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: EdgeInsetsDirectional
+                                //                   .fromSTEB(
+                                //                       10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(8.0),
+                                //                 child: SvgPicture.asset(
+                                //                   'assets/images/Frame-1.svg',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+
+
+                                ///2
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 16.0, 0.0, 0.0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -982,20 +1502,14 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           onTap: () async {
                                             _model.isLoading = true;
                                             safeSetState(() {});
-                                            GoRouter.of(context)
-                                                .prepareAuthEvent();
-                                            final user = await authManager
-                                                .signInWithApple(context);
+                                            GoRouter.of(context).prepareAuthEvent();
+                                            final user = await authManager.signInWithApple(context);
                                             if (user == null) {
                                               return;
                                             }
-                                            _model.appleLogin =
-                                                await DashboardGroup
-                                                    .socialloginCall
-                                                    .call(
+                                            _model.appleLogin = await DashboardGroup.socialloginCall.call(
                                               providerId: currentUserUid,
-                                              deviceType:
-                                                  isiOS ? 'ios' : 'android',
+                                              deviceType: isiOS ? 'ios' : 'android',
                                               name: currentUserDisplayName,
                                               email: currentUserEmail,
                                               fcmToken: _model.deviceToken,
@@ -1003,87 +1517,60 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               authToken: _model.fcmToken,
                                             );
 
-                                            if ((_model.appleLogin?.succeeded ??
-                                                true)) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                            if ((_model.appleLogin?.succeeded ?? true)) {
+                                              // Check isAttempt value from response
+                                              final isAttempt = getJsonField(
+                                                (_model.appleLogin?.jsonBody ?? ''),
+                                                r'''$.is_attempt''',
+                                              );
+
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.appleLogin
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.appleLogin?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 1200),
+                                                  duration: const Duration(milliseconds: 1200),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
-                                              FFAppState().authToken =
-                                                  getJsonField(
-                                                (_model.appleLogin?.jsonBody ??
-                                                    ''),
+
+                                              FFAppState().authToken = getJsonField(
+                                                (_model.appleLogin?.jsonBody ?? ''),
                                                 r'''$.token''',
                                               ).toString();
-                                              FFAppState().currentUserId =
-                                                  getJsonField(
-                                                (_model.appleLogin?.jsonBody ??
-                                                    ''),
+                                              FFAppState().currentUserId = getJsonField(
+                                                (_model.appleLogin?.jsonBody ?? ''),
                                                 r'''$.data.id''',
                                               ).toString();
                                               safeSetState(() {});
                                               _model.isLoading = false;
                                               safeSetState(() {});
 
-                                              context.goNamedAuth(
-                                                  HomePageWidget.routeName,
-                                                  context.mounted);
+                                              // Navigate based on isAttempt value
+                                              if (isAttempt == 0) {
+                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                              } else {
+                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                              }
                                             } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.appleLogin
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.appleLogin?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 2000),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.appleLogin
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  duration: Duration(
-                                                      milliseconds: 1200),
+                                                  duration: const Duration(milliseconds: 2000),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
                                             }
-
                                             safeSetState(() {});
                                           },
                                           child: Container(
@@ -1092,22 +1579,15 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .tertiary,
+                                                color: FlutterFlowTheme.of(context).tertiary,
                                               ),
                                             ),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      10.0, 10.0, 10.0, 10.0),
+                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
                                               child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                borderRadius: BorderRadius.circular(8.0),
                                                 child: Image.asset(
-                                                  Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
+                                                  Theme.of(context).brightness == Brightness.dark
                                                       ? 'assets/images/Frame_(4).png'
                                                       : 'assets/images/apple_logo.png',
                                                   width: 200.0,
@@ -1119,8 +1599,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           ),
                                         ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            15.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
                                           focusColor: Colors.transparent,
@@ -1129,19 +1608,13 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           onTap: () async {
                                             _model.isLoading = true;
                                             safeSetState(() {});
-                                            GoRouter.of(context)
-                                                .prepareAuthEvent();
-                                            final user = await authManager
-                                                .signInWithFacebook(context);
+                                            GoRouter.of(context).prepareAuthEvent();
+                                            final user = await authManager.signInWithFacebook(context);
                                             if (user == null) {
                                               return;
                                             }
-                                            _model.socialRes =
-                                                await DashboardGroup
-                                                    .socialloginCall
-                                                    .call(
-                                              deviceType:
-                                                  isiOS ? 'ios' : 'android',
+                                            _model.socialRes = await DashboardGroup.socialloginCall.call(
+                                              deviceType: isiOS ? 'ios' : 'android',
                                               name: currentUserDisplayName,
                                               providerId: currentUserUid,
                                               email: currentUserEmail,
@@ -1150,53 +1623,50 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               authToken: _model.fcmToken,
                                             );
 
-                                            if ((_model.socialRes?.succeeded ??
-                                                true)) {
+                                            if ((_model.socialRes?.succeeded ?? true)) {
+                                              // Check isAttempt value from response
+                                              final isAttempt = getJsonField(
+                                                (_model.socialRes?.jsonBody ?? ''),
+                                                r'''$.is_attempt''',
+                                              );
+
                                               _model.isLoading = false;
                                               safeSetState(() {});
                                               FFAppState().isLoggedIn = true;
-                                              FFAppState().authToken =
-                                                  getJsonField(
-                                                (_model.socialRes?.jsonBody ??
-                                                    ''),
+                                              FFAppState().authToken = getJsonField(
+                                                (_model.socialRes?.jsonBody ?? ''),
                                                 r'''$.token''',
                                               ).toString();
-                                              FFAppState().currentUserId =
-                                                  getJsonField(
-                                                (_model.socialRes?.jsonBody ??
-                                                    ''),
+                                              FFAppState().currentUserId = getJsonField(
+                                                (_model.socialRes?.jsonBody ?? ''),
                                                 r'''$.data.id''',
                                               ).toString();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.socialRes
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.socialRes?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 1100),
+                                                  duration: const Duration(milliseconds: 1100),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
 
-                                              context.goNamedAuth(
-                                                  HomeOnboardingWidget
-                                                      .routeName,
-                                                  context.mounted);
+                                              // Navigate based on isAttempt value
+                                              if (isAttempt == 0) {
+                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                              } else {
+                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                              }
                                             } else {
                                               _model.isLoading = false;
                                               safeSetState(() {});
                                               context.safePop();
                                             }
-
                                             safeSetState(() {});
                                           },
                                           child: Container(
@@ -1205,18 +1675,13 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .tertiary,
+                                                color: FlutterFlowTheme.of(context).tertiary,
                                               ),
                                             ),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      10.0, 10.0, 10.0, 10.0),
+                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
                                               child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                borderRadius: BorderRadius.circular(8.0),
                                                 child: SvgPicture.asset(
                                                   'assets/images/Frame.svg',
                                                   width: 200.0,
@@ -1229,8 +1694,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            15.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
                                           focusColor: Colors.transparent,
@@ -1239,93 +1703,77 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           onTap: () async {
                                             _model.isLoading = true;
                                             safeSetState(() {});
-                                            GoRouter.of(context)
-                                                .prepareAuthEvent();
-                                            final user = await authManager
-                                                .signInWithGoogle(context);
+                                            GoRouter.of(context).prepareAuthEvent();
+                                            final user = await authManager.signInWithGoogle(context);
                                             if (user == null) {
                                               return;
                                             }
-                                            _model.googleLogIn =
-                                                await DashboardGroup
-                                                    .socialloginCall
-                                                    .call(
+                                            _model.googleLogIn = await DashboardGroup.socialloginCall.call(
                                               fcmToken: _model.deviceToken,
                                               name: currentUserDisplayName,
                                               email: currentUserEmail,
                                               providerId: currentUserUid,
-                                              deviceType:
-                                                  isiOS ? 'ios' : 'android',
+                                              deviceType: isiOS ? 'ios' : 'android',
                                               authToken: _model.fcmToken,
                                               providerName: 'google',
                                             );
 
-                                            if ((_model
-                                                    .googleLogIn?.succeeded ??
-                                                true)) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                            if ((_model.googleLogIn?.succeeded ?? true)) {
+                                              // Check isAttempt value from response
+                                              final isAttempt = getJsonField(
+                                                (_model.googleLogIn?.jsonBody ?? ''),
+                                                r'''$.is_attempt''',
+                                              );
+
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.googleLogIn
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.googleLogIn?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 1350),
+                                                  duration: const Duration(milliseconds: 1350),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
-                                              FFAppState().authToken =
-                                                  getJsonField(
-                                                (_model.googleLogIn?.jsonBody ??
-                                                    ''),
+
+                                              FFAppState().authToken = getJsonField(
+                                                (_model.googleLogIn?.jsonBody ?? ''),
                                                 r'''$.token''',
                                               ).toString();
-                                              FFAppState().currentUserId =
-                                                  getJsonField(
-                                                (_model.googleLogIn?.jsonBody ??
-                                                    ''),
+                                              FFAppState().currentUserId = getJsonField(
+                                                (_model.googleLogIn?.jsonBody ?? ''),
                                                 r'''$.data.id''',
                                               ).toString();
                                               safeSetState(() {});
                                               _model.isLoading = false;
                                               safeSetState(() {});
 
-                                              context.goNamedAuth(
-                                                  HomeOnboardingWidget
-                                                      .routeName,
-                                                  context.mounted);
+                                              // Navigate based on isAttempt value
+                                              if (isAttempt == 0) {
+                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                              } else {
+                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                              }
                                             } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
                                                     getJsonField(
-                                                      (_model.googleLogIn
-                                                              ?.jsonBody ??
-                                                          ''),
+                                                      (_model.googleLogIn?.jsonBody ?? ''),
                                                       r'''$.message''',
                                                     ).toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
+                                                    style: const TextStyle(color: Colors.white),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 1350),
+                                                  duration: const Duration(milliseconds: 1350),
                                                   backgroundColor: Colors.black,
                                                 ),
                                               );
                                               _model.isLoading = false;
                                               safeSetState(() {});
                                             }
-
                                             safeSetState(() {});
                                           },
                                           child: Container(
@@ -1334,18 +1782,13 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .tertiary,
+                                                color: FlutterFlowTheme.of(context).tertiary,
                                               ),
                                             ),
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      10.0, 10.0, 10.0, 10.0),
+                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
                                               child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                borderRadius: BorderRadius.circular(8.0),
                                                 child: SvgPicture.asset(
                                                   'assets/images/Frame-1.svg',
                                                   width: 200.0,
@@ -1360,15 +1803,17 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                     ],
                                   ),
                                 ),
+
+                                ///
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 22.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 16.0, 0.0, 0.0),
                                         child: Text(
                                           'Don’t have an account?',
@@ -1403,7 +1848,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 16.0, 0.0, 0.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
@@ -1460,9 +1905,9 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
               ),
             ),
             if (_model.isLoading)
-              Align(
+              const Align(
                 alignment: AlignmentDirectional(0.0, 0.0),
-                child: Container(
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
                   child: custom_widgets.CubeGridLoader(

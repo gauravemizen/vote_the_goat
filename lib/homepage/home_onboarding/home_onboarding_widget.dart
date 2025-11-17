@@ -1,13 +1,12 @@
+import 'package:vote_for_goat/nav/nav_widget.dart';
+
+import '../../backend/api_requests/api_calls.dart';
 import '/components/button_small/button_small_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'home_onboarding_model.dart';
 export 'home_onboarding_model.dart';
 
@@ -120,7 +119,7 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                   ),
                   0.0,
                   0.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 height: 500.0,
                 child: Padding(
@@ -147,8 +146,8 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                         true
                                     ? const Color(0x26FFFFFF)
                                     : const Color(0xFFC2C4C2),
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
                                     offset: Offset(
@@ -273,8 +272,8 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                         true
                                     ? const Color(0x26FFFFFF)
                                     : const Color(0xFFC2C4C2),
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
                                     offset: Offset(
@@ -399,8 +398,8 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                         true
                                     ? const Color(0x26FFFFFF)
                                     : const Color(0xFFC2C4C2),
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
                                     offset: Offset(
@@ -525,8 +524,8 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                         true
                                     ? const Color(0x26FFFFFF)
                                     : const Color(0xFFC2C4C2),
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
                                     offset: Offset(
@@ -573,11 +572,67 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
+                                    // onTap: () async {
+                                    //   context.pushNamed(
+                                    //       MatchPlayerssWidget.routeName);
+                                    // },
+
+
                                     onTap: () async {
-                                      context.pushNamed(
-                                          MatchPlayerssWidget.routeName);
-                                    },
-                                    child: Container(
+                                      try {
+                                        print('Starting minion status check...');
+
+                                        // Call the minion status API
+                                        final minionStatusResponse = await DashboardGroup.checkMinionStatusCall.call(
+                                          authToken: FFAppState().authToken,
+                                        );
+
+                                        print('API Response Status: ${minionStatusResponse.succeeded}');
+                                        print('API Response Body: ${minionStatusResponse.jsonBody}');
+
+                                        if (minionStatusResponse.succeeded) {
+                                          final status = getJsonField(
+                                            minionStatusResponse.jsonBody,
+                                            r'''$.minion_status''',
+                                          );
+
+                                          print('Extracted minion_status: $status (Type: ${status.runtimeType})');
+
+                                          // Navigate based on minion status
+                                          if (status == 1) {
+
+                                            print('Navigating to NavWidget');
+                                            context.pushNamed(MatchPlayerssWidget.routeName);
+
+                                          } else {
+                                            print('Navigating to MatchPlayerssWidget (status was: $status)');
+
+                                            context.goNamed(NavWidget.routeName);
+
+                                          }
+                                        } else {
+                                          print('API call failed');
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Failed to check status. Please try again.'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                          // Fallback navigation
+                                          context.pushNamed(MatchPlayerssWidget.routeName);
+                                        }
+                                      } catch (e) {
+                                        print('Error occurred: $e');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('An error occurred. Please try again.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        // Fallback navigation
+                                        context.pushNamed(MatchPlayerssWidget.routeName);
+                                      }
+                                    },                                    child: Container(
                                       decoration: const BoxDecoration(),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional.fromSTEB(
@@ -590,10 +645,10 @@ class _HomeOnboardingWidgetState extends State<HomeOnboardingWidget>
                                             return DebugFlutterFlowModelContext(
                                               rootModel: _model.rootModel,
                                               child: const ButtonSmallWidget(
-                                                text: 'FINISH',
+                                                text: 'GO',
                                                 height: 28,
                                                 width: 88,
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 textColor: Colors.white,
                                               ),
                                             );

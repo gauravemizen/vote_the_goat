@@ -1,11 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'alert_dilogue_model.dart';
 export 'alert_dilogue_model.dart';
 
@@ -19,8 +15,8 @@ class AlertDilogueWidget extends StatefulWidget {
     this.textButton,
     required this.onTap,
     this.onButtonTap,
-  })  : this.height = height ?? 20.0,
-        this.width = width ?? 80.0;
+  })  : height = height ?? 20.0,
+        width = width ?? 80.0;
 
   final double height;
   final double width;
@@ -110,7 +106,7 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
         ?.call(_model);
 
     return Align(
-      alignment: AlignmentDirectional(0.0, 0.0),
+      alignment: const AlignmentDirectional(0.0, 0.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -118,28 +114,28 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
         children: [
           Expanded(
             child: Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
+              alignment: const AlignmentDirectional(0.0, 0.0),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: (Theme.of(context).brightness == Brightness.dark) ==
                             true
-                        ? Color(0xFF111113)
+                        ? const Color(0xFF111113)
                         : Colors.white,
                     borderRadius: BorderRadius.circular(17.0),
                   ),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 16.0),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget!.headingText!.maybeHandleOverflow(
+                            widget.headingText!.maybeHandleOverflow(
                               maxChars: 140,
                               replacement: '…',
                             ),
@@ -161,10 +157,10 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
                                 ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 8.0, 0.0, 0.0),
                             child: Text(
-                              widget!.descriptionText!,
+                              widget.descriptionText!,
                               textAlign: TextAlign.center,
                               style: FlutterFlowTheme.of(context)
                                   .bodySmall
@@ -178,8 +174,8 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
                                     color: (Theme.of(context).brightness ==
                                                 Brightness.dark) ==
                                             true
-                                        ? Color(0xA6FFFFFF)
-                                        : Color(0xFF595959),
+                                        ? const Color(0xA6FFFFFF)
+                                        : const Color(0xFF595959),
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FlutterFlowTheme.of(context)
@@ -189,7 +185,7 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 20.0, 0.0, 10.0),
                             child: InkWell(
                               splashColor: Colors.transparent,
@@ -206,18 +202,18 @@ class _AlertDilogueWidgetState extends State<AlertDilogueWidget>
                                   gradient: LinearGradient(
                                     colors: [
                                       FlutterFlowTheme.of(context).peach,
-                                      Color(0xFFE09B6E)
+                                      const Color(0xFFE09B6E)
                                     ],
-                                    stops: [0.0, 1.0],
-                                    begin: AlignmentDirectional(0.0, -1.0),
-                                    end: AlignmentDirectional(0, 1.0),
+                                    stops: const [0.0, 1.0],
+                                    begin: const AlignmentDirectional(0.0, -1.0),
+                                    end: const AlignmentDirectional(0, 1.0),
                                   ),
                                   borderRadius: BorderRadius.circular(16.0),
                                 ),
                                 child: Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
                                   child: Text(
-                                    widget!.textButton!,
+                                    widget.textButton!,
                                     style: FlutterFlowTheme.of(context)
                                         .bodySmall
                                         .override(

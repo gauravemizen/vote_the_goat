@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import '../schema/structs/index.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -44,7 +42,7 @@ class LogInCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'logIn',
-      apiUrl: '${baseUrl}/login',
+      apiUrl: '$baseUrl/login',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -78,7 +76,7 @@ class SignUpCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'signUp',
-      apiUrl: '${baseUrl}/register',
+      apiUrl: '$baseUrl/register',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -105,12 +103,12 @@ class OtpVerifyCall {
     final ffApiRequestBody = '''
 {
   "email": "${escapeStringForJson(email)}",
-  "otp": ${otp},
+  "otp": $otp,
   "fcm_token": "${escapeStringForJson(fcmToken)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'otpVerify',
-      apiUrl: '${baseUrl}/verify-email',
+      apiUrl: '$baseUrl/verify-email',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -138,7 +136,7 @@ class ForgotPasswordCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'forgotPassword',
-      apiUrl: '${baseUrl}/forgot_password',
+      apiUrl: '$baseUrl/forgot_password',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -163,12 +161,12 @@ class ForgotOtpVerifyCall {
 
     final ffApiRequestBody = '''
 {
-  "otp": ${otp},
-  "user_id": ${userId}
+  "otp": $otp,
+  "user_id": $userId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'forgotOtpVerify',
-      apiUrl: '${baseUrl}/reset_password_verify',
+      apiUrl: '$baseUrl/reset_password_verify',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -193,12 +191,12 @@ class ResetPasswordCall {
 
     final ffApiRequestBody = '''
 {
-  "otp": ${userId},
-  "user_id": ${otp}
+  "otp": $userId,
+  "user_id": $otp
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'resetPassword',
-      apiUrl: '${baseUrl}/reset_password_verify',
+      apiUrl: '$baseUrl/reset_password_verify',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -224,13 +222,13 @@ class ChangePasswordCall {
 
     final ffApiRequestBody = '''
 {
-  "user_id": ${userId},
+  "user_id": $userId,
   "password_confirmation": "${escapeStringForJson(passwordConfirmation)}",
   "password": "${escapeStringForJson(password)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'changePassword',
-      apiUrl: '${baseUrl}/reset_password',
+      apiUrl: '$baseUrl/reset_password',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -254,7 +252,7 @@ class LogOutCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'logOut',
-      apiUrl: '${baseUrl}/logout',
+      apiUrl: '$baseUrl/logout',
       callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer {{auth_token}}',
@@ -325,6 +323,18 @@ class DashboardGroup {
   static TeamMemberforChatCall teamMemberforChatCall = TeamMemberforChatCall();
   static PlayerBioStatsCall playerBioStatsCall = PlayerBioStatsCall();
   static FilterplayersCall filterplayersCall = FilterplayersCall();
+
+  static CheckMinionStatusCall checkMinionStatusCall = CheckMinionStatusCall();
+
+
+  static ContestLeaderboardCall contestLeaderboardCall = ContestLeaderboardCall();
+
+
+
+  static UserSubscriptionCall userSubscriptionCall = UserSubscriptionCall();
+
+
+
   static TeamMemberChatNotificationCall teamMemberChatNotificationCall =
   TeamMemberChatNotificationCall();
   static EnableNotificationCall enableNotificationCall = EnableNotificationCall();
@@ -346,10 +356,10 @@ class EligblePlayersCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'eligblePlayers',
-      apiUrl: '${baseUrl}/eligblePlayers',
+      apiUrl: '$baseUrl/eligblePlayers',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -382,10 +392,10 @@ class AboutPageContentCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'aboutPageContent',
-      apiUrl: '${baseUrl}/about_vote_goat',
+      apiUrl: '$baseUrl/about_vote_goat',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -417,14 +427,14 @@ class PlayertBioCall {
 
     final ffApiRequestBody = '''
 {
-  "player_id": ${playerId} 
+  "player_id": $playerId 
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'playertBio',
-      apiUrl: '${baseUrl}/playerBio',
+      apiUrl: '$baseUrl/playerBio',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -438,7 +448,7 @@ class PlayertBioCall {
     );
   }
 
-  dynamic? playerData(dynamic response) =>
+  dynamic playerData(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -456,10 +466,10 @@ class LogoutCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'logout',
-      apiUrl: '${baseUrl}/logout',
+      apiUrl: '$baseUrl/logout',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       bodyType: BodyType.JSON,
@@ -484,7 +494,7 @@ class ContactSupportCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'contactSupport',
-      apiUrl: '${baseUrl}/cms-pages/contact-support',
+      apiUrl: '$baseUrl/cms-pages/contact-supports',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -497,7 +507,7 @@ class ContactSupportCall {
     );
   }
 
-  dynamic? cms(dynamic response) =>
+  dynamic cms(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -547,10 +557,10 @@ class PrivacypolicyCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'getFAQ',
-      apiUrl: '${baseUrl}/get_cms_pages',
+      apiUrl: '$baseUrl/get_cms_pages',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -581,10 +591,12 @@ class GetProfileCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'getProfile',
-      apiUrl: '${baseUrl}/get_Profile',
+      apiUrl: '$baseUrl/get_Profile',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
+        'Accept': 'application/json',
+
       },
       params: {},
       returnBody: true,
@@ -596,7 +608,7 @@ class GetProfileCall {
     );
   }
 
-  dynamic? profileDetail(dynamic response) =>
+  dynamic profileDetail(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -616,10 +628,10 @@ class UpdateProfileCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'updateProfile',
-      apiUrl: '${baseUrl}/updateProfile',
+      apiUrl: '$baseUrl/updateProfile',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {
         'name': name,
@@ -656,10 +668,10 @@ class ResetPassCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'resetPass',
-      apiUrl: '${baseUrl}/change_password',
+      apiUrl: '$baseUrl/change_password',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -685,10 +697,10 @@ class FilterListCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'filterList',
-      apiUrl: '${baseUrl}/player-filters',
+      apiUrl: '$baseUrl/player-filters',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -730,10 +742,10 @@ class CreateTeamCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'createTeam',
-      apiUrl: '${baseUrl}/create_teamwork',
+      apiUrl: '$baseUrl/create_teamwork',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {
         'logo': logo,
@@ -763,10 +775,10 @@ class GetAllPlayersCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'getAllPlayers',
-      apiUrl: '${baseUrl}/player_list',
+      apiUrl: '$baseUrl/player_list',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -797,10 +809,10 @@ class PositionlistCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'positionlist',
-      apiUrl: '${baseUrl}/position_list',
+      apiUrl: '$baseUrl/position_list',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -833,15 +845,15 @@ class RankingPostCall {
 
     final ffApiRequestBody = '''
 {
-  "player_id": ${playerId},
-  "position": ${position}
+  "player_id": $playerId,
+  "position": $position
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'rankingPost',
-      apiUrl: '${baseUrl}/rankingPost',
+      apiUrl: '$baseUrl/rankingPost',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -867,10 +879,10 @@ class GetteamdetailCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'getteamdetail',
-      apiUrl: '${baseUrl}/get_team_detail',
+      apiUrl: '$baseUrl/get_team_detail',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -914,15 +926,15 @@ class CompareplayersCall {
 
     final ffApiRequestBody = '''
 {
-  "player1_id": ${player1Id},
-  "player2_id": ${player2Id}
+  "player1_id": $player1Id,
+  "player2_id": $player2Id
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'compareplayers',
-      apiUrl: '${baseUrl}/compare_players',
+      apiUrl: '$baseUrl/compare_players',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -936,7 +948,7 @@ class CompareplayersCall {
     );
   }
 
-  dynamic? compareData(dynamic response) =>
+  dynamic compareData(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -959,10 +971,10 @@ class ContestListCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'contestList',
-      apiUrl: '${baseUrl}/contest-list',
+      apiUrl: '$baseUrl/contest-list',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -996,14 +1008,14 @@ class ContestDetailsCall {
 
     final ffApiRequestBody = '''
 {
-  "contest_id": ${contestId}
+  "contest_id": $contestId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'contestDetails',
-      apiUrl: '${baseUrl}/get-contest-details',
+      apiUrl: '$baseUrl/get-contest-details',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1017,7 +1029,7 @@ class ContestDetailsCall {
     );
   }
 
-  dynamic? contestDetails(dynamic response) =>
+  dynamic contestDetails(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -1036,14 +1048,14 @@ class ContestQuestionCall {
 
     final ffApiRequestBody = '''
 {
-  "contest_id": ${contestId}
+  "contest_id": $contestId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'contestQuestion',
-      apiUrl: '${baseUrl}/contest-questions',
+      apiUrl: '$baseUrl/contest-questions',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1065,11 +1077,54 @@ class ContestQuestionCall {
       ) as List?;
 }
 
+// class ContestSubmitAnswersCall {
+//   Future<ApiCallResponse> call({
+//     int? questionId,
+//     String? answer = '',
+//     int? optionId,
+//     String? authToken,
+//   }) async {
+//     authToken ??= '';
+//     final baseUrl = DashboardGroup.getBaseUrl(
+//       authToken: authToken,
+//     );
+//
+//     final ffApiRequestBody = '''
+// {
+//   "question_id": ${questionId},
+//   "answer": "${escapeStringForJson(answer)}",
+//   "option_id": ${optionId}
+// }''';
+//     return ApiManager.instance.makeApiCall(
+//       callName: 'contestSubmitAnswers',
+//       apiUrl: '${baseUrl}/contest-submit-answers',
+//       callType: ApiCallType.POST,
+//       headers: {
+//         'Authorization': 'Bearer ${authToken}',
+//       },
+//       params: {},
+//       body: ffApiRequestBody,
+//       bodyType: BodyType.JSON,
+//       returnBody: true,
+//       encodeBodyUtf8: false,
+//       decodeUtf8: false,
+//       cache: false,
+//       isStreamingApi: false,
+//       alwaysAllowBody: false,
+//     );
+//   }
+// }
+
+
+///2
+
+
 class ContestSubmitAnswersCall {
   Future<ApiCallResponse> call({
     int? questionId,
     String? answer = '',
     int? optionId,
+    int? timeSpent,
     String? authToken,
   }) async {
     authToken ??= '';
@@ -1079,16 +1134,17 @@ class ContestSubmitAnswersCall {
 
     final ffApiRequestBody = '''
 {
-  "question_id": ${questionId},
+  "question_id": $questionId,
   "answer": "${escapeStringForJson(answer)}",
-  "option_id": ${optionId}
+  "option_id": $optionId,
+  "time_spent": $timeSpent
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'contestSubmitAnswers',
-      apiUrl: '${baseUrl}/contest-submit-answers',
+      apiUrl: '$baseUrl/contest-submit-answers',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1115,14 +1171,14 @@ class ComlpleteContestDetailsCall {
 
     final ffApiRequestBody = '''
 {
-  "contest_id": ${contestId}
+  "contest_id": $contestId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'comlpleteContestDetails',
-      apiUrl: '${baseUrl}/contest-complete',
+      apiUrl: '$baseUrl/contest-complete',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1136,7 +1192,7 @@ class ComlpleteContestDetailsCall {
     );
   }
 
-  dynamic? contestResult(dynamic response) =>
+  dynamic contestResult(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -1155,14 +1211,14 @@ class ContestfinaldetailsCall {
 
     final ffApiRequestBody = '''
 {
-  "contest_id": ${contestId}
+  "contest_id": $contestId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'contestfinaldetails',
-      apiUrl: '${baseUrl}/contest-final-details',
+      apiUrl: '$baseUrl/contest-final-details',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1176,7 +1232,7 @@ class ContestfinaldetailsCall {
     );
   }
 
-  dynamic? contestDetail(dynamic response) =>
+  dynamic contestDetail(dynamic response) =>
       getJsonField(
         response,
         r'''$.data''',
@@ -1194,10 +1250,10 @@ class CompletedContestCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'completedContest',
-      apiUrl: '${baseUrl}/contest-complete-list',
+      apiUrl: '$baseUrl/contest-complete-list',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1230,15 +1286,15 @@ class ComparisonCall {
 
     final ffApiRequestBody = '''
 {
-  "win_player_id": ${winPlayerId},
-  "lost_player_id": ${lostPlayerId}
+  "win_player_id": $winPlayerId,
+  "lost_player_id": $lostPlayerId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'comparison',
-      apiUrl: '${baseUrl}/comparison',
+      apiUrl: '$baseUrl/comparison',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1264,10 +1320,10 @@ class ComparisonListCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'comparisonList',
-      apiUrl: '${baseUrl}/comparison-list',
+      apiUrl: '$baseUrl/comparison-list',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1291,10 +1347,10 @@ class MatchPlayersCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'matchPlayers',
-      apiUrl: '${baseUrl}/minion-player',
+      apiUrl: '$baseUrl/minion-player',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1325,10 +1381,10 @@ class ApplyrankingCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'applyranking',
-      apiUrl: '${baseUrl}/apply-ranking',
+      apiUrl: '$baseUrl/apply-ranking',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1352,10 +1408,10 @@ class FinalizeRankingCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'finalizeRanking',
-      apiUrl: '${baseUrl}/finalize-ranking',
+      apiUrl: '$baseUrl/finalize-ranking',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       bodyType: BodyType.JSON,
@@ -1380,10 +1436,10 @@ class MinionPlayerScoreCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'minionPlayerScore',
-      apiUrl: '${baseUrl}/minion-player-score',
+      apiUrl: '$baseUrl/minion-player-score',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1409,15 +1465,15 @@ class SubmitMinionCall {
 
     final ffApiRequestBody = '''
 {
-  "select_player_id": ${selectPlayerId},
-  "right_player_id": ${rightPlayerId}
+  "select_player_id": $selectPlayerId,
+  "right_player_id": $rightPlayerId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'submitMinion',
-      apiUrl: '${baseUrl}/minion-player-save',
+      apiUrl: '$baseUrl/minion-player-save',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1443,10 +1499,10 @@ class AutoAssociateCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'autoAssociate',
-      apiUrl: '${baseUrl}/auto-associate',
+      apiUrl: '$baseUrl/auto-associate',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       returnBody: true,
@@ -1475,10 +1531,10 @@ class JoinTeamCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'joinTeam',
-      apiUrl: '${baseUrl}/join_team',
+      apiUrl: '$baseUrl/join_team',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1505,14 +1561,14 @@ class TeamRankingDetailsCall {
 
     final ffApiRequestBody = '''
 {
-  "team_id": ${teamId}
+  "team_id": $teamId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'teamRankingDetails',
-      apiUrl: '${baseUrl}/team-ranking-details',
+      apiUrl: '$baseUrl/team-ranking-details',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1553,7 +1609,7 @@ class SocialloginCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'sociallogin',
-      apiUrl: '${baseUrl}/social-login',
+      apiUrl: '$baseUrl/social-login',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -1581,14 +1637,14 @@ class TeamMemberforChatCall {
 
     final ffApiRequestBody = '''
 {
-  "team_id": ${teamId}
+  "team_id": $teamId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'teamMemberforChat',
-      apiUrl: '${baseUrl}/team-member-for-chat',
+      apiUrl: '$baseUrl/team-member-for-chat',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1615,14 +1671,14 @@ class PlayerBioStatsCall {
 
     final ffApiRequestBody = '''
 {
-  "player_id": ${playerId}
+  "player_id": $playerId
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'playerBioStats',
-      apiUrl: '${baseUrl}/player-bio-stats',
+      apiUrl: '$baseUrl/player-bio-stats',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1647,7 +1703,7 @@ class EnableNotificationCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'enableNotification',
-      apiUrl: '${baseUrl}/enable-notification',
+      apiUrl: '$baseUrl/enable-notification',
       callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer $authToken',
@@ -1666,6 +1722,98 @@ class EnableNotificationCall {
 
 
 
+///subscription
+
+class UserSubscriptionCall {
+  Future<ApiCallResponse> call({
+    String? planId = '',
+    String? planName = '',
+    String? price = '',
+    String? duration = '',
+    String? transactionId = '',
+    String? purchaseToken = '',
+    String? platform = '',
+    String? purchaseTime = '',
+    String? productId = '',
+    String? autoRenewing = '',
+    String? isAcknowledged = '',
+    String? platformVersion = '',
+    String? rawResponse = '{}',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+//     final ffApiRequestBody = '''
+// {
+//   "plan_id": "${escapeStringForJson(planId)}",
+//   "plan_name": "${escapeStringForJson(planName)}",
+//   "price": "${escapeStringForJson(price)}",
+//   "duration": "${escapeStringForJson(duration)}",
+//   "transaction_id": "${escapeStringForJson(transactionId)}",
+//   "purchase_token": "${escapeStringForJson(purchaseToken)}",
+//   "platform": "${escapeStringForJson(platform)}",
+//   "purchase_time": "${escapeStringForJson(purchaseTime)}"
+// }''';
+
+    final ffApiRequestBody = '''
+{
+  "plan_id": "${escapeStringForJson(planId)}",
+  "plan_name": "${escapeStringForJson(planName)}",
+  "price": "${escapeStringForJson(price)}",
+  "duration": "${escapeStringForJson(duration)}",
+  
+  "transaction_id": "${escapeStringForJson(transactionId)}",
+  "order_id": "${escapeStringForJson(transactionId)}",
+  "product_id": "${escapeStringForJson(productId)}",
+  "package_name": "com.voteforgoat.app",
+  
+  "purchase_token": "${escapeStringForJson(purchaseToken)}",
+  "platform": "${escapeStringForJson(platform)}",
+  "platform_version": "${escapeStringForJson(platformVersion)}",
+
+  "currency": "INR",
+  "auto_renewing": "${escapeStringForJson(autoRenewing)}",
+  "is_acknowledged": "${escapeStringForJson(isAcknowledged)}",
+  
+  "purchase_time": "${escapeStringForJson(purchaseTime)}",
+  "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
+
+  "raw_response": ${rawResponse}
+}
+''';
+
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'userSubscription',
+      apiUrl: '$baseUrl/user/subscriptions',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic subscriptionData(dynamic response) => getJsonField(
+    response,
+    r'''$.data''',
+  );
+}
+
+
+///
 
 class FilterplayersCall {
   Future<ApiCallResponse> call({
@@ -1692,10 +1840,10 @@ class FilterplayersCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'filterplayers',
-      apiUrl: '${baseUrl}/filter-players',
+      apiUrl: '$baseUrl/filter-players',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer ${authToken}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       body: ffApiRequestBody,
@@ -1710,6 +1858,74 @@ class FilterplayersCall {
   }
 }
 
+
+
+
+///
+class CheckMinionStatusCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'checkMinionStatus',
+      apiUrl: '$baseUrl/check-minion-status',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+///
+class ContestLeaderboardCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestLeaderboard',
+      apiUrl: '$baseUrl/contest-leaderboard',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? leaderboard(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+}
+///
+
+
+
+
 class TeamMemberChatNotificationCall {
   Future<ApiCallResponse> call({
     required int teamId,
@@ -1717,7 +1933,7 @@ class TeamMemberChatNotificationCall {
     String? authToken,
   }) async {
 
-    print('yha tk shi aa rhi hai team id>>>${teamId}');
+    print('yha tk shi aa rhi hai team id>>>$teamId');
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
 
@@ -1741,6 +1957,15 @@ class TeamMemberChatNotificationCall {
     );
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 /// End dashboard Group Code

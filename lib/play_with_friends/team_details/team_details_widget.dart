@@ -2,14 +2,12 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/backend/schema/structs/index.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'team_details_model.dart';
@@ -19,7 +17,7 @@ class TeamDetailsWidget extends StatefulWidget {
   const TeamDetailsWidget({
     super.key,
     int? teamIndex,
-  }) : this.teamIndex = teamIndex ?? 0;
+  }) : teamIndex = teamIndex ?? 0;
 
   final int teamIndex;
 
@@ -56,11 +54,11 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                 (_model.apiResultr60?.jsonBody ?? ''),
                 r'''$.status''',
               ).toString(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
-            duration: Duration(milliseconds: 1450),
+            duration: const Duration(milliseconds: 1450),
             backgroundColor: Colors.black,
           ),
         );
@@ -75,11 +73,11 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                 (_model.apiResultr60?.jsonBody ?? ''),
                 r'''$.status''',
               ).toString(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
-            duration: Duration(milliseconds: 1450),
+            duration: const Duration(milliseconds: 1450),
             backgroundColor: Colors.black,
           ),
         );
@@ -168,7 +166,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Stack(
-          alignment: AlignmentDirectional(0.0, 1.0),
+          alignment: const AlignmentDirectional(0.0, 1.0),
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
@@ -183,7 +181,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
             ),
             if (!_model.isLoading)
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -204,7 +202,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                             height: 40.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).backBtnClr,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: Color(0x335D4E4E),
@@ -220,7 +218,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             Brightness.dark) ==
                                         true
                                     ? Colors.black
-                                    : Color(0xD5999999),
+                                    : const Color(0xD5999999),
                               ),
                             ),
                             child: Icon(
@@ -254,7 +252,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     .customTextStyle1
                                     .override(
                                       fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
+                                      color: const Color(0xFFEB6027),
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -264,7 +262,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               8.0, 0.0, 0.0, 0.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -279,7 +277,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                               height: 40.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).backBtnClr,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x335D4E4E),
@@ -295,7 +293,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                               Brightness.dark) ==
                                           true
                                       ? Colors.black
-                                      : Color(0xD5999999),
+                                      : const Color(0xD5999999),
                                 ),
                               ),
                               child: Icon(
@@ -310,7 +308,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 30.0, 0.0, 10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -326,7 +324,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                 width: 80.0,
                                 height: 80.0,
                                 clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: Image.network(
@@ -337,7 +335,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             (_model.apiResultr60?.jsonBody ??
                                                 ''),
                                           )
-                                          ?.elementAtOrNull(widget!.teamIndex),
+                                          ?.elementAtOrNull(widget.teamIndex),
                                       r'''$.logo''',
                                     )?.toString(),
                                     '\"\"',
@@ -351,7 +349,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 10.0, 0.0, 0.0),
                                   child: Text(
                                     valueOrDefault<String>(
@@ -362,7 +360,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                   ''),
                                             )
                                             ?.elementAtOrNull(
-                                                widget!.teamIndex),
+                                                widget.teamIndex),
                                         r'''$.title''',
                                       )?.toString(),
                                       '\"\"',
@@ -390,7 +388,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   10.0, 10.0, 0.0, 0.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -400,12 +398,12 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     Icons.groups_2,
                                     color: Theme.of(context).brightness ==
                                             Brightness.dark
-                                        ? Color(0xFFC0C0C0)
-                                        : Color(0xFF4D4D4D),
+                                        ? const Color(0xFFC0C0C0)
+                                        : const Color(0xFF4D4D4D),
                                     size: 18.0,
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
                                         3.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       '${valueOrDefault<String>(
@@ -418,7 +416,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                             ''),
                                                       )
                                                       ?.elementAtOrNull(
-                                                          widget!.teamIndex),
+                                                          widget.teamIndex),
                                                   r'''$.members''',
                                                 )
                                                             .toList()
@@ -429,7 +427,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                         as Iterable<
                                                             ToProgressStruct?>)
                                                     .withoutNulls
-                                                    ?.length ==
+                                                    .length ==
                                                 null
                                             ? 'No data found'
                                             : valueOrDefault<String>(
@@ -442,7 +440,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                             ''),
                                                       )
                                                       ?.elementAtOrNull(
-                                                          widget!.teamIndex),
+                                                          widget.teamIndex),
                                                   r'''$.members_count''',
                                                 )?.toString(),
                                                 '[ ]',
@@ -480,8 +478,102 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                 ],
                               ),
                             ),
+                            ///
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.watch_later_outlined,
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? const Color(0xFFC0C0C0)
+                                        : const Color(0xFF4D4D4D),
+                                    size: 18.0,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      "Deadline :",
+                                      textAlign: TextAlign.start,
+                                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                                        font: GoogleFonts.poppins(
+                                          fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                          fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                        ),
+                                        color: FlutterFlowTheme.of(context).tertiary,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
+                                      child: Tooltip(
+                                        message: '${getJsonField(
+                                          DashboardGroup.getteamdetailCall
+                                              .teamList((_model.apiResultr60?.jsonBody ?? ''))
+                                              ?.elementAtOrNull(widget.teamIndex),
+                                          r'''$.date''',
+                                        ).toString()} at ${getJsonField(
+                                          DashboardGroup.getteamdetailCall
+                                              .teamList((_model.apiResultr60?.jsonBody ?? ''))
+                                              ?.elementAtOrNull(widget.teamIndex),
+                                          r'''$.time''',
+                                        ).toString()}',
+                                        preferBelow: false,
+                                        textStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black87,
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          '${getJsonField(
+                                            DashboardGroup.getteamdetailCall
+                                                .teamList((_model.apiResultr60?.jsonBody ?? ''))
+                                                ?.elementAtOrNull(widget.teamIndex),
+                                            r'''$.date''',
+                                          ).toString()} at ${getJsonField(
+                                            DashboardGroup.getteamdetailCall
+                                                .teamList((_model.apiResultr60?.jsonBody ?? ''))
+                                                ?.elementAtOrNull(widget.teamIndex),
+                                            r'''$.time''',
+                                          ).toString()}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            font: GoogleFonts.poppins(
+                                              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                            ),
+                                            color: FlutterFlowTheme.of(context).tertiary,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                            fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+
+                            ///
+
+
+
+
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   10.0, 14.0, 10.0, 10.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -492,7 +584,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     width:
                                         MediaQuery.sizeOf(context).width * 0.42,
                                     decoration: BoxDecoration(
-                                      gradient: LinearGradient(
+                                      gradient: const LinearGradient(
                                         colors: [
                                           Color(0xFFDD7325),
                                           Color(0xFFD69E7E),
@@ -505,19 +597,19 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           10.0, 6.0, 10.0, 6.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.share_sharp,
                                             color: Colors.white,
                                             size: 16.0,
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     8.0, 0.0, 0.0, 0.0),
                                             child: Text(
                                               'Invite Friends',
@@ -550,7 +642,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
@@ -574,7 +666,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             MediaQuery.sizeOf(context).width *
                                                 0.42,
                                         decoration: BoxDecoration(
-                                          gradient: LinearGradient(
+                                          gradient: const LinearGradient(
                                             colors: [
                                               Color(0xFF038500),
                                               Color(0xFF40AE3C),
@@ -590,28 +682,28 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                         ),
                                         child: Align(
                                           alignment:
-                                              AlignmentDirectional(0.0, 0.0),
+                                              const AlignmentDirectional(0.0, 0.0),
                                           child: Padding(
                                             padding:
-                                                EdgeInsetsDirectional.fromSTEB(
+                                                const EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 6.0, 10.0, 6.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   Icons.remove_red_eye,
                                                   color: Colors.white,
                                                   size: 16.0,
                                                 ),
                                                 Align(
                                                   alignment:
-                                                      AlignmentDirectional(
+                                                      const AlignmentDirectional(
                                                           0.0, 0.0),
                                                   child: Padding(
                                                     padding:
-                                                        EdgeInsetsDirectional
+                                                        const EdgeInsetsDirectional
                                                             .fromSTEB(8.0, 0.0,
                                                                 0.0, 0.0),
                                                     child: Text(
@@ -655,12 +747,12 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 30.0, 0.0, 0.0),
                               child: Container(
                                 height:
                                     MediaQuery.sizeOf(context).height * 0.44,
-                                decoration: BoxDecoration(),
+                                decoration: const BoxDecoration(),
                                 child: Builder(
                                   builder: (context) {
                                     final teamMembers = getJsonField(
@@ -669,7 +761,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             (_model.apiResultr60?.jsonBody ??
                                                 ''),
                                           )
-                                          ?.elementAtOrNull(widget!.teamIndex),
+                                          ?.elementAtOrNull(widget.teamIndex),
                                       r'''$.members''',
                                     ).toList();
                                     _model.debugGeneratorVariables[
@@ -695,7 +787,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             teamMembers[teamMembersIndex];
                                         return Container(
                                           width: 100.0,
-                                          decoration: BoxDecoration(),
+                                          decoration: const BoxDecoration(),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
@@ -713,13 +805,13 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                     height: 42.0,
                                                     clipBehavior:
                                                         Clip.antiAlias,
-                                                    decoration: BoxDecoration(
+                                                    decoration: const BoxDecoration(
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: CachedNetworkImage(
-                                                      fadeInDuration: Duration(
+                                                      fadeInDuration: const Duration(
                                                           milliseconds: 500),
-                                                      fadeOutDuration: Duration(
+                                                      fadeOutDuration: const Duration(
                                                           milliseconds: 500),
                                                       imageUrl: getJsonField(
                                                         teamMembersItem,
@@ -738,7 +830,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                   Expanded(
                                                     child: Padding(
                                                       padding:
-                                                          EdgeInsetsDirectional
+                                                          const EdgeInsetsDirectional
                                                               .fromSTEB(
                                                                   20.0,
                                                                   0.0,
@@ -786,8 +878,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                 color: Theme.of(context)
                                                             .brightness ==
                                                         Brightness.dark
-                                                    ? Color(0xFF4E4E4E)
-                                                    : Color(0x1A000000),
+                                                    ? const Color(0xFF4E4E4E)
+                                                    : const Color(0x1A000000),
                                               ),
                                             ],
                                           ),
@@ -807,7 +899,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
               ),
             if (!_model.isLoading)
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 30.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 30.0),
                 child: Container(
                   width: double.infinity,
                   height: 47.0,
@@ -815,11 +907,11 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                     gradient: LinearGradient(
                       colors: [
                         FlutterFlowTheme.of(context).peach,
-                        Color(0xFFE09B6E)
+                        const Color(0xFFE09B6E)
                       ],
-                      stops: [0.0, 1.0],
-                      begin: AlignmentDirectional(0.0, -1.0),
-                      end: AlignmentDirectional(0, 1.0),
+                      stops: const [0.0, 1.0],
+                      begin: const AlignmentDirectional(0.0, -1.0),
+                      end: const AlignmentDirectional(0, 1.0),
                     ),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
@@ -835,7 +927,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     .teamList(
                                       (_model.apiResultr60?.jsonBody ?? ''),
                                     )
-                                    ?.elementAtOrNull(widget!.teamIndex),
+                                    ?.elementAtOrNull(widget.teamIndex),
                                 r'''$.id''',
                               ),
                               0,
@@ -850,10 +942,10 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                       width: double.infinity,
                       height: 47.0,
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                       iconPadding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      color: Color(0x00CD4A20),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: const Color(0x00CD4A20),
                       textStyle:
                           FlutterFlowTheme.of(context).titleLarge.override(
                                 font: GoogleFonts.poppins(
@@ -880,9 +972,9 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                 ),
               ),
             if (_model.isLoading)
-              Align(
+              const Align(
                 alignment: AlignmentDirectional(0.0, 0.0),
-                child: Container(
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
                   child: custom_widgets.CubeGridLoader(

@@ -1,13 +1,7 @@
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'new_password_widget.dart' show NewPasswordWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class NewPasswordModel extends FlutterFlowModel<NewPasswordWidget> {
   ///  State fields for stateful widgets in this page.
@@ -93,7 +87,7 @@ class NewPasswordModel extends FlutterFlowModel<NewPasswordWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'gradientButtonCustomModel (gradientButtonCustom)':
-              gradientButtonCustomModel?.toWidgetClassDebugData(),
+              gradientButtonCustomModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

@@ -3,12 +3,8 @@ import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'winner_bottom_sheet_model.dart';
@@ -164,9 +160,9 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                 (_model.apiResult2kw?.jsonBody ?? ''),
                 r'''$.message''',
               ).toString(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
-            duration: Duration(milliseconds: 2200),
+            duration: const Duration(milliseconds: 2200),
             backgroundColor: Colors.black,
           ),
         );
@@ -231,23 +227,23 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
     context.watch<FFAppState>();
 
     return Align(
-      alignment: AlignmentDirectional(0.0, 1.0),
+      alignment: const AlignmentDirectional(0.0, 1.0),
       child: Container(
         width: double.infinity,
         height: MediaQuery.sizeOf(context).height * 0.8,
         decoration: BoxDecoration(
           color: (Theme.of(context).brightness == Brightness.dark) == true
-              ? Color(0xFF1C1C22)
+              ? const Color(0xFF1C1C22)
               : Colors.white,
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(
-            color: Color(0xFF4E4E4E),
+            color: const Color(0xFF4E4E4E),
           ),
         ),
         child: Align(
-          alignment: AlignmentDirectional(0.0, 1.0),
+          alignment: const AlignmentDirectional(0.0, 1.0),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20.0, 25.0, 20.0, 25.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(20.0, 25.0, 20.0, 25.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -255,7 +251,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                   Container(
                     width: 70.0,
                     height: 70.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0x5EDD7325),
                       shape: BoxShape.circle,
                     ),
@@ -270,7 +266,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: Text(
                       'Here your result',
                       style: FlutterFlowTheme.of(context).titleLarge.override(
@@ -291,7 +287,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                         child: Text(
                           '${_model.rightAnswersCount}',
                           style: FlutterFlowTheme.of(context).titleLarge.override(
@@ -299,7 +295,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                               fontWeight: FontWeight.bold,
                               fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                             ),
-                            color: Color(0xFFDF7D35),
+                            color: const Color(0xFFDF7D35),
                             fontSize: 30.0,
                             letterSpacing: 0.0,
                             fontWeight: FontWeight.bold,
@@ -308,7 +304,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(3.0, 12.0, 3.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(3.0, 12.0, 3.0, 0.0),
                         child: Text(
                           '/',
                           style: FlutterFlowTheme.of(context).titleLarge.override(
@@ -316,7 +312,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                               fontWeight: FontWeight.bold,
                               fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                             ),
-                            color: Color(0xFFDF7D35),
+                            color: const Color(0xFFDF7D35),
                             fontSize: 30.0,
                             letterSpacing: 0.0,
                             fontWeight: FontWeight.bold,
@@ -325,7 +321,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                         child: Text(
                           '${_model.totalQuestions}',
                           style: FlutterFlowTheme.of(context).titleLarge.override(
@@ -333,7 +329,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                               fontWeight: FontWeight.bold,
                               fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                             ),
-                            color: Color(0xFFDF7D35),
+                            color: const Color(0xFFDF7D35),
                             fontSize: 30.0,
                             letterSpacing: 0.0,
                             fontWeight: FontWeight.bold,
@@ -343,42 +339,42 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 0.0),
-                    child: Text(
-                      'Keep learning about the players\nhere your result',
-                      textAlign: TextAlign.center,
-                      style: FlutterFlowTheme.of(context).titleLarge.override(
-                        font: GoogleFonts.poppins(
-                          fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                          fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                        ),
-                        color: (Theme.of(context).brightness == Brightness.dark) == true
-                            ? Color(0xA7FFFFFF)
-                            : Color(0xA6000000),
-                        fontSize: 15.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                        fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 0.0),
+                  //   child: Text(
+                  //     'Keep learning about the players\nhere your result',
+                  //     textAlign: TextAlign.center,
+                  //     style: FlutterFlowTheme.of(context).titleLarge.override(
+                  //       font: GoogleFonts.poppins(
+                  //         fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                  //         fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                  //       ),
+                  //       color: (Theme.of(context).brightness == Brightness.dark) == true
+                  //           ? Color(0xA7FFFFFF)
+                  //           : Color(0xA6000000),
+                  //       fontSize: 15.0,
+                  //       letterSpacing: 0.0,
+                  //       fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                  //       fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                  //     ),
+                  //   ),
+                  // ),
                   // Dynamic player results
                   ..._model.playerResults.map((result) => Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: result['isCorrect'] ? Color(0xFF038500) : Color(0xFFEA1414),
+                        color: result['isCorrect'] ? const Color(0xFF038500) : const Color(0xFFEA1414),
                         borderRadius: BorderRadius.circular(12.0),
                         border: Border.all(
-                          color: Color(0xFF4E4E4E),
+                          color: const Color(0xFF4E4E4E),
                         ),
                       ),
                       child: Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
+                        alignment: const AlignmentDirectional(0.0, 0.0),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 15.0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 15.0),
                           child: Text(
                             result['name'],
                             textAlign: TextAlign.center,
@@ -396,7 +392,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                         ),
                       ),
                     ),
-                  )).toList(),
+                  )),
                   InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -406,9 +402,9 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                       context.goNamed(NavWidget.routeName);
                     },
                     child: Container(
-                      decoration: BoxDecoration(),
+                      decoration: const BoxDecoration(),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             30.0, 25.0, 30.0, 0.0),
                         child: wrapWithModel(
                           model: _model.gradientButtonCustomModel,
@@ -416,7 +412,7 @@ class _WinnerBottomSheetWidgetState extends State<WinnerBottomSheetWidget>
                           child: Builder(builder: (_) {
                             return DebugFlutterFlowModelContext(
                               rootModel: _model.rootModel,
-                              child: GradientButtonCustomWidget(
+                              child: const GradientButtonCustomWidget(
                                 text: 'Continue',
                               ),
                             );

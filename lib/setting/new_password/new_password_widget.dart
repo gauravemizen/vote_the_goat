@@ -1,12 +1,8 @@
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'new_password_model.dart';
 export 'new_password_model.dart';
 
@@ -131,13 +127,13 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 40.0, 0.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -148,7 +144,7 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                   decoration: BoxDecoration(
                                     color:
                                         FlutterFlowTheme.of(context).backBtnClr,
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
                                         blurRadius: 4.0,
                                         color: Color(0x335D4E4E),
@@ -160,14 +156,14 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                     ],
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back_rounded,
                                     color: Colors.white,
                                     size: 24.0,
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       12.0, 0.0, 0.0, 0.0),
                                   child: Text(
                                     'change password',
@@ -205,11 +201,11 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: Container(
                       width: double.infinity,
                       height: 1.0,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Color(0xFF6B4A4A), Color(0x34FFFFFF)],
                           stops: [0.5, 1.0],
@@ -221,11 +217,11 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 18.0, 16.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 18.0, 16.0, 0.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: TextFormField(
                             controller: _model.passwordFieldTextController1,
@@ -274,14 +270,14 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                         .fontStyle,
                                   ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0x00000000),
                                   width: 1.0,
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0x00000000),
                                   width: 1.0,
                                 ),
@@ -302,8 +298,8 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
-                              fillColor: Color(0x80050505),
-                              prefixIcon: Icon(
+                              fillColor: const Color(0x80050505),
+                              prefixIcon: const Icon(
                                 FFIcons.klock,
                                 color: Colors.white,
                                 size: 24.0,
@@ -350,9 +346,9 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 0.0),
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: TextFormField(
                               controller: _model.passwordFieldTextController2,
@@ -401,14 +397,14 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                           .fontStyle,
                                     ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
@@ -429,8 +425,8 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: Color(0x80050505),
-                                prefixIcon: Icon(
+                                fillColor: const Color(0x80050505),
+                                prefixIcon: const Icon(
                                   FFIcons.klock,
                                   color: Colors.white,
                                   size: 24.0,
@@ -478,9 +474,9 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 0.0),
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: TextFormField(
                               controller: _model.passwordFieldTextController3,
@@ -529,14 +525,14 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                           .fontStyle,
                                     ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: Color(0x00000000),
                                     width: 1.0,
                                   ),
@@ -557,8 +553,8 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: Color(0x80050505),
-                                prefixIcon: Icon(
+                                fillColor: const Color(0x80050505),
+                                prefixIcon: const Icon(
                                   FFIcons.klock,
                                   color: Colors.white,
                                   size: 24.0,
@@ -620,7 +616,7 @@ class _NewPasswordWidgetState extends State<NewPasswordWidget> with RouteAware {
                             child: Builder(builder: (_) {
                               return DebugFlutterFlowModelContext(
                                 rootModel: _model.rootModel,
-                                child: GradientButtonCustomWidget(
+                                child: const GradientButtonCustomWidget(
                                   text: 'Submit',
                                 ),
                               );

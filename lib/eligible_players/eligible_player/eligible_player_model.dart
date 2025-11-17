@@ -1,36 +1,23 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
-import '/components/no_data_found/no_data_found_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'dart:async';
 import 'eligible_player_widget.dart' show EligiblePlayerWidget;
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:webviewx_plus/webviewx_plus.dart';
 
 class EligiblePlayerModel extends FlutterFlowModel<EligiblePlayerWidget> {
   ///  Local state fields for this page.
 
   late LoggableList<int> _selectedItems = LoggableList([]);
   set selectedItems(List<int> value) {
-    if (value != null) {
-      _selectedItems = LoggableList(value);
-    }
-
+    _selectedItems = LoggableList(value);
+  
     debugLogWidgetClass(this);
   }
 
   List<int> get selectedItems =>
-      _selectedItems?..logger = () => debugLogWidgetClass(this);
+      _selectedItems..logger = () => debugLogWidgetClass(this);
   void addToSelectedItems(int item) => selectedItems.add(item);
   void removeFromSelectedItems(int item) => selectedItems.remove(item);
   void removeAtIndexFromSelectedItems(int index) =>
@@ -100,7 +87,7 @@ class EligiblePlayerModel extends FlutterFlowModel<EligiblePlayerWidget> {
   }) async {
     final stopwatch = Stopwatch()..start();
     while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
       final requestComplete = apiRequestCompleter?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
@@ -168,7 +155,7 @@ class EligiblePlayerModel extends FlutterFlowModel<EligiblePlayerWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'drawerMenuModel (DrawerMenu)':
-              drawerMenuModel?.toWidgetClassDebugData(),
+              drawerMenuModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

@@ -222,16 +222,19 @@ class _NavWidgetState extends State<NavWidget> with RouteAware {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
-        bottomNavigationBar: Align(
-          alignment: AlignmentDirectional(0.0, 0.0),
-          child: custom_widgets.CurvedNavWithPages(
-            width: double.infinity,
-            initialTab: initialTab, // Pass initialTab to CurvedNavWithPages
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          bottomNavigationBar: Align(
+            alignment: const AlignmentDirectional(0.0, 0.0),
+            child: custom_widgets.CurvedNavWithPages(
+              width: double.infinity,
+              initialTab: initialTab, // Pass initialTab to CurvedNavWithPages
+            ),
           ),
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         ),
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       ),
     );
   }

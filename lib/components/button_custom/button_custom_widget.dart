@@ -2,9 +2,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'button_custom_model.dart';
 export 'button_custom_model.dart';
 
@@ -96,10 +94,10 @@ class _ButtonCustomWidgetState extends State<ButtonCustomWidget>
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [FlutterFlowTheme.of(context).peach, Color(0xFFE09B6E)],
-          stops: [0.0, 1.0],
-          begin: AlignmentDirectional(0.0, -1.0),
-          end: AlignmentDirectional(0, 1.0),
+          colors: [FlutterFlowTheme.of(context).peach, const Color(0xFFE09B6E)],
+          stops: const [0.0, 1.0],
+          begin: const AlignmentDirectional(0.0, -1.0),
+          end: const AlignmentDirectional(0, 1.0),
         ),
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -107,13 +105,13 @@ class _ButtonCustomWidgetState extends State<ButtonCustomWidget>
         onPressed: () {
           print('Button pressed ...');
         },
-        text: widget!.text!,
+        text: widget.text!,
         options: FFButtonOptions(
           width: double.infinity,
           height: 47.0,
-          padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-          iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-          color: Color(0x00CD2020),
+          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+          iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+          color: const Color(0x00CD2020),
           textStyle: FlutterFlowTheme.of(context).titleLarge.override(
                 font: GoogleFonts.poppins(
                   fontWeight:

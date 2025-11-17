@@ -1,11 +1,12 @@
+import '../../subscription/ad_service.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/no_data_found/no_data_found_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
+import '../../subscription/smart_interstitial_manager.dart';
+
 import '/index.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -34,6 +35,239 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _model = createModel(context, () => EligiblePlayerModel());
+  //
+  //   // On page load action.
+  //   SchedulerBinding.instance.addPostFrameCallback((_) async {
+  //     _model.isLoading = true;
+  //     safeSetState(() {});
+  //     _model.apiResultlrq = await DashboardGroup.eligblePlayersCall.call(
+  //       authToken: FFAppState().authToken,
+  //       search: _model.searchFieldTextController.text,
+  //     );
+  //
+  //     if ((_model.apiResultlrq?.succeeded ?? true)) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(
+  //             getJsonField(
+  //               (_model.apiResultlrq?.jsonBody ?? ''),
+  //               r'''$.message''',
+  //             ).toString(),
+  //             style: const TextStyle(
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //           duration: const Duration(milliseconds: 1700),
+  //           backgroundColor: Colors.black,
+  //         ),
+  //       );
+  //
+  //       safeSetState(() {});
+  //       _model.isLoading = false;
+  //       safeSetState(() {});
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(
+  //             getJsonField(
+  //               (_model.apiResultlrq?.jsonBody ?? ''),
+  //               r'''$.message''',
+  //             ).toString(),
+  //             style: const TextStyle(
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //           duration: const Duration(milliseconds: 1700),
+  //           backgroundColor: Colors.black,
+  //         ),
+  //       );
+  //       _model.isLoading = false;
+  //       safeSetState(() {});
+  //     }
+  //   });
+  //
+  //   _model.searchFieldTextController ??= TextEditingController()
+  //     ..addListener(() {
+  //       debugLogWidgetClass(_model);
+  //     });
+  //   _model.searchFieldFocusNode ??= FocusNode();
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   routeObserver.unsubscribe(this);
+  //
+  //   _model.dispose();
+  //
+  //   super.dispose();
+  // }
+  //
+  // @override
+  // void didUpdateWidget(EligiblePlayerWidget oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   _model.widget = widget;
+  // }
+  //
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final route = DebugModalRoute.of(context);
+  //   if (route != null) {
+  //     routeObserver.subscribe(this, route);
+  //   }
+  //   debugLogGlobalProperty(context);
+  // }
+  //
+  // @override
+  // void didPopNext() {
+  //   if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+  //     setState(() => _model.isRouteVisible = true);
+  //     debugLogWidgetClass(_model);
+  //   }
+  // }
+  //
+  // @override
+  // void didPush() {
+  //   if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+  //     setState(() => _model.isRouteVisible = true);
+  //     debugLogWidgetClass(_model);
+  //   }
+  // }
+  //
+  // @override
+  // void didPop() {
+  //   _model.isRouteVisible = false;
+  // }
+  //
+  // @override
+  // void didPushNext() {
+  //   _model.isRouteVisible = false;
+  // }
+
+
+  ///2
+  Future<void> _loadProfileOrRedirect() async {
+    debugPrint('[EligiblePlayer] _loadProfileOrRedirect: STARTING');
+
+    final token = FFAppState().authToken;
+
+    // Check if token exists and is not empty
+    if (token.isEmpty) {
+      debugPrint('[EligiblePlayer] getProfile: No auth token found -> redirecting to login');
+      await _showSessionExpiredDialog();
+      if (!mounted) return;
+      return;
+    }
+
+    final tail = token.length >= 4
+        ? token.substring(token.length - 4)
+        : token;
+    debugPrint('[EligiblePlayer] getProfile: start, tokenPresent=true, tokenTail=$tail');
+
+    try {
+      final res = await DashboardGroup.getProfileCall.call(
+        authToken: token,
+
+      );
+
+      debugPrint('[EligiblePlayer] getProfile: response received');
+      debugPrint('[EligiblePlayer] getProfile: status=${res.statusCode}, succeeded=${res.succeeded}');
+
+      final bodyStr = '${res.jsonBody}';
+      debugPrint(
+        '[EligiblePlayer] getProfile: body=${bodyStr.length > 800
+            ? '${bodyStr.substring(0, 800)}...(${bodyStr.length} chars)'
+            : bodyStr}',
+      );
+
+      final status = res.statusCode;
+      final succeeded = res.succeeded == true;
+      final unauthorized = status == 401 || status == 403;
+
+      // Check for various failure conditions
+      if (!succeeded || unauthorized || status < 200 || status >= 300) {
+        debugPrint('[EligiblePlayer] getProfile: failed/unauthorized -> redirecting to login');
+        debugPrint('[EligiblePlayer] getProfile: res=$res, succeeded=$succeeded, unauthorized=$unauthorized, status=$status');
+
+        // Clear all app state data
+        _clearAllAppStateData();
+
+        if (!mounted) return;
+
+        // Show session expired popup
+        await _showSessionExpiredDialog();
+        return;
+      }
+
+      // Success case
+      FFAppState().userName = getJsonField(
+        (res.jsonBody ?? ''),
+        r'$.name',
+      ).toString();
+      debugPrint('[EligiblePlayer] getProfile: success, userName=${FFAppState().userName}');
+      safeSetState(() {});
+    } catch (e, st) {
+      debugPrint('[EligiblePlayer] getProfile: exception=$e');
+      debugPrint('[EligiblePlayer] getProfile: stack=$st');
+
+      // Clear all app state data
+      _clearAllAppStateData();
+
+      if (!mounted) return;
+
+      // Show session expired popup
+      await _showSessionExpiredDialog();
+    }
+  }
+
+  Future<void> _showSessionExpiredDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Session Expired',
+            style: FlutterFlowTheme.of(context).headlineSmall,
+          ),
+          content: Text(
+            'Your session has expired. Please log in again to continue.',
+            style: FlutterFlowTheme.of(context).bodyMedium,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.goNamed(LogInWidget.routeName);
+
+              },
+              child: Text(
+                'OK',
+                style: FlutterFlowTheme.of(context).titleSmall,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _clearAllAppStateData() {
+    debugPrint('[EligiblePlayer] Clearing all app state data');
+
+    // Clear authentication token
+    FFAppState().authToken = '';
+
+    // Clear user data
+    FFAppState().userName = '';
+
+    debugPrint('[EligiblePlayer] App state cleared');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,8 +275,29 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+
+
+      AdService().startPageTimer('eligiblePlayers');
+
+      // Preload interstitial ad (will check subscription status internally)
+      await SmartInterstitialManager().preloadInterstitial();
+
+      // Only show ad if still mounted and ads are enabled
+      if (mounted && FFAppState().advertisementStatus != 0) {
+        await SmartInterstitialManager().showInterstitialIfAllowed();
+      }
+
+
+
+      // First validate profile/session
+      await _loadProfileOrRedirect();
+
+      // Only continue if still mounted (profile validation succeeded)
+      if (!mounted) return;
+
       _model.isLoading = true;
       safeSetState(() {});
+
       _model.apiResultlrq = await DashboardGroup.eligblePlayersCall.call(
         authToken: FFAppState().authToken,
         search: _model.searchFieldTextController.text,
@@ -98,10 +353,10 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
 
   @override
   void dispose() {
+    AdService().stopInterstitialTimer();
+
     routeObserver.unsubscribe(this);
-
     _model.dispose();
-
     super.dispose();
   }
 
@@ -109,6 +364,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
   void didUpdateWidget(EligiblePlayerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _model.widget = widget;
+    // Restart timer when widget updates
+    AdService().startPageTimer('allPlayersPage');
   }
 
   @override
@@ -125,7 +382,10 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      // Start timer when page is pushed
+      AdService().startPageTimer('eligiblePlayers');
       debugLogWidgetClass(_model);
+
     }
   }
 
@@ -133,19 +393,24 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
   void didPush() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      AdService().startPageTimer('eligiblePlayers');
       debugLogWidgetClass(_model);
     }
   }
 
   @override
   void didPop() {
+    AdService().stopInterstitialTimer();
     _model.isRouteVisible = false;
   }
 
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
+    AdService().stopInterstitialTimer();
+
   }
+  ///
 
   @override
   Widget build(BuildContext context) {
@@ -265,8 +530,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                               height: 40.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).backBtnClr,
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x335D4E4E),
                                     offset: Offset(
@@ -341,8 +606,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                 decoration: BoxDecoration(
                                   color:
                                       FlutterFlowTheme.of(context).backBtnClr,
-                                  boxShadow: [
-                                    const BoxShadow(
+                                  boxShadow: const [
+                                    BoxShadow(
                                       blurRadius: 4.0,
                                       color: Color(0x335D4E4E),
                                       offset: Offset(
@@ -421,7 +686,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
-                            child: Container(
+                            child: SizedBox(
                               width: double.infinity,
                               child: TextFormField(
                                 controller: _model.searchFieldTextController,
@@ -580,6 +845,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                             },
                             child: Container(
                               height: 50.0,
+                              width: MediaQuery.sizeOf(context).width * 0.25,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).peach,
                                 borderRadius: BorderRadius.circular(6.0),
@@ -651,7 +917,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                 debugLogWidgetClass(_model);
 
                                 return ListView.builder(
-                                  padding: EdgeInsets.only(bottom: 70.0), // Add bottom padding for custom navigation bar
+                                  padding: const EdgeInsets.only(bottom: 70.0), // Add bottom padding for custom navigation bar
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemCount: playerList.length,
@@ -774,8 +1040,13 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                     r'''$.last_name''',
                                                                   ).toString()}'
                                                                       .maybeHandleOverflow(
-                                                                    maxChars:
-                                                                        18,
+                                                                    // maxChars:
+                                                                    //     18,
+
+
+                                                                    maxChars: MediaQuery.sizeOf(context).width > 600 ? 30 : 18,
+
+
                                                                     replacement:
                                                                         '…',
                                                                   ),
@@ -1836,12 +2107,12 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                     ),
                   ),
                 if (_model.isLoading)
-                  Align(
-                    alignment: const AlignmentDirectional(0.0, 0.0),
-                    child: Container(
+                  const Align(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    child: SizedBox(
                       width: 40.0,
                       height: 40.0,
-                      child: const custom_widgets.CubeGridLoader(
+                      child: custom_widgets.CubeGridLoader(
                         width: 40.0,
                         height: 40.0,
                         size: 40.0,

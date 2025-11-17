@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/admob_util.dart' as admob;
 import 'dart:async';
 
@@ -17,7 +16,7 @@ class AdService {
   Timer? _interstitialTimer;
   DateTime? _lastAdShown;
   String? _currentPage;
-  static const int _adIntervalMinutes = 5;
+  static const int _adIntervalMinutes = 4;
 
   Future<bool> shouldShowAds() async {
     try {
@@ -62,7 +61,7 @@ class AdService {
     debugPrint('[AdService] Starting timer for page: $pageName');
 
     _interstitialTimer = Timer.periodic(
-      Duration(minutes: _adIntervalMinutes),
+      const Duration(minutes: _adIntervalMinutes),
           (timer) async {
         await _showTimedInterstitialAd();
       },
@@ -97,7 +96,7 @@ class AdService {
       await loadInterstitialAd();
 
       // Small delay to ensure ad is loaded
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       final success = await admob.showInterstitialAd();
       if (success) {

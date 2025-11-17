@@ -3,13 +3,9 @@ import 'package:flutter_html/flutter_html.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'contact_and_support_model.dart';
 export 'contact_and_support_model.dart';
@@ -130,7 +126,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -150,9 +146,9 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                                 color: (Theme.of(context).brightness ==
                                             Brightness.dark) ==
                                         true
-                                    ? Color(0x335D4E4E)
+                                    ? const Color(0x335D4E4E)
                                     : Colors.white,
-                                offset: Offset(
+                                offset: const Offset(
                                   0.0,
                                   2.0,
                                 ),
@@ -164,7 +160,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                                           Brightness.dark) ==
                                       true
                                   ? Colors.transparent
-                                  : Color(0xD5999999),
+                                  : const Color(0xD5999999),
                             ),
                           ),
                           child: InkWell(
@@ -206,7 +202,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                                     .customTextStyle1
                                     .override(
                                       fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
+                                      color: const Color(0xFFEB6027),
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -216,7 +212,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               8.0, 0.0, 0.0, 0.0),
                           child: Container(
                             width: 40.0,
@@ -229,9 +225,9 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                                   color: (Theme.of(context).brightness ==
                                               Brightness.dark) ==
                                           true
-                                      ? Color(0x335D4E4E)
+                                      ? const Color(0x335D4E4E)
                                       : Colors.white,
-                                  offset: Offset(
+                                  offset: const Offset(
                                     0.0,
                                     2.0,
                                   ),
@@ -243,7 +239,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                                             Brightness.dark) ==
                                         true
                                     ? Colors.transparent
-                                    : Color(0xD5999999),
+                                    : const Color(0xD5999999),
                               ),
                             ),
                             child: Icon(
@@ -258,12 +254,12 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
 
 
                     Align(
-                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      alignment: const AlignmentDirectional(-1.0, 0.0),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                         child:
 
-                       _model.isLoading ? SizedBox()
+                       _model.isLoading ? const SizedBox()
  :
                         Html(
                           data: getJsonField(
@@ -278,7 +274,7 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
                               fontSize: FontSize(FlutterFlowTheme.of(context).titleMedium.fontSize ?? 16),
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.normal,
-                              lineHeight: LineHeight(1.5),
+                              lineHeight: const LineHeight(1.5),
                             ),
                             "p": Style(
 
@@ -300,9 +296,9 @@ class _ContactAndSupportWidgetState extends State<ContactAndSupportWidget>
               ),
             ),
             if (_model.isLoading)
-              Align(
+              const Align(
                 alignment: AlignmentDirectional(0.0, 0.0),
-                child: Container(
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
                   child: custom_widgets.CubeGridLoader(

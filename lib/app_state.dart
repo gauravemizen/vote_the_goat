@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vote_for_goat/subscription/ad_service.dart';
-import '/backend/backend.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
@@ -20,6 +19,52 @@ class FFAppState extends ChangeNotifier {
   static void reset() {
     _instance = FFAppState._internal();
   }
+
+
+
+  ///
+
+
+  bool _isFirstInstall = true;
+  bool get isFirstInstall => _isFirstInstall;
+
+  set isFirstInstall(bool value) {
+    _isFirstInstall = value;
+    secureStorage.setBool('ff_isFirstInstall', value);
+  }
+
+
+
+  ///
+
+
+
+
+
+
+  int advertisementStatus = 1; // default to enabled
+
+  ///
+  bool _isTapped = false;
+
+  bool get isTapped => _isTapped;
+
+  set isTapped(bool value) {
+    _isTapped = value;
+    secureStorage.setBool('ff_isTapped', value);
+    debugLogAppState(this);
+  }
+
+  void deleteIsTapped() {
+    secureStorage.delete(key: 'ff_isTapped');
+  }
+
+
+  ///
+
+
+
+
 
   bool _showAds = true;
 
@@ -50,6 +95,9 @@ class FFAppState extends ChangeNotifier {
   }
 
   bool _hasUnlimitedVotes = false;
+
+
+
 
   bool get hasUnlimitedVotes => _hasUnlimitedVotes;
 
@@ -105,32 +153,130 @@ class FFAppState extends ChangeNotifier {
     }
   }
 
+//   Future initializePersistedState() async {
+//     secureStorage = const FlutterSecureStorage();
+//
+//
+//
+//
+//
+//     await _safeInitAsync(() async {
+//       _isTapped = await secureStorage.getBool('ff_isTapped') ?? _isTapped;
+//     });
+//
+// ///
+//     await _safeInitAsync(() async {
+//       _isFirstInstall =
+//           await secureStorage.getBool('ff_isFirstInstall') ?? true;
+//     });
+//
+//     ///
+//
+//     await _safeInitAsync(() async {
+//       _authToken = await secureStorage.getString('ff_authToken') ?? _authToken;
+//     });
+//     await _safeInitAsync(() async {
+//       _isLoggedIn = await secureStorage.getBool('ff_isLoggedIn') ?? _isLoggedIn;
+//     });
+//     await _safeInitAsync(() async {
+//       _userName = await secureStorage.getString('ff_userName') ?? _userName;
+//     });
+//     await _safeInitAsync(() async {
+//       _isRememberMe =
+//           await secureStorage.getBool('ff_isRememberMe') ?? _isRememberMe;
+//     });
+//     await _safeInitAsync(() async {
+//       _isCreated = await secureStorage.getBool('ff_isCreated') ?? _isCreated;
+//     });
+//     await _safeInitAsync(() async {
+//       _currentUserId =
+//           await secureStorage.getString('ff_currentUserId') ?? _currentUserId;
+//     });
+//     await _safeInitAsync(() async {
+//       _isRead = await secureStorage.getBool('ff_isRead') ?? _isRead;
+//     });
+//   }
+
+
+
+
+  ///2  copilot version
+
+
   Future initializePersistedState() async {
-    secureStorage = FlutterSecureStorage();
+    secureStorage = const FlutterSecureStorage();
+
+    // Check if this is first install using SharedPreferences (gets cleared on uninstall)
+    final prefs = await SharedPreferences.getInstance();
+    final hasLaunchedBefore = prefs.getBool('has_launched_before') ?? false;
+
+    if (!hasLaunchedBefore) {
+      // First launch after install/reinstall - clear all secure storage
+      await secureStorage.deleteAll();
+      await prefs.setBool('has_launched_before', true);
+
+      // Reset all values to defaults
+      _authToken = '';
+      _isLoggedIn = false;
+      _userName = '';
+      _userImage = '';
+      _isRememberMe = false;
+      _isCreated = false;
+      _currentUserId = '';
+      _isRead = false;
+      _isTapped = false;
+      _isFirstInstall = true;
+
+      debugPrint('[FFAppState] First install detected - cleared all secure storage');
+      return; // Don't load persisted values
+    }
+
+    // Load persisted values only if not first install
+    await _safeInitAsync(() async {
+      _isFirstInstall = await secureStorage.getBool('ff_isFirstInstall') ?? true;
+    });
+
+    await _safeInitAsync(() async {
+      _isTapped = await secureStorage.getBool('ff_isTapped') ?? _isTapped;
+    });
+
     await _safeInitAsync(() async {
       _authToken = await secureStorage.getString('ff_authToken') ?? _authToken;
     });
+
     await _safeInitAsync(() async {
       _isLoggedIn = await secureStorage.getBool('ff_isLoggedIn') ?? _isLoggedIn;
     });
+
     await _safeInitAsync(() async {
       _userName = await secureStorage.getString('ff_userName') ?? _userName;
     });
+
     await _safeInitAsync(() async {
-      _isRememberMe =
-          await secureStorage.getBool('ff_isRememberMe') ?? _isRememberMe;
+      _isRememberMe = await secureStorage.getBool('ff_isRememberMe') ?? _isRememberMe;
     });
+
     await _safeInitAsync(() async {
       _isCreated = await secureStorage.getBool('ff_isCreated') ?? _isCreated;
     });
+
     await _safeInitAsync(() async {
-      _currentUserId =
-          await secureStorage.getString('ff_currentUserId') ?? _currentUserId;
+      _currentUserId = await secureStorage.getString('ff_currentUserId') ?? _currentUserId;
     });
+
     await _safeInitAsync(() async {
       _isRead = await secureStorage.getBool('ff_isRead') ?? _isRead;
     });
+
+    debugPrint('[FFAppState] Loaded persisted state - isLoggedIn: $_isLoggedIn, authToken exists: ${_authToken.isNotEmpty}');
   }
+
+
+  ///
+
+
+
+
 
   void update(VoidCallback callback) {
     callback();
@@ -164,7 +310,13 @@ class FFAppState extends ChangeNotifier {
     secureStorage.delete(key: 'ff_authToken');
   }
 
-  bool _isLoggedIn = true;
+
+
+  ///copilot
+  bool _isLoggedIn = false;
+  
+  /// flutterflow
+  // bool _isLoggedIn = true;
 
   bool get isLoggedIn => _isLoggedIn;
 
@@ -298,6 +450,20 @@ class FFAppState extends ChangeNotifier {
           name: 'String',
           nullable: false,
         ),
+
+    'isTapped': debugSerializeParam(
+      isTapped,
+      ParamType.bool,
+      link:
+      'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=appValues&appValuesTab=state',
+      searchReference: 'reference=isTapped',
+      name: 'bool',
+      nullable: false,
+    ),
+
+
+
+
         'isLoggedIn': debugSerializeParam(
           isLoggedIn,
           ParamType.bool,
@@ -428,7 +594,7 @@ extension FlutterSecureStorageExtensions on FlutterSecureStorage {
         if (result == null || result.isEmpty) {
           return null;
         }
-        return CsvToListConverter()
+        return const CsvToListConverter()
             .convert(result)
             .first
             .map((e) => e.toString())
@@ -436,5 +602,5 @@ extension FlutterSecureStorageExtensions on FlutterSecureStorage {
       });
 
   Future<void> setStringList(String key, List<String> value) async =>
-      await writeSync(key: key, value: ListToCsvConverter().convert([value]));
+      await writeSync(key: key, value: const ListToCsvConverter().convert([value]));
 }

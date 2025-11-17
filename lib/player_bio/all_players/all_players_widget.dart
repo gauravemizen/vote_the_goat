@@ -1,13 +1,12 @@
+import '../../subscription/ad_service.dart';
+import '../../subscription/smart_interstitial_manager.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'all_players_model.dart';
@@ -35,6 +34,18 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      AdService().startPageTimer('allPlayersPage');
+
+      // Preload interstitial ad (will check subscription status internally)
+      await SmartInterstitialManager().preloadInterstitial();
+
+      // Only show ad if still mounted and ads are enabled
+      if (mounted && FFAppState().advertisementStatus != 0) {
+        await SmartInterstitialManager().showInterstitialIfAllowed();
+      }
+
+
+
       _model.isLoading = true;
       safeSetState(() {});
       _model.getAllPlayerRes = await DashboardGroup.getAllPlayersCall.call(
@@ -42,21 +53,21 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
       );
 
       if ((_model.getAllPlayerRes?.succeeded ?? true)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              getJsonField(
-                (_model.getAllPlayerRes?.jsonBody ?? ''),
-                r'''$.message''',
-              ).toString(),
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            duration: Duration(milliseconds: 4000),
-            backgroundColor: Colors.black,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+          // SnackBar(
+          //   content: Text(
+          //     getJsonField(
+          //       (_model.getAllPlayerRes?.jsonBody ?? ''),
+          //       r'''$.message''',
+          //     ).toString(),
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          //   duration: Duration(milliseconds: 4000),
+          //   backgroundColor: Colors.black,
+          // ),
+        // );
         _model.isLoading = false;
         safeSetState(() {});
       } else {
@@ -67,11 +78,11 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                 (_model.getAllPlayerRes?.jsonBody ?? ''),
                 r'''$.message''',
               ).toString(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
-            duration: Duration(milliseconds: 4000),
+            duration: const Duration(milliseconds: 4000),
             backgroundColor: Colors.black,
           ),
         );
@@ -81,12 +92,66 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
     });
   }
 
+  // @override
+  // void dispose() {
+  //   routeObserver.unsubscribe(this);
+  //
+  //   _model.dispose();
+  //
+  //   super.dispose();
+  // }
+  //
+  // @override
+  // void didUpdateWidget(AllPlayersWidget oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   _model.widget = widget;
+  // }
+  //
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final route = DebugModalRoute.of(context);
+  //   if (route != null) {
+  //     routeObserver.subscribe(this, route);
+  //   }
+  //   debugLogGlobalProperty(context);
+  // }
+  //
+  // @override
+  // void didPopNext() {
+  //   if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+  //     setState(() => _model.isRouteVisible = true);
+  //     debugLogWidgetClass(_model);
+  //   }
+  // }
+  //
+  // @override
+  // void didPush() {
+  //   if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+  //     setState(() => _model.isRouteVisible = true);
+  //     debugLogWidgetClass(_model);
+  //   }
+  // }
+  //
+  // @override
+  // void didPop() {
+  //   _model.isRouteVisible = false;
+  // }
+  //
+  // @override
+  // void didPushNext() {
+  //   _model.isRouteVisible = false;
+  // }
+
+
+
+
   @override
   void dispose() {
+    // Stop the page timer when leaving the page
+    AdService().stopInterstitialTimer();
     routeObserver.unsubscribe(this);
-
     _model.dispose();
-
     super.dispose();
   }
 
@@ -94,6 +159,8 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
   void didUpdateWidget(AllPlayersWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _model.widget = widget;
+    // Restart timer when widget updates
+    AdService().startPageTimer('allPlayersPage');
   }
 
   @override
@@ -110,6 +177,8 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      // Restart timer when returning to this page
+      AdService().startPageTimer('allPlayersPage');
       debugLogWidgetClass(_model);
     }
   }
@@ -118,6 +187,8 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
   void didPush() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      // Start timer when page is pushed
+      AdService().startPageTimer('allPlayersPage');
       debugLogWidgetClass(_model);
     }
   }
@@ -125,11 +196,14 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
   @override
   void didPop() {
     _model.isRouteVisible = false;
+    // Stop timer when leaving the page
+    AdService().stopInterstitialTimer();
   }
 
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
+    AdService().stopInterstitialTimer();
   }
 
   @override
@@ -150,7 +224,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
         body: Stack(
           children: [
             Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
+              alignment: const AlignmentDirectional(0.0, 0.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
@@ -164,7 +238,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -187,7 +261,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                             height: 40.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).backBtnClr,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: Color(0x335D4E4E),
@@ -203,7 +277,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                             Brightness.dark) ==
                                         true
                                     ? Colors.black
-                                    : Color(0xD5999999),
+                                    : const Color(0xD5999999),
                               ),
                             ),
                             child: Icon(
@@ -237,7 +311,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                     .customTextStyle1
                                     .override(
                                       fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
+                                      color: const Color(0xFFEB6027),
                                       fontSize: 28.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -247,7 +321,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               8.0, 0.0, 0.0, 0.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -262,7 +336,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                               height: 40.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).backBtnClr,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x335D4E4E),
@@ -278,7 +352,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                               Brightness.dark) ==
                                           true
                                       ? Colors.black
-                                      : Color(0xD5999999),
+                                      : const Color(0xD5999999),
                                 ),
                               ),
                               child: Icon(
@@ -292,7 +366,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                       ],
                     ),
                     Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
+                      alignment: const AlignmentDirectional(0.0, 0.0),
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             0.0,
@@ -329,7 +403,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                     if (!_model.isLoading)
                       Container(
                         height: MediaQuery.sizeOf(context).height * 0.7,
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: Builder(
                           builder: (context) {
                             final playerList = DashboardGroup.getAllPlayersCall
@@ -381,7 +455,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                   child: Container(
                                     width: 100.0,
                                     height: 100.0,
-                                    decoration: BoxDecoration(),
+                                    decoration: const BoxDecoration(),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -389,7 +463,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                       children: [
                                         Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 10.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
@@ -398,7 +472,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                                 width: 60.0,
                                                 height: 60.0,
                                                 clipBehavior: Clip.antiAlias,
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Image.network(
@@ -417,7 +491,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                               ),
                                               Expanded(
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional
+                                                  padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           20.0, 0.0, 0.0, 0.0),
                                                   child: Text(
@@ -528,7 +602,7 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
                                             ],
                                           ),
                                         ),
-                                        Divider(
+                                        const Divider(
                                           thickness: 2.0,
                                           color: Color(0xFF4E4E4E),
                                         ),
@@ -547,12 +621,12 @@ class _AllPlayersWidgetState extends State<AllPlayersWidget> with RouteAware {
             ),
             if (_model.isLoading)
               Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
+                alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Container(
                   width: 100.0,
                   height: 100.0,
-                  decoration: BoxDecoration(),
-                  child: Container(
+                  decoration: const BoxDecoration(),
+                  child: const SizedBox(
                     width: 40.0,
                     height: 40.0,
                     child: custom_widgets.CubeGridLoader(

@@ -1,21 +1,9 @@
 import '/backend/api_requests/api_calls.dart';
-import '/components/no_data_found/no_data_found_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'contest_page_widget.dart' show ContestPageWidget;
 import 'dart:async';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class ContestPageModel extends FlutterFlowModel<ContestPageWidget> {
   ///  Local state fields for this page.
@@ -74,7 +62,7 @@ class ContestPageModel extends FlutterFlowModel<ContestPageWidget> {
   }) async {
     final stopwatch = Stopwatch()..start();
     while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
       final requestComplete = apiRequestCompleter?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {

@@ -3,10 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:video_player/video_player.dart';
 
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart' show routeObserver;
 
 const kDefaultAspectRatio = 16 / 9;
@@ -16,7 +14,7 @@ enum VideoType {
   network,
 }
 
-Set<VideoPlayerController> _videoPlayers = Set();
+Set<VideoPlayerController> _videoPlayers = {};
 
 class FlutterFlowVideoPlayer extends StatefulWidget {
   const FlutterFlowVideoPlayer({
@@ -121,7 +119,7 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
 
   Future _initializePlayer() async {
     _videoPlayerController = widget.videoType == VideoType.network
-        ? VideoPlayerController.networkUrl(Uri.parse(widget.path!))
+        ? VideoPlayerController.networkUrl(Uri.parse(widget.path))
         : VideoPlayerController.asset(widget.path);
     if (kIsWeb && widget.autoPlay) {
       // Browsers generally don't allow autoplay unless it's muted.
@@ -157,7 +155,7 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
       }
       // Stop all other players when one video is playing.
       if (_videoPlayerController!.value.isPlaying) {
-        _videoPlayers.forEach((otherPlayer) {
+        for (var otherPlayer in _videoPlayers) {
           if (otherPlayer != _videoPlayerController &&
               otherPlayer.value.isPlaying &&
               mounted) {
@@ -165,7 +163,7 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
               otherPlayer.pause();
             });
           }
-        });
+        }
       }
     });
 
@@ -191,7 +189,7 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
   @override
   Widget build(BuildContext context) => FittedBox(
         fit: BoxFit.cover,
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width,
           child: _chewieController != null &&

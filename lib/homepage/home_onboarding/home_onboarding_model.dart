@@ -1,14 +1,8 @@
 import '/components/button_small/button_small_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'home_onboarding_widget.dart' show HomeOnboardingWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class HomeOnboardingModel extends FlutterFlowModel<HomeOnboardingWidget> {
   ///  State fields for stateful widgets in this page.
@@ -55,7 +49,7 @@ class HomeOnboardingModel extends FlutterFlowModel<HomeOnboardingWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'buttonSmallModel (buttonSmall)':
-              buttonSmallModel?.toWidgetClassDebugData(),
+              buttonSmallModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

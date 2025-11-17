@@ -5,14 +5,10 @@ import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/components/winner_bottom_sheet/winner_bottom_sheet_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
 import 'match_players_model.dart';
 export 'match_players_model.dart';
@@ -104,7 +100,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Stack(
@@ -119,7 +115,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -134,7 +130,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_rounded,
                               color: Colors.white,
                               size: 0.0,
@@ -162,7 +158,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                     .customTextStyle1
                                     .override(
                                       fontFamily: 'good times',
-                                      color: Color(0xFFEB6027),
+                                      color: const Color(0xFFEB6027),
                                       fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -171,14 +167,14 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 8.0, 0.0, 0.0, 0.0),
                             child: Container(
                               width: 40.0,
                               height: 40.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).backBtnClr,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x335D4E4E),
@@ -199,7 +195,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                   context
                                       .pushNamed(AboutScreenWidget.routeName);
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   FFIcons.kessentialUi1,
                                   color: Colors.white,
                                   size: 24.0,
@@ -234,7 +230,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                     shape: BoxShape.circle,
                                   ),
                                   child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Icon(
                                       Icons.arrow_back_ios_new_rounded,
                                       color: FlutterFlowTheme.of(context)
@@ -263,7 +259,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                     shape: BoxShape.circle,
                                   ),
                                   child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       color: FlutterFlowTheme.of(context)
@@ -280,16 +276,16 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Color(0xFF161515),
+                          color: const Color(0xFF161515),
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
                             width: 2.0,
                           ),
                         ),
                         child: Align(
-                          alignment: AlignmentDirectional(0.0, 0.0),
+                          alignment: const AlignmentDirectional(0.0, 0.0),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 12.0, 0.0, 12.0),
                             child: Text(
                               'Giannis Antetokounmpo',
@@ -316,19 +312,19 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 20.0, 0.0, 0.0),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Color(0xFF4E4E4E),
+                                  color: const Color(0xFF4E4E4E),
                                 ),
                               ),
                               child: Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
+                                alignment: const AlignmentDirectional(0.0, 0.0),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 15.0, 0.0, 15.0),
                                   child: Text(
                                     'Kareem Abdul-jabbar',
@@ -363,15 +359,15 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                           Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: Color(0xFF038500),
+                              color: const Color(0xFF038500),
                               border: Border.all(
-                                color: Color(0xFF4E4E4E),
+                                color: const Color(0xFF4E4E4E),
                               ),
                             ),
                             child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
+                              alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 15.0, 0.0, 15.0),
                                 child: Text(
                                   'Giannis Antetokounmpo',
@@ -404,13 +400,13 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color(0xFF4E4E4E),
+                                color: const Color(0xFF4E4E4E),
                               ),
                             ),
                             child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
+                              alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 15.0, 0.0, 15.0),
                                 child: Text(
                                   'Kareem Abdul-jabbar',
@@ -443,13 +439,13 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color(0xFF4E4E4E),
+                                color: const Color(0xFF4E4E4E),
                               ),
                             ),
                             child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
+                              alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 15.0, 0.0, 15.0),
                                 child: Text(
                                   'Kareem Abdul-jabbar',
@@ -482,7 +478,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                       ),
                       Builder(
                         builder: (context) => Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 20.0, 0.0, 0.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
@@ -497,7 +493,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                     elevation: 0,
                                     insetPadding: EdgeInsets.zero,
                                     backgroundColor: Colors.transparent,
-                                    alignment: AlignmentDirectional(0.0, 0.0)
+                                    alignment: const AlignmentDirectional(0.0, 0.0)
                                         .resolve(Directionality.of(context)),
                                     child: WebViewAware(
                                       child: GestureDetector(
@@ -542,27 +538,27 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 40.0),
                                 child: Container(
                                   width: MediaQuery.sizeOf(context).width * 0.4,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.0),
                                     border: Border.all(
-                                      color: Color(0xFF4E4E4E),
+                                      color: const Color(0xFF4E4E4E),
                                     ),
                                   ),
                                   child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 15.0, 0.0, 15.0),
                                       child: Text(
                                         'Auto Associate',
@@ -596,7 +592,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                               ),
                               Builder(
                                 builder: (context) => Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 40.0),
                                   child: InkWell(
                                     splashColor: Colors.transparent,
@@ -611,7 +607,7 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                             elevation: 0,
                                             insetPadding: EdgeInsets.zero,
                                             backgroundColor: Colors.transparent,
-                                            alignment: AlignmentDirectional(
+                                            alignment: const AlignmentDirectional(
                                                     0.0, 0.0)
                                                 .resolve(
                                                     Directionality.of(context)),
@@ -655,10 +651,10 @@ class _MatchPlayersWidgetState extends State<MatchPlayersWidget>
                                       ),
                                       child: Align(
                                         alignment:
-                                            AlignmentDirectional(0.0, 0.0),
+                                            const AlignmentDirectional(0.0, 0.0),
                                         child: Padding(
                                           padding:
-                                              EdgeInsetsDirectional.fromSTEB(
+                                              const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 15.0, 0.0, 15.0),
                                           child: Text(
                                             'Next',

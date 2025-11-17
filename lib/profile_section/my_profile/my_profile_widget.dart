@@ -1,13 +1,9 @@
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'my_profile_model.dart';
 export 'my_profile_model.dart';
 
@@ -127,7 +123,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -141,7 +137,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                           height: 40.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).backBtnClr,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 blurRadius: 4.0,
                                 color: Color(0x335D4E4E),
@@ -161,7 +157,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                             onTap: () async {
                               context.safePop();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_rounded,
                               color: Colors.white,
                               size: 24.0,
@@ -190,7 +186,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                   .customTextStyle1
                                   .override(
                                     fontFamily: 'good times',
-                                    color: Color(0xFFEB6027),
+                                    color: const Color(0xFFEB6027),
                                     fontSize: 24.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
@@ -199,14 +195,14 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               8.0, 0.0, 0.0, 0.0),
                           child: Container(
                             width: 40.0,
                             height: 40.0,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).backBtnClr,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: Color(0x335D4E4E),
@@ -226,7 +222,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                               onTap: () async {
                                 context.pushNamed(AboutScreenWidget.routeName);
                               },
-                              child: Icon(
+                              child: const Icon(
                                 FFIcons.kessentialUi1,
                                 color: Colors.white,
                                 size: 24.0,
@@ -254,7 +250,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                               width: double.infinity,
                               height: MediaQuery.sizeOf(context).height * 0.24,
                               decoration: BoxDecoration(
-                                color: Color(0xFF3C3939),
+                                color: const Color(0xFF3C3939),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Stack(
@@ -272,21 +268,21 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                   .height *
                                               0.24,
                                           fit: BoxFit.fill,
-                                          alignment: Alignment(0.0, 0.0),
+                                          alignment: const Alignment(0.0, 0.0),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.95, 0.5),
+                                    alignment: const AlignmentDirectional(0.95, 0.5),
                                     child: Container(
                                       width: 42.0,
                                       height: 42.0,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Color(0xFF1B2E5F),
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.camera_alt,
                                         color: Colors.white,
                                         size: 24.0,
@@ -294,7 +290,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.98),
+                                    alignment: const AlignmentDirectional(0.0, 0.98),
                                     child: Text(
                                       'Joel Embiid',
                                       style: FlutterFlowTheme.of(context)
@@ -339,7 +335,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: double.infinity,
                                       child: TextFormField(
                                         controller:
@@ -403,7 +399,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                         .fontStyle,
                                               ),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
+                                            borderSide: const BorderSide(
                                               color: Color(0x00000000),
                                               width: 1.0,
                                             ),
@@ -411,7 +407,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                 BorderRadius.circular(8.0),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
+                                            borderSide: const BorderSide(
                                               color: Color(0x00000000),
                                               width: 1.0,
                                             ),
@@ -440,8 +436,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                 BorderRadius.circular(8.0),
                                           ),
                                           filled: true,
-                                          fillColor: Color(0x80050505),
-                                          prefixIcon: Icon(
+                                          fillColor: const Color(0x80050505),
+                                          prefixIcon: const Icon(
                                             FFIcons.kcomponent57,
                                             color: Colors.white,
                                             size: 24.0,
@@ -479,9 +475,9 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 8.0, 0.0, 8.0),
-                                      child: Container(
+                                      child: SizedBox(
                                         width: double.infinity,
                                         child: TextFormField(
                                           controller:
@@ -550,7 +546,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                               .fontStyle,
                                                     ),
                                             enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Color(0x00000000),
                                                 width: 1.0,
                                               ),
@@ -558,7 +554,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Color(0x00000000),
                                                 width: 1.0,
                                               ),
@@ -587,8 +583,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             filled: true,
-                                            fillColor: Color(0x80050505),
-                                            prefixIcon: Icon(
+                                            fillColor: const Color(0x80050505),
+                                            prefixIcon: const Icon(
                                               FFIcons.kcomponent56,
                                               color: Colors.white,
                                               size: 24.0,
@@ -629,9 +625,9 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 8.0, 0.0, 0.0),
-                                      child: Container(
+                                      child: SizedBox(
                                         width: double.infinity,
                                         child: TextFormField(
                                           controller: _model
@@ -701,7 +697,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                               .fontStyle,
                                                     ),
                                             enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Color(0x00000000),
                                                 width: 1.0,
                                               ),
@@ -709,7 +705,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                 color: Color(0x00000000),
                                                 width: 1.0,
                                               ),
@@ -738,8 +734,8 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             filled: true,
-                                            fillColor: Color(0x80050505),
-                                            prefixIcon: Icon(
+                                            fillColor: const Color(0x80050505),
+                                            prefixIcon: const Icon(
                                               FFIcons.kshare,
                                               color: Colors.white,
                                               size: 24.0,
@@ -798,7 +794,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: AlignmentDirectional(0.0, 1.0),
+                                      alignment: const AlignmentDirectional(0.0, 1.0),
                                       child: Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0.0,
@@ -818,7 +814,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> with RouteAware {
                                           child: Builder(builder: (_) {
                                             return DebugFlutterFlowModelContext(
                                               rootModel: _model.rootModel,
-                                              child: GradientButtonCustomWidget(
+                                              child: const GradientButtonCustomWidget(
                                                 text: 'Save',
                                               ),
                                             );

@@ -2,9 +2,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'confirm_dilogue_model.dart';
 export 'confirm_dilogue_model.dart';
 
@@ -95,8 +93,8 @@ class _ConfirmDilogueWidgetState extends State<ConfirmDilogueWidget>
       text: 'YES',
       options: FFButtonOptions(
         height: 40.0,
-        padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
-        iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+        padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+        iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
         color: FlutterFlowTheme.of(context).primary,
         textStyle: FlutterFlowTheme.of(context).headlineLarge.override(
               font: GoogleFonts.poppins(
@@ -111,7 +109,7 @@ class _ConfirmDilogueWidgetState extends State<ConfirmDilogueWidget>
               fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
             ),
         elevation: 0.0,
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.transparent,
         ),
         borderRadius: BorderRadius.circular(40.0),

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '/subscription/ad_service.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/admob_util.dart' as admob;
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SmartAdBannerWidget extends StatefulWidget {
@@ -11,10 +10,10 @@ class SmartAdBannerWidget extends StatefulWidget {
   final bool showLoadingPlaceholder;
 
   const SmartAdBannerWidget({
-    Key? key,
+    super.key,
     this.height = 60.0,
     this.showLoadingPlaceholder = true,
-  }) : super(key: key);
+  });
 
   @override
   State<SmartAdBannerWidget> createState() => _SmartAdBannerWidgetState();

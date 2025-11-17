@@ -1,19 +1,18 @@
+
+import '../../nav/nav_widget.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/log_out/log_out_widget.dart';
+import '/components/delete_account/delete_account_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
-import '/theme_controller.dart';
 import 'drawer_menu_model.dart';
 export 'drawer_menu_model.dart';
 
@@ -260,10 +259,10 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                         alignment:
                                             const AlignmentDirectional(0.0, 0.0)
                                                 .resolve(
-                                                    Directionality.of(context)),
+                                                    Directionality.of(dialogContext)),
                                         child: WebViewAware(
-                                          child: Container(
-                                            height: MediaQuery.sizeOf(context)
+                                          child: SizedBox(
+                                            height: MediaQuery.sizeOf(dialogContext)
                                                     .height *
                                                 0.33,
                                             child: const LogOutWidget(),
@@ -634,7 +633,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                             // }
 
                             onChanged: (newValue) async {
-                              safeSetState(() => _model.switchValue2 = newValue!);
+                              safeSetState(() => _model.switchValue2 = newValue);
 
                               final response = await EnableNotificationCall().call(
                                 authToken: FFAppState().authToken,
@@ -832,7 +831,13 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(EligiblePlayerWidget.routeName);
+                    // context.pushNamed(EligiblePlayerWidget.routeName);
+                    context.pushNamed(
+                      NavWidget.routeName,
+                      queryParameters: {
+                        'initialTab': '1'
+                      }, // Pass initialTab as 1 for TabNotifications
+                    );
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -983,7 +988,18 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(RankingPageWidget.routeName);
+                    // context.pushNamed(RankingPageWidget.routeName);
+
+
+                    context.pushNamed(
+                      NavWidget.routeName,
+                      queryParameters: {
+                        'initialTab': '2'
+                      }, // Pass initialTab as 1 for TabNotifications
+                    );
+
+
+
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -1064,7 +1080,15 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(YourFinalRankingWidget.routeName);
+                    // context.pushNamed(YourFinalRankingWidget.routeName);
+
+                    context.pushNamed(
+                      NavWidget.routeName,
+                      queryParameters: {
+                        'initialTab': '3'
+                      }, // Pass initialTab as 1 for TabNotifications
+                    );
+
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -1145,7 +1169,15 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(PlayWithFriendsWidget.routeName);
+                    // context.pushNamed(PlayWithFriendsWidget.routeName);
+
+                    context.pushNamed(
+                      NavWidget.routeName,
+                      queryParameters: {
+                        'initialTab': '4'
+                      }, // Pass initialTab as 1 for TabNotifications
+                    );
+
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -1463,20 +1495,20 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
               ),
               
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 60.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    var _shouldSetState = false;
+                    var shouldSetState = false;
                     _model.cmsRes =
                         await DashboardGroup.contactSupportCall.call(
                       authToken: FFAppState().authToken,
                     );
 
-                    _shouldSetState = true;
+                    shouldSetState = true;
                     if ((_model.cmsRes?.succeeded ?? true) != true) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -1507,13 +1539,13 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                           backgroundColor: Colors.black,
                         ),
                       );
-                      if (_shouldSetState) safeSetState(() {});
+                      if (shouldSetState) safeSetState(() {});
                       return;
                     }
 
                     context.pushNamed(ContactAndSupportWidget.routeName);
 
-                    if (_shouldSetState) safeSetState(() {});
+                    if (shouldSetState) safeSetState(() {});
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -1578,6 +1610,309 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   ),
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                child: Divider(
+                  color: FlutterFlowTheme.of(context).tertiary.withOpacity(0.2),
+                  thickness: 1.0,
+                ),
+              ),
+
+
+
+              ///1
+
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 60.0),
+                child: Builder(
+                  builder: (context) => InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    // onTap: () async {
+                    //   Navigator.pop(context);
+                    //   await showDialog(
+                    //     context: context,
+                    //     barrierDismissible: false,
+                    //     builder: (alertDialogContext) {
+                    //       return BackdropFilter(
+                    //         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    //         child: AlertDialog(
+                    //           backgroundColor: Colors.transparent,
+                    //           insetPadding: EdgeInsets.zero,
+                    //           contentPadding: EdgeInsets.zero,
+                    //           content: Align(
+                    //             alignment: Alignment.center,
+                    //             child: Container(
+                    //               width: MediaQuery.sizeOf(context).width,
+                    //               height: MediaQuery.sizeOf(context).height * 0.6,
+                    //               child: Align(
+                    //                 alignment: Alignment.center,
+                    //                 child: Padding(
+                    //                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //                   child: Container(
+                    //                     width: double.infinity,
+                    //                     height: MediaQuery.sizeOf(context).height,
+                    //                     decoration: BoxDecoration(
+                    //                       color: Colors.white,
+                    //                       boxShadow: const [
+                    //                         BoxShadow(
+                    //                           blurRadius: 3.0,
+                    //                           color: Color(0x33000000),
+                    //                           offset: Offset(0.0, 1.0),
+                    //                         )
+                    //                       ],
+                    //                       borderRadius: BorderRadius.circular(24.0),
+                    //                       border: Border.all(
+                    //                         color: FlutterFlowTheme.of(context).primaryBackground,
+                    //                         width: 1.0,
+                    //                       ),
+                    //                     ),
+                    //                     child: Padding(
+                    //                       padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                    //                       child: Column(
+                    //                         mainAxisSize: MainAxisSize.max,
+                    //                         crossAxisAlignment: CrossAxisAlignment.start,
+                    //                         children: [
+                    //                           Padding(
+                    //                             padding: const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 16.0),
+                    //                             child: Column(
+                    //                               mainAxisSize: MainAxisSize.max,
+                    //                               crossAxisAlignment: CrossAxisAlignment.start,
+                    //                               children: [
+                    //                                 Align(
+                    //                                   alignment: Alignment.center,
+                    //                                   child: Icon( 
+                    //                                     Icons.warning_amber_rounded,
+                    //                                     color: Colors.red,
+                    //                                     size: 100.0,
+                    //                                   ),
+                    //                                 ),
+                    //                                 Align(
+                    //                                   alignment: Alignment.center,
+                    //                                   child: Padding(
+                    //                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    //                                     child: Text.rich(
+                    //                                       TextSpan(
+                    //                                         children: [
+                    //                                           TextSpan(
+                    //                                             text: 'You\'re about to permanently delete your account\n\n',
+                    //                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
+                    //                                               font: GoogleFonts.poppins(fontWeight: FontWeight.normal),
+                    //                                               color: Colors.black,
+                    //                                               fontSize: 16.0,
+                    //                                             ),
+                    //                                           ),
+                    //                                           TextSpan(
+                    //                                             text: 'ATTENTION: ',
+                    //                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
+                    //                                               font: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                    //                                               color: Colors.red,
+                    //                                               fontSize: 16.0,
+                    //                                             ),
+                    //                                           ),
+                    //                                           TextSpan(
+                    //                                             text: 'This action is irreversible!\n\nAll your data, rankings, and progress will be permanently deleted.\n\nAre you sure you want to proceed?',
+                    //                                             style: FlutterFlowTheme.of(context).headlineLarge.override(
+                    //                                               font: GoogleFonts.poppins(fontWeight: FontWeight.normal),
+                    //                                               color: Colors.black,
+                    //                                               fontSize: 16.0,
+                    //                                             ),
+                    //                                           ),
+                    //                                         ],
+                    //                                       ),
+                    //                                       textAlign: TextAlign.left,
+                    //                                     ),
+                    //                                   ),
+                    //                                 ),
+                    //                               ],
+                    //                             ),
+                    //                           ),
+                    //                           Expanded(
+                    //                             child: Padding(
+                    //                               padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 10.0),
+                    //                               child: Row(
+                    //                                 mainAxisAlignment: MainAxisAlignment.end,
+                    //                                 children: [
+                    //                                   Container(
+                    //                                     width: 70.0,
+                    //                                     decoration: BoxDecoration(
+                    //                                       color: const Color(0x54808080),
+                    //                                       borderRadius: BorderRadius.circular(12.0),
+                    //                                     ),
+                    //                                     child: FFButtonWidget(
+                    //                                       onPressed: () async {
+                    //                                         Navigator.pop(alertDialogContext);
+                    //                                       },
+                    //                                       text: 'Back',
+                    //                                       options: FFButtonOptions(
+                    //                                         height: 40.0,
+                    //                                         color: const Color(0xff000000),
+                    //                                         textStyle: FlutterFlowTheme.of(context).headlineLarge.override(
+                    //                                           font: GoogleFonts.poppins(),
+                    //                                           color: Colors.white,
+                    //                                           fontSize: 16.0,
+                    //                                         ),
+                    //                                         elevation: 0.0,
+                    //                                         borderRadius: BorderRadius.circular(12.0),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                   Padding(
+                    //                                     padding: const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                    //                                     child: Container(
+                    //                                       width: 90.0,
+                    //                                       decoration: BoxDecoration(
+                    //                                         color: Colors.red,
+                    //                                         borderRadius: BorderRadius.circular(12.0),
+                    //                                       ),
+                    //                                       child: FFButtonWidget(
+                    //                                         onPressed: () async {
+                    //                                           try {
+                    //                                             // Step 1: Close the confirmation dialog first
+                    //                                             // Navigator.pop(alertDialogContext);
+                    //
+                    //                                             // Step 2: Clear app state and navigate to login
+                    //                                             // FFAppState().deleteAuthToken();
+                    //
+                    //
+                    //                                             // Wait a frame so context is ready for navigation
+                    //                                             await Future.delayed(const Duration(milliseconds: 300));
+                    //                                             context.goNamed(LogInWidget.routeName);
+                    //                                             FFAppState().deleteAuthToken();
+                    //                                             FFAppState().authToken = '';
+                    //                                             FFAppState().navigationType = 1;
+                    //
+                    //                                             // Step 3: Trigger delete API call in background
+                    //                                             Future.microtask(() async {
+                    //                                               try {
+                    //                                                 final response = await http.delete(
+                    //                                                   Uri.parse('https://votethegoat.ezxdemo.com/api/delete-user'),
+                    //                                                   headers: {
+                    //                                                     'Content-Type': 'application/json',
+                    //                                                     'Authorization': 'Bearer ${FFAppState().authToken}',
+                    //                                                   },
+                    //                                                 );
+                    //
+                    //                                                 print('🗑️ Delete Account Response: ${response.body}');
+                    //                                                 print('Status Code: ${response.statusCode}');
+                    //                                               } catch (e) {
+                    //                                                 print('⚠️ Error deleting account: $e');
+                    //                                               }
+                    //                                             });
+                    //                                           } catch (e) {
+                    //                                             print('⚠️ Unexpected error: $e');
+                    //                                             ScaffoldMessenger.of(context).showSnackBar(
+                    //                                               SnackBar(
+                    //                                                 content: Text('Error: $e'),
+                    //                                                 backgroundColor: Colors.red,
+                    //                                               ),
+                    //                                             );
+                    //                                           }
+                    //                                         },
+                    //
+                    //
+                    //                                         text: 'Delete',
+                    //                                         options: FFButtonOptions(
+                    //                                           height: 40.0,
+                    //                                           color: Colors.red,
+                    //                                           textStyle: FlutterFlowTheme.of(context).headlineLarge.override(
+                    //                                             font: GoogleFonts.poppins(),
+                    //                                             color: Colors.white,
+                    //                                             fontSize: 16.0,
+                    //                                           ),
+                    //                                           elevation: 0.0,
+                    //                                           borderRadius: BorderRadius.circular(10.0),
+                    //                                         ),
+                    //                                       ),
+                    //                                     ),
+                    //                                   ),
+                    //                                 ],
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ],
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       );
+                    //     },
+                    //   );
+                    // },
+
+                    onTap: () async {
+                      Navigator.pop(context);
+                      await showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return Dialog(
+                            elevation: 0,
+                            insetPadding: EdgeInsets.zero,
+                            backgroundColor: Colors.transparent,
+                            alignment:
+                                const AlignmentDirectional(0.0, 0.0)
+                                    .resolve(
+                                        Directionality.of(dialogContext)),
+                            child: WebViewAware(
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(dialogContext)
+                                        .height *
+                                    0.9,
+                                child: const DeleteAccountWidget(),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 5.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(color: const Color(0xFF282727)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(7.0, 7.0, 7.0, 7.0),
+                              child: Icon(
+                                Icons.delete_outline,
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                size: 20.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
+                            child: Text(
+                              'Delete Account',
+                              style: FlutterFlowTheme.of(context).labelMedium.override(
+                                font: GoogleFonts.poppins(),
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                letterSpacing: 0.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              ///
 
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),

@@ -1,12 +1,8 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import 'no_data_found_model.dart';
 export 'no_data_found_model.dart';
 
@@ -102,7 +98,7 @@ class _NoDataFoundWidgetState extends State<NoDataFoundWidget> with RouteAware {
           animate: true,
         ),
         Align(
-          alignment: AlignmentDirectional(0.0, 0.0),
+          alignment: const AlignmentDirectional(0.0, 0.0),
           child: Text(
             'No Data Found',
             textAlign: TextAlign.center,

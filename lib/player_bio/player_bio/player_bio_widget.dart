@@ -1,15 +1,14 @@
+import '../../subscription/smart_interstitial_manager.dart';
+import '../../subscription/ad_service.dart';
+
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -44,55 +43,74 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+
+
+
+      AdService().startPageTimer('playerBio');
+
+      // Preload interstitial ad (will check subscription status internally)
+      await SmartInterstitialManager().preloadInterstitial();
+
+      // Only show ad if still mounted and ads are enabled
+      if (mounted && FFAppState().advertisementStatus != 0) {
+        await SmartInterstitialManager().showInterstitialIfAllowed();
+      }
+
+
+
+
+
+
+
       _model.isLoading = true;
       safeSetState(() {});
       _model.apiResultwyv = await DashboardGroup.playertBioCall.call(
-        playerId: widget!.playerId,
+        playerId: widget.playerId,
         authToken: FFAppState().authToken,
       );
 
       if ((_model.apiResultwyv?.succeeded ?? true)) {
         await Future.wait([
           Future(() async {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  getJsonField(
-                    (_model.apiResultwyv?.jsonBody ?? ''),
-                    r'''$.message''',
-                  ).toString(),
-                  style: FlutterFlowTheme
-                      .of(context)
-                      .titleMedium
-                      .override(
-                    font: GoogleFonts.poppins(
-                      fontWeight: FlutterFlowTheme
-                          .of(context)
-                          .titleMedium
-                          .fontWeight,
-                      fontStyle: FlutterFlowTheme
-                          .of(context)
-                          .titleMedium
-                          .fontStyle,
-                    ),
-                    color: Colors.white,
-                    letterSpacing: 0.0,
-                    fontWeight:
-                    FlutterFlowTheme
-                        .of(context)
-                        .titleMedium
-                        .fontWeight,
-                    fontStyle:
-                    FlutterFlowTheme
-                        .of(context)
-                        .titleMedium
-                        .fontStyle,
-                  ),
-                ),
-                duration: const Duration(milliseconds: 4000),
-                backgroundColor: Colors.black,
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+              // SnackBar(
+              //   content: Text(
+              //     getJsonField(
+              //       (_model.apiResultwyv?.jsonBody ?? ''),
+              //       r'''$.message''',
+              //     ).toString(),
+              //     style: FlutterFlowTheme
+              //         .of(context)
+              //         .titleMedium
+              //         .override(
+              //       font: GoogleFonts.poppins(
+              //         fontWeight: FlutterFlowTheme
+              //             .of(context)
+              //             .titleMedium
+              //             .fontWeight,
+              //         fontStyle: FlutterFlowTheme
+              //             .of(context)
+              //             .titleMedium
+              //             .fontStyle,
+              //       ),
+              //       color: Colors.white,
+              //       letterSpacing: 0.0,
+              //       fontWeight:
+              //       FlutterFlowTheme
+              //           .of(context)
+              //           .titleMedium
+              //           .fontWeight,
+              //       fontStyle:
+              //       FlutterFlowTheme
+              //           .of(context)
+              //           .titleMedium
+              //           .fontStyle,
+              //     ),
+              //   ),
+              //   duration: const Duration(milliseconds: 4000),
+              //   backgroundColor: Colors.black,
+              // ),
+            // );
           }),
           Future(() async {
             safeSetState(() {});
@@ -103,7 +121,7 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
           }),
         ]);
         _model.playerStats = await DashboardGroup.playerBioStatsCall.call(
-          playerId: widget!.playerId,
+          playerId: widget.playerId,
           authToken: FFAppState().authToken,
         );
       } else {
@@ -173,6 +191,10 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
 
   @override
   void dispose() {
+
+
+    AdService().stopInterstitialTimer();
+
     routeObserver.unsubscribe(this);
 
     _model.dispose();
@@ -184,6 +206,9 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
   void didUpdateWidget(PlayerBioWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _model.widget = widget;
+
+    // Restart timer when widget updates
+    AdService().startPageTimer('playerBio');
   }
 
   @override
@@ -200,6 +225,9 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+
+      // Start timer when page is pushed
+      AdService().startPageTimer('playerBio');
       debugLogWidgetClass(_model);
     }
   }
@@ -208,18 +236,24 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
   void didPush() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      AdService().startPageTimer('playerBio');
+
       debugLogWidgetClass(_model);
     }
   }
 
   @override
   void didPop() {
+    AdService().stopInterstitialTimer();
+
     _model.isRouteVisible = false;
   }
 
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
+    AdService().stopInterstitialTimer();
+
   }
 
 
@@ -781,7 +815,21 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                           Align(
                             alignment: const Alignment(0.0, 0),
                             child: TabBar(
-                              isScrollable: true,
+
+
+                              isScrollable: MediaQuery.of(context).size.width < 600,
+                              tabAlignment: MediaQuery.of(context).size.width >= 600
+                                  ? TabAlignment.fill
+                                  : null,
+
+
+
+
+
+
+
+
+                              // isScrollable: true,
                               labelColor: FlutterFlowTheme
                                   .of(context)
                                   .peach,
@@ -829,17 +877,17 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                               FlutterFlowTheme
                                   .of(context)
                                   .primary,
-                              tabs: [
-                                const Tab(
+                              tabs: const [
+                                Tab(
                                   text: 'Profile',
                                 ),
-                                const Tab(
+                                Tab(
                                   text: 'LIST OF AWARDS',
                                 ),
-                                const Tab(
+                                Tab(
                                   text: 'Achievements',
                                 ),
-                                const Tab(
+                                Tab(
                                   text: 'Stats',
                                 ),
                               ],
@@ -2016,6 +2064,9 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
                                                             0.0,
                                                             9.0),
                                                         child: Text(
+                                                          textAlign: TextAlign.center,
+
+
                                                           getJsonField(
                                                             DashboardGroup
                                                                 .playertBioCall
@@ -10539,12 +10590,12 @@ class _PlayerBioWidgetState extends State<PlayerBioWidget>
               ),
             ),
             if (_model.isLoading)
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Container(
+              const Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: SizedBox(
                   width: 40.0,
                   height: 40.0,
-                  child: const custom_widgets.CubeGridLoader(
+                  child: custom_widgets.CubeGridLoader(
                     width: 40.0,
                     height: 40.0,
                     size: 40.0,

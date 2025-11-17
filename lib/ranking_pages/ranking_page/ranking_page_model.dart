@@ -1,19 +1,10 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'dart:async';
 import 'ranking_page_widget.dart' show RankingPageWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:webviewx_plus/webviewx_plus.dart';
 
 class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
   ///  Local state fields for this page.
@@ -32,15 +23,13 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
 
   late LoggableList<dynamic> _playerList = LoggableList([]);
   set playerList(List<dynamic> value) {
-    if (value != null) {
-      _playerList = LoggableList(value);
-    }
-
+    _playerList = LoggableList(value);
+  
     debugLogWidgetClass(this);
   }
 
   List<dynamic> get playerList =>
-      _playerList?..logger = () => debugLogWidgetClass(this);
+      _playerList..logger = () => debugLogWidgetClass(this);
   void addToPlayerList(dynamic item) => playerList.add(item);
   void removeFromPlayerList(dynamic item) => playerList.remove(item);
   void removeAtIndexFromPlayerList(int index) => playerList.removeAt(index);
@@ -102,7 +91,7 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
   }) async {
     final stopwatch = Stopwatch()..start();
     while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
       final requestComplete = apiRequestCompleter?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
@@ -168,7 +157,7 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'drawerMenuModel (DrawerMenu)':
-              drawerMenuModel?.toWidgetClassDebugData(),
+              drawerMenuModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

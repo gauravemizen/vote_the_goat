@@ -1,18 +1,8 @@
-import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
-import '/components/no_data_found/no_data_found_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
 import 'about_screen_widget.dart' show AboutScreenWidget;
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class AboutScreenModel extends FlutterFlowModel<AboutScreenWidget> {
   ///  State fields for stateful widgets in this page.
@@ -42,7 +32,7 @@ class AboutScreenModel extends FlutterFlowModel<AboutScreenWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'gradientButtonCustomModel (gradientButtonCustom)':
-              gradientButtonCustomModel?.toWidgetClassDebugData(),
+              gradientButtonCustomModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

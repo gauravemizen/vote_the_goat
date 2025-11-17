@@ -1,10 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'gradient_button_custom_model.dart';
 export 'gradient_button_custom_model.dart';
 
@@ -13,7 +10,7 @@ class GradientButtonCustomWidget extends StatefulWidget {
     super.key,
     this.text,
     int? navigationType,
-  }) : this.navigationType = navigationType ?? 1;
+  }) : navigationType = navigationType ?? 1;
 
   final String? text;
 
@@ -103,17 +100,17 @@ class _GradientButtonCustomWidgetState extends State<GradientButtonCustomWidget>
       height: 47.0,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [FlutterFlowTheme.of(context).peach, Color(0xFFE09B6E)],
-          stops: [0.0, 1.0],
-          begin: AlignmentDirectional(0.0, -1.0),
-          end: AlignmentDirectional(0, 1.0),
+          colors: [FlutterFlowTheme.of(context).peach, const Color(0xFFE09B6E)],
+          stops: const [0.0, 1.0],
+          begin: const AlignmentDirectional(0.0, -1.0),
+          end: const AlignmentDirectional(0, 1.0),
         ),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Align(
-        alignment: AlignmentDirectional(0.0, 0.0),
+        alignment: const AlignmentDirectional(0.0, 0.0),
         child: Text(
-          widget!.text!,
+          widget.text!,
           style: FlutterFlowTheme.of(context).titleLarge.override(
                 font: GoogleFonts.poppins(
                   fontWeight:

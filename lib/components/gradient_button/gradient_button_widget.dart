@@ -2,9 +2,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'gradient_button_model.dart';
 export 'gradient_button_model.dart';
 
@@ -89,16 +87,16 @@ class _GradientButtonWidgetState extends State<GradientButtonWidget>
         ?.call(_model);
 
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
       child: Container(
         width: double.infinity,
         height: 47.0,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [FlutterFlowTheme.of(context).peach, Color(0xFFE09B6E)],
-            stops: [0.0, 1.0],
-            begin: AlignmentDirectional(0.0, -1.0),
-            end: AlignmentDirectional(0, 1.0),
+            colors: [FlutterFlowTheme.of(context).peach, const Color(0xFFE09B6E)],
+            stops: const [0.0, 1.0],
+            begin: const AlignmentDirectional(0.0, -1.0),
+            end: const AlignmentDirectional(0, 1.0),
           ),
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -108,9 +106,9 @@ class _GradientButtonWidgetState extends State<GradientButtonWidget>
           },
           text: 'Start',
           options: FFButtonOptions(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-            color: Color(0x00CD2B2B),
+            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+            iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+            color: const Color(0x00CD2B2B),
             textStyle: FlutterFlowTheme.of(context).titleLarge.override(
                   font: GoogleFonts.poppins(
                     fontWeight:

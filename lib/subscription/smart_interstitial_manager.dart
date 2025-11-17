@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-import '/flutter_flow/flutter_flow_util.dart';
 import 'ad_service.dart';
 
 class SmartInterstitialManager {

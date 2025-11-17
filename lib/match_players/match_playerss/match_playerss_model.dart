@@ -1,20 +1,9 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
-import '/components/winner_bottom_sheet/winner_bottom_sheet_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'match_playerss_widget.dart' show MatchPlayerssWidget;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:webviewx_plus/webviewx_plus.dart';
 
 class MatchPlayerssModel extends FlutterFlowModel<MatchPlayerssWidget> {
   ///  Local state fields for this page.
@@ -32,6 +21,10 @@ class MatchPlayerssModel extends FlutterFlowModel<MatchPlayerssWidget> {
     _questionIndex = value;
     debugLogWidgetClass(this);
   }
+
+
+
+  int currentQuestionIndex = 0;
 
   int get questionIndex => _questionIndex;
 
@@ -58,6 +51,10 @@ class MatchPlayerssModel extends FlutterFlowModel<MatchPlayerssWidget> {
   }
 
   int? get selectedPlayerId => _selectedPlayerId;
+
+
+  /// Add this field to persist selections for each minion/player
+  List<int> selectedIndices = [];
 
   bool _isTapped = false;
   set isTapped(bool value) {
@@ -208,7 +205,7 @@ class MatchPlayerssModel extends FlutterFlowModel<MatchPlayerssWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'gradientButtonCustomModel (gradientButtonCustom)':
-              gradientButtonCustomModel?.toWidgetClassDebugData(),
+              gradientButtonCustomModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

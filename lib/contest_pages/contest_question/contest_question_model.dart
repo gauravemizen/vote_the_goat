@@ -1,36 +1,24 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/index.dart';
 import 'contest_question_widget.dart' show ContestQuestionWidget;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class ContestQuestionModel extends FlutterFlowModel<ContestQuestionWidget> {
   ///  Local state fields for this page.
 
   late LoggableList<dynamic> _quizData = LoggableList([]);
   set quizData(List<dynamic> value) {
-    if (value != null) {
-      _quizData = LoggableList(value);
-    }
-
+    _quizData = LoggableList(value);
+  
     debugLogWidgetClass(this);
   }
 
   List<dynamic> get quizData =>
-      _quizData?..logger = () => debugLogWidgetClass(this);
+      _quizData..logger = () => debugLogWidgetClass(this);
   void addToQuizData(dynamic item) => quizData.add(item);
   void removeFromQuizData(dynamic item) => quizData.remove(item);
   void removeAtIndexFromQuizData(int index) => quizData.removeAt(index);
@@ -94,6 +82,17 @@ class ContestQuestionModel extends FlutterFlowModel<ContestQuestionWidget> {
   }
 
   int? get selectedId => _selectedId;
+
+
+// Add this new property
+  int? _questionStartTimeMs;
+  set questionStartTimeMs(int? value) {
+    _questionStartTimeMs = value;
+    debugLogWidgetClass(this);
+  }
+
+  int? get questionStartTimeMs => _questionStartTimeMs;
+
 
   ///  State fields for stateful widgets in this page.
 
@@ -281,7 +280,7 @@ class ContestQuestionModel extends FlutterFlowModel<ContestQuestionWidget> {
         backendQueries: debugBackendQueries,
         componentStates: {
           'gradientButtonCustomModel (gradientButtonCustom)':
-              gradientButtonCustomModel?.toWidgetClassDebugData(),
+              gradientButtonCustomModel.toWidgetClassDebugData(),
           ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
               key,

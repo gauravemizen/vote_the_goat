@@ -1,15 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'filter_screen_widget.dart' show FilterScreenWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class FilterScreenModel extends FlutterFlowModel<FilterScreenWidget> {
   ///  Local state fields for this page.
@@ -48,15 +40,13 @@ class FilterScreenModel extends FlutterFlowModel<FilterScreenWidget> {
 
   late LoggableList<dynamic> _filterData = LoggableList([]);
   set filterData(List<dynamic> value) {
-    if (value != null) {
-      _filterData = LoggableList(value);
-    }
-
+    _filterData = LoggableList(value);
+  
     debugLogWidgetClass(this);
   }
 
   List<dynamic> get filterData =>
-      _filterData?..logger = () => debugLogWidgetClass(this);
+      _filterData..logger = () => debugLogWidgetClass(this);
   void addToFilterData(dynamic item) => filterData.add(item);
   void removeFromFilterData(dynamic item) => filterData.remove(item);
   void removeAtIndexFromFilterData(int index) => filterData.removeAt(index);
