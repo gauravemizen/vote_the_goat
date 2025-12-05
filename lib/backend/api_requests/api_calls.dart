@@ -30,6 +30,7 @@ class LogInCall {
     String? password = '',
     String? fcmToken = '',
     String? deviceType = '',
+    String? deviceId = '',
   }) async {
     final baseUrl = AuthGroup.getBaseUrl();
 
@@ -38,7 +39,8 @@ class LogInCall {
   "email": "${escapeStringForJson(email)}",
   "password": "${escapeStringForJson(password)}",
   "fcm_token": "${escapeStringForJson(fcmToken)}",
-  "device_type": "${escapeStringForJson(deviceType)}"
+  "device_type": "${escapeStringForJson(deviceType)}",
+  "device_id": "${escapeStringForJson(deviceId)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'logIn',
@@ -64,6 +66,7 @@ class SignUpCall {
     String? email = '',
     String? password = '',
     String? passwordConfirmation = '',
+    String? deviceId = '',
   }) async {
     final baseUrl = AuthGroup.getBaseUrl();
 
@@ -72,7 +75,10 @@ class SignUpCall {
   "name": "${escapeStringForJson(name)}",
   "email": "${escapeStringForJson(email)}",
   "password": "${escapeStringForJson(password)}",
-  "password_confirmation": "${escapeStringForJson(passwordConfirmation)}"
+  "password_confirmation": "${escapeStringForJson(passwordConfirmation)}",
+        "device_id": "${escapeStringForJson(deviceId)}"
+
+
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'signUp',
@@ -302,11 +308,11 @@ class DashboardGroup {
   static ContestDetailsCall contestDetailsCall = ContestDetailsCall();
   static ContestQuestionCall contestQuestionCall = ContestQuestionCall();
   static ContestSubmitAnswersCall contestSubmitAnswersCall =
-  ContestSubmitAnswersCall();
+      ContestSubmitAnswersCall();
   static ComlpleteContestDetailsCall comlpleteContestDetailsCall =
-  ComlpleteContestDetailsCall();
+      ComlpleteContestDetailsCall();
   static ContestfinaldetailsCall contestfinaldetailsCall =
-  ContestfinaldetailsCall();
+      ContestfinaldetailsCall();
   static CompletedContestCall completedContestCall = CompletedContestCall();
   static ComparisonCall comparisonCall = ComparisonCall();
   static ComparisonListCall comparisonListCall = ComparisonListCall();
@@ -318,7 +324,7 @@ class DashboardGroup {
   static AutoAssociateCall autoAssociateCall = AutoAssociateCall();
   static JoinTeamCall joinTeamCall = JoinTeamCall();
   static TeamRankingDetailsCall teamRankingDetailsCall =
-  TeamRankingDetailsCall();
+      TeamRankingDetailsCall();
   static SocialloginCall socialloginCall = SocialloginCall();
   static TeamMemberforChatCall teamMemberforChatCall = TeamMemberforChatCall();
   static PlayerBioStatsCall playerBioStatsCall = PlayerBioStatsCall();
@@ -326,18 +332,18 @@ class DashboardGroup {
 
   static CheckMinionStatusCall checkMinionStatusCall = CheckMinionStatusCall();
 
+  static ContestLeaderboardCall contestLeaderboardCall =
+      ContestLeaderboardCall();
 
-  static ContestLeaderboardCall contestLeaderboardCall = ContestLeaderboardCall();
-
-
+  ///
+  static SubscriptionListCall subscriptionListCall = SubscriptionListCall();
 
   static UserSubscriptionCall userSubscriptionCall = UserSubscriptionCall();
 
-
-
   static TeamMemberChatNotificationCall teamMemberChatNotificationCall =
-  TeamMemberChatNotificationCall();
-  static EnableNotificationCall enableNotificationCall = EnableNotificationCall();
+      TeamMemberChatNotificationCall();
+  static EnableNotificationCall enableNotificationCall =
+      EnableNotificationCall();
 }
 
 class EligblePlayersCall {
@@ -373,8 +379,7 @@ class EligblePlayersCall {
     );
   }
 
-  List? playerList(dynamic response) =>
-      getJsonField(
+  List? playerList(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -407,8 +412,7 @@ class AboutPageContentCall {
     );
   }
 
-  List? contentList(dynamic response) =>
-      getJsonField(
+  List? contentList(dynamic response) => getJsonField(
         response,
         r'''$.chapters''',
         true,
@@ -448,8 +452,7 @@ class PlayertBioCall {
     );
   }
 
-  dynamic playerData(dynamic response) =>
-      getJsonField(
+  dynamic playerData(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -507,8 +510,7 @@ class ContactSupportCall {
     );
   }
 
-  dynamic cms(dynamic response) =>
-      getJsonField(
+  dynamic cms(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -545,7 +547,6 @@ class ContactSupportCall {
 //       );
 // }
 
-
 class PrivacypolicyCall {
   Future<ApiCallResponse> call({
     String? authToken,
@@ -572,8 +573,7 @@ class PrivacypolicyCall {
     );
   }
 
-  List? pages(dynamic response) =>
-      getJsonField(
+  List? pages(dynamic response) => getJsonField(
         response,
         r'''$.pages''',
         true,
@@ -596,7 +596,6 @@ class GetProfileCall {
       headers: {
         'Authorization': 'Bearer $authToken',
         'Accept': 'application/json',
-
       },
       params: {},
       returnBody: true,
@@ -608,8 +607,7 @@ class GetProfileCall {
     );
   }
 
-  dynamic profileDetail(dynamic response) =>
-      getJsonField(
+  dynamic profileDetail(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -712,15 +710,13 @@ class FilterListCall {
     );
   }
 
-  List? filter(dynamic response) =>
-      getJsonField(
+  List? filter(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
       ) as List?;
 
-  List? category(dynamic response) =>
-      getJsonField(
+  List? category(dynamic response) => getJsonField(
         response,
         r'''$.data[:].player_category_filters''',
         true,
@@ -790,8 +786,7 @@ class GetAllPlayersCall {
     );
   }
 
-  List? playerData(dynamic response) =>
-      getJsonField(
+  List? playerData(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -824,8 +819,7 @@ class PositionlistCall {
     );
   }
 
-  List? positionList(dynamic response) =>
-      getJsonField(
+  List? positionList(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -894,15 +888,13 @@ class GetteamdetailCall {
     );
   }
 
-  List? teamList(dynamic response) =>
-      getJsonField(
+  List? teamList(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
       ) as List?;
 
-  List<int>? userId(dynamic response) =>
-      (getJsonField(
+  List<int>? userId(dynamic response) => (getJsonField(
         response,
         r'''$.data[:].members[:].user.id''',
         true,
@@ -948,8 +940,7 @@ class CompareplayersCall {
     );
   }
 
-  dynamic compareData(dynamic response) =>
-      getJsonField(
+  dynamic compareData(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -988,8 +979,7 @@ class ContestListCall {
     );
   }
 
-  List? contestList(dynamic response) =>
-      getJsonField(
+  List? contestList(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -1029,8 +1019,7 @@ class ContestDetailsCall {
     );
   }
 
-  dynamic contestDetails(dynamic response) =>
-      getJsonField(
+  dynamic contestDetails(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -1069,8 +1058,7 @@ class ContestQuestionCall {
     );
   }
 
-  List? questions(dynamic response) =>
-      getJsonField(
+  List? questions(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -1116,8 +1104,160 @@ class ContestQuestionCall {
 // }
 
 
-///2
 
+
+///1
+// class SubscriptionListCall {
+//   Future<ApiCallResponse> call({
+//     String? authToken,
+//   }) async {
+//     authToken ??= '';
+//     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+//
+//     return ApiManager.instance.makeApiCall(
+//       callName: 'subscriptionList',
+//       apiUrl: '$baseUrl/subscription-list',
+//       callType: ApiCallType.GET,
+//       headers: {
+//         'Authorization': 'Bearer $authToken',
+//       },
+//       params: {},
+//       returnBody: true,
+//       encodeBodyUtf8: false,
+//       decodeUtf8: false,
+//       cache: false,
+//       isStreamingApi: false,
+//       alwaysAllowBody: false,
+//     );
+//   }
+//
+//   dynamic data(dynamic response) => getJsonField(response, r'$.data');
+//
+//   String? planName(dynamic response) =>
+//       getJsonField(response, r'$.data.plan_name') as String?;
+//
+//   String? price(dynamic response) =>
+//       getJsonField(response, r'$.data.price') as String?;
+//
+//   String? status(dynamic response) =>
+//       getJsonField(response, r'$.data.status') as String?;
+//
+//   String? startsAt(dynamic response) =>
+//       getJsonField(response, r'$.data.starts_at') as String?;
+//
+//   String? endsAt(dynamic response) =>
+//       getJsonField(response, r'$.data.ends_at') as String?;
+//
+//   String? purchaseToken(dynamic response) =>
+//       getJsonField(response, r'$.data.purchase_token') as String?;
+//
+//   int? autoRenewing(dynamic response) =>
+//       getJsonField(response, r'$.data.auto_renewing') is int
+//           ? getJsonField(response, r'$.data.auto_renewing') as int
+//           : null;
+//
+//   int? isAcknowledged(dynamic response) =>
+//       getJsonField(response, r'$.data.is_acknowledged') is int
+//           ? getJsonField(response, r'$.data.is_acknowledged') as int
+//           : null;
+// }
+
+
+
+///2
+class SubscriptionListCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+
+    if (kDebugMode) {
+      print('=== SUBSCRIPTION LIST API CALL ===');
+      print('Base URL: $baseUrl');
+      print('Auth Token: ${authToken.isNotEmpty ? '${authToken.substring(0, 10)}...' : 'Empty'}');
+      print('Full URL: $baseUrl/subscription-list');
+    }
+
+    final response = await ApiManager.instance.makeApiCall(
+      callName: 'subscriptionList',
+      apiUrl: '$baseUrl/subscription-list',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+
+    if (kDebugMode) {
+      print('=== SUBSCRIPTION LIST API RESPONSE ===');
+      print('Success: ${response.succeeded}');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.bodyText}');
+
+      if (response.succeeded) {
+        final data = getJsonField(response.jsonBody, r'$.data');
+        print('Subscription Data: $data');
+
+        if (data != null) {
+          print('Plan Name: ${getJsonField(response.jsonBody, r'$.data.plan_name')}');
+          print('Status: ${getJsonField(response.jsonBody, r'$.data.status')}');
+          print('Price: ${getJsonField(response.jsonBody, r'$.data.price')}');
+          print('Starts At: ${getJsonField(response.jsonBody, r'$.data.starts_at')}');
+          print('Ends At: ${getJsonField(response.jsonBody, r'$.data.ends_at')}');
+          print('Auto Renewing: ${getJsonField(response.jsonBody, r'$.data.auto_renewing')}');
+        } else {
+          print('No subscription data found');
+        }
+      } else {
+        print('API Error: ${response.exceptionMessage}');
+      }
+    }
+
+    return response;
+  }
+
+  dynamic data(dynamic response) => getJsonField(response, r'$.data');
+
+  String? planName(dynamic response) =>
+      getJsonField(response, r'$.data.plan_name') as String?;
+
+  String? price(dynamic response) =>
+      getJsonField(response, r'$.data.price') as String?;
+
+  String? status(dynamic response) =>
+      getJsonField(response, r'$.data.status') as String?;
+
+  String? startsAt(dynamic response) =>
+      getJsonField(response, r'$.data.starts_at') as String?;
+
+  String? endsAt(dynamic response) =>
+      getJsonField(response, r'$.data.ends_at') as String?;
+
+  String? purchaseToken(dynamic response) =>
+      getJsonField(response, r'$.data.purchase_token') as String?;
+
+  int? autoRenewing(dynamic response) =>
+      getJsonField(response, r'$.data.auto_renewing') is int
+          ? getJsonField(response, r'$.data.auto_renewing') as int
+          : null;
+
+  int? isAcknowledged(dynamic response) =>
+      getJsonField(response, r'$.data.is_acknowledged') is int
+          ? getJsonField(response, r'$.data.is_acknowledged') as int
+          : null;
+}
+
+///
+///
+
+///2
 
 class ContestSubmitAnswersCall {
   Future<ApiCallResponse> call({
@@ -1192,8 +1332,7 @@ class ComlpleteContestDetailsCall {
     );
   }
 
-  dynamic contestResult(dynamic response) =>
-      getJsonField(
+  dynamic contestResult(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -1232,8 +1371,7 @@ class ContestfinaldetailsCall {
     );
   }
 
-  dynamic contestDetail(dynamic response) =>
-      getJsonField(
+  dynamic contestDetail(dynamic response) => getJsonField(
         response,
         r'''$.data''',
       );
@@ -1265,8 +1403,7 @@ class CompletedContestCall {
     );
   }
 
-  List? completedContest(dynamic response) =>
-      getJsonField(
+  List? completedContest(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
@@ -1362,8 +1499,7 @@ class MatchPlayersCall {
     );
   }
 
-  List? questions(dynamic response) =>
-      getJsonField(
+  List? questions(dynamic response) => getJsonField(
         response,
         r'''$.questions''',
         true,
@@ -1591,8 +1727,13 @@ class SocialloginCall {
     String? name = '',
     String? email = '',
     String? providerName = '',
+    String? deviceId = '',
+
     String? authToken,
   }) async {
+
+    print('device id in api call: $deviceId');
+
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(
       authToken: authToken,
@@ -1605,8 +1746,20 @@ class SocialloginCall {
   "fcm_token": "${escapeStringForJson(fcmToken)}",
   "name": "${escapeStringForJson(name)}",
   "email": "${escapeStringForJson(email)}",
-  "provider_name": "${escapeStringForJson(providerName)}"
+  "provider_name": "${escapeStringForJson(providerName)}",
+    "device_id": "${escapeStringForJson(deviceId)}"
+
 }''';
+
+
+
+
+
+    print('=== Social Login API Request Body ===');
+    print(ffApiRequestBody);
+    print('=====================================');
+
+
     return ApiManager.instance.makeApiCall(
       callName: 'sociallogin',
       apiUrl: '$baseUrl/social-login',
@@ -1693,8 +1846,6 @@ class PlayerBioStatsCall {
   }
 }
 
-
-
 class EnableNotificationCall {
   Future<ApiCallResponse> call({
     required String authToken,
@@ -1719,24 +1870,113 @@ class EnableNotificationCall {
   }
 }
 
-
-
-
 ///subscription
 
+///1
+///
+// class UserSubscriptionCall {
+//   Future<ApiCallResponse> call({
+//     String? planId = '',
+//     String? planName = '',
+//     String? price = '',
+//     String? duration = '',
+//     String? transactionId = '',
+//     String? purchaseToken = '',
+//     String? platform = '',
+//     String? purchaseTime = '',
+//     String? productId = '',
+//     String? autoRenewing = '',
+//     String? isAcknowledged = '',
+//     String? platformVersion = '',
+//     String? rawResponse = '{}',
+//     String? authToken,
+//   }) async {
+//     authToken ??= '';
+//     final baseUrl = DashboardGroup.getBaseUrl(
+//       authToken: authToken,
+//     );
+//
+// //     final ffApiRequestBody = '''
+// // {
+// //   "plan_id": "${escapeStringForJson(planId)}",
+// //   "plan_name": "${escapeStringForJson(planName)}",
+// //   "price": "${escapeStringForJson(price)}",
+// //   "duration": "${escapeStringForJson(duration)}",
+// //   "transaction_id": "${escapeStringForJson(transactionId)}",
+// //   "purchase_token": "${escapeStringForJson(purchaseToken)}",
+// //   "platform": "${escapeStringForJson(platform)}",
+// //   "purchase_time": "${escapeStringForJson(purchaseTime)}"
+// // }''';
+//
+//     final ffApiRequestBody = '''
+// {
+//   "plan_id": "${escapeStringForJson(planId)}",
+//   "plan_name": "${escapeStringForJson(planName)}",
+//   "price": "${escapeStringForJson(price)}",
+//   "duration": "${escapeStringForJson(duration)}",
+//
+//   "transaction_id": "${escapeStringForJson(transactionId)}",
+//   "order_id": "${escapeStringForJson(transactionId)}",
+//   "product_id": "${escapeStringForJson(productId)}",
+//   "package_name": "com.voteforgoat.app",
+//
+//   "purchase_token": "${escapeStringForJson(purchaseToken)}",
+//   "platform": "${escapeStringForJson(platform)}",
+//   "platform_version": "${escapeStringForJson(platformVersion)}",
+//
+//   "currency": "INR",
+//   "auto_renewing": "${escapeStringForJson(autoRenewing)}",
+//   "is_acknowledged": "${escapeStringForJson(isAcknowledged)}",
+//
+//   "purchase_time": "${escapeStringForJson(purchaseTime)}",
+//   "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
+//
+//   "raw_response": ${rawResponse}
+// }
+// ''';
+//
+//
+//     return ApiManager.instance.makeApiCall(
+//       callName: 'userSubscription',
+//       apiUrl: '$baseUrl/user/subscriptions',
+//       callType: ApiCallType.POST,
+//       headers: {
+//         'Authorization': 'Bearer $authToken',
+//         'Content-Type': 'application/json',
+//       },
+//       params: {},
+//       body: ffApiRequestBody,
+//       bodyType: BodyType.JSON,
+//       returnBody: true,
+//       encodeBodyUtf8: false,
+//       decodeUtf8: false,
+//       cache: false,
+//       isStreamingApi: false,
+//       alwaysAllowBody: false,
+//     );
+//   }
+//
+//   dynamic subscriptionData(dynamic response) => getJsonField(
+//     response,
+//     r'''$.data''',
+//   );
+// }
+
+///2
+///
 class UserSubscriptionCall {
   Future<ApiCallResponse> call({
     String? planId = '',
     String? planName = '',
     String? price = '',
-    String? duration = '',
+    int? duration = 1,
     String? transactionId = '',
     String? purchaseToken = '',
     String? platform = '',
-    String? purchaseTime = '',
+    int? purchaseTime,
     String? productId = '',
-    String? autoRenewing = '',
-    String? isAcknowledged = '',
+    bool? autoRenewing,
+    bool? isAcknowledged,
     String? platformVersion = '',
     String? rawResponse = '{}',
     String? authToken,
@@ -1746,45 +1986,37 @@ class UserSubscriptionCall {
       authToken: authToken,
     );
 
-//     final ffApiRequestBody = '''
-// {
-//   "plan_id": "${escapeStringForJson(planId)}",
-//   "plan_name": "${escapeStringForJson(planName)}",
-//   "price": "${escapeStringForJson(price)}",
-//   "duration": "${escapeStringForJson(duration)}",
-//   "transaction_id": "${escapeStringForJson(transactionId)}",
-//   "purchase_token": "${escapeStringForJson(purchaseToken)}",
-//   "platform": "${escapeStringForJson(platform)}",
-//   "purchase_time": "${escapeStringForJson(purchaseTime)}"
-// }''';
-
     final ffApiRequestBody = '''
 {
   "plan_id": "${escapeStringForJson(planId)}",
   "plan_name": "${escapeStringForJson(planName)}",
   "price": "${escapeStringForJson(price)}",
-  "duration": "${escapeStringForJson(duration)}",
-  
+  "duration": ${duration ?? 1},
+
   "transaction_id": "${escapeStringForJson(transactionId)}",
   "order_id": "${escapeStringForJson(transactionId)}",
   "product_id": "${escapeStringForJson(productId)}",
   "package_name": "com.voteforgoat.app",
-  
+
   "purchase_token": "${escapeStringForJson(purchaseToken)}",
   "platform": "${escapeStringForJson(platform)}",
   "platform_version": "${escapeStringForJson(platformVersion)}",
 
   "currency": "INR",
-  "auto_renewing": "${escapeStringForJson(autoRenewing)}",
-  "is_acknowledged": "${escapeStringForJson(isAcknowledged)}",
-  
-  "purchase_time": "${escapeStringForJson(purchaseTime)}",
+  "auto_renewing": ${autoRenewing ?? false},
+  "is_acknowledged": ${isAcknowledged ?? false},
+
+  "purchase_time": ${purchaseTime ?? 0},
   "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
 
-  "raw_response": ${rawResponse}
+  "raw_response": $rawResponse
 }
 ''';
 
+    // Print the body data
+    print('=== Subscription API Request Body ===');
+    print(ffApiRequestBody);
+    print('=====================================');
 
     return ApiManager.instance.makeApiCall(
       callName: 'userSubscription',
@@ -1807,11 +2039,10 @@ class UserSubscriptionCall {
   }
 
   dynamic subscriptionData(dynamic response) => getJsonField(
-    response,
-    r'''$.data''',
-  );
+        response,
+        r'''$.data''',
+      );
 }
-
 
 ///
 
@@ -1857,9 +2088,6 @@ class FilterplayersCall {
     );
   }
 }
-
-
-
 
 ///
 class CheckMinionStatusCall {
@@ -1914,17 +2142,14 @@ class ContestLeaderboardCall {
     );
   }
 
-  List? leaderboard(dynamic response) =>
-      getJsonField(
+  List? leaderboard(dynamic response) => getJsonField(
         response,
         r'''$.data''',
         true,
       ) as List?;
 }
+
 ///
-
-
-
 
 class TeamMemberChatNotificationCall {
   Future<ApiCallResponse> call({
@@ -1932,7 +2157,6 @@ class TeamMemberChatNotificationCall {
     required int senderId,
     String? authToken,
   }) async {
-
     print('yha tk shi aa rhi hai team id>>>$teamId');
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
@@ -1957,16 +2181,6 @@ class TeamMemberChatNotificationCall {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 /// End dashboard Group Code
 

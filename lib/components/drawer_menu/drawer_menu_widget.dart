@@ -47,7 +47,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
         FFAppState().userName = getJsonField(
           (_model.getProfileRes?.jsonBody ?? ''),
           r'''$.data.name''',
-        ).toString();
+        )?.toString()??"";
 
         FFAppState().userImage = getJsonField(
           (_model.getProfileRes?.jsonBody ?? ''),
@@ -331,115 +331,115 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Transform.rotate(
-                      angle: 180.0 * (math.pi / 180),
-                      child: const Icon(
-                        Icons.tornado_outlined,
-                        color: Color(0xFFC0BFBF),
-                        size: 16.0,
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
-                        child: Text(
-                          'Profile Status',
-                          style: FlutterFlowTheme.of(context)
-                              .labelMedium
-                              .override(
-                                font: GoogleFonts.poppins(
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .fontStyle,
-                              ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        '75%',
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.poppins(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: FlutterFlowTheme.of(context).tertiary,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.max,
+              //     children: [
+              //       Transform.rotate(
+              //         angle: 180.0 * (math.pi / 180),
+              //         child: const Icon(
+              //           Icons.tornado_outlined,
+              //           color: Color(0xFFC0BFBF),
+              //           size: 16.0,
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Padding(
+              //           padding:
+              //               const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+              //           child: Text(
+              //             'Profile Status',
+              //             style: FlutterFlowTheme.of(context)
+              //                 .labelMedium
+              //                 .override(
+              //                   font: GoogleFonts.poppins(
+              //                     fontWeight: FlutterFlowTheme.of(context)
+              //                         .labelMedium
+              //                         .fontWeight,
+              //                     fontStyle: FlutterFlowTheme.of(context)
+              //                         .labelMedium
+              //                         .fontStyle,
+              //                   ),
+              //                   color: FlutterFlowTheme.of(context).tertiary,
+              //                   letterSpacing: 0.0,
+              //                   fontWeight: FlutterFlowTheme.of(context)
+              //                       .labelMedium
+              //                       .fontWeight,
+              //                   fontStyle: FlutterFlowTheme.of(context)
+              //                       .labelMedium
+              //                       .fontStyle,
+              //                 ),
+              //           ),
+              //         ),
+              //       ),
+              //       // Padding(
+              //       //   padding:
+              //       //       const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+              //       //   child: Text(
+              //       //     '75%',
+              //       //     style:
+              //       //         FlutterFlowTheme.of(context).labelMedium.override(
+              //       //               font: GoogleFonts.poppins(
+              //       //                 fontWeight: FlutterFlowTheme.of(context)
+              //       //                     .labelMedium
+              //       //                     .fontWeight,
+              //       //                 fontStyle: FlutterFlowTheme.of(context)
+              //       //                     .labelMedium
+              //       //                     .fontStyle,
+              //       //               ),
+              //       //               color: FlutterFlowTheme.of(context).tertiary,
+              //       //               letterSpacing: 0.0,
+              //       //               fontWeight: FlutterFlowTheme.of(context)
+              //       //                   .labelMedium
+              //       //                   .fontWeight,
+              //       //               fontStyle: FlutterFlowTheme.of(context)
+              //       //                   .labelMedium
+              //       //                   .fontStyle,
+              //       //             ),
+              //       //   ),
+              //       // ),
+              //     ],
+              //   ),
+              // ),
 
 
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                child: LinearPercentIndicator(
-                  percent: 0.8,
-                  lineHeight: 8.0,
-                  animation: true,
-                  animateFromLastPercent: true,
-                  progressColor: FlutterFlowTheme.of(context).primary,
-                  backgroundColor:
-                      (Theme.of(context).brightness == Brightness.dark) == true
-                          ? const Color(0xFF494747)
-                          : const Color(0xFF636363),
-                  center: Text(
-                    '50%',
-                    style: FlutterFlowTheme.of(context).headlineSmall.override(
-                          font: GoogleFonts.poppins(
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .headlineSmall
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .headlineSmall
-                                .fontStyle,
-                          ),
-                          letterSpacing: 0.0,
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .headlineSmall
-                              .fontWeight,
-                          fontStyle: FlutterFlowTheme.of(context)
-                              .headlineSmall
-                              .fontStyle,
-                        ),
-                  ),
-                  barRadius: const Radius.circular(10.0),
-                  padding: EdgeInsets.zero,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+              //   child: LinearPercentIndicator(
+              //     percent: 0.8,
+              //     lineHeight: 8.0,
+              //     animation: true,
+              //     animateFromLastPercent: true,
+              //     progressColor: FlutterFlowTheme.of(context).primary,
+              //     backgroundColor:
+              //         (Theme.of(context).brightness == Brightness.dark) == true
+              //             ? const Color(0xFF494747)
+              //             : const Color(0xFF636363),
+              //     center: Text(
+              //       '50%',
+              //       style: FlutterFlowTheme.of(context).headlineSmall.override(
+              //             font: GoogleFonts.poppins(
+              //               fontWeight: FlutterFlowTheme.of(context)
+              //                   .headlineSmall
+              //                   .fontWeight,
+              //               fontStyle: FlutterFlowTheme.of(context)
+              //                   .headlineSmall
+              //                   .fontStyle,
+              //             ),
+              //             letterSpacing: 0.0,
+              //             fontWeight: FlutterFlowTheme.of(context)
+              //                 .headlineSmall
+              //                 .fontWeight,
+              //             fontStyle: FlutterFlowTheme.of(context)
+              //                 .headlineSmall
+              //                 .fontStyle,
+              //           ),
+              //     ),
+              //     barRadius: const Radius.circular(10.0),
+              //     padding: EdgeInsets.zero,
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: Row(

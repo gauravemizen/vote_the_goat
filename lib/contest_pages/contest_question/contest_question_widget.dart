@@ -2358,21 +2358,21 @@ class _ContestQuestionWidgetState extends State<ContestQuestionWidget>
       );
 
       if ((_model.apiResultglp?.succeeded ?? true)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              getJsonField(
-                (_model.apiResultglp?.jsonBody ?? ''),
-                r'''$.message''',
-              ).toString(),
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            duration: const Duration(milliseconds: 1750),
-            backgroundColor: Colors.black,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(
+        //       getJsonField(
+        //         (_model.apiResultglp?.jsonBody ?? ''),
+        //         r'''$.message''',
+        //       ).toString(),
+        //       style: const TextStyle(
+        //         color: Colors.white,
+        //       ),
+        //     ),
+        //     duration: const Duration(milliseconds: 1750),
+        //     backgroundColor: Colors.black,
+        //   ),
+        // );
 
         // Start the timer
         _model.timerController.onStartTimer();

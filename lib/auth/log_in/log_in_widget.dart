@@ -1,5 +1,7 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:vote_for_goat/nav/nav_widget.dart';
 
+import '../services/device_id_service.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -15,6 +17,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'log_in_model.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'dart:io';
+
 export 'log_in_model.dart';
 
 class LogInWidget extends StatefulWidget {
@@ -111,6 +116,23 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+
+
+    // Future<String> getDeviceId() async {
+    //   final deviceInfo = DeviceInfoPlugin();
+    //   if (Platform.isAndroid) {
+    //     final androidInfo = await deviceInfo.androidInfo;
+    //     return androidInfo.id ?? '';
+    //   } else if (Platform.isIOS) {
+    //     final iosInfo = await deviceInfo.iosInfo;
+    //     return iosInfo.identifierForVendor ?? '';
+    //   }
+    //   return '';
+    // }
+
+
+
+
     DebugFlutterFlowModelContext.maybeOf(context)
         ?.parentModelCallback
         ?.call(_model);
@@ -828,11 +850,21 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                           }
                                           shouldSetState = true;
                                           if (_model.validate == true) {
+
+                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
+                                            String deviceId = await DeviceIdService.getDeviceId();
+
+                                            debugPrint('deviceId is>>>: $deviceId');
                                             _model.logInRes = await AuthGroup.logInCall.call(
+                                              deviceId:deviceId,
+
+
+
                                               email: _model.emailFieldTextController.text,
                                               password: _model.passwordFiedTextController.text,
                                               fcmToken: _model.deviceToken,
                                               deviceType: isiOS ? 'ios' : 'android',
+
                                             );
 
                                             shouldSetState = true;
@@ -1507,6 +1539,14 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             if (user == null) {
                                               return;
                                             }
+
+                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
+
+
+                                            String deviceId = await DeviceIdService.getDeviceId();
+
+                                            debugPrint('deviceId is  for social login>>>: $deviceId');
+
                                             _model.appleLogin = await DashboardGroup.socialloginCall.call(
                                               providerId: currentUserUid,
                                               deviceType: isiOS ? 'ios' : 'android',
@@ -1515,6 +1555,8 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               fcmToken: _model.deviceToken,
                                               providerName: 'apple',
                                               authToken: _model.fcmToken,
+                                              deviceId: deviceId
+
                                             );
 
                                             if ((_model.appleLogin?.succeeded ?? true)) {
@@ -1613,7 +1655,19 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             if (user == null) {
                                               return;
                                             }
+
+
+                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
+
+
+                                            String deviceId = await DeviceIdService.getDeviceId();
+
+
+                                            debugPrint('deviceId is>>>: $deviceId');
                                             _model.socialRes = await DashboardGroup.socialloginCall.call(
+
+                                              deviceId: deviceId    ,
+
                                               deviceType: isiOS ? 'ios' : 'android',
                                               name: currentUserDisplayName,
                                               providerId: currentUserUid,
@@ -1708,6 +1762,17 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                             if (user == null) {
                                               return;
                                             }
+
+
+                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
+
+
+
+                                            String deviceId = await DeviceIdService.getDeviceId();
+
+                                            debugPrint('deviceId is  for social login>>>: $deviceId');
+
+
                                             _model.googleLogIn = await DashboardGroup.socialloginCall.call(
                                               fcmToken: _model.deviceToken,
                                               name: currentUserDisplayName,
@@ -1716,6 +1781,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               deviceType: isiOS ? 'ios' : 'android',
                                               authToken: _model.fcmToken,
                                               providerName: 'google',
+                                              deviceId: deviceId
                                             );
 
                                             if ((_model.googleLogIn?.succeeded ?? true)) {

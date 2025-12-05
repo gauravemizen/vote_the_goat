@@ -2110,7 +2110,15 @@ You can download it here: [APP_DOWNLOAD_LINK]''';
 
                                                                                   ///
 
-                                                                                  child: Container(
+                                                                                  child:
+
+
+                                                                                  getJsonField(
+                                                                                    teamListItem,
+                                                                                    r'''$.is_invite''',
+                                                                                  ) == 0 ?  const SizedBox()  :
+
+                                                                                  Container(
                                                                                     width: MediaQuery.sizeOf(context).width * 0.42,
                                                                                     decoration: BoxDecoration(
                                                                                       gradient: const LinearGradient(

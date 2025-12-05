@@ -1195,7 +1195,15 @@ class _ContestResultWidgetState extends State<ContestResultWidget>
                                                           shape: BoxShape.circle,
                                                         ),
                                                         child: Image.network(
-                                                          'https://picsum.photos/seed/42/600',
+
+                                                          errorBuilder: (context, error, stackTrace) => Image.asset(
+                                                            'assets/images/error_image.webp',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                          getJsonField(
+                                                            userListItem,
+                                                            r'''$.profile_image''',
+                                                          )?.toString()??"",
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
@@ -1253,8 +1261,8 @@ class _ContestResultWidgetState extends State<ContestResultWidget>
                                                 child: Text(
                                                   getJsonField(
                                                     userListItem,
-                                                    r'''$.total_correct''',
-                                                  ).toString(),
+                                                    r'''$.reward_point''',
+                                                  )?.toString()??"",
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .titleMedium

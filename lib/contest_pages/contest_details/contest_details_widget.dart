@@ -337,8 +337,25 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.network(
-                                    'https://picsum.photos/seed/248/600',
+
+                                    getJsonField(
+                                      DashboardGroup.comlpleteContestDetailsCall
+                                          .contestResult(
+                                        (_model.apiResult5ic?.jsonBody ?? ''),
+                                      ),
+                                      r'''$.logo''',
+                                    )?.toString()??'',
                                     fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                        Image.asset(
+                                          'assets/images/error_image.webp',
+                                          width: double.infinity,
+                                          fit: BoxFit.cover, // Add this line
+
+                                        ),
+
+
                                   ),
                                 ),
                               ),
@@ -354,7 +371,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                   (_model.apiResult5ic?.jsonBody ?? ''),
                                 ),
                                 r'''$.title''',
-                              ).toString(),
+                              )?.toString()??"",
                               style: FlutterFlowTheme.of(context)
                                   .headlineLarge
                                   .override(
@@ -379,7 +396,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                 (_model.apiResult5ic?.jsonBody ?? ''),
                               ),
                               r'''$.description''',
-                            ).toString(),
+                            )?.toString()??"",
                             style: FlutterFlowTheme.of(context)
                                 .titleLarge
                                 .override(
@@ -1186,7 +1203,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                     ''),
                                               ),
                                               r'''$.total_questions''',
-                                            ).toString(),
+                                            )?.toString()??"",
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1289,7 +1306,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                     ''),
                                               ),
                                               r'''$.time_spent_minutes''',
-                                            ).toString(),
+                                            )?.toString()??"",
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1392,7 +1409,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                     ''),
                                               ),
                                               r'''$.correct_answers''',
-                                            ).toString(),
+                                            )?.toString()??"",
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1495,7 +1512,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                     ''),
                                               ),
                                               r'''$.point_earned''',
-                                            ).toString()} Pts',
+                                            )?.toString()??""} Pts',
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(
@@ -1598,7 +1615,7 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                     ''),
                                               ),
                                               r'''$.your_rank''',
-                                            ).toString(),
+                                            )?.toString()??"",
                                             style: FlutterFlowTheme.of(context)
                                                 .titleLarge
                                                 .override(

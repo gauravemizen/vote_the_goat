@@ -1337,6 +1337,10 @@
 ///2
 library;
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -1346,6 +1350,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'sign_up_model.dart';
 export 'sign_up_model.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import '../services/device_id_service.dart';
+
 
 class SignUpWidget extends StatefulWidget {
   const SignUpWidget({super.key});
@@ -1365,6 +1372,10 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
   @override
   void initState() {
     super.initState();
+
+
+
+
     _model = createModel(context, () => SignUpModel());
 
     _model.nameFieldTextController ??= TextEditingController()
@@ -1443,6 +1454,20 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+
+
+    // Future<String> getDeviceId() async {
+    //   final deviceInfo = DeviceInfoPlugin();
+    //   if (Platform.isAndroid) {
+    //     final androidInfo = await deviceInfo.androidInfo;
+    //     return androidInfo.id ?? '';
+    //   } else if (Platform.isIOS) {
+    //     final iosInfo = await deviceInfo.iosInfo;
+    //     return iosInfo.identifierForVendor ?? '';
+    //   }
+    //   return '';
+    // }
+
     DebugFlutterFlowModelContext.maybeOf(context)
         ?.parentModelCallback
         ?.call(_model);
@@ -1868,11 +1893,19 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
                                     }
                                     shouldSetState = true;
                                     if (_model.validate == true) {
+                                      String deviceId = await DeviceIdService.getDeviceId();
+
+
+                                      // String deviceId = await getDeviceId(); // Implement getDeviceId()
+
+                                       debugPrint('deviceId is>>>: $deviceId');
+
                                       _model.signUpRes = await AuthGroup.signUpCall.call(
                                         name: _model.nameFieldTextController.text,
                                         email: _model.emailFieldTextController.text,
                                         password: _model.passwordFieldTextController.text,
                                         passwordConfirmation: _model.copasswordFieldTextController.text,
+                                        deviceId:deviceId,
                                       );
 
                                       shouldSetState = true;

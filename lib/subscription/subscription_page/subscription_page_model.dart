@@ -1,9 +1,15 @@
+import 'dart:io';
+import 'dart:convert';
+
 import '/components/gradient_button_custom/gradient_button_custom_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'subscription_page_widget.dart' show SubscriptionPageWidget;
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:flutter/foundation.dart';
+import '/backend/api_requests/api_calls.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
@@ -19,6 +25,9 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
   bool _isLoading = false;
   String? _purchasingProductId;
 
+  // Add duplicate transaction filtering
+  final Set<String> _processedTransactions = {};
+
   // Product IDs - must match store configuration
   static const String explorerPlanId = 'explorer_monthly';
   static const String masterPlanId = 'master_monthly';
@@ -29,6 +38,8 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
   String currentPlan = 'free'; // 'free', 'explorer', 'master'
   int extraVotes = 0;
   bool isVisible = true;
+
+  bool isSubscriptionLoading = true;
 
   // State callback for UI updates
   VoidCallback? onStateChanged;
@@ -41,18 +52,16 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
   void initState(BuildContext context) {
     gradientButtonCustomModel =
         createModel(context, () => GradientButtonCustomModel());
-
     _initializeInAppPurchase();
-    debugLogWidgetClass(this);
   }
 
+  // Updated initialization to check subscription status
   Future<void> _initializeInAppPurchase() async {
     try {
       _isAvailable = await _inAppPurchase.isAvailable();
       print('In-app purchase available: $_isAvailable');
 
       if (_isAvailable) {
-        // Listen to purchase updates
         _subscription = _inAppPurchase.purchaseStream.listen(
           _handlePurchaseUpdates,
           onDone: () => print('Purchase stream done'),
@@ -60,89 +69,201 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
         );
 
         await _loadProductDetails();
-        await restorePurchases();
       }
 
+      // First load local state
       await _loadUserSubscriptionState();
+
+      // Then check server status to ensure it's up to date
+      await checkCurrentSubscriptionStatus();
     } catch (e) {
       print('Initialize in-app purchase error: $e');
       await _loadUserSubscriptionState();
     }
   }
 
+  Future<void> checkCurrentSubscriptionStatus() async {
+    try {
+      isSubscriptionLoading = true;
+      _notifyStateChanged();
+
+      print('=== CHECKING SUBSCRIPTION STATUS FROM SERVER ===');
+
+      final authToken = FFAppState().authToken;
+      if (authToken == null || authToken.isEmpty) {
+        print("No auth token → FREE plan");
+        currentPlan = "free";
+        extraVotes = 0;
+        await _saveUserSubscriptionState();
+
+        // Set loading to false
+        isSubscriptionLoading = false;
+        _notifyStateChanged();
+        return;
+      }
+
+      final response = await DashboardGroup.subscriptionListCall.call(
+        authToken: authToken,
+      );
+
+      if (!response.succeeded || response.jsonBody == null) {
+        print("API failed → loading local state");
+        await _loadUserSubscriptionState();
+
+        // Set loading to false
+        isSubscriptionLoading = false;
+        _notifyStateChanged();
+        return;
+      }
+
+      final rawData = response.jsonBody["data"];
+      print("Subscription Data: $rawData");
+
+      // Convert API into a list ALWAYS
+      final List<dynamic> subscriptions = [];
+
+      if (rawData == null) {
+        print("No active subscription → FREE PLAN");
+        currentPlan = "free";
+        extraVotes = 0;
+        await _saveUserSubscriptionState();
+
+        // Set loading to false
+        isSubscriptionLoading = false;
+        _notifyStateChanged();
+        return;
+      } else if (rawData is Map<String, dynamic>) {
+        subscriptions.add(rawData);
+      } else if (rawData is List) {
+        subscriptions.addAll(rawData);
+      }
+
+      print("Parsed subscriptions: $subscriptions");
+
+      String newPlan = "free";
+      int newVotes = 0;
+
+      for (final sub in subscriptions) {
+        final status = (sub["status"] ?? "").toString().toLowerCase();
+        final planId = (sub["plan_name"] ?? sub["product_id"] ?? "")
+            .toString()
+            .toLowerCase();
+
+        // if (status == "active") {
+
+        if (status == "active" || status == "cancelled") {
+          final endsAt = DateTime.tryParse(sub["ends_at"] ?? "");
+          final expired = endsAt != null && endsAt.isBefore(DateTime.now());
+
+          if (!expired) {
+            if (planId == "explorer_monthly") newPlan = "explorer";
+            if (planId == "master_monthly") newPlan = "master";
+            if (planId.contains("extra_vote")) newVotes++;
+          }
+        }
+      }
+
+      print("Final Plan From Server: $newPlan | Votes: $newVotes");
+
+      currentPlan = newPlan;
+      extraVotes = newVotes;
+
+      await _saveUserSubscriptionState();
+
+      // Set loading to false at the end
+      isSubscriptionLoading = false;
+      _notifyStateChanged();
+    } catch (e) {
+      print("ERROR checking subscription: $e");
+      await _loadUserSubscriptionState();
+
+      // Set loading to false on error
+      isSubscriptionLoading = false;
+      _notifyStateChanged();
+    }
+  }
+
+  ///
+
+  ///
+
   Future<void> _notifyAdSystemOfPlanChange() async {
     try {
       final appState = FFAppState();
       await appState.updateSubscriptionState(currentPlan);
 
-      debugPrint('[SubscriptionPageModel] Notified ad system of plan change: $currentPlan');
+      debugPrint(
+          '[SubscriptionPageModel] Notified ad system of plan change: $currentPlan');
     } catch (e) {
       debugPrint('[SubscriptionPageModel] Error notifying ad system: $e');
     }
   }
 
-  Future<void> updateAdSettings() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      bool shouldShowAds = currentPlan == 'free';
-      await prefs.setBool('show_ads', shouldShowAds);
-
-      // Update global ad state
-      FFAppState().update(() {
-        FFAppState().showAds = shouldShowAds;
-        FFAppState().isAdFree = !shouldShowAds;
-      });
-
-      print('Ad settings updated: showAds=$shouldShowAds, plan=$currentPlan');
-    } catch (e) {
-      print('Error updating ad settings: $e');
-    }
-  }
   Future<void> updateExtraVoteSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('extra_votes', extraVotes);
       await prefs.setBool('unlimited_votes', currentPlan == 'master');
 
-      // Update global extra vote state
       FFAppState().update(() {
         FFAppState().extraVotes = extraVotes;
         FFAppState().hasUnlimitedVotes = (currentPlan == 'master');
       });
 
-      print('Extra vote settings updated: votes=$extraVotes, unlimited=${currentPlan == 'master'}');
+      print(
+          'Extra vote settings updated: votes=$extraVotes, unlimited=${currentPlan == 'master'}');
     } catch (e) {
       print('Error updating extra vote settings: $e');
     }
   }
-  @override
+
+  // Future<void> _saveUserSubscriptionState() async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     await prefs.setString('current_plan', currentPlan);
+  //     await prefs.setInt('extra_votes', extraVotes);
+  //
+  //     await updateExtraVoteSettings();
+  //
+  //     print('Saved user state: Plan=$currentPlan, Votes=$extraVotes');
+  //     _notifyStateChanged();
+  //   } catch (e) {
+  //     print('Save user subscription state error: $e');
+  //   }
+  // }
+
   Future<void> _saveUserSubscriptionState() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+
+      // Save locally
       await prefs.setString('current_plan', currentPlan);
       await prefs.setInt('extra_votes', extraVotes);
 
-      // Update ad and extra vote settings
-      await updateAdSettings();
+      // Update app-wide state so UI reflects changes
+      FFAppState().update(() {
+        FFAppState().currentPlan = currentPlan;
+        FFAppState().extraVotes = extraVotes;
+        FFAppState().hasUnlimitedVotes = (currentPlan == "master");
+      });
+
       await updateExtraVoteSettings();
 
       print('Saved user state: Plan=$currentPlan, Votes=$extraVotes');
+
+      // Notify UI
       _notifyStateChanged();
     } catch (e) {
       print('Save user subscription state error: $e');
     }
   }
 
-
-  @override
   Future<void> _loadUserSubscriptionState() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       currentPlan = prefs.getString('current_plan') ?? 'free';
       extraVotes = prefs.getInt('extra_votes') ?? 0;
 
-      // Load and apply ad settings
-      await updateAdSettings();
       await updateExtraVoteSettings();
 
       print('Loaded user state: Plan=$currentPlan, Votes=$extraVotes');
@@ -151,6 +272,7 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       print('Load user subscription state error: $e');
     }
   }
+
   bool shouldShowAds() {
     return currentPlan == 'free';
   }
@@ -167,7 +289,7 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
 
   bool useExtraVoteIfAvailable() {
     if (currentPlan == 'master') {
-      return true; // Unlimited for master plan
+      return true;
     } else if (extraVotes > 0) {
       extraVotes--;
       _saveUserSubscriptionState();
@@ -186,7 +308,7 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       };
 
       final ProductDetailsResponse response =
-      await _inAppPurchase.queryProductDetails(productIds);
+          await _inAppPurchase.queryProductDetails(productIds);
 
       if (response.notFoundIDs.isNotEmpty) {
         print('Products not found: ${response.notFoundIDs}');
@@ -195,7 +317,6 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       _products = response.productDetails;
       print('Found ${_products.length} products');
 
-      // Debug: Print all found products
       for (var product in _products) {
         print('Product: ${product.id} - ${product.title} - ${product.price}');
       }
@@ -203,30 +324,6 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       _notifyStateChanged();
     } catch (e) {
       print('Load product details error: $e');
-    }
-  }
-
-  Future<void> loadUserSubscriptionState() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      currentPlan = prefs.getString('current_plan') ?? 'free';
-      extraVotes = prefs.getInt('extra_votes') ?? 0;
-      print('Loaded user state: Plan=$currentPlan, Votes=$extraVotes');
-      _notifyStateChanged();
-    } catch (e) {
-      print('Load user subscription state error: $e');
-    }
-  }
-
-  Future<void> saveUserSubscriptionState() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('current_plan', currentPlan);
-      await prefs.setInt('extra_votes', extraVotes);
-      print('Saved user state: Plan=$currentPlan, Votes=$extraVotes');
-      _notifyStateChanged();
-    } catch (e) {
-      print('Save user subscription state error: $e');
     }
   }
 
@@ -240,7 +337,19 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
     }
   }
 
+  // void _notifyStateChanged() {
+  //   if (onStateChanged != null) {
+  //     onStateChanged!();
+  //   }
+  // }
+
   void _notifyStateChanged() {
+    FFAppState().update(() {
+      FFAppState().currentPlan = currentPlan;
+      FFAppState().extraVotes = extraVotes;
+      FFAppState().hasUnlimitedVotes = (currentPlan == "master");
+    });
+
     if (onStateChanged != null) {
       onStateChanged!();
     }
@@ -261,7 +370,6 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       return product.price;
     }
 
-    // Fallback prices if products not loaded yet
     switch (productId) {
       case explorerPlanId:
         return '\$1.99';
@@ -277,18 +385,14 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
   }
 
   String getExtraVotePrice() {
-    String productId = currentPlan == 'explorer' ? extraVoteExplorerId : extraVoteFreeId;
+    String productId =
+        currentPlan == 'explorer' ? extraVoteExplorerId : extraVoteFreeId;
     return getFormattedPrice(productId);
   }
 
   bool canPurchasePlan(String productId) {
-    // Can't purchase if already loading
     if (_isLoading) return false;
-
-    // Can't purchase if store not available
     if (!_isAvailable) return false;
-
-    // Users can always switch plans - no restrictions
     return true;
   }
 
@@ -316,7 +420,6 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       return false;
     }
 
-    // Prevent purchasing the same plan
     if (isPlanActive(productId)) {
       _showErrorMessage('You already have this plan active');
       return false;
@@ -336,10 +439,10 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
         return false;
       }
 
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-
-      // For subscriptions, use buyNonConsumable
-      bool result = await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+      final PurchaseParam purchaseParam =
+          PurchaseParam(productDetails: product);
+      bool result =
+          await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
       print('Purchase initiated: $result');
 
       return result;
@@ -375,7 +478,8 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
       _purchasingProductId = 'extra_vote';
       _notifyStateChanged();
 
-      String productId = currentPlan == 'explorer' ? extraVoteExplorerId : extraVoteFreeId;
+      String productId =
+          currentPlan == 'explorer' ? extraVoteExplorerId : extraVoteFreeId;
       final ProductDetails? product = getProductDetails(productId);
       if (product == null) {
         _showErrorMessage('Extra vote product not found');
@@ -385,8 +489,10 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
         return false;
       }
 
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-      bool result = await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      final PurchaseParam purchaseParam =
+          PurchaseParam(productDetails: product);
+      bool result =
+          await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
       print('Extra vote purchase initiated: $result');
 
       return result;
@@ -402,12 +508,14 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
 
   void _handlePurchaseUpdates(List<PurchaseDetails> purchaseDetailsList) {
     for (final purchaseDetails in purchaseDetailsList) {
-      print('Purchase update: ${purchaseDetails.productID} - ${purchaseDetails.status}');
+      print(
+          'Purchase update: ${purchaseDetails.productID} - ${purchaseDetails.status}');
 
       if (purchaseDetails.status == PurchaseStatus.purchased) {
         _processPurchase(purchaseDetails);
       } else if (purchaseDetails.status == PurchaseStatus.error) {
-        _showErrorMessage('Purchase failed: ${purchaseDetails.error?.message ?? 'Unknown error'}');
+        _showErrorMessage(
+            'Purchase failed: ${purchaseDetails.error?.message ?? 'Unknown error'}');
       } else if (purchaseDetails.status == PurchaseStatus.canceled) {
         _showErrorMessage('Purchase was cancelled');
       } else if (purchaseDetails.status == PurchaseStatus.restored) {
@@ -423,73 +531,330 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
     _notifyStateChanged();
   }
 
-  @override
   void _processPurchase(PurchaseDetails purchaseDetails) {
+    String? transactionId = purchaseDetails.purchaseID;
+    if (transactionId == null ||
+        _processedTransactions.contains(transactionId)) {
+      print(
+          'Skipping duplicate purchase callback for transaction: $transactionId');
+      return;
+    }
+    _processedTransactions.add(transactionId);
+
+    String? originalTransactionId = purchaseDetails.purchaseID;
+    if (purchaseDetails.purchaseID != originalTransactionId) {
+      print('Auto-renewal detected for ${purchaseDetails.productID}');
+    }
+
+    if (kDebugMode) {
+      print('=== PROCESSING PURCHASE ===');
+      print('Product ID: ${purchaseDetails.productID}');
+      print('Purchase ID: ${purchaseDetails.purchaseID}');
+      print('Transaction Date: ${purchaseDetails.transactionDate}');
+      print('Status: ${purchaseDetails.status}');
+    }
+
     String previousPlan = currentPlan;
 
     switch (purchaseDetails.productID) {
       case explorerPlanId:
-        _cancelPreviousPlan(previousPlan);
+        if (kDebugMode) {
+          print('Processing Explorer Plan purchase');
+          print('Previous plan: $previousPlan');
+        }
         currentPlan = 'explorer';
-        _showSuccessMessage('Explorer plan activated! Ads removed.');
-        break;
-      case masterPlanId:
         _cancelPreviousPlan(previousPlan);
-        currentPlan = 'master';
-        _showSuccessMessage('Master plan activated! Unlimited extra votes and no ads.');
+        _showSuccessMessage(
+            'Explorer Plan activated! Enjoy ad-free experience.');
+        _callUserSubscriptionAPI(purchaseDetails, 'explorer_monthly',
+            'Explorer Plan', '1.99', '1 month');
         break;
+
+      case masterPlanId:
+        if (kDebugMode) {
+          print('Processing Master Plan purchase');
+          print('Previous plan: $previousPlan');
+        }
+        currentPlan = 'master';
+        _cancelPreviousPlan(previousPlan);
+        _showSuccessMessage(
+            'Master Plan activated! Unlimited votes and ad-free experience.');
+        _callUserSubscriptionAPI(purchaseDetails, 'master_monthly',
+            'Master Plan', '6.99', '1 month');
+        break;
+
       case extraVoteFreeId:
       case extraVoteExplorerId:
-        extraVotes++;
-        _showSuccessMessage('Extra vote purchased successfully!');
+        if (kDebugMode) {
+          print('Processing Extra Vote purchase');
+          print('Product ID: ${purchaseDetails.productID}');
+          print('Current extra votes before: $extraVotes');
+        }
+        extraVotes += 1;
+        String planName = purchaseDetails.productID == extraVoteExplorerId
+            ? 'Extra Vote Explorer'
+            : 'Extra Vote Free';
+        String price =
+            purchaseDetails.productID == extraVoteExplorerId ? '3.99' : '5.99';
+        _showSuccessMessage('1 Extra vote added to your account!');
+        _callUserSubscriptionAPI(purchaseDetails, purchaseDetails.productID,
+            planName, price, 'one-time');
+        if (kDebugMode) {
+          print('Current extra votes after: $extraVotes');
+        }
         break;
     }
 
     _saveUserSubscriptionState();
-    _notifyAdSystemOfPlanChange(); // Add this line
+    _notifyAdSystemOfPlanChange();
   }
 
   void _processPurchaseRestore(PurchaseDetails purchaseDetails) {
+    String? transactionId = purchaseDetails.purchaseID;
+    if (transactionId == null ||
+        _processedTransactions.contains(transactionId)) {
+      print(
+          'Skipping duplicate restore callback for transaction: $transactionId');
+      return;
+    }
+    _processedTransactions.add(transactionId);
+
+    print('=== PROCESSING RESTORE ===');
     print('Restoring purchase: ${purchaseDetails.productID}');
 
     switch (purchaseDetails.productID) {
       case explorerPlanId:
         if (currentPlan != 'explorer' && currentPlan != 'master') {
-          currentPlan = 'explorer';
-          print('Explorer plan restored');
-          _showSuccessMessage('Explorer plan restored!');
-          _saveUserSubscriptionState();
+          print('Validating Explorer plan restore...');
+          _showSuccessMessage('Validating Explorer plan...');
+          _validateExistingSubscription(
+              purchaseDetails, 'explorer_monthly', 'Explorer Plan');
         }
         break;
       case masterPlanId:
         if (currentPlan != 'master') {
-          currentPlan = 'master';
-          print('Master plan restored');
-          _showSuccessMessage('Master plan restored!');
-          _saveUserSubscriptionState();
+          print('Validating Master plan restore...');
+          _showSuccessMessage('Validating Master plan...');
+          _validateExistingSubscription(
+              purchaseDetails, 'master_monthly', 'Master Plan');
         }
         break;
+    }
+  }
+
+  Future<void> _validateExistingSubscription(
+      PurchaseDetails purchaseDetails, String planId, String planName) async {
+    try {
+      if (kDebugMode) {
+        print('=== VALIDATING EXISTING SUBSCRIPTION ===');
+        print('Plan ID: $planId');
+        print('Plan Name: $planName');
+      }
+
+      String? authToken = FFAppState().authToken;
+      if (authToken == null || authToken.isEmpty) {
+        if (kDebugMode) {
+          print('ERROR: Auth token is null or empty');
+        }
+        _showErrorMessage("Please login again to restore your subscription.");
+        return;
+      }
+
+      String transactionId = purchaseDetails.purchaseID ?? '';
+      String receipt = purchaseDetails.verificationData.serverVerificationData;
+      String platform = Platform.isAndroid ? 'android' : 'ios';
+      String purchaseTime = purchaseDetails.transactionDate ??
+          DateTime.now().millisecondsSinceEpoch.toString();
+      String productId = purchaseDetails.productID;
+
+      int? purchaseTimeInt;
+      if (purchaseTime.isNotEmpty) {
+        purchaseTimeInt =
+            int.tryParse(purchaseTime) ?? DateTime.now().millisecondsSinceEpoch;
+      }
+
+      final response = await DashboardGroup.userSubscriptionCall.call(
+        planId: planId,
+        planName: '$planName (Restored)',
+        price: '0.00',
+        transactionId: transactionId,
+        purchaseToken: receipt,
+        platform: platform,
+        purchaseTime: purchaseTimeInt,
+        productId: productId,
+        autoRenewing: true,
+        isAcknowledged: true,
+        platformVersion: platform,
+        rawResponse: '{}',
+        authToken: authToken,
+      );
+
+      if (kDebugMode) {
+        print('=== VALIDATION API RESPONSE ===');
+        print('Success: ${response.succeeded}');
+        print('Status Code: ${response.statusCode}');
+      }
+
+      if (response.succeeded) {
+        final subscription = response.jsonBody["data"];
+        final expiresAt = DateTime.tryParse(subscription["ends_at"] ?? "");
+
+        if (expiresAt != null && expiresAt.isBefore(DateTime.now())) {
+          currentPlan = 'free';
+          print('Restored subscription is expired → switching to free');
+          _showSuccessMessage(
+              'Subscription has expired. You are now on the free plan.');
+          await _saveUserSubscriptionState();
+          return;
+        }
+
+        if (planId == 'explorer_monthly') {
+          currentPlan = 'explorer';
+          _showSuccessMessage('Explorer plan restored successfully!');
+        } else if (planId == 'master_monthly') {
+          currentPlan = 'master';
+          _showSuccessMessage('Master plan restored successfully!');
+        }
+
+        await _saveUserSubscriptionState();
+
+        if (kDebugMode) {
+          print('Subscription validation successful');
+        }
+      } else {
+        currentPlan = 'free';
+        _showErrorMessage(
+            'Could not validate subscription. Please contact support.');
+        await _saveUserSubscriptionState();
+
+        if (kDebugMode) {
+          print('Subscription validation failed: ${response.exceptionMessage}');
+        }
+      }
+    } catch (e) {
+      currentPlan = 'free';
+      _showErrorMessage(
+          'Error validating subscription. Please try again later.');
+      await _saveUserSubscriptionState();
+
+      if (kDebugMode) {
+        print('ERROR in _validateExistingSubscription: $e');
+      }
+    }
+  }
+
+  Future<void> _callUserSubscriptionAPI(PurchaseDetails purchaseDetails,
+      String planId, String planName, String price, String duration) async {
+    try {
+      if (kDebugMode) {
+        print('=== CALLING USER SUBSCRIPTION API ===');
+        print('Plan ID: $planId');
+        print('Plan Name: $planName');
+        print('Price: $price');
+        print('Duration: $duration');
+      }
+
+      String? authToken = FFAppState().authToken;
+      if (authToken == null || authToken.isEmpty) {
+        if (kDebugMode) {
+          print('ERROR: Auth token is null or empty');
+        }
+        return;
+      }
+
+      String transactionId = purchaseDetails.purchaseID ?? '';
+      String purchaseToken =
+          purchaseDetails.verificationData.serverVerificationData;
+      String receipt = purchaseDetails.verificationData.serverVerificationData;
+      String platform = Platform.isAndroid ? 'android' : 'ios';
+      String purchaseTime = purchaseDetails.transactionDate ??
+          DateTime.now().millisecondsSinceEpoch.toString();
+      String productId = purchaseDetails.productID;
+
+      String platformVersion = Platform.isAndroid ? 'android' : 'ios';
+      String autoRenewing = 'true';
+      String isAcknowledged = 'true';
+      String rawResponse = '{}';
+
+      if (kDebugMode) {
+        print('API Call Parameters:');
+        print('Auth Token: ${authToken.substring(0, 10)}...');
+        print('Transaction ID: $transactionId');
+        print('Purchase Token: ${receipt.substring(0, 20)}...');
+        print('Platform: $platform');
+        print('Purchase Time: $purchaseTime');
+        print('Product ID: $productId');
+      }
+
+      int? purchaseTimeInt;
+      if (purchaseTime.isNotEmpty) {
+        purchaseTimeInt =
+            int.tryParse(purchaseTime) ?? DateTime.now().millisecondsSinceEpoch;
+      }
+
+      bool autoRenewingBool = autoRenewing.toLowerCase() == 'true';
+      bool isAcknowledgedBool = isAcknowledged.toLowerCase() == 'true';
+
+      final response = await DashboardGroup.userSubscriptionCall.call(
+        planId: planId,
+        planName: planName,
+        price: price,
+        transactionId: transactionId,
+        purchaseToken: receipt,
+        platform: platform,
+        purchaseTime: purchaseTimeInt,
+        productId: productId,
+        autoRenewing: autoRenewingBool,
+        isAcknowledged: isAcknowledgedBool,
+        platformVersion: platformVersion,
+        rawResponse: rawResponse,
+        authToken: authToken,
+      );
+
+      if (kDebugMode) {
+        print('=== API RESPONSE ===');
+        print('Success: ${response.succeeded}');
+        print('Status Code: ${response.statusCode}');
+        print('Response Body: ${response.bodyText}');
+
+        if (response.succeeded) {
+          final subscriptionData = DashboardGroup.userSubscriptionCall
+              .subscriptionData(response.jsonBody);
+          print('Subscription Data: $subscriptionData');
+        } else {
+          print('API Error: ${response.statusCode}');
+        }
+      }
+
+      if (response.succeeded) {
+        if (kDebugMode) {
+          print('Subscription API call successful');
+        }
+      } else {
+        if (kDebugMode) {
+          print('Subscription API call failed: ${response.exceptionMessage}');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('ERROR in _callUserSubscriptionAPI: $e');
+        print('Stack trace: ${StackTrace.current}');
+      }
     }
   }
 
   void _cancelPreviousPlan(String previousPlan) {
     if (previousPlan != 'free') {
       print('Switching from $previousPlan plan');
-      // Previous plan is automatically cancelled when new plan is activated
-      // Store platforms handle this automatically for subscription switching
     }
   }
 
   void _showSuccessMessage(String message) {
     print('Success: $message');
-    // You can implement your preferred way to show success messages
-    // For example: ScaffoldMessenger.of(context).showSnackBar(...)
   }
 
   void _showErrorMessage(String message) {
     print('Error: $message');
-    // You can implement your preferred way to show error messages
-    // For example: ScaffoldMessenger.of(context).showSnackBar(...)
   }
 
   bool canUseExtraVote() {
@@ -498,7 +863,6 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
 
   void useExtraVote() {
     if (currentPlan == 'master') {
-      // Unlimited for master plan
       return;
     } else if (extraVotes > 0) {
       extraVotes--;
@@ -507,7 +871,9 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
   }
 
   bool get isAdFree => currentPlan != 'free';
+
   bool get isLoading => _isLoading;
+
   String? get purchasingProductId => _purchasingProductId;
 
   bool isPurchasing(String productId) {
@@ -535,22 +901,22 @@ class SubscriptionPageModel extends FlutterFlowModel<SubscriptionPageWidget> {
 
   @override
   WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
-    generatorVariables: debugGeneratorVariables,
-    backendQueries: debugBackendQueries,
-    componentStates: {
-      'gradientButtonCustomModel (gradientButtonCustom)':
-      gradientButtonCustomModel.toWidgetClassDebugData(),
-      ...widgetBuilderComponents.map(
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          'gradientButtonCustomModel (gradientButtonCustom)':
+              gradientButtonCustomModel.toWidgetClassDebugData(),
+          ...widgetBuilderComponents.map(
             (key, value) => MapEntry(
-          key,
-          value.toWidgetClassDebugData(),
-        ),
-      ),
-    }.withoutNulls,
-    link:
-    'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r/tab=uiBuilder&page=SubscriptionPage',
-    searchReference:
-    'reference=OhBTdWJzY3JpcHRpb25QYWdlUAFaEFN1YnNjcmlwdGlvblBhZ2U=',
-    widgetClassName: 'SubscriptionPage',
-  );
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r/tab=uiBuilder&page=SubscriptionPage',
+        searchReference:
+            'reference=OhBTdWJzY3JpcHRpb25QYWdlUAFaEFN1YnNjcmlwdGlvblBhZ2U=',
+        widgetClassName: 'SubscriptionPage',
+      );
 }

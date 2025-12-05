@@ -55,39 +55,39 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
           );
 
           if ((_model.completedContestRes?.succeeded ?? true)) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  getJsonField(
-                    (_model.completedContestRes?.jsonBody ?? ''),
-                    r'''$.message''',
-                  ).toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                duration: const Duration(milliseconds: 2200),
-                backgroundColor: Colors.black,
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //       getJsonField(
+            //         (_model.completedContestRes?.jsonBody ?? ''),
+            //         r'''$.message''',
+            //       ).toString(),
+            //       style: const TextStyle(
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     duration: const Duration(milliseconds: 2200),
+            //     backgroundColor: Colors.black,
+            //   ),
+            // );
             _model.isLoading = false;
             safeSetState(() {});
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  getJsonField(
-                    (_model.completedContestRes?.jsonBody ?? ''),
-                    r'''$.message''',
-                  ).toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                duration: const Duration(milliseconds: 2200),
-                backgroundColor: Colors.black,
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //       getJsonField(
+            //         (_model.completedContestRes?.jsonBody ?? ''),
+            //         r'''$.message''',
+            //       ).toString(),
+            //       style: const TextStyle(
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     duration: const Duration(milliseconds: 2200),
+            //     backgroundColor: Colors.black,
+            //   ),
+            // );
             _model.isLoading = false;
             safeSetState(() {});
           }
@@ -799,7 +799,7 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
                                                                                   shape: BoxShape.circle,
                                                                                 ),
                                                                                 child: Image.network(
-                                                                                  errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/error_image.webp', fit: BoxFit.fill),
+                                                                                  errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/error_image.webp', fit: BoxFit.cover),
                                                                                   // 'https://picsum.photos/seed/248/600',
                                                                                   getJsonField(
                                                                                     contestListItem,
@@ -1593,7 +1593,11 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
                                                                                       (context, error, stackTrace) =>
                                                                                       Image.asset(
                                                                                         'assets/images/error_image.webp',
-                                                                                        width: double.infinity,),
+                                                                                        width: double.infinity,
+
+                                                                                        fit: BoxFit.cover, // Add this line
+                                                                                      )
+                                                                                  ,
 
                                                                                   // 'https://picsum.photos/seed/248/600',
                                                                                   '${getJsonField(

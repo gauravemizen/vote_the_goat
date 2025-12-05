@@ -1,3 +1,5 @@
+import 'package:share_plus/share_plus.dart';
+
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -145,7 +147,6 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
         ?.call(_model);
     context.watch<FFAppState>();
 
-
 // Place this inside your build method, after fetching the team data
     final teamId = getJsonField(
       DashboardGroup.getteamdetailCall
@@ -155,7 +156,6 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
     );
 
     print('Team ID: $teamId');
-
 
     return GestureDetector(
       onTap: () {
@@ -181,7 +181,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
             ),
             if (!_model.isLoading)
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -340,7 +341,12 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     )?.toString(),
                                     '\"\"',
                                   ),
-                                  fit: BoxFit.contain,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    'assets/images/error_image.webp',
+                                    width: double.infinity,
+                                  ),
                                 ),
                               ),
                             ),
@@ -359,8 +365,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                               (_model.apiResultr60?.jsonBody ??
                                                   ''),
                                             )
-                                            ?.elementAtOrNull(
-                                                widget.teamIndex),
+                                            ?.elementAtOrNull(widget.teamIndex),
                                         r'''$.title''',
                                       )?.toString(),
                                       '\"\"',
@@ -403,8 +408,9 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                     size: 18.0,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        3.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            3.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       '${valueOrDefault<String>(
                                         (getJsonField(
@@ -478,50 +484,78 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                 ],
                               ),
                             ),
+
                             ///
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  10.0, 10.0, 10.0, 0.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.watch_later_outlined,
-                                    color: Theme.of(context).brightness == Brightness.dark
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
                                         ? const Color(0xFFC0C0C0)
                                         : const Color(0xFF4D4D4D),
                                     size: 18.0,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            3.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       "Deadline :",
                                       textAlign: TextAlign.start,
-                                      style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                          fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                        ),
-                                        color: FlutterFlowTheme.of(context).tertiary,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .override(
+                                            font: GoogleFonts.poppins(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
+                                            color: FlutterFlowTheme.of(context)
+                                                .tertiary,
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .fontStyle,
+                                          ),
                                     ),
                                   ),
                                   Flexible(
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              3.0, 0.0, 0.0, 0.0),
                                       child: Tooltip(
                                         message: '${getJsonField(
                                           DashboardGroup.getteamdetailCall
-                                              .teamList((_model.apiResultr60?.jsonBody ?? ''))
-                                              ?.elementAtOrNull(widget.teamIndex),
+                                              .teamList((_model
+                                                      .apiResultr60?.jsonBody ??
+                                                  ''))
+                                              ?.elementAtOrNull(
+                                                  widget.teamIndex),
                                           r'''$.date''',
                                         ).toString()} at ${getJsonField(
                                           DashboardGroup.getteamdetailCall
-                                              .teamList((_model.apiResultr60?.jsonBody ?? ''))
-                                              ?.elementAtOrNull(widget.teamIndex),
+                                              .teamList((_model
+                                                      .apiResultr60?.jsonBody ??
+                                                  ''))
+                                              ?.elementAtOrNull(
+                                                  widget.teamIndex),
                                           r'''$.time''',
                                         ).toString()}',
                                         preferBelow: false,
@@ -531,33 +565,58 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                         ),
                                         decoration: BoxDecoration(
                                           color: Colors.black87,
-                                          borderRadius: BorderRadius.circular(6),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
                                         ),
                                         child: Text(
                                           '${getJsonField(
                                             DashboardGroup.getteamdetailCall
-                                                .teamList((_model.apiResultr60?.jsonBody ?? ''))
-                                                ?.elementAtOrNull(widget.teamIndex),
+                                                .teamList((_model.apiResultr60
+                                                        ?.jsonBody ??
+                                                    ''))
+                                                ?.elementAtOrNull(
+                                                    widget.teamIndex),
                                             r'''$.date''',
                                           ).toString()} at ${getJsonField(
                                             DashboardGroup.getteamdetailCall
-                                                .teamList((_model.apiResultr60?.jsonBody ?? ''))
-                                                ?.elementAtOrNull(widget.teamIndex),
+                                                .teamList((_model.apiResultr60
+                                                        ?.jsonBody ??
+                                                    ''))
+                                                ?.elementAtOrNull(
+                                                    widget.teamIndex),
                                             r'''$.time''',
                                           ).toString()}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.start,
-                                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                            font: GoogleFonts.poppins(
-                                              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                            ),
-                                            color: FlutterFlowTheme.of(context).tertiary,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                            fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodySmall
+                                              .override(
+                                                font: GoogleFonts.poppins(
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiary,
+                                                letterSpacing: 0.0,
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
                                         ),
                                       ),
                                     ),
@@ -566,9 +625,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                               ),
                             ),
 
-
                             ///
-
 
 
 
@@ -580,44 +637,124 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.42,
-                                    decoration: BoxDecoration(
-                                      gradient: const LinearGradient(
-                                        colors: [
-                                          Color(0xFFDD7325),
-                                          Color(0xFFD69E7E),
-                                          Color(0xFFDD7325)
-                                        ],
-                                        stops: [0.0, 0.5, 1.0],
-                                        begin: AlignmentDirectional(0.0, 1.0),
-                                        end: AlignmentDirectional(0, -1.0),
+
+
+                                  getJsonField(
+                                    DashboardGroup.getteamdetailCall
+                                        .teamList((_model
+                                        .apiResultr60?.jsonBody ??
+                                        ''))
+                                        ?.elementAtOrNull(
+                                        widget.teamIndex),
+                                    r'''$.is_invite''',
+                                  ) == 0 ? SizedBox() :
+                                  InkWell(
+                                    // onTap: () async {
+                                    //   print(
+                                    //       'Invite Friends button tapped with teamId: $teamId');
+                                    //   await Share.share(
+                                    //     'Join my team on Vote for GOAT! Use my Team ID: $teamId to join and compete together. Download the app here: https://example.com/download',
+                                    //   );
+                                    // },
+
+                                    onTap: () async {
+                                      final teamList = DashboardGroup
+                                              .getteamdetailCall
+                                              .teamList(_model
+                                                      .apiResultr60?.jsonBody ??
+                                                  '') ??
+                                          [];
+
+                                      if (widget.teamIndex < 0 ||
+                                          widget.teamIndex >= teamList.length) {
+                                        debugPrint(
+                                            'Invite Friends tap ignored: invalid index ${widget.teamIndex}.');
+                                        return;
+                                      }
+
+                                      final teamItem =
+                                          teamList.elementAt(widget.teamIndex);
+                                      final teamTitle =
+                                          getJsonField(teamItem, r'''$.title''')
+                                              .toString();
+                                      final teamId =
+                                          getJsonField(teamItem, r'''$.id''')
+                                              .toString();
+                                      final inviteCode = getJsonField(
+                                              teamItem, r'''$.invite_code''')
+                                          .toString();
+
+                                      debugPrint(
+                                        'Invite Friends tapped -> teamId=$teamId, title=$teamTitle, inviteCode=$inviteCode',
+                                      );
+
+                                      final customInviteMessage = '''
+Hey!
+Do you know the Vote The Goat app?
+I'd like to invite you to join and discover your favorite basketball legends!
+
+Use my invite code $inviteCode to sign up and start exploring.
+
+Download the app now and join the fun!
+You can download it here: [APP_DOWNLOAD_LINK]
+''';
+
+                                      await Share.share(
+                                        customInviteMessage,
+                                        sharePositionOrigin:
+                                            getWidgetBoundingBox(context),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.42,
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xFFDD7325),
+                                            Color(0xFFD69E7E),
+                                            Color(0xFFDD7325)
+                                          ],
+                                          stops: [0.0, 0.5, 1.0],
+                                          begin: AlignmentDirectional(0.0, 1.0),
+                                          end: AlignmentDirectional(0, -1.0),
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
                                       ),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 6.0, 10.0, 6.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          const Icon(
-                                            Icons.share_sharp,
-                                            color: Colors.white,
-                                            size: 16.0,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    8.0, 0.0, 0.0, 0.0),
-                                            child: Text(
-                                              'Invite Friends',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .titleMedium
-                                                  .override(
-                                                    font: GoogleFonts.poppins(
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(10.0, 6.0, 10.0, 6.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            const Icon(
+                                              Icons.share_sharp,
+                                              color: Colors.white,
+                                              size: 16.0,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      8.0, 0.0, 0.0, 0.0),
+                                              child: Text(
+                                                'Invite Friends',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .titleMedium
+                                                    .override(
+                                                      font: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontStyle,
+                                                      ),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       fontStyle:
@@ -626,31 +763,24 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                               .titleMedium
                                                               .fontStyle,
                                                     ),
-                                                    color: Colors.white,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleMedium
-                                                            .fontStyle,
-                                                  ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                   Align(
-                                    alignment: const AlignmentDirectional(0.0, 0.0),
+                                    alignment:
+                                        const AlignmentDirectional(0.0, 0.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        
-                                        print('Navigating to PlayWithFriendRankingWidget with teamId: $teamId');
+                                        print(
+                                            'Navigating to PlayWithFriendRankingWidget with teamId: $teamId');
                                         context.pushNamed(
                                           PlayWithFriendRankingWidget.routeName,
                                           queryParameters: {
@@ -681,12 +811,11 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                               BorderRadius.circular(12.0),
                                         ),
                                         child: Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 0.0),
+                                          alignment: const AlignmentDirectional(
+                                              0.0, 0.0),
                                           child: Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    10.0, 6.0, 10.0, 6.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(10.0, 6.0, 10.0, 6.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -704,8 +833,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                0.0, 0.0),
+                                                            .fromSTEB(
+                                                            8.0, 0.0, 0.0, 0.0),
                                                     child: Text(
                                                       'Ranking',
                                                       style: FlutterFlowTheme
@@ -746,6 +875,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                 ],
                               ),
                             ),
+
+
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 30.0, 0.0, 0.0),
@@ -805,14 +936,19 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                     height: 42.0,
                                                     clipBehavior:
                                                         Clip.antiAlias,
-                                                    decoration: const BoxDecoration(
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: CachedNetworkImage(
-                                                      fadeInDuration: const Duration(
-                                                          milliseconds: 500),
-                                                      fadeOutDuration: const Duration(
-                                                          milliseconds: 500),
+                                                      fadeInDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                      fadeOutDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  500),
                                                       imageUrl: getJsonField(
                                                         teamMembersItem,
                                                         r'''$.user.image''',
@@ -831,11 +967,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  20.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
+                                                              .fromSTEB(20.0,
+                                                              0.0, 0.0, 0.0),
                                                       child: Text(
                                                         getJsonField(
                                                           teamMembersItem,
@@ -899,7 +1032,8 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
               ),
             if (!_model.isLoading)
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 30.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 30.0),
                 child: Container(
                   width: double.infinity,
                   height: 47.0,
@@ -941,10 +1075,10 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                     options: FFButtonOptions(
                       width: double.infinity,
                       height: 47.0,
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 0.0, 16.0, 0.0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 0.0),
                       color: const Color(0x00CD4A20),
                       textStyle:
                           FlutterFlowTheme.of(context).titleLarge.override(
