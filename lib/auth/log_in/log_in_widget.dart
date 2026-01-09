@@ -48,6 +48,14 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
       _model.deviceToken = _model.fcmToken!;
       safeSetState(() {});
       await requestPermission(notificationsPermission);
+
+      // Load saved credentials if Remember Me was checked
+      if (FFAppState().isRememberMe) {
+        _model.emailFieldTextController?.text = FFAppState().savedEmail ?? '';
+        _model.passwordFiedTextController?.text = FFAppState().savedPassword ?? '';
+      }
+
+
     });
 
     _model.emailFieldTextController ??= TextEditingController()
@@ -116,6 +124,104 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+    Future<void> handleSocialLogin({
+      required BuildContext context,
+      required String providerName, // apple | google | facebook
+      required Future<dynamic> Function() signInMethod,
+    }) async {
+      _model.isLoading = true;
+      safeSetState(() {});
+
+      try {
+        GoRouter.of(context).prepareAuthEvent();
+
+        final user = await signInMethod();
+
+        // ❌ User cancelled login
+        if (user == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login cancelled')),
+          );
+          return;
+        }
+
+        final deviceId = await DeviceIdService.getDeviceId();
+
+        final response = await DashboardGroup.socialloginCall.call(
+          providerName: providerName,
+          providerId: currentUserUid,
+          name: currentUserDisplayName,
+          email: currentUserEmail,
+          deviceType: isiOS ? 'ios' : 'android',
+          fcmToken: _model.deviceToken,
+          authToken: _model.fcmToken,
+          deviceId: deviceId,
+        );
+
+
+
+        debugPrint('API response: $response');
+
+// Print the JSON body of the response
+        debugPrint('API response jsonBody: ${response.jsonBody}');
+
+        if (response.succeeded) {
+          final isAttempt =
+          getJsonField(response.jsonBody, r'''$.is_attempt''');
+
+          FFAppState().authToken =
+              getJsonField(response.jsonBody, r'''$.token''').toString();
+          FFAppState().currentUserId =
+              getJsonField(response.jsonBody, r'''$.data.id''').toString();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                style: const TextStyle(color: Colors.white),
+                getJsonField(response.jsonBody, r'''$.message''').toString(),
+              ),
+              backgroundColor: Colors.black,
+            ),
+          );
+
+          if (isAttempt == 0) {
+            context.goNamedAuth(
+              HomeOnboardingWidget.routeName,
+              context.mounted,
+            );
+          } else {
+            context.goNamedAuth(
+              NavWidget.routeName,
+              context.mounted,
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(backgroundColor: Colors.black,
+              content: Text(
+                style: TextStyle(color: Colors.white),
+                getJsonField(response.jsonBody, r'''$.message''').toString(),
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        debugPrint('Social login error: $e');
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(content: Text('Something went wrong')),
+        // );
+      } finally {
+        // ✅ ALWAYS stop loader
+        _model.isLoading = false;
+        safeSetState(() {});
+      }
+    }
+
 
 
     // Future<String> getDeviceId() async {
@@ -936,6 +1042,18 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                                   (_model.logInRes?.jsonBody ?? ''),
                                                   r'''$.data.user.id''',
                                                 ).toString();
+
+                                                // Save or clear Remember Me data
+                                                if (_model.checkboxValue == true) {
+                                                  FFAppState().isRememberMe = true;
+                                                  FFAppState().savedEmail = _model.emailFieldTextController.text;
+                                                  FFAppState().savedPassword = _model.passwordFiedTextController.text;
+                                                } else {
+                                                  FFAppState().isRememberMe = false;
+                                                  FFAppState().savedEmail = '';
+                                                  FFAppState().savedPassword = '';
+                                                }
+
                                                 safeSetState(() {});
 
                                                 // // Navigate based on isAttempt value (0 = false, 1 = true)
@@ -1027,33 +1145,35 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 120.0,
-                                        height: 1.0,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              (Theme.of(context).brightness ==
+                                      Expanded(
+                                        child: Container(
+                                          // width: 120.0,
+                                          height: 1.0,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                (Theme.of(context).brightness ==
+                                                            Brightness.dark) ==
+                                                        true
+                                                    ? FlutterFlowTheme.of(context)
+                                                        .lightWhite
+                                                    : const Color(0xF1000000),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: Image.asset(
+                                                'assets/images/Vector_1.png',
+                                              ).image,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(0.0),
+                                            border: Border.all(
+                                              color: (Theme.of(context)
+                                                              .brightness ==
                                                           Brightness.dark) ==
                                                       true
                                                   ? FlutterFlowTheme.of(context)
                                                       .lightWhite
-                                                  : const Color(0xF1000000),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: Image.asset(
-                                              'assets/images/Vector_1.png',
-                                            ).image,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(0.0),
-                                          border: Border.all(
-                                            color: (Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark) ==
-                                                    true
-                                                ? FlutterFlowTheme.of(context)
-                                                    .lightWhite
-                                                : const Color(0xC0000000),
+                                                  : const Color(0xC0000000),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -1061,7 +1181,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 10.0, 0.0),
                                         child: Text(
-                                          'Or',
+                                          'Or sign in with',
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium
                                               .override(
@@ -1089,33 +1209,36 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                                               ),
                                         ),
                                       ),
-                                      Container(
-                                        width: 120.0,
-                                        height: 1.0,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              (Theme.of(context).brightness ==
+                                      Expanded(
+
+                                        child: Container(
+                                          // width: 120.0,
+                                          height: 1.0,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                (Theme.of(context).brightness ==
+                                                            Brightness.dark) ==
+                                                        true
+                                                    ? FlutterFlowTheme.of(context)
+                                                        .lightWhite
+                                                    : const Color(0xF1000000),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: Image.asset(
+                                                'assets/images/Vector_1.png',
+                                              ).image,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(0.0),
+                                            border: Border.all(
+                                              color: (Theme.of(context)
+                                                              .brightness ==
                                                           Brightness.dark) ==
                                                       true
                                                   ? FlutterFlowTheme.of(context)
                                                       .lightWhite
-                                                  : const Color(0xF1000000),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: Image.asset(
-                                              'assets/images/Vector_1.png',
-                                            ).image,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(0.0),
-                                          border: Border.all(
-                                            color: (Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark) ==
-                                                    true
-                                                ? FlutterFlowTheme.of(context)
-                                                    .lightWhite
-                                                : const Color(0xC0000000),
+                                                  : const Color(0xC0000000),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -1519,356 +1642,465 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
 
 
                                 ///2
+                                // Padding(
+                                //   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                                //   child: Row(
+                                //     mainAxisSize: MainAxisSize.max,
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       if (isiOS)
+                                //         InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context).prepareAuthEvent();
+                                //             final user = await authManager.signInWithApple(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //
+                                //             // String deviceId = await getDeviceId(); // Implement getDeviceId()
+                                //
+                                //
+                                //             String deviceId = await DeviceIdService.getDeviceId();
+                                //
+                                //             debugPrint('deviceId is  for social login>>>: $deviceId');
+                                //
+                                //             _model.appleLogin = await DashboardGroup.socialloginCall.call(
+                                //               providerId: currentUserUid,
+                                //               deviceType: isiOS ? 'ios' : 'android',
+                                //               name: currentUserDisplayName,
+                                //               email: currentUserEmail,
+                                //               fcmToken: _model.deviceToken,
+                                //               providerName: 'apple',
+                                //               authToken: _model.fcmToken,
+                                //               deviceId: deviceId
+                                //
+                                //             );
+                                //
+                                //             if ((_model.appleLogin?.succeeded ?? true)) {
+                                //               // Check isAttempt value from response
+                                //               final isAttempt = getJsonField(
+                                //                 (_model.appleLogin?.jsonBody ?? ''),
+                                //                 r'''$.is_attempt''',
+                                //               );
+                                //
+                                //               ScaffoldMessenger.of(context).showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.appleLogin?.jsonBody ?? ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: const TextStyle(color: Colors.white),
+                                //                   ),
+                                //                   duration: const Duration(milliseconds: 1200),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //
+                                //               FFAppState().authToken = getJsonField(
+                                //                 (_model.appleLogin?.jsonBody ?? ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId = getJsonField(
+                                //                 (_model.appleLogin?.jsonBody ?? ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //               safeSetState(() {});
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //
+                                //               // Navigate based on isAttempt value
+                                //               if (isAttempt == 0) {
+                                //                 context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                //               } else {
+                                //                 context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                //               }
+                                //             } else {
+                                //               ScaffoldMessenger.of(context).showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.appleLogin?.jsonBody ?? ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: const TextStyle(color: Colors.white),
+                                //                   ),
+                                //                   duration: const Duration(milliseconds: 2000),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //             }
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               color: Colors.black,
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color: FlutterFlowTheme.of(context).tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius: BorderRadius.circular(8.0),
+                                //                 child: Image.asset(
+                                //                   Theme.of(context).brightness == Brightness.dark
+                                //                       ? 'assets/images/Frame_(4).png'
+                                //                       : 'assets/images/apple_logo.png',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       Padding(
+                                //         padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
+                                //         child: InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context).prepareAuthEvent();
+                                //             final user = await authManager.signInWithFacebook(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //
+                                //
+                                //             // String deviceId = await getDeviceId(); // Implement getDeviceId()
+                                //
+                                //
+                                //             String deviceId = await DeviceIdService.getDeviceId();
+                                //
+                                //
+                                //             debugPrint('deviceId is>>>: $deviceId');
+                                //             _model.socialRes = await DashboardGroup.socialloginCall.call(
+                                //
+                                //               deviceId: deviceId    ,
+                                //
+                                //               deviceType: isiOS ? 'ios' : 'android',
+                                //               name: currentUserDisplayName,
+                                //               providerId: currentUserUid,
+                                //               email: currentUserEmail,
+                                //               fcmToken: _model.deviceToken,
+                                //               providerName: 'facebook',
+                                //               authToken: _model.fcmToken,
+                                //             );
+                                //
+                                //             if ((_model.socialRes?.succeeded ?? true)) {
+                                //               // Check isAttempt value from response
+                                //               final isAttempt = getJsonField(
+                                //                 (_model.socialRes?.jsonBody ?? ''),
+                                //                 r'''$.is_attempt''',
+                                //               );
+                                //
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //               FFAppState().isLoggedIn = true;
+                                //               FFAppState().authToken = getJsonField(
+                                //                 (_model.socialRes?.jsonBody ?? ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId = getJsonField(
+                                //                 (_model.socialRes?.jsonBody ?? ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //
+                                //               ScaffoldMessenger.of(context).showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.socialRes?.jsonBody ?? ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: const TextStyle(color: Colors.white),
+                                //                   ),
+                                //                   duration: const Duration(milliseconds: 1100),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //
+                                //               // Navigate based on isAttempt value
+                                //               if (isAttempt == 0) {
+                                //                 context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                //               } else {
+                                //                 context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                //               }
+                                //             } else {
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //               context.safePop();
+                                //             }
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color: FlutterFlowTheme.of(context).tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius: BorderRadius.circular(8.0),
+                                //                 child: SvgPicture.asset(
+                                //                   'assets/images/Frame.svg',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       Padding(
+                                //         padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
+                                //         child: InkWell(
+                                //           splashColor: Colors.transparent,
+                                //           focusColor: Colors.transparent,
+                                //           hoverColor: Colors.transparent,
+                                //           highlightColor: Colors.transparent,
+                                //           onTap: () async {
+                                //             _model.isLoading = true;
+                                //             safeSetState(() {});
+                                //             GoRouter.of(context).prepareAuthEvent();
+                                //             final user = await authManager.signInWithGoogle(context);
+                                //             if (user == null) {
+                                //               return;
+                                //             }
+                                //
+                                //
+                                //             // String deviceId = await getDeviceId(); // Implement getDeviceId()
+                                //
+                                //
+                                //
+                                //             String deviceId = await DeviceIdService.getDeviceId();
+                                //
+                                //             debugPrint('deviceId is  for social login>>>: $deviceId');
+                                //
+                                //
+                                //             _model.googleLogIn = await DashboardGroup.socialloginCall.call(
+                                //               fcmToken: _model.deviceToken,
+                                //               name: currentUserDisplayName,
+                                //               email: currentUserEmail,
+                                //               providerId: currentUserUid,
+                                //               deviceType: isiOS ? 'ios' : 'android',
+                                //               authToken: _model.fcmToken,
+                                //               providerName: 'google',
+                                //               deviceId: deviceId
+                                //             );
+                                //
+                                //             if ((_model.googleLogIn?.succeeded ?? true)) {
+                                //               // Check isAttempt value from response
+                                //               final isAttempt = getJsonField(
+                                //                 (_model.googleLogIn?.jsonBody ?? ''),
+                                //                 r'''$.is_attempt''',
+                                //               );
+                                //
+                                //               ScaffoldMessenger.of(context).showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.googleLogIn?.jsonBody ?? ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: const TextStyle(color: Colors.white),
+                                //                   ),
+                                //                   duration: const Duration(milliseconds: 1350),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //
+                                //               FFAppState().authToken = getJsonField(
+                                //                 (_model.googleLogIn?.jsonBody ?? ''),
+                                //                 r'''$.token''',
+                                //               ).toString();
+                                //               FFAppState().currentUserId = getJsonField(
+                                //                 (_model.googleLogIn?.jsonBody ?? ''),
+                                //                 r'''$.data.id''',
+                                //               ).toString();
+                                //               safeSetState(() {});
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //
+                                //               // Navigate based on isAttempt value
+                                //               if (isAttempt == 0) {
+                                //                 context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
+                                //               } else {
+                                //                 context.goNamedAuth(NavWidget.routeName, context.mounted);
+                                //               }
+                                //             } else {
+                                //               ScaffoldMessenger.of(context).showSnackBar(
+                                //                 SnackBar(
+                                //                   content: Text(
+                                //                     getJsonField(
+                                //                       (_model.googleLogIn?.jsonBody ?? ''),
+                                //                       r'''$.message''',
+                                //                     ).toString(),
+                                //                     style: const TextStyle(color: Colors.white),
+                                //                   ),
+                                //                   duration: const Duration(milliseconds: 1350),
+                                //                   backgroundColor: Colors.black,
+                                //                 ),
+                                //               );
+                                //               _model.isLoading = false;
+                                //               safeSetState(() {});
+                                //             }
+                                //             safeSetState(() {});
+                                //           },
+                                //           child: Container(
+                                //             width: 54.0,
+                                //             height: 54.0,
+                                //             decoration: BoxDecoration(
+                                //               shape: BoxShape.circle,
+                                //               border: Border.all(
+                                //                 color: FlutterFlowTheme.of(context).tertiary,
+                                //               ),
+                                //             ),
+                                //             child: Padding(
+                                //               padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                //               child: ClipRRect(
+                                //                 borderRadius: BorderRadius.circular(8.0),
+                                //                 child: SvgPicture.asset(
+                                //                   'assets/images/Frame-1.svg',
+                                //                   width: 200.0,
+                                //                   height: 200.0,
+                                //                   fit: BoxFit.contain,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+
+
+
+                                ///
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      // 🍎 APPLE LOGIN
                                       if (isiOS)
                                         InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            _model.isLoading = true;
-                                            safeSetState(() {});
-                                            GoRouter.of(context).prepareAuthEvent();
-                                            final user = await authManager.signInWithApple(context);
-                                            if (user == null) {
-                                              return;
-                                            }
-
-                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
-
-
-                                            String deviceId = await DeviceIdService.getDeviceId();
-
-                                            debugPrint('deviceId is  for social login>>>: $deviceId');
-
-                                            _model.appleLogin = await DashboardGroup.socialloginCall.call(
-                                              providerId: currentUserUid,
-                                              deviceType: isiOS ? 'ios' : 'android',
-                                              name: currentUserDisplayName,
-                                              email: currentUserEmail,
-                                              fcmToken: _model.deviceToken,
+                                          onTap: _model.isLoading
+                                              ? null
+                                              : () async {
+                                            await handleSocialLogin(
+                                              context: context,
                                               providerName: 'apple',
-                                              authToken: _model.fcmToken,
-                                              deviceId: deviceId
-
+                                              signInMethod: () =>
+                                                  authManager.signInWithApple(context),
                                             );
-
-                                            if ((_model.appleLogin?.succeeded ?? true)) {
-                                              // Check isAttempt value from response
-                                              final isAttempt = getJsonField(
-                                                (_model.appleLogin?.jsonBody ?? ''),
-                                                r'''$.is_attempt''',
-                                              );
-
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.appleLogin?.jsonBody ?? ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: const TextStyle(color: Colors.white),
-                                                  ),
-                                                  duration: const Duration(milliseconds: 1200),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-
-                                              FFAppState().authToken = getJsonField(
-                                                (_model.appleLogin?.jsonBody ?? ''),
-                                                r'''$.token''',
-                                              ).toString();
-                                              FFAppState().currentUserId = getJsonField(
-                                                (_model.appleLogin?.jsonBody ?? ''),
-                                                r'''$.data.id''',
-                                              ).toString();
-                                              safeSetState(() {});
-                                              _model.isLoading = false;
-                                              safeSetState(() {});
-
-                                              // Navigate based on isAttempt value
-                                              if (isAttempt == 0) {
-                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
-                                              } else {
-                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
-                                              }
-                                            } else {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.appleLogin?.jsonBody ?? ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: const TextStyle(color: Colors.white),
-                                                  ),
-                                                  duration: const Duration(milliseconds: 2000),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-                                            }
-                                            safeSetState(() {});
                                           },
                                           child: Container(
-                                            width: 54.0,
-                                            height: 54.0,
+                                            width: 54,
+                                            height: 54,
                                             decoration: BoxDecoration(
+                                              color: Colors.black,
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 color: FlutterFlowTheme.of(context).tertiary,
                                               ),
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  Theme.of(context).brightness == Brightness.dark
-                                                      ? 'assets/images/Frame_(4).png'
-                                                      : 'assets/images/apple_logo.png',
-                                                  width: 200.0,
-                                                  height: 200.0,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
+                                            padding: const EdgeInsets.all(10),
+                                            child: Image.asset(
+                                              Theme.of(context).brightness == Brightness.dark
+                                                  ? 'assets/images/Frame_(4).png'
+                                                  : 'assets/images/apple_logo.png',
+                                              fit: BoxFit.contain,
                                             ),
                                           ),
                                         ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            _model.isLoading = true;
-                                            safeSetState(() {});
-                                            GoRouter.of(context).prepareAuthEvent();
-                                            final user = await authManager.signInWithFacebook(context);
-                                            if (user == null) {
-                                              return;
-                                            }
 
+                                      const SizedBox(width: 15),
 
-                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
-
-
-                                            String deviceId = await DeviceIdService.getDeviceId();
-
-
-                                            debugPrint('deviceId is>>>: $deviceId');
-                                            _model.socialRes = await DashboardGroup.socialloginCall.call(
-
-                                              deviceId: deviceId    ,
-
-                                              deviceType: isiOS ? 'ios' : 'android',
-                                              name: currentUserDisplayName,
-                                              providerId: currentUserUid,
-                                              email: currentUserEmail,
-                                              fcmToken: _model.deviceToken,
-                                              providerName: 'facebook',
-                                              authToken: _model.fcmToken,
-                                            );
-
-                                            if ((_model.socialRes?.succeeded ?? true)) {
-                                              // Check isAttempt value from response
-                                              final isAttempt = getJsonField(
-                                                (_model.socialRes?.jsonBody ?? ''),
-                                                r'''$.is_attempt''',
-                                              );
-
-                                              _model.isLoading = false;
-                                              safeSetState(() {});
-                                              FFAppState().isLoggedIn = true;
-                                              FFAppState().authToken = getJsonField(
-                                                (_model.socialRes?.jsonBody ?? ''),
-                                                r'''$.token''',
-                                              ).toString();
-                                              FFAppState().currentUserId = getJsonField(
-                                                (_model.socialRes?.jsonBody ?? ''),
-                                                r'''$.data.id''',
-                                              ).toString();
-
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.socialRes?.jsonBody ?? ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: const TextStyle(color: Colors.white),
-                                                  ),
-                                                  duration: const Duration(milliseconds: 1100),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-
-                                              // Navigate based on isAttempt value
-                                              if (isAttempt == 0) {
-                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
-                                              } else {
-                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
-                                              }
-                                            } else {
-                                              _model.isLoading = false;
-                                              safeSetState(() {});
-                                              context.safePop();
-                                            }
-                                            safeSetState(() {});
-                                          },
-                                          child: Container(
-                                            width: 54.0,
-                                            height: 54.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: FlutterFlowTheme.of(context).tertiary,
-                                              ),
+                                      // 📘 FACEBOOK LOGIN
+                                      InkWell(
+                                        onTap: _model.isLoading
+                                            ? null
+                                            : () async {
+                                          await handleSocialLogin(
+                                            context: context,
+                                            providerName: 'facebook',
+                                            signInMethod: () =>
+                                                authManager.signInWithFacebook(context),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 54,
+                                          height: 54,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: FlutterFlowTheme.of(context).tertiary,
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                child: SvgPicture.asset(
-                                                  'assets/images/Frame.svg',
-                                                  width: 200.0,
-                                                  height: 200.0,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                            ),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          child: SvgPicture.asset(
+                                            'assets/images/Frame.svg',
+                                            fit: BoxFit.contain,
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            _model.isLoading = true;
-                                            safeSetState(() {});
-                                            GoRouter.of(context).prepareAuthEvent();
-                                            final user = await authManager.signInWithGoogle(context);
-                                            if (user == null) {
-                                              return;
-                                            }
 
+                                      const SizedBox(width: 15),
 
-                                            // String deviceId = await getDeviceId(); // Implement getDeviceId()
-
-
-
-                                            String deviceId = await DeviceIdService.getDeviceId();
-
-                                            debugPrint('deviceId is  for social login>>>: $deviceId');
-
-
-                                            _model.googleLogIn = await DashboardGroup.socialloginCall.call(
-                                              fcmToken: _model.deviceToken,
-                                              name: currentUserDisplayName,
-                                              email: currentUserEmail,
-                                              providerId: currentUserUid,
-                                              deviceType: isiOS ? 'ios' : 'android',
-                                              authToken: _model.fcmToken,
-                                              providerName: 'google',
-                                              deviceId: deviceId
-                                            );
-
-                                            if ((_model.googleLogIn?.succeeded ?? true)) {
-                                              // Check isAttempt value from response
-                                              final isAttempt = getJsonField(
-                                                (_model.googleLogIn?.jsonBody ?? ''),
-                                                r'''$.is_attempt''',
-                                              );
-
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.googleLogIn?.jsonBody ?? ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: const TextStyle(color: Colors.white),
-                                                  ),
-                                                  duration: const Duration(milliseconds: 1350),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-
-                                              FFAppState().authToken = getJsonField(
-                                                (_model.googleLogIn?.jsonBody ?? ''),
-                                                r'''$.token''',
-                                              ).toString();
-                                              FFAppState().currentUserId = getJsonField(
-                                                (_model.googleLogIn?.jsonBody ?? ''),
-                                                r'''$.data.id''',
-                                              ).toString();
-                                              safeSetState(() {});
-                                              _model.isLoading = false;
-                                              safeSetState(() {});
-
-                                              // Navigate based on isAttempt value
-                                              if (isAttempt == 0) {
-                                                context.goNamedAuth(HomeOnboardingWidget.routeName, context.mounted);
-                                              } else {
-                                                context.goNamedAuth(NavWidget.routeName, context.mounted);
-                                              }
-                                            } else {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    getJsonField(
-                                                      (_model.googleLogIn?.jsonBody ?? ''),
-                                                      r'''$.message''',
-                                                    ).toString(),
-                                                    style: const TextStyle(color: Colors.white),
-                                                  ),
-                                                  duration: const Duration(milliseconds: 1350),
-                                                  backgroundColor: Colors.black,
-                                                ),
-                                              );
-                                              _model.isLoading = false;
-                                              safeSetState(() {});
-                                            }
-                                            safeSetState(() {});
-                                          },
-                                          child: Container(
-                                            width: 54.0,
-                                            height: 54.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: FlutterFlowTheme.of(context).tertiary,
-                                              ),
+                                      // 🔵 GOOGLE LOGIN
+                                      InkWell(
+                                        onTap: _model.isLoading
+                                            ? null
+                                            : () async {
+                                          await handleSocialLogin(
+                                            context: context,
+                                            providerName: 'google',
+                                            signInMethod: () =>
+                                                authManager.signInWithGoogle(context),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 54,
+                                          height: 54,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: FlutterFlowTheme.of(context).tertiary,
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                child: SvgPicture.asset(
-                                                  'assets/images/Frame-1.svg',
-                                                  width: 200.0,
-                                                  height: 200.0,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                            ),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          child: SvgPicture.asset(
+                                            'assets/images/Frame-1.svg',
+                                            fit: BoxFit.contain,
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
+
 
                                 ///
                                 Padding(
@@ -1972,6 +2204,7 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
             ),
             if (_model.isLoading)
               const Align(
+
                 alignment: AlignmentDirectional(0.0, 0.0),
                 child: SizedBox(
                   width: 40.0,
@@ -1983,7 +2216,13 @@ class _LogInWidgetState extends State<LogInWidget> with RouteAware {
                   ),
                 ),
               ),
+
+
           ],
+
+
+          
+
         ),
       ),
     );

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/flutter_flow/admob_util.dart' as admob;
 import 'dart:async';
@@ -10,13 +13,39 @@ class AdService {
 
   // Ad unit IDs (replace with your actual IDs)
   static const String _bannerAdUnitId = "ca-app-pub-3940256099942544/5224354917"; // Test ID
-  static const String _interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712"; // Test ID
+
+  // static const String _interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712"; // Test ID
+  // static const String _interstitialAdUnitId = "ca-app-pub-3966796550837650/2359278172"; // Test ID
+
+  // static const String _interstitialAdUnitId = kDebugMode
+  //     ? "ca-app-pub-3940256099942544/1033173712"
+  //     : "ca-app-pub-7068447670600610/1583126082";
+
+
+
+
+
+  static String get _interstitialAdUnitId {
+    if (Platform.isAndroid) {
+      return kDebugMode
+          ? 'ca-app-pub-3940256099942544/1033173712'
+          : 'ca-app-pub-7068447670600610/1583126082';
+    } else if (Platform.isIOS) {
+      return kDebugMode
+          ? 'ca-app-pub-3940256099942544/4411468910'
+          : 'ca-app-pub-7068447607600610/5092686759';
+    } else {
+      return '';
+    }
+  }
+
+
 
   // Timer management
   Timer? _interstitialTimer;
   DateTime? _lastAdShown;
   String? _currentPage;
-  static const int _adIntervalMinutes = 4;
+  static const int _adIntervalMinutes = 3;
 
   Future<bool> shouldShowAds() async {
     try {

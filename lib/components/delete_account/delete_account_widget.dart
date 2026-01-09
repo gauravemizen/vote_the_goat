@@ -886,7 +886,8 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> with RouteAwa
                         onPressed: !_isChecked ? null : () async {
                           try {
                             final response = await http.delete(
-                              Uri.parse('https://votethegoat.ezxdemo.com/api/delete-user'),
+                              // Uri.parse('https://votethegoat.ezxdemo.com/api/delete-user'),
+                              Uri.parse('https://admin.votethegoat.app/api/delete-user'),
                               headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization': 'Bearer ${FFAppState().authToken}',

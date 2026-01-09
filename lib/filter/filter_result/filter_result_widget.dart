@@ -926,7 +926,8 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
       debugPrint('Result screen fetching players with payload: ${const JsonEncoder.withIndent('  ').convert(payload)}');
       final resp = await ApiManager.instance.makeApiCall(
         callName: 'filterplayersDynamic',
-        apiUrl: 'https://votethegoat.ezxdemo.com/api/filter-players',
+        // apiUrl: 'https://votethegoat.ezxdemo.com/api/filter-players',
+        apiUrl: 'https://admin.votethegoat.app/api/filter-players',
         callType: ApiCallType.POST,
         headers: {
           if (FFAppState().authToken.isNotEmpty)
@@ -946,9 +947,9 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
           _players = [];
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to load filtered players.')),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(content: Text('Failed to load filtered players.')),
+        // );
       }
     } catch (e) {
       debugPrint('Error fetching filtered players: $e');

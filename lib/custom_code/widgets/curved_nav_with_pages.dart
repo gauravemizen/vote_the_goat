@@ -63,7 +63,8 @@ class _TabExploreState extends State<TabExplore> {
   Future<void> _fetchIsFinalized() async {
     try {
       final response = await http.get(
-        Uri.parse('https://votethegoat.ezxdemo.com/api/is-finalize'),
+        // Uri.parse('https://votethegoat.ezxdemo.com/api/is-finalize'),
+        Uri.parse('https://admin.votethegoat.app/api/is-finalize'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${FFAppState().authToken}',

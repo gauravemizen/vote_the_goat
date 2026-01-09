@@ -2950,6 +2950,10 @@
 
 
 ///4  perfect version
+///
+///
+///
+/// 1
 library;
 
 import '/backend/api_requests/api_calls.dart';
@@ -3171,13 +3175,13 @@ class _ChatPageWidgetState extends State<ChatPageWidget> with RouteAware {
 
     return StreamBuilder<List<TeamsRecord>>(
       stream: queryTeamsRecord(
-        queryBuilder: (teamsRecord) => teamsRecord.where(
-          'uid',
-          isEqualTo: widget.teamId?.toString(),
-        ),
+        queryBuilder: (teams) => teams
+            .where('uid', isEqualTo: widget.teamId.toString())
+            .orderBy('createdAt', descending: true),
         singleRecord: true,
       ),
-      builder: (context, snapshot) {
+
+        builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Scaffold(
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -3283,16 +3287,16 @@ class _ChatPageWidgetState extends State<ChatPageWidget> with RouteAware {
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        valueOrDefault<String>(
-                                          widget.teamId?.toString(),
-                                          '0',
-                                        ),
-                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                          font: GoogleFonts.bebasNeue(),
-                                          letterSpacing: 0.0,
-                                        ),
-                                      ),
+                                      // Text(
+                                      //   valueOrDefault<String>(
+                                      //     widget.teamId?.toString(),
+                                      //     '0',
+                                      //   ),
+                                      //   style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      //     font: GoogleFonts.bebasNeue(),
+                                      //     letterSpacing: 0.0,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                   const SizedBox(height: 20.0),
@@ -3647,3 +3651,9 @@ class _ChatPageWidgetState extends State<ChatPageWidget> with RouteAware {
     );
   }
 }
+
+
+
+
+
+///2

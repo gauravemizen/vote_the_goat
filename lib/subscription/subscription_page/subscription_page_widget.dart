@@ -124,6 +124,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
             '• You can manage or cancel your subscription in your App Store account settings after purchase\n'
             '• Any unused portion of a free trial period will be forfeited when you purchase a subscription',
             style: FlutterFlowTheme.of(context).bodySmall.override(
+
                   font: GoogleFonts.poppins(),
                   fontSize: 11.0,
                   letterSpacing: 0.0,
@@ -168,6 +169,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
       padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
       child: Stack(
         children: [
+
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -415,6 +417,38 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
               ),
             ),
           ),
+          if (isRecommended)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEB6027),
+                  // borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+
+                    topRight: Radius.circular(10),
+
+                  ),
+
+
+
+
+                ),
+                child: Text(
+                  'RECOMMENDED',
+                  style: FlutterFlowTheme.of(context).bodySmall.override(
+                    font: GoogleFonts.poppins(),
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+
         ],
       ),
     );
@@ -700,7 +734,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                             _buildPlanCard(
                               title: 'Basic',
                               subtitle:
-                                  'Includes ads • Extra-Vote available for in-app purchase',
+                                  'Includes ads • Extra-Vote available for in-app purchase \n• No Access To Comparison Tracking Tool',
                               price: 'Free',
                               duration: '',
                               // No duration for free plan
@@ -712,12 +746,12 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                             _buildPlanCard(
                               title: 'Explorer',
                               subtitle:
-                                  'No Ads • Extra-Vote at discounted price (save \$2 vs Basic)',
+                                  'No Ads • Extra-Vote at discounted price (save \$2 vs Basic) \n• Comparison Tracking Tool',
                               price:
                                   '${_model.getFormattedPrice(SubscriptionPageModel.explorerPlanId)}/month',
                               duration:
                                   'Renews monthly. Cancel anytime in App Store settings.',
-                              isRecommended: true,
+                              isRecommended: false,
                               isCurrentPlan: _model.currentPlan == 'explorer',
                               productId: SubscriptionPageModel.explorerPlanId,
                             ),
@@ -725,12 +759,12 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
 // Master Plan
                             _buildPlanCard(
                               title: 'Master',
-                              subtitle: 'No Ads • Unlimited Extra-Votes',
+                              subtitle: 'No Ads • Unlimited Extra-Votes \n• Comparison Tracking Tool',
                               price:
                                   '${_model.getFormattedPrice(SubscriptionPageModel.masterPlanId)}/month',
                               duration:
                                   'Renews monthly. Cancel anytime in App Store settings.',
-                              isRecommended: false,
+                              isRecommended: true,
                               isCurrentPlan: _model.currentPlan == 'master',
                               productId: SubscriptionPageModel.masterPlanId,
                             ),

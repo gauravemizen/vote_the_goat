@@ -30,6 +30,148 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
 
   Future<ApiCallResponse>? _positionListFuture;
 
+  Future<void> _checkRankingStatus() async {
+    try {
+      final response = await DashboardGroup.enableRankingsCall.call(
+        authToken: FFAppState().authToken,
+      );
+
+      final isEnabled = getJsonField(
+        response.jsonBody ?? '',
+        r'$.is_enabled',
+      ) as bool? ?? false;
+
+      final message = getJsonField(
+        response.jsonBody ?? '',
+        r'$.message',
+      ).toString();
+
+      if (isEnabled) {
+        // Success case - navigate to rankings
+        if (!mounted) return;
+        context.pushNamed(
+          NavWidget.routeName,
+          queryParameters: {'initialTab': '2'},
+        );
+      } else {
+        // Error case - show alert dialog
+        if (!mounted) return;
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(
+                  color: (Theme.of(context).brightness == Brightness.dark)
+                      ? const Color(0xFF4E4E4E)
+                      : Colors.transparent,
+                  width: 1,
+                ),
+              ),
+              title: Text(
+                'Ranking Feature Disabled',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Poppins',
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              content: Text(
+                message,
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                  fontFamily: 'Poppins',
+                  color: FlutterFlowTheme.of(context).secondaryText,
+                  fontSize: 14,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'OK',
+                      style: FlutterFlowTheme.of(context).titleSmall.override(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      debugPrint('Error checking ranking status: $e');
+      if (!mounted) return;
+
+      // Show error dialog for network/API issues
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (alertDialogContext) {
+          return AlertDialog(
+            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              'Error',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Poppins',
+                color: Colors.red,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              'Failed to check ranking status. Please try again.',
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                fontFamily: 'Poppins',
+                color: FlutterFlowTheme.of(context).secondaryText,
+                fontSize: 14,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(alertDialogContext),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'OK',
+                    style: FlutterFlowTheme.of(context).titleSmall.override(
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -269,61 +411,110 @@ class _SaveProgressRankingWidgetState extends State<SaveProgressRankingWidget>
                                       ),
                                     ),
                                   ),
+                                  // Padding(
+                                  //   padding:
+                                  //       const EdgeInsetsDirectional.fromSTEB(
+                                  //           8.0, 0.0, 0.0, 0.0),
+                                  //   child: InkWell(
+                                  //     onTap: (){
+                                  //       // context.pop();
+                                  //
+                                  //
+                                  //
+                                  //       print('shi h');
+                                  //     },
+                                  //     child: Container(
+                                  //       width: 40.0,
+                                  //       height: 40.0,
+                                  //       decoration: BoxDecoration(
+                                  //         color: FlutterFlowTheme.of(context)
+                                  //             .backBtnClr,
+                                  //         boxShadow: [
+                                  //           BoxShadow(
+                                  //             blurRadius: 4.0,
+                                  //             color:
+                                  //                 (Theme.of(context).brightness ==
+                                  //                             Brightness.dark) ==
+                                  //                         true
+                                  //                     ? const Color(0xD5999999)
+                                  //                     : Colors.white,
+                                  //             offset: const Offset(0.0, 2.0),
+                                  //           )
+                                  //         ],
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(12.0),
+                                  //         border: Border.all(
+                                  //           color:
+                                  //               (Theme.of(context).brightness ==
+                                  //                           Brightness.dark) ==
+                                  //                       true
+                                  //                   ? Colors.black
+                                  //                   : const Color(0xD5999999),
+                                  //         ),
+                                  //       ),
+                                  //       child: Align(
+                                  //         alignment: const AlignmentDirectional(
+                                  //             0.0, 0.0),
+                                  //         child: FaIcon(
+                                  //           FontAwesomeIcons.edit,
+                                  //           color: FlutterFlowTheme.of(context)
+                                  //               .tertiary,
+                                  //           size: 24.0,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+
+
+
+
+                                  ///2
                                   Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8.0, 0.0, 0.0, 0.0),
+                                    padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
                                     child: InkWell(
-                                      onTap: (){
-                                        // context.pop();
-                                        
-                                        
-                                        
-                                        print('shi h');
+                                      onTap: () async {
+                                        await _checkRankingStatus();
                                       },
                                       child: Container(
                                         width: 40.0,
                                         height: 40.0,
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .backBtnClr,
+                                          color: FlutterFlowTheme.of(context).backBtnClr,
                                           boxShadow: [
                                             BoxShadow(
                                               blurRadius: 4.0,
-                                              color:
-                                                  (Theme.of(context).brightness ==
-                                                              Brightness.dark) ==
-                                                          true
-                                                      ? const Color(0xD5999999)
-                                                      : Colors.white,
+                                              color: (Theme.of(context).brightness == Brightness.dark) == true
+                                                  ? const Color(0xD5999999)
+                                                  : Colors.white,
                                               offset: const Offset(0.0, 2.0),
                                             )
                                           ],
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
+                                          borderRadius: BorderRadius.circular(12.0),
                                           border: Border.all(
-                                            color:
-                                                (Theme.of(context).brightness ==
-                                                            Brightness.dark) ==
-                                                        true
-                                                    ? Colors.black
-                                                    : const Color(0xD5999999),
+                                            color: (Theme.of(context).brightness == Brightness.dark) == true
+                                                ? Colors.black
+                                                : const Color(0xD5999999),
                                           ),
                                         ),
                                         child: Align(
-                                          alignment: const AlignmentDirectional(
-                                              0.0, 0.0),
+                                          alignment: const AlignmentDirectional(0.0, 0.0),
                                           child: FaIcon(
                                             FontAwesomeIcons.edit,
-                                            color: FlutterFlowTheme.of(context)
-                                                .tertiary,
+                                            color: FlutterFlowTheme.of(context).tertiary,
                                             size: 24.0,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
+
+
+
+                                ]
+
+
+                                ,
                               ),
                             ),
                             Padding(

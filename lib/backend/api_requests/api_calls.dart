@@ -12,7 +12,8 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start auth Group Code
 
 class AuthGroup {
-  static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
+  // static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
+  static String getBaseUrl() => 'https://admin.votethegoat.app/api';
   static Map<String, String> headers = {};
   static LogInCall logInCall = LogInCall();
   static SignUpCall signUpCall = SignUpCall();
@@ -284,7 +285,8 @@ class DashboardGroup {
     String? authToken,
   }) {
     authToken ??= '';
-    return 'https://votethegoat.ezxdemo.com/api';
+    // return 'https://votethegoat.ezxdemo.com/api';
+    return 'https://admin.votethegoat.app/api';
   }
 
   static Map<String, String> headers = {};
@@ -330,6 +332,8 @@ class DashboardGroup {
   static PlayerBioStatsCall playerBioStatsCall = PlayerBioStatsCall();
   static FilterplayersCall filterplayersCall = FilterplayersCall();
 
+  static EnableRankingsCall enableRankingsCall = EnableRankingsCall();
+
   static CheckMinionStatusCall checkMinionStatusCall = CheckMinionStatusCall();
 
   static ContestLeaderboardCall contestLeaderboardCall =
@@ -337,6 +341,9 @@ class DashboardGroup {
 
   ///
   static SubscriptionListCall subscriptionListCall = SubscriptionListCall();
+
+  static AppLinkCall appLinkCall = AppLinkCall();
+
 
   static UserSubscriptionCall userSubscriptionCall = UserSubscriptionCall();
 
@@ -1533,6 +1540,64 @@ class ApplyrankingCall {
   }
 }
 
+
+
+
+
+
+
+
+
+
+class EnableRankingsCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'enableRankings',
+      apiUrl: '$baseUrl/enable-rankings',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  bool? isEnabled(dynamic response) => getJsonField(
+    response,
+    r'$.is_enabled',
+  ) as bool?;
+
+  String? message(dynamic response) => getJsonField(
+    response,
+    r'$.message',
+  ) as String?;
+
+  String? status(dynamic response) => getJsonField(
+    response,
+    r'$.status',
+  ) as String?;
+
+  int? statusCode(dynamic response) => getJsonField(
+    response,
+    r'$.status_code',
+  ) as int?;
+}
+
+
+
 class FinalizeRankingCall {
   Future<ApiCallResponse> call({
     String? authToken,
@@ -2148,6 +2213,65 @@ class ContestLeaderboardCall {
         true,
       ) as List?;
 }
+
+
+class AppLinkCall {
+  static Future<ApiCallResponse> call({
+    String? authToken = '',
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+
+    // Debug print: Request details
+    debugPrint('========== AppLink API Call ==========');
+    debugPrint('URL: $baseUrl/app-link');
+    debugPrint('Method: GET');
+    debugPrint('Auth Token: $authToken');
+    debugPrint('Headers: Authorization: Bearer $authToken');
+
+    final response = await ApiManager.instance.makeApiCall(
+      callName: 'appLink',
+      apiUrl: '$baseUrl/app-link',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+
+    // Debug print: Response details
+    debugPrint('========== AppLink API Response ==========');
+    debugPrint('Status Code: ${response.statusCode}');
+    debugPrint('Success: ${response.succeeded}');
+    debugPrint('Response Body: ${response.bodyText}');
+    debugPrint('JSON Body: ${response.jsonBody}');
+    debugPrint('App URL Link: ${appUrlLink(response.jsonBody)}');
+    debugPrint('========================================');
+
+    return response;
+  }
+
+  static String? appUrlLink(dynamic response) {
+    final link = castToType<String>(getJsonField(
+      response,
+      r'''$.data.app_url_link''',
+    ));
+    debugPrint('Extracted appUrlLink: $link');
+    return link;
+  }
+}
+
+
+
+
+
+
 
 ///
 

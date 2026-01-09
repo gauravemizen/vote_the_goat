@@ -2625,7 +2625,8 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
       );
 
       final response = await http.post(
-        Uri.parse('https://votethegoat.ezxdemo.com/api/contest-join'),
+        // Uri.parse('https://votethegoat.ezxdemo.com/api/contest-join'),
+        Uri.parse('https://admin.votethegoat.app/api/contest-join'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authToken',

@@ -49,21 +49,21 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
       );
 
       if ((_model.apiResultr60?.succeeded ?? true)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              getJsonField(
-                (_model.apiResultr60?.jsonBody ?? ''),
-                r'''$.status''',
-              ).toString(),
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            duration: const Duration(milliseconds: 1450),
-            backgroundColor: Colors.black,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(
+        //       getJsonField(
+        //         (_model.apiResultr60?.jsonBody ?? ''),
+        //         r'''$.status''',
+        //       ).toString(),
+        //       style: const TextStyle(
+        //         color: Colors.white,
+        //       ),
+        //     ),
+        //     duration: const Duration(milliseconds: 1450),
+        //     backgroundColor: Colors.black,
+        //   ),
+        // );
         safeSetState(() {});
         _model.isLoading = false;
         safeSetState(() {});

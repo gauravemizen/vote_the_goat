@@ -461,12 +461,10 @@
 //   }
 // }
 
-
-
 ///working  main.dart
 library;
 
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -483,15 +481,19 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import '/flutter_flow/admob_util.dart';
+import 'theme_controller.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
+import '/flutter_flow/admob_util.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
 
   FFAppState().initializePersistedState();
+
+
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
@@ -528,7 +530,7 @@ void main() async {
   ErrorWidget.builder = (FlutterErrorDetails details) {
     try {
       final match = RegExp(
-          r'The relevant error-causing widget was:\s+([a-zA-Z0-9]+)(.|\n)*When the exception was thrown, this was the stack:((.|\n)*)')
+              r'The relevant error-causing widget was:\s+([a-zA-Z0-9]+)(.|\n)*When the exception was thrown, this was the stack:((.|\n)*)')
           .firstMatch(details.toString());
       if (match == null) {
         return originalErrorWidgetBuilder(details);
@@ -615,6 +617,7 @@ class _MyAppState extends State<MyApp> {
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
+
   String getRoute([RouteMatch? routeMatch]) {
     final RouteMatch lastMatch =
         routeMatch ?? _router.routerDelegate.currentConfiguration.last;
@@ -645,10 +648,10 @@ class _MyAppState extends State<MyApp> {
         debugLogAuthenticatedUser();
       });
     jwtTokenStream.listen((_) {});
-   // _appStateNotifier.stopShowingSplashImage();
+    // Keep native splash visible until video splash is ready
     Future.delayed(
-      const Duration(milliseconds: 50),
-          () => _appStateNotifier.stopShowingSplashImage(),
+      const Duration(milliseconds: 100),
+      () => _appStateNotifier.stopShowingSplashImage(),
     );
 
     _router.routerDelegate.addListener(() {
@@ -670,9 +673,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {
-    _themeMode = mode;
-    FlutterFlowTheme.saveThemeMode(mode);
-  });
+        _themeMode = mode;
+        FlutterFlowTheme.saveThemeMode(mode);
+      });
 
   void setTextScaleFactor(double updatedFactor) {
     if (updatedFactor < FlutterFlowTheme.minTextScaleFactor ||
@@ -719,15 +722,15 @@ class _MyAppState extends State<MyApp> {
       builder: (_, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler:
-          _textScaleFactor == FlutterFlowTheme.defaultTextScaleFactor
-              ? MediaQuery.of(context).textScaler.clamp(
-            minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
-            maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
-          )
-              : TextScaler.linear(_textScaleFactor).clamp(
-            minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
-            maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
-          ),
+              _textScaleFactor == FlutterFlowTheme.defaultTextScaleFactor
+                  ? MediaQuery.of(context).textScaler.clamp(
+                        minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
+                        maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
+                      )
+                  : TextScaler.linear(_textScaleFactor).clamp(
+                      minScaleFactor: FlutterFlowTheme.minTextScaleFactor,
+                      maxScaleFactor: FlutterFlowTheme.maxTextScaleFactor,
+                    ),
         ),
         child: child!,
       ),

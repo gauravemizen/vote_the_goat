@@ -37,7 +37,25 @@ class FFAppState extends ChangeNotifier {
 
   ///
 
+  String _savedEmail = '';
 
+  String get savedEmail => _savedEmail;
+
+  set savedEmail(String value) {
+    _savedEmail = value;
+    secureStorage.setString('ff_savedEmail', value);
+    debugLogAppState(this);
+  }
+
+  String _savedPassword = '';
+
+  String get savedPassword => _savedPassword;
+
+  set savedPassword(String value) {
+    _savedPassword = value;
+    secureStorage.setString('ff_savedPassword', value);
+    debugLogAppState(this);
+  }
 
 
 
@@ -216,7 +234,11 @@ class FFAppState extends ChangeNotifier {
       await prefs.setBool('has_launched_before', true);
 
       // Reset all values to defaults
+      _savedEmail = '';
+      _savedPassword = '';
+
       _authToken = '';
+
       _isLoggedIn = false;
       _userName = '';
       _userImage = '';
@@ -263,6 +285,19 @@ class FFAppState extends ChangeNotifier {
     await _safeInitAsync(() async {
       _currentUserId = await secureStorage.getString('ff_currentUserId') ?? _currentUserId;
     });
+
+
+    await _safeInitAsync(() async {
+      _savedEmail = await secureStorage.getString('ff_savedEmail') ?? '';
+    });
+
+    await _safeInitAsync(() async {
+      _savedPassword = await secureStorage.getString('ff_savedPassword') ?? '';
+    });
+
+
+
+
 
     await _safeInitAsync(() async {
       _isRead = await secureStorage.getBool('ff_isRead') ?? _isRead;

@@ -1,3 +1,4 @@
+import '../../custom_code/widgets/cube_grid_loader.dart' as custom_widgets;
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/components/button_small/button_small_widget.dart';
@@ -2081,33 +2082,133 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                   // },
 
                                                                                   ///2
-                                                                                  onTap: () async {
-                                                                                    final inviteCode = getJsonField(
-                                                                                      teamListItem,
-                                                                                      r'''$.invite_code''',
-                                                                                    ).toString();
+//                                                                                   onTap: () async {
+//                                                                                     final inviteCode = getJsonField(
+//                                                                                       teamListItem,
+//                                                                                       r'''$.invite_code''',
+//                                                                                     ).toString();
+//
+//                                                                                     final customInviteMessage = '''Hey!
+// Do you know the Vote The Goat app?
+// I'd like to invite you to join and discover your favorite basketball legends!
+//
+// Use my invite code $inviteCode to sign up and start exploring.
+//
+// Download the app now and join the fun!
+// You can download it here: [APP_DOWNLOAD_LINK]''';
+//
+//                                                                                     print('Sharing invite message: $customInviteMessage');
+//
+//                                                                                     unawaited(
+//                                                                                           () async {
+//                                                                                         await Share.share(
+//                                                                                           customInviteMessage,
+//                                                                                           sharePositionOrigin: getWidgetBoundingBox(context),
+//                                                                                         );
+//                                                                                       }(),
+//                                                                                     );
+//                                                                                   },
 
-                                                                                    final customInviteMessage = '''Hey! 
-Do you know the Vote The Goat app? 
+                                                                                  ///3
+                                                                                  onTap: () async {
+                                                                                    try {
+                                                                                      // Show loading indicator
+                                                                                      showDialog(
+                                                                                        context: context,
+                                                                                        barrierDismissible: false,
+                                                                                        builder: (context) => const Center(
+                                                                                          child: SizedBox(
+                                                                                            width: 40.0,
+                                                                                            height: 40.0,
+                                                                                            child: custom_widgets.CubeGridLoader(
+                                                                                              width: 40.0,
+                                                                                              height: 40.0,
+                                                                                              size: 40.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      );
+
+                                                                                      final appLinkResponse = await AppLinkCall.call(
+                                                                                        authToken: FFAppState().authToken,
+                                                                                      );
+
+                                                                                      // Close loading indicator
+                                                                                      Navigator.of(context).pop();
+
+                                                                                      debugPrint('AppLink API Response: ${appLinkResponse.jsonBody}');
+                                                                                      debugPrint('AppLink succeeded: ${appLinkResponse.succeeded}');
+                                                                                      debugPrint('Status code: ${appLinkResponse.statusCode}');
+
+                                                                                      final inviteCode = getJsonField(
+                                                                                        teamListItem,
+                                                                                        r'''$.invite_code''',
+                                                                                      ).toString();
+
+                                                                                      String customInviteMessage;
+
+                                                                                      if (appLinkResponse.succeeded) {
+                                                                                        final appLink = AppLinkCall.appUrlLink(
+                                                                                          appLinkResponse.jsonBody,
+                                                                                        );
+
+                                                                                        if (appLink != null && appLink.isNotEmpty) {
+                                                                                          customInviteMessage = '''Hey!
+Do you know the Vote The Goat app?
 I'd like to invite you to join and discover your favorite basketball legends!
 
 Use my invite code $inviteCode to sign up and start exploring.
 
-Download the app now and join the fun! 
-You can download it here: [APP_DOWNLOAD_LINK]''';
+Download the app now and join the fun!
+You can download it here: $appLink''';
+                                                                                        } else {
+                                                                                          customInviteMessage = '''Hey!
+Do you know the Vote The Goat app?
+I'd like to invite you to join and discover your favorite basketball legends!
 
-                                                                                    print('Sharing invite message: $customInviteMessage');
+Use my invite code $inviteCode to sign up and start exploring.
 
-                                                                                    unawaited(
-                                                                                          () async {
-                                                                                        await Share.share(
-                                                                                          customInviteMessage,
-                                                                                          sharePositionOrigin: getWidgetBoundingBox(context),
-                                                                                        );
-                                                                                      }(),
-                                                                                    );
+Download the app now and join the fun!''';
+                                                                                        }
+                                                                                      } else {
+                                                                                        // API call failed
+                                                                                        debugPrint('API Error: Status ${appLinkResponse.statusCode}');
+
+                                                                                        customInviteMessage = '''Hey!
+Do you know the Vote The Goat app?
+I'd like to invite you to join and discover your favorite basketball legends!
+
+Use my invite code $inviteCode to sign up and start exploring.
+
+Download the app now and join the fun!''';
+                                                                                      }
+
+                                                                                      // Share the message
+                                                                                      unawaited(
+                                                                                            () async {
+                                                                                          await Share.share(
+                                                                                            customInviteMessage,
+                                                                                            sharePositionOrigin: getWidgetBoundingBox(context),
+                                                                                          );
+                                                                                        }(),
+                                                                                      );
+                                                                                    } catch (e) {
+                                                                                      // Close loading indicator if still open
+                                                                                      Navigator.of(context).pop();
+
+                                                                                      debugPrint('Error in share flow: $e');
+
+                                                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                                                        const SnackBar(
+                                                                                          content: Text(
+                                                                                            'Unable to share at this time. Please try again.',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          ),
+                                                                                          backgroundColor: Colors.red,
+                                                                                        ),
+                                                                                      );
+                                                                                    }
                                                                                   },
-
                                                                                   ///
 
                                                                                   child:
@@ -3362,7 +3463,7 @@ You can download it here: [APP_DOWNLOAD_LINK]''';
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           12.0, 16.0, 12.0, 16.0),
                                       child: Text(
-                                        'A Game Within the Game\nPlay with Friends is a playful spin-off of Play the Ground, designed for private fun, not to be confused with the Goat Global Ranking ',
+                                        'A Game Within the Game\nPlay with Friends is a playful spin-off of VOTE THE GOAT, designed for private fun, not to be confused with the Goat Global Ranking ',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
@@ -3625,7 +3726,7 @@ You can download it here: [APP_DOWNLOAD_LINK]''';
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           12.0, 16.0, 12.0, 16.0),
                                       child: Text(
-                                        'Set the Deadline\nOnce your Team is ready, choose a deadline (day and time). The app will automatically collect the top 10 positions from each participant’s Your Ranking screen at that moment.',
+                                        'Set the Deadline\nOnce your Team is ready, choose a deadline (day and time). The app will automatically collect the positions from each participant’s Your Ranking screen at that moment.',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
