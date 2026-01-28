@@ -142,7 +142,7 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
       AdService().startPageTimer('eligiblePlayers');
 
       // Preload interstitial ad (will check subscription status internally)
-      await SmartInterstitialManager().preloadInterstitial();
+      // await SmartInterstitialManager().preloadInterstitial();
 
       // Only show ad if still mounted and ads are enabled
       if (mounted && FFAppState().advertisementStatus != 0) {
@@ -17921,7 +17921,7 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
     ),
     elevation: 0.0,
     borderRadius: BorderRadius.circular(40.0),
-    ), 
+    ),
     ),
     ),
     ],

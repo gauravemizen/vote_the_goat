@@ -1937,8 +1937,15 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
       AdService().startPageTimer('homePage');
 
+
+      // Allow ads only AFTER interval
+      SmartInterstitialManager().allowAdsAfterInitialDelay(
+        delay: const Duration(minutes: 3),
+      );
+
+
       // Preload interstitial ad (will check subscription status internally)
-      await SmartInterstitialManager().preloadInterstitial();
+      // await SmartInterstitialManager().preloadInterstitial();
 
       // Call profile validation - this will handle redirection if needed
       await _loadProfileOrRedirect();
@@ -1948,10 +1955,10 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
 
 
-
         FFAppState().advertisementStatus==0 ? null :
 
         await SmartInterstitialManager().showInterstitialIfAllowed();
+
       }
     });
   }
@@ -1960,6 +1967,10 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
   void dispose() {
     // Stop the page timer when leaving the page
     AdService().stopInterstitialTimer();
+
+    SmartInterstitialManager().resetForNewPage();
+    AdService().stopInterstitialTimer();
+    super.dispose();
     routeObserver.unsubscribe(this);
     _model.dispose();
     super.dispose();

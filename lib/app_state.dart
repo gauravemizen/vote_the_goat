@@ -35,6 +35,21 @@ class FFAppState extends ChangeNotifier {
 
 
 
+
+  // In your app_state.dart file
+  bool? notificationsEnabled;
+
+// Add persistence methods
+  void setNotificationsEnabled(bool value) {
+    notificationsEnabled = value;
+    update(() {});
+  }
+
+  bool getNotificationsEnabled() {
+    return notificationsEnabled ?? true; // default to true
+  }
+
+
   ///
 
   String _savedEmail = '';

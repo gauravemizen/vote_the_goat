@@ -1,4 +1,6 @@
 
+import 'package:flutter/foundation.dart';
+
 import '../../nav/nav_widget.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/log_out/log_out_widget.dart';
@@ -53,6 +55,44 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
           (_model.getProfileRes?.jsonBody ?? ''),
           r'''$.data.image''',
         ).toString();
+
+
+        // Get notification status from API response
+        final notificationEnabled = getJsonField(
+          (_model.getProfileRes?.jsonBody ?? ''),
+          r'''$.data.notification_enable''',
+        );
+
+        if (kDebugMode) {
+          print('🔔 Notification status from API: $notificationEnabled');
+          print('🔔 Notification status type: ${notificationEnabled.runtimeType}');
+        }
+
+        // Properly convert to boolean - handle both 1/0 and true/false
+        bool switchValue = false;
+        if (notificationEnabled != null) {
+          if (notificationEnabled is bool) {
+            switchValue = notificationEnabled;
+          } else if (notificationEnabled is int) {
+            switchValue = notificationEnabled == 1;
+          } else if (notificationEnabled is String) {
+            switchValue = notificationEnabled.toLowerCase() == 'true' || notificationEnabled == '1';
+          } else {
+            // Handle other types by checking truthiness
+            switchValue = notificationEnabled == true || notificationEnabled == 1;
+          }
+        } else {
+          // Fallback to saved state or default
+          switchValue = FFAppState().notificationsEnabled ?? true;
+        }
+
+        _model.switchValue2 = switchValue;
+        FFAppState().notificationsEnabled = switchValue;
+
+        if (kDebugMode) {
+          print('🔔 Switch value set to: ${_model.switchValue2}');
+        }
+
         FFAppState().update(() {});
       }
 
@@ -71,7 +111,10 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
       isDark = savedMode == ThemeMode.dark;
     }
     _model.switchValue1 = isDark; // true => dark mode enabled
-    _model.switchValue2 = true;
+    // _model.switchValue2 = true;
+
+    _model.switchValue2 = FFAppState().notificationsEnabled ?? true;
+
   }
 
   @override
@@ -632,25 +675,121 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                             //   );
                             // }
 
-                            onChanged: (newValue) async {
-                              safeSetState(() => _model.switchValue2 = newValue);
+                            // onChanged: (newValue) async {
+                            //   safeSetState(() => _model.switchValue2 = newValue);
+                            //
+                            //   final response = await EnableNotificationCall().call(
+                            //     authToken: FFAppState().authToken,
+                            //   );
+                            //
+                            //   // Print the message from the API response (assuming it's in `message`)
+                            //   final message = getJsonField(response.jsonBody, r'$.message');
+                            //   print('API Message: $message');
+                            //
+                            //   // Optionally, show as a SnackBar
+                            //   if (message != null) {
+                            //     // ScaffoldMessenger.of(context).showSnackBar(
+                            //     //   SnackBar(content: Text(message.toString())),
+                            //     // );
+                            //     print('API Message: $message');
+                            //   }
+                            // },
 
+
+                          onChanged: (newValue) async {
+                            if (kDebugMode) {
+                              print('🔔 Notification switch toggled to: $newValue');
+                            }
+
+                            // Update UI immediately for responsiveness
+                            setState(() => _model.switchValue2 = newValue);
+
+                            // Save to app state
+                            FFAppState().notificationsEnabled = newValue;
+                            FFAppState().update(() {});
+
+                            try {
+                              // Make API call - you might need separate APIs for enable/disable
                               final response = await EnableNotificationCall().call(
                                 authToken: FFAppState().authToken,
                               );
 
-                              // Print the message from the API response (assuming it's in `message`)
-                              final message = getJsonField(response.jsonBody, r'$.message');
-                              print('API Message: $message');
-
-                              // Optionally, show as a SnackBar
-                              if (message != null) {
-                                // ScaffoldMessenger.of(context).showSnackBar(
-                                //   SnackBar(content: Text(message.toString())),
-                                // );
-                                print('API Message: $message');
+                              if (kDebugMode) {
+                                print('🔔 API Response Success: ${response.succeeded}');
+                                print('🔔 API Response Body: ${response.bodyText}');
                               }
-                            },
+
+                              if (response.succeeded) {
+                                final responseData = response.jsonBody;
+                                final message = getJsonField(responseData, r'$.message');
+                                final apiNotificationStatus = getJsonField(responseData, r'$.data.notification_enable');
+
+                                if (kDebugMode) {
+                                  print('🔔 API Message: $message');
+                                  print('🔔 API Notification Status: $apiNotificationStatus');
+                                }
+
+                                // Sync with API response
+                                if (apiNotificationStatus != null) {
+                                  final shouldBeEnabled = apiNotificationStatus == true;
+
+                                  if (shouldBeEnabled != newValue) {
+                                    // API returned different state than expected
+                                    setState(() => _model.switchValue2 = shouldBeEnabled);
+                                    FFAppState().notificationsEnabled = shouldBeEnabled;
+
+                                    if (kDebugMode) {
+                                      print('🔔 Synced switch with API response: $shouldBeEnabled');
+                                    }
+                                  }
+                                }
+
+                                // Show success message
+                                if (message != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(message.toString()),
+                                      backgroundColor: Colors.green,
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                // API call failed - revert switch
+                                setState(() => _model.switchValue2 = !newValue);
+                                FFAppState().notificationsEnabled = !newValue;
+
+                                if (kDebugMode) {
+                                  print('🔔 API call failed - reverting switch to: ${!newValue}');
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                 const  SnackBar(
+                                    content: Text('Failed to update notification settings'),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              // Error occurred - revert switch
+                              setState(() => _model.switchValue2 = !newValue);
+                              FFAppState().notificationsEnabled = !newValue;
+
+                              if (kDebugMode) {
+                                print('🔔 Exception occurred: $e');
+                              }
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Error: ${e.toString()}'),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          },
+
 
 
 

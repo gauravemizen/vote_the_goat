@@ -50,31 +50,29 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
     // Check if token exists and is not empty
     if (token.isEmpty) {
-      debugPrint('[EligiblePlayer] getProfile: No auth token found -> redirecting to login');
+      debugPrint(
+          '[EligiblePlayer] getProfile: No auth token found -> redirecting to login');
       await _showSessionExpiredDialog();
       if (!mounted) return;
       return;
     }
 
-    final tail = token.length >= 4
-        ? token.substring(token.length - 4)
-        : token;
-    debugPrint('[EligiblePlayer] getProfile: start, tokenPresent=true, tokenTail=$tail');
+    final tail = token.length >= 4 ? token.substring(token.length - 4) : token;
+    debugPrint(
+        '[EligiblePlayer] getProfile: start, tokenPresent=true, tokenTail=$tail');
 
     try {
       final res = await DashboardGroup.getProfileCall.call(
         authToken: token,
-
       );
 
       debugPrint('[EligiblePlayer] getProfile: response received');
-      debugPrint('[EligiblePlayer] getProfile: status=${res.statusCode}, succeeded=${res.succeeded}');
+      debugPrint(
+          '[EligiblePlayer] getProfile: status=${res.statusCode}, succeeded=${res.succeeded}');
 
       final bodyStr = '${res.jsonBody}';
       debugPrint(
-        '[EligiblePlayer] getProfile: body=${bodyStr.length > 800
-            ? '${bodyStr.substring(0, 800)}...(${bodyStr.length} chars)'
-            : bodyStr}',
+        '[EligiblePlayer] getProfile: body=${bodyStr.length > 800 ? '${bodyStr.substring(0, 800)}...(${bodyStr.length} chars)' : bodyStr}',
       );
 
       final status = res.statusCode;
@@ -83,8 +81,10 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
       // Check for various failure conditions
       if (!succeeded || unauthorized || status < 200 || status >= 300) {
-        debugPrint('[EligiblePlayer] getProfile: failed/unauthorized -> redirecting to login');
-        debugPrint('[EligiblePlayer] getProfile: res=$res, succeeded=$succeeded, unauthorized=$unauthorized, status=$status');
+        debugPrint(
+            '[EligiblePlayer] getProfile: failed/unauthorized -> redirecting to login');
+        debugPrint(
+            '[EligiblePlayer] getProfile: res=$res, succeeded=$succeeded, unauthorized=$unauthorized, status=$status');
 
         // Clear all app state data
         _clearAllAppStateData();
@@ -101,7 +101,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
         (res.jsonBody ?? ''),
         r'$.name',
       ).toString();
-      debugPrint('[EligiblePlayer] getProfile: success, userName=${FFAppState().userName}');
+      debugPrint(
+          '[EligiblePlayer] getProfile: success, userName=${FFAppState().userName}');
       safeSetState(() {});
     } catch (e, st) {
       debugPrint('[EligiblePlayer] getProfile: exception=$e');
@@ -148,7 +149,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
               onPressed: () {
                 Navigator.of(context).pop();
                 context.goNamed(LogInWidget.routeName);
-
               },
               child: Text(
                 'OK',
@@ -161,7 +161,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
     );
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -169,13 +168,10 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-
-
-
       AdService().startPageTimer('playWithFriends');
 
       // Preload interstitial ad (will check subscription status internally)
-      await SmartInterstitialManager().preloadInterstitial();
+      // await SmartInterstitialManager().preloadInterstitial();
 
       // Only show ad if still mounted and ads are enabled
       if (mounted && FFAppState().advertisementStatus != 0) {
@@ -184,10 +180,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
       await _loadProfileOrRedirect();
 
-
       FFAppState().isRead = false;
       safeSetState(() {});
-
     });
 
     _model.tabBarController = TabController(
@@ -220,7 +214,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
     _model.dispose();
 
     AdService().stopInterstitialTimer();
-
 
     super.dispose();
   }
@@ -268,7 +261,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
   @override
   void didPop() {
-
     AdService().stopInterstitialTimer();
 
     _model.isRouteVisible = false;
@@ -278,7 +270,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
   void didPushNext() {
     _model.isRouteVisible = false;
     AdService().stopInterstitialTimer();
-
   }
 
   @override
@@ -325,7 +316,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -351,8 +343,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                 BoxShadow(
                                   blurRadius: 4.0,
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x335D4E4E)
                                       : Colors.transparent,
                                   offset: const Offset(
@@ -364,8 +356,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: (Theme.of(context).brightness ==
-                                    Brightness.dark) ==
-                                    true
+                                            Brightness.dark) ==
+                                        true
                                     ? Colors.black
                                     : const Color(0xFF999999),
                               ),
@@ -385,25 +377,25 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                               style: FlutterFlowTheme.of(context)
                                   .customTextStyle1
                                   .override(
-                                fontFamily: 'good times',
-                                color:
-                                FlutterFlowTheme.of(context).tertiary,
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.normal,
-                              ),
+                                    fontFamily: 'good times',
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                             ),
                             Text(
                               'FRIENDS',
                               style: FlutterFlowTheme.of(context)
                                   .customTextStyle1
                                   .override(
-                                fontFamily: 'good times',
-                                color: const Color(0xFFEB6027),
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.normal,
-                              ),
+                                    fontFamily: 'good times',
+                                    color: const Color(0xFFEB6027),
+                                    fontSize: 24.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                             ),
                           ],
                         ),
@@ -427,8 +419,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: (Theme.of(context).brightness ==
-                                        Brightness.dark) ==
-                                        true
+                                                Brightness.dark) ==
+                                            true
                                         ? const Color(0x335D4E4E)
                                         : Colors.transparent,
                                     offset: const Offset(
@@ -440,8 +432,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                                 border: Border.all(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? Colors.black
                                       : const Color(0xFF999999),
                                 ),
@@ -457,8 +449,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                       ],
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: Container(
                         height: MediaQuery.sizeOf(context).height * 0.8,
                         decoration: const BoxDecoration(),
@@ -482,25 +474,25 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                             }
                             final tabBarGetteamdetailResponse = snapshot.data!;
                             _model.debugBackendQueries[
-                            'DashboardGroup.getteamdetailCall_statusCode_TabBar_766pstlx'] =
+                                    'DashboardGroup.getteamdetailCall_statusCode_TabBar_766pstlx'] =
                                 debugSerializeParam(
-                                  tabBarGetteamdetailResponse.statusCode,
-                                  ParamType.int,
-                                  link:
+                              tabBarGetteamdetailResponse.statusCode,
+                              ParamType.int,
+                              link:
                                   'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=PlayWithFriends',
-                                  name: 'int',
-                                  nullable: false,
-                                );
+                              name: 'int',
+                              nullable: false,
+                            );
                             _model.debugBackendQueries[
-                            'DashboardGroup.getteamdetailCall_responseBody_TabBar_766pstlx'] =
+                                    'DashboardGroup.getteamdetailCall_responseBody_TabBar_766pstlx'] =
                                 debugSerializeParam(
-                                  tabBarGetteamdetailResponse.bodyText,
-                                  ParamType.String,
-                                  link:
+                              tabBarGetteamdetailResponse.bodyText,
+                              ParamType.String,
+                              link:
                                   'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=PlayWithFriends',
-                                  name: 'String',
-                                  nullable: false,
-                                );
+                              name: 'String',
+                              nullable: false,
+                            );
                             debugLogWidgetClass(_model);
 
                             return Column(
@@ -509,46 +501,46 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                   alignment: const Alignment(0.0, 0),
                                   child: TabBar(
                                     labelColor:
-                                    FlutterFlowTheme.of(context).peach,
+                                        FlutterFlowTheme.of(context).peach,
                                     unselectedLabelColor:
-                                    FlutterFlowTheme.of(context).tertiary,
+                                        FlutterFlowTheme.of(context).tertiary,
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .headlineLarge
                                         .override(
-                                      font: GoogleFonts.bebasNeue(
-                                        fontWeight: FontWeight.normal,
-                                        fontStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .headlineLarge
-                                            .fontStyle,
-                                      ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.normal,
-                                      fontStyle:
-                                      FlutterFlowTheme.of(context)
-                                          .headlineLarge
-                                          .fontStyle,
-                                    ),
+                                          font: GoogleFonts.bebasNeue(
+                                            fontWeight: FontWeight.normal,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .headlineLarge
+                                                    .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.normal,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .fontStyle,
+                                        ),
                                     unselectedLabelStyle:
-                                    FlutterFlowTheme.of(context)
-                                        .headlineLarge
-                                        .override(
-                                      font: GoogleFonts.bebasNeue(
-                                        fontWeight: FontWeight.normal,
-                                        fontStyle:
                                         FlutterFlowTheme.of(context)
                                             .headlineLarge
-                                            .fontStyle,
-                                      ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.normal,
-                                      fontStyle:
-                                      FlutterFlowTheme.of(context)
-                                          .headlineLarge
-                                          .fontStyle,
-                                    ),
+                                            .override(
+                                              font: GoogleFonts.bebasNeue(
+                                                fontWeight: FontWeight.normal,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .headlineLarge
+                                                        .fontStyle,
+                                              ),
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.normal,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineLarge
+                                                      .fontStyle,
+                                            ),
                                     indicatorColor:
-                                    FlutterFlowTheme.of(context).primary,
+                                        FlutterFlowTheme.of(context).primary,
                                     tabs: const [
                                       Tab(
                                         text: 'My Teams',
@@ -575,23 +567,25 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                               if (_model.isEnabled)
                                                 Align(
                                                   alignment:
-                                                  const AlignmentDirectional(
-                                                      0.0, -1.0),
+                                                      const AlignmentDirectional(
+                                                          0.0, -1.0),
                                                   child: Padding(
                                                     padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0.0, 20.0,
-                                                        0.0, 0.0),
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 20.0,
+                                                            0.0, 0.0),
                                                     child: Container(
                                                       width: double.infinity,
                                                       decoration: BoxDecoration(
                                                         color: (Theme.of(context)
-                                                            .brightness ==
-                                                            Brightness
-                                                                .dark) ==
-                                                            true
-                                                            ? const Color(0x26FFFFFF)
-                                                            : const Color(0x8F898982),
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .dark) ==
+                                                                true
+                                                            ? const Color(
+                                                                0x26FFFFFF)
+                                                            : const Color(
+                                                                0x8F898982),
                                                         boxShadow: const [
                                                           BoxShadow(
                                                             blurRadius: 10.0,
@@ -604,188 +598,188 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                           )
                                                         ],
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(10.0),
+                                                            BorderRadius
+                                                                .circular(10.0),
                                                       ),
                                                       child: Form(
                                                         key: _model.formKey1,
                                                         autovalidateMode:
-                                                        AutovalidateMode
-                                                            .disabled,
+                                                            AutovalidateMode
+                                                                .disabled,
                                                         child: Padding(
                                                           padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              3.0,
-                                                              3.0,
-                                                              3.0,
-                                                              0.0),
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                  3.0,
+                                                                  3.0,
+                                                                  3.0,
+                                                                  0.0),
                                                           child: Column(
                                                             mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
+                                                                MainAxisSize
+                                                                    .min,
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                    3.0,
-                                                                    0.0,
-                                                                    3.0,
-                                                                    0.0),
-                                                                child:
-                                                                SizedBox(
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        3.0,
+                                                                        0.0,
+                                                                        3.0,
+                                                                        0.0),
+                                                                child: SizedBox(
                                                                   width: double
                                                                       .infinity,
                                                                   child:
-                                                                  TextFormField(
+                                                                      TextFormField(
                                                                     controller:
-                                                                    _model
-                                                                        .teamNameTextController1,
+                                                                        _model
+                                                                            .teamNameTextController1,
                                                                     focusNode:
-                                                                    _model
-                                                                        .teamNameFocusNode1,
+                                                                        _model
+                                                                            .teamNameFocusNode1,
                                                                     autofocus:
-                                                                    false,
+                                                                        false,
                                                                     obscureText:
-                                                                    false,
+                                                                        false,
                                                                     decoration:
-                                                                    InputDecoration(
+                                                                        InputDecoration(
                                                                       isDense:
-                                                                      true,
+                                                                          true,
                                                                       labelStyle: FlutterFlowTheme.of(
-                                                                          context)
+                                                                              context)
                                                                           .labelMedium
                                                                           .override(
-                                                                        font:
-                                                                        GoogleFonts.poppins(
-                                                                          fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                        ),
-                                                                        letterSpacing:
-                                                                        0.0,
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                      ),
+                                                                            font:
+                                                                                GoogleFonts.poppins(
+                                                                              fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                            ),
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                          ),
                                                                       hintText:
-                                                                      'Enter Team Name',
+                                                                          'Enter Team Name',
                                                                       hintStyle: FlutterFlowTheme.of(
-                                                                          context)
+                                                                              context)
                                                                           .labelMedium
                                                                           .override(
-                                                                        font:
-                                                                        GoogleFonts.poppins(
-                                                                          fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                        ),
-                                                                        letterSpacing:
-                                                                        0.0,
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                      ),
+                                                                            font:
+                                                                                GoogleFonts.poppins(
+                                                                              fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                            ),
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                          ),
                                                                       enabledBorder:
-                                                                      OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
-                                                                        const BorderSide(
+                                                                            const BorderSide(
                                                                           color:
-                                                                          Color(0x00000000),
+                                                                              Color(0x00000000),
                                                                           width:
-                                                                          1.0,
+                                                                              1.0,
                                                                         ),
                                                                         borderRadius:
-                                                                        BorderRadius.circular(8.0),
+                                                                            BorderRadius.circular(8.0),
                                                                       ),
                                                                       focusedBorder:
-                                                                      OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
-                                                                        const BorderSide(
+                                                                            const BorderSide(
                                                                           color:
-                                                                          Color(0x00000000),
+                                                                              Color(0x00000000),
                                                                           width:
-                                                                          1.0,
+                                                                              1.0,
                                                                         ),
                                                                         borderRadius:
-                                                                        BorderRadius.circular(8.0),
+                                                                            BorderRadius.circular(8.0),
                                                                       ),
                                                                       errorBorder:
-                                                                      OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
-                                                                        BorderSide(
+                                                                            BorderSide(
                                                                           color:
-                                                                          FlutterFlowTheme.of(context).error,
+                                                                              FlutterFlowTheme.of(context).error,
                                                                           width:
-                                                                          1.0,
+                                                                              1.0,
                                                                         ),
                                                                         borderRadius:
-                                                                        BorderRadius.circular(8.0),
+                                                                            BorderRadius.circular(8.0),
                                                                       ),
                                                                       focusedErrorBorder:
-                                                                      OutlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
-                                                                        BorderSide(
+                                                                            BorderSide(
                                                                           color:
-                                                                          FlutterFlowTheme.of(context).error,
+                                                                              FlutterFlowTheme.of(context).error,
                                                                           width:
-                                                                          1.0,
+                                                                              1.0,
                                                                         ),
                                                                         borderRadius:
-                                                                        BorderRadius.circular(8.0),
+                                                                            BorderRadius.circular(8.0),
                                                                       ),
                                                                       filled:
-                                                                      true,
+                                                                          true,
                                                                       fillColor: (Theme.of(context).brightness == Brightness.dark) ==
-                                                                          true
+                                                                              true
                                                                           ? const Color(
-                                                                          0x80050505)
+                                                                              0x80050505)
                                                                           : const Color(
-                                                                          0xFFE9E9E9),
+                                                                              0xFFE9E9E9),
                                                                       prefixIcon:
-                                                                      Icon(
+                                                                          Icon(
                                                                         FontAwesomeIcons
                                                                             .basketballBall,
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .tertiary,
                                                                         size:
-                                                                        24.0,
+                                                                            24.0,
                                                                       ),
                                                                     ),
                                                                     style: FlutterFlowTheme.of(
-                                                                        context)
+                                                                            context)
                                                                         .labelMedium
                                                                         .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontStyle,
-                                                                    ),
+                                                                          font:
+                                                                              GoogleFonts.poppins(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontStyle,
+                                                                        ),
                                                                     cursorColor:
-                                                                    FlutterFlowTheme.of(context)
-                                                                        .primaryText,
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primaryText,
                                                                     validator: _model
                                                                         .teamNameTextController1Validator
                                                                         .asValidator(
-                                                                        context),
+                                                                            context),
                                                                   ),
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding: const EdgeInsetsDirectional
-                                                                    .fromSTEB(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
                                                                         10.0,
                                                                         10.0,
                                                                         10.0,
@@ -893,7 +887,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                     ),
                                                                     child:
                                                                         Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      padding: const EdgeInsetsDirectional
+                                                                          .fromSTEB(
                                                                           0.0,
                                                                           16.0,
                                                                           0.0,
@@ -940,7 +935,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                   ),
                                                                 ),
                                                               ),
-
 
                                                               // Padding(
                                                               //   padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
@@ -1038,304 +1032,425 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                               //   ),
                                                               // ),
                                                               Padding(
-                                                                padding: const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                    16.0,
-                                                                    16.0,
-                                                                    16.0,
-                                                                    0.0),
-                                                                child:
+                                                                  padding:
+                                                                      const EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                          16.0,
+                                                                          16.0,
+                                                                          16.0,
+                                                                          0.0),
+                                                                  child:
 
-                                                                ///1
-                                                                // Row(
-                                                                //   mainAxisSize:
-                                                                //   MainAxisSize
-                                                                //       .max,
-                                                                //   mainAxisAlignment:
-                                                                //   MainAxisAlignment
-                                                                //       .spaceBetween,
-                                                                //   children: [
-                                                                //
-                                                                //     ///1
-                                                                //     ///
-                                                                //     Expanded(
-                                                                //       child:
-                                                                //       Padding(
-                                                                //         padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                //             0.0,
-                                                                //             0.0,
-                                                                //             10.0,
-                                                                //             0.0),
-                                                                //         child:
-                                                                //         Container(
-                                                                //           height:
-                                                                //           54.0,
-                                                                //           decoration:
-                                                                //           BoxDecoration(
-                                                                //             gradient:
-                                                                //             const LinearGradient(
-                                                                //               colors: [
-                                                                //                 Color(0xFFDD7325),
-                                                                //                 Color(0xFFD69E7E),
-                                                                //                 Color(0xFFDD7325)
-                                                                //               ],
-                                                                //               stops: [
-                                                                //                 0.0,
-                                                                //                 0.5,
-                                                                //                 1.0
-                                                                //               ],
-                                                                //               begin: AlignmentDirectional(0.0, 1.0),
-                                                                //               end: AlignmentDirectional(0, -1.0),
-                                                                //             ),
-                                                                //             borderRadius:
-                                                                //             BorderRadius.circular(12.0),
-                                                                //             border:
-                                                                //             Border.all(
-                                                                //               color: const Color(0xFF4E4E4E),
-                                                                //             ),
-                                                                //           ),
-                                                                //           child:
-                                                                //           Padding(
-                                                                //             padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                //                 0.0,
-                                                                //                 14.0,
-                                                                //                 0.0,
-                                                                //                 14.0),
-                                                                //             child:
-                                                                //             FFButtonWidget(
-                                                                //               onPressed: () async {
-                                                                //                 final _datePicked1Date = await showDatePicker(
-                                                                //                   context: context,
-                                                                //                   initialDate: getCurrentTimestamp,
-                                                                //                   firstDate: getCurrentTimestamp,
-                                                                //                   lastDate: DateTime(2050),
-                                                                //                   builder: (context, child) {
-                                                                //                     return wrapInMaterialDatePickerTheme(
-                                                                //                       context,
-                                                                //                       child!,
-                                                                //                       headerBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                //                       headerForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                //                       headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
-                                                                //                         font: GoogleFonts.poppins(
-                                                                //                           fontWeight: FontWeight.w600,
-                                                                //                           fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                //                         ),
-                                                                //                         fontSize: 32.0,
-                                                                //                         letterSpacing: 0.0,
-                                                                //                         fontWeight: FontWeight.w600,
-                                                                //                         fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                //                       ),
-                                                                //                       pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                //                       pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                //                       selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                //                       selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                //                       actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                //                       iconSize: 24.0,
-                                                                //                     );
-                                                                //                   },
-                                                                //                 );
-                                                                //
-                                                                //                 if (_datePicked1Date != null) {
-                                                                //                   safeSetState(() {
-                                                                //                     _model.datePicked1 = DateTime(
-                                                                //                       _datePicked1Date.year,
-                                                                //                       _datePicked1Date.month,
-                                                                //                       _datePicked1Date.day,
-                                                                //                     );
-                                                                //                   });
-                                                                //                 } else if (_model.datePicked1 != null) {
-                                                                //                   safeSetState(() {
-                                                                //                     _model.datePicked1 = getCurrentTimestamp;
-                                                                //                   });
-                                                                //                 }
-                                                                //                 _model.date = dateTimeFormat("yyyy-MM-dd", _model.datePicked1);
-                                                                //                 safeSetState(() {});
-                                                                //               },
-                                                                //               text: 'Choose Date',
-                                                                //               options: FFButtonOptions(
-                                                                //                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                                                                //                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                                                //                 color: const Color(0x00CD4A20),
-                                                                //                 textStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                //                   font: GoogleFonts.poppins(
-                                                                //                     fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                //                     fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                //                   ),
-                                                                //                   color: Colors.white,
-                                                                //                   letterSpacing: 0.0,
-                                                                //                   fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                //                   fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                //                 ),
-                                                                //                 elevation: 0.0,
-                                                                //                 borderRadius: BorderRadius.circular(8.0),
-                                                                //               ),
-                                                                //             ),
-                                                                //           ),
-                                                                //         ),
-                                                                //       ),
-                                                                //     ),
-                                                                //     Expanded(
-                                                                //       child:
-                                                                //       Container(
-                                                                //         height:
-                                                                //         54.0,
-                                                                //         decoration:
-                                                                //         BoxDecoration(
-                                                                //           gradient:
-                                                                //           const LinearGradient(
-                                                                //             colors: [
-                                                                //               Color(0xFFDD7325),
-                                                                //               Color(0xFFD69E7E),
-                                                                //               Color(0xFFDD7325)
-                                                                //             ],
-                                                                //             stops: [
-                                                                //               0.0,
-                                                                //               0.5,
-                                                                //               1.0
-                                                                //             ],
-                                                                //             begin:
-                                                                //             AlignmentDirectional(0.0, 1.0),
-                                                                //             end:
-                                                                //             AlignmentDirectional(0, -1.0),
-                                                                //           ),
-                                                                //           borderRadius:
-                                                                //           BorderRadius.circular(12.0),
-                                                                //           border:
-                                                                //           Border.all(
-                                                                //             color:
-                                                                //             const Color(0xFF4E4E4E),
-                                                                //           ),
-                                                                //         ),
-                                                                //         child:
-                                                                //         Padding(
-                                                                //           padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                //               0.0,
-                                                                //               14.0,
-                                                                //               0.0,
-                                                                //               14.0),
-                                                                //           child:
-                                                                //           FFButtonWidget(
-                                                                //             onPressed:
-                                                                //                 () async {
-                                                                //               final _datePicked2Time = await showTimePicker(
-                                                                //                 context: context,
-                                                                //                 initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
-                                                                //                 builder: (context, child) {
-                                                                //                   return wrapInMaterialTimePickerTheme(
-                                                                //                     context,
-                                                                //                     child!,
-                                                                //                     headerBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                //                     headerForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                //                     headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
-                                                                //                       font: GoogleFonts.poppins(
-                                                                //                         fontWeight: FontWeight.w600,
-                                                                //                         fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                //                       ),
-                                                                //                       fontSize: 32.0,
-                                                                //                       letterSpacing: 0.0,
-                                                                //                       fontWeight: FontWeight.w600,
-                                                                //                       fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                //                     ),
-                                                                //                     pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                //                     pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                //                     selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                //                     selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                //                     actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                //                     iconSize: 24.0,
-                                                                //                   );
-                                                                //                 },
-                                                                //               );
-                                                                //               if (_datePicked2Time != null) {
-                                                                //                 safeSetState(() {
-                                                                //                   _model.datePicked2 = DateTime(
-                                                                //                     getCurrentTimestamp.year,
-                                                                //                     getCurrentTimestamp.month,
-                                                                //                     getCurrentTimestamp.day,
-                                                                //                     _datePicked2Time.hour,
-                                                                //                     _datePicked2Time.minute,
-                                                                //                   );
-                                                                //                 });
-                                                                //               } else if (_model.datePicked2 != null) {
-                                                                //                 safeSetState(() {
-                                                                //                   _model.datePicked2 = getCurrentTimestamp;
-                                                                //                 });
-                                                                //               }
-                                                                //               _model.time = dateTimeFormat("Hm", _model.datePicked2);
-                                                                //               safeSetState(() {});
-                                                                //             },
-                                                                //             text:
-                                                                //             'Choose Time',
-                                                                //             options:
-                                                                //             FFButtonOptions(
-                                                                //               padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                                                                //               iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                                                //               color: const Color(0x00CD4A20),
-                                                                //               textStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                //                 font: GoogleFonts.poppins(
-                                                                //                   fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                //                   fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                //                 ),
-                                                                //                 color: Colors.white,
-                                                                //                 letterSpacing: 0.0,
-                                                                //                 fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                //                 fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                //               ),
-                                                                //               elevation: 0.0,
-                                                                //               borderRadius: BorderRadius.circular(8.0),
-                                                                //             ),
-                                                                //           ),
-                                                                //         ),
-                                                                //       ),
-                                                                //     ),
-                                                                //   ],
-                                                                // ),
+                                                                      ///1
+                                                                      // Row(
+                                                                      //   mainAxisSize:
+                                                                      //   MainAxisSize
+                                                                      //       .max,
+                                                                      //   mainAxisAlignment:
+                                                                      //   MainAxisAlignment
+                                                                      //       .spaceBetween,
+                                                                      //   children: [
+                                                                      //
+                                                                      //     ///1
+                                                                      //     ///
+                                                                      //     Expanded(
+                                                                      //       child:
+                                                                      //       Padding(
+                                                                      //         padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      //             0.0,
+                                                                      //             0.0,
+                                                                      //             10.0,
+                                                                      //             0.0),
+                                                                      //         child:
+                                                                      //         Container(
+                                                                      //           height:
+                                                                      //           54.0,
+                                                                      //           decoration:
+                                                                      //           BoxDecoration(
+                                                                      //             gradient:
+                                                                      //             const LinearGradient(
+                                                                      //               colors: [
+                                                                      //                 Color(0xFFDD7325),
+                                                                      //                 Color(0xFFD69E7E),
+                                                                      //                 Color(0xFFDD7325)
+                                                                      //               ],
+                                                                      //               stops: [
+                                                                      //                 0.0,
+                                                                      //                 0.5,
+                                                                      //                 1.0
+                                                                      //               ],
+                                                                      //               begin: AlignmentDirectional(0.0, 1.0),
+                                                                      //               end: AlignmentDirectional(0, -1.0),
+                                                                      //             ),
+                                                                      //             borderRadius:
+                                                                      //             BorderRadius.circular(12.0),
+                                                                      //             border:
+                                                                      //             Border.all(
+                                                                      //               color: const Color(0xFF4E4E4E),
+                                                                      //             ),
+                                                                      //           ),
+                                                                      //           child:
+                                                                      //           Padding(
+                                                                      //             padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      //                 0.0,
+                                                                      //                 14.0,
+                                                                      //                 0.0,
+                                                                      //                 14.0),
+                                                                      //             child:
+                                                                      //             FFButtonWidget(
+                                                                      //               onPressed: () async {
+                                                                      //                 final _datePicked1Date = await showDatePicker(
+                                                                      //                   context: context,
+                                                                      //                   initialDate: getCurrentTimestamp,
+                                                                      //                   firstDate: getCurrentTimestamp,
+                                                                      //                   lastDate: DateTime(2050),
+                                                                      //                   builder: (context, child) {
+                                                                      //                     return wrapInMaterialDatePickerTheme(
+                                                                      //                       context,
+                                                                      //                       child!,
+                                                                      //                       headerBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                      //                       headerForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                      //                       headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                      //                         font: GoogleFonts.poppins(
+                                                                      //                           fontWeight: FontWeight.w600,
+                                                                      //                           fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                      //                         ),
+                                                                      //                         fontSize: 32.0,
+                                                                      //                         letterSpacing: 0.0,
+                                                                      //                         fontWeight: FontWeight.w600,
+                                                                      //                         fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                      //                       ),
+                                                                      //                       pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                      //                       pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                      //                       selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                      //                       selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                      //                       actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                      //                       iconSize: 24.0,
+                                                                      //                     );
+                                                                      //                   },
+                                                                      //                 );
+                                                                      //
+                                                                      //                 if (_datePicked1Date != null) {
+                                                                      //                   safeSetState(() {
+                                                                      //                     _model.datePicked1 = DateTime(
+                                                                      //                       _datePicked1Date.year,
+                                                                      //                       _datePicked1Date.month,
+                                                                      //                       _datePicked1Date.day,
+                                                                      //                     );
+                                                                      //                   });
+                                                                      //                 } else if (_model.datePicked1 != null) {
+                                                                      //                   safeSetState(() {
+                                                                      //                     _model.datePicked1 = getCurrentTimestamp;
+                                                                      //                   });
+                                                                      //                 }
+                                                                      //                 _model.date = dateTimeFormat("yyyy-MM-dd", _model.datePicked1);
+                                                                      //                 safeSetState(() {});
+                                                                      //               },
+                                                                      //               text: 'Choose Date',
+                                                                      //               options: FFButtonOptions(
+                                                                      //                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                                                      //                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                      //                 color: const Color(0x00CD4A20),
+                                                                      //                 textStyle: FlutterFlowTheme.of(context).titleLarge.override(
+                                                                      //                   font: GoogleFonts.poppins(
+                                                                      //                     fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                      //                     fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                      //                   ),
+                                                                      //                   color: Colors.white,
+                                                                      //                   letterSpacing: 0.0,
+                                                                      //                   fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                      //                   fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                      //                 ),
+                                                                      //                 elevation: 0.0,
+                                                                      //                 borderRadius: BorderRadius.circular(8.0),
+                                                                      //               ),
+                                                                      //             ),
+                                                                      //           ),
+                                                                      //         ),
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //     Expanded(
+                                                                      //       child:
+                                                                      //       Container(
+                                                                      //         height:
+                                                                      //         54.0,
+                                                                      //         decoration:
+                                                                      //         BoxDecoration(
+                                                                      //           gradient:
+                                                                      //           const LinearGradient(
+                                                                      //             colors: [
+                                                                      //               Color(0xFFDD7325),
+                                                                      //               Color(0xFFD69E7E),
+                                                                      //               Color(0xFFDD7325)
+                                                                      //             ],
+                                                                      //             stops: [
+                                                                      //               0.0,
+                                                                      //               0.5,
+                                                                      //               1.0
+                                                                      //             ],
+                                                                      //             begin:
+                                                                      //             AlignmentDirectional(0.0, 1.0),
+                                                                      //             end:
+                                                                      //             AlignmentDirectional(0, -1.0),
+                                                                      //           ),
+                                                                      //           borderRadius:
+                                                                      //           BorderRadius.circular(12.0),
+                                                                      //           border:
+                                                                      //           Border.all(
+                                                                      //             color:
+                                                                      //             const Color(0xFF4E4E4E),
+                                                                      //           ),
+                                                                      //         ),
+                                                                      //         child:
+                                                                      //         Padding(
+                                                                      //           padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                      //               0.0,
+                                                                      //               14.0,
+                                                                      //               0.0,
+                                                                      //               14.0),
+                                                                      //           child:
+                                                                      //           FFButtonWidget(
+                                                                      //             onPressed:
+                                                                      //                 () async {
+                                                                      //               final _datePicked2Time = await showTimePicker(
+                                                                      //                 context: context,
+                                                                      //                 initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
+                                                                      //                 builder: (context, child) {
+                                                                      //                   return wrapInMaterialTimePickerTheme(
+                                                                      //                     context,
+                                                                      //                     child!,
+                                                                      //                     headerBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                      //                     headerForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                      //                     headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                      //                       font: GoogleFonts.poppins(
+                                                                      //                         fontWeight: FontWeight.w600,
+                                                                      //                         fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                      //                       ),
+                                                                      //                       fontSize: 32.0,
+                                                                      //                       letterSpacing: 0.0,
+                                                                      //                       fontWeight: FontWeight.w600,
+                                                                      //                       fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                      //                     ),
+                                                                      //                     pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                      //                     pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                      //                     selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                      //                     selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                      //                     actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                      //                     iconSize: 24.0,
+                                                                      //                   );
+                                                                      //                 },
+                                                                      //               );
+                                                                      //               if (_datePicked2Time != null) {
+                                                                      //                 safeSetState(() {
+                                                                      //                   _model.datePicked2 = DateTime(
+                                                                      //                     getCurrentTimestamp.year,
+                                                                      //                     getCurrentTimestamp.month,
+                                                                      //                     getCurrentTimestamp.day,
+                                                                      //                     _datePicked2Time.hour,
+                                                                      //                     _datePicked2Time.minute,
+                                                                      //                   );
+                                                                      //                 });
+                                                                      //               } else if (_model.datePicked2 != null) {
+                                                                      //                 safeSetState(() {
+                                                                      //                   _model.datePicked2 = getCurrentTimestamp;
+                                                                      //                 });
+                                                                      //               }
+                                                                      //               _model.time = dateTimeFormat("Hm", _model.datePicked2);
+                                                                      //               safeSetState(() {});
+                                                                      //             },
+                                                                      //             text:
+                                                                      //             'Choose Time',
+                                                                      //             options:
+                                                                      //             FFButtonOptions(
+                                                                      //               padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                                                      //               iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                      //               color: const Color(0x00CD4A20),
+                                                                      //               textStyle: FlutterFlowTheme.of(context).titleLarge.override(
+                                                                      //                 font: GoogleFonts.poppins(
+                                                                      //                   fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                      //                   fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                      //                 ),
+                                                                      //                 color: Colors.white,
+                                                                      //                 letterSpacing: 0.0,
+                                                                      //                 fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                      //                 fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                      //               ),
+                                                                      //               elevation: 0.0,
+                                                                      //               borderRadius: BorderRadius.circular(8.0),
+                                                                      //             ),
+                                                                      //           ),
+                                                                      //         ),
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //   ],
+                                                                      // ),
 
-
-                                                              ///2
-                                                                Row(
-                                                                  mainAxisSize: MainAxisSize.max,
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
-                                                                        child: Container(
-                                                                          height: 54.0,
-                                                                          decoration: BoxDecoration(
-                                                                            gradient: const LinearGradient(
-                                                                              colors: [Color(0xFFDD7325), Color(0xFFD69E7E), Color(0xFFDD7325)],
-                                                                              stops: [0.0, 0.5, 1.0],
+                                                                      ///2
+                                                                      Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
+                                                                              0.0,
+                                                                              0.0,
+                                                                              10.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                54.0,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              gradient: const LinearGradient(
+                                                                                colors: [
+                                                                                  Color(0xFFDD7325),
+                                                                                  Color(0xFFD69E7E),
+                                                                                  Color(0xFFDD7325)
+                                                                                ],
+                                                                                stops: [
+                                                                                  0.0,
+                                                                                  0.5,
+                                                                                  1.0
+                                                                                ],
+                                                                                begin: AlignmentDirectional(0.0, 1.0),
+                                                                                end: AlignmentDirectional(0, -1.0),
+                                                                              ),
+                                                                              borderRadius: BorderRadius.circular(12.0),
+                                                                              border: Border.all(color: const Color(0xFF4E4E4E)),
+                                                                            ),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 14.0),
+                                                                              child: FFButtonWidget(
+                                                                                onPressed: () async {
+                                                                                  final datePicked1Date = await showDatePicker(
+                                                                                    context: context,
+                                                                                    initialDate: getCurrentTimestamp,
+                                                                                    firstDate: getCurrentTimestamp,
+                                                                                    lastDate: DateTime(2050),
+                                                                                    builder: (context, child) {
+                                                                                      return wrapInMaterialDatePickerTheme(
+                                                                                        context,
+                                                                                        child!,
+                                                                                        headerBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                                        headerForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                                        headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                                                              font: GoogleFonts.poppins(
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                              ),
+                                                                                              fontSize: 32.0,
+                                                                                              letterSpacing: 0.0,
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                              fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                            ),
+                                                                                        pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                        pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                                        selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
+                                                                                        selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
+                                                                                        actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
+                                                                                        iconSize: 24.0,
+                                                                                      );
+                                                                                    },
+                                                                                  );
+                                                                                  if (datePicked1Date != null) {
+                                                                                    safeSetState(() {
+                                                                                      _model.datePicked1 = DateTime(
+                                                                                        datePicked1Date.year,
+                                                                                        datePicked1Date.month,
+                                                                                        datePicked1Date.day,
+                                                                                      );
+                                                                                      _model.date = dateTimeFormat("yyyy-MM-dd", _model.datePicked1);
+                                                                                    });
+                                                                                  }
+                                                                                },
+                                                                                text: _model.date ?? 'Choose Date',
+                                                                                options: FFButtonOptions(
+                                                                                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                                                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                                  color: const Color(0x00CD4A20),
+                                                                                  textStyle: FlutterFlowTheme.of(context).titleLarge.override(
+                                                                                        font: GoogleFonts.poppins(
+                                                                                          fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                          fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                        ),
+                                                                                        color: Colors.white,
+                                                                                        letterSpacing: 0.0,
+                                                                                        fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                        fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                      ),
+                                                                                  elevation: 0.0,
+                                                                                  borderRadius: BorderRadius.circular(8.0),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              54.0,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            gradient:
+                                                                                const LinearGradient(
+                                                                              colors: [
+                                                                                Color(0xFFDD7325),
+                                                                                Color(0xFFD69E7E),
+                                                                                Color(0xFFDD7325)
+                                                                              ],
+                                                                              stops: [
+                                                                                0.0,
+                                                                                0.5,
+                                                                                1.0
+                                                                              ],
                                                                               begin: AlignmentDirectional(0.0, 1.0),
                                                                               end: AlignmentDirectional(0, -1.0),
                                                                             ),
-                                                                            borderRadius: BorderRadius.circular(12.0),
-                                                                            border: Border.all(color: const Color(0xFF4E4E4E)),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(12.0),
+                                                                            border:
+                                                                                Border.all(color: const Color(0xFF4E4E4E)),
                                                                           ),
-                                                                          child: Padding(
-                                                                            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 14.0),
-                                                                            child: FFButtonWidget(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                14.0,
+                                                                                0.0,
+                                                                                14.0),
+                                                                            child:
+                                                                                FFButtonWidget(
                                                                               onPressed: () async {
-                                                                                final datePicked1Date = await showDatePicker(
+                                                                                final datePicked2Time = await showTimePicker(
                                                                                   context: context,
-                                                                                  initialDate: getCurrentTimestamp,
-                                                                                  firstDate: getCurrentTimestamp,
-                                                                                  lastDate: DateTime(2050),
+                                                                                  initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
                                                                                   builder: (context, child) {
-                                                                                    return wrapInMaterialDatePickerTheme(
+                                                                                    return wrapInMaterialTimePickerTheme(
                                                                                       context,
                                                                                       child!,
                                                                                       headerBackgroundColor: FlutterFlowTheme.of(context).primary,
                                                                                       headerForegroundColor: FlutterFlowTheme.of(context).info,
                                                                                       headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
-                                                                                        font: GoogleFonts.poppins(
-                                                                                          fontWeight: FontWeight.w600,
-                                                                                          fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                                        ),
-                                                                                        fontSize: 32.0,
-                                                                                        letterSpacing: 0.0,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                                      ),
+                                                                                            font: GoogleFonts.poppins(
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                              fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                            ),
+                                                                                            fontSize: 32.0,
+                                                                                            letterSpacing: 0.0,
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                            fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
+                                                                                          ),
                                                                                       pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
                                                                                       pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
                                                                                       selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
@@ -1345,32 +1460,34 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                     );
                                                                                   },
                                                                                 );
-                                                                                if (datePicked1Date != null) {
+                                                                                if (datePicked2Time != null) {
                                                                                   safeSetState(() {
-                                                                                    _model.datePicked1 = DateTime(
-                                                                                      datePicked1Date.year,
-                                                                                      datePicked1Date.month,
-                                                                                      datePicked1Date.day,
+                                                                                    _model.datePicked2 = DateTime(
+                                                                                      getCurrentTimestamp.year,
+                                                                                      getCurrentTimestamp.month,
+                                                                                      getCurrentTimestamp.day,
+                                                                                      datePicked2Time.hour,
+                                                                                      datePicked2Time.minute,
                                                                                     );
-                                                                                    _model.date = dateTimeFormat("yyyy-MM-dd", _model.datePicked1);
+                                                                                    _model.time = dateTimeFormat("Hm", _model.datePicked2);
                                                                                   });
                                                                                 }
                                                                               },
-                                                                              text: _model.date ?? 'Choose Date',
+                                                                              text: _model.time ?? 'Choose Time',
                                                                               options: FFButtonOptions(
                                                                                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                                                                                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                                                                 color: const Color(0x00CD4A20),
                                                                                 textStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                                  font: GoogleFonts.poppins(
-                                                                                    fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                    fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                  ),
-                                                                                  color: Colors.white,
-                                                                                  letterSpacing: 0.0,
-                                                                                  fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                ),
+                                                                                      font: GoogleFonts.poppins(
+                                                                                        fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                        fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                      ),
+                                                                                      color: Colors.white,
+                                                                                      letterSpacing: 0.0,
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                    ),
                                                                                 elevation: 0.0,
                                                                                 borderRadius: BorderRadius.circular(8.0),
                                                                               ),
@@ -1378,156 +1495,75 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      child: Container(
-                                                                        height: 54.0,
-                                                                        decoration: BoxDecoration(
-                                                                          gradient: const LinearGradient(
-                                                                            colors: [Color(0xFFDD7325), Color(0xFFD69E7E), Color(0xFFDD7325)],
-                                                                            stops: [0.0, 0.5, 1.0],
-                                                                            begin: AlignmentDirectional(0.0, 1.0),
-                                                                            end: AlignmentDirectional(0, -1.0),
-                                                                          ),
-                                                                          borderRadius: BorderRadius.circular(12.0),
-                                                                          border: Border.all(color: const Color(0xFF4E4E4E)),
-                                                                        ),
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 14.0),
-                                                                          child: FFButtonWidget(
-                                                                            onPressed: () async {
-                                                                              final datePicked2Time = await showTimePicker(
-                                                                                context: context,
-                                                                                initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
-                                                                                builder: (context, child) {
-                                                                                  return wrapInMaterialTimePickerTheme(
-                                                                                    context,
-                                                                                    child!,
-                                                                                    headerBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                                    headerForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                                    headerTextStyle: FlutterFlowTheme.of(context).headlineLarge.override(
-                                                                                      font: GoogleFonts.poppins(
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                                      ),
-                                                                                      fontSize: 32.0,
-                                                                                      letterSpacing: 0.0,
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                      fontStyle: FlutterFlowTheme.of(context).headlineLarge.fontStyle,
-                                                                                    ),
-                                                                                    pickerBackgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                                    pickerForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                                    selectedDateTimeBackgroundColor: FlutterFlowTheme.of(context).primary,
-                                                                                    selectedDateTimeForegroundColor: FlutterFlowTheme.of(context).info,
-                                                                                    actionButtonForegroundColor: FlutterFlowTheme.of(context).primaryText,
-                                                                                    iconSize: 24.0,
-                                                                                  );
-                                                                                },
-                                                                              );
-                                                                              if (datePicked2Time != null) {
-                                                                                safeSetState(() {
-                                                                                  _model.datePicked2 = DateTime(
-                                                                                    getCurrentTimestamp.year,
-                                                                                    getCurrentTimestamp.month,
-                                                                                    getCurrentTimestamp.day,
-                                                                                    datePicked2Time.hour,
-                                                                                    datePicked2Time.minute,
-                                                                                  );
-                                                                                  _model.time = dateTimeFormat("Hm", _model.datePicked2);
-                                                                                });
-                                                                              }
-                                                                            },
-                                                                            text: _model.time ?? 'Choose Time',
-                                                                            options: FFButtonOptions(
-                                                                              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                                                                              iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                                                              color: const Color(0x00CD4A20),
-                                                                              textStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                                font: GoogleFonts.poppins(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                ),
-                                                                                color: Colors.white,
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                              ),
-                                                                              elevation: 0.0,
-                                                                              borderRadius: BorderRadius.circular(8.0),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                )
-
-                                                              ),
+                                                                    ],
+                                                                  )),
                                                               Padding(
-                                                                padding: const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                    16.0,
-                                                                    25.0,
-                                                                    16.0,
-                                                                    25.0),
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        16.0,
+                                                                        25.0,
+                                                                        16.0,
+                                                                        25.0),
                                                                 child: Row(
                                                                   mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
+                                                                      MainAxisSize
+                                                                          .max,
                                                                   mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
                                                                   children: [
                                                                     Expanded(
                                                                       child:
-                                                                      Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          Padding(
+                                                                        padding: const EdgeInsetsDirectional
+                                                                            .fromSTEB(
                                                                             0.0,
                                                                             0.0,
                                                                             10.0,
                                                                             0.0),
                                                                         child:
-                                                                        InkWell(
+                                                                            InkWell(
                                                                           splashColor:
-                                                                          Colors.transparent,
+                                                                              Colors.transparent,
                                                                           focusColor:
-                                                                          Colors.transparent,
+                                                                              Colors.transparent,
                                                                           hoverColor:
-                                                                          Colors.transparent,
+                                                                              Colors.transparent,
                                                                           highlightColor:
-                                                                          Colors.transparent,
+                                                                              Colors.transparent,
                                                                           onTap:
                                                                               () async {
                                                                             _model.isEnabled =
-                                                                            false;
+                                                                                false;
                                                                             safeSetState(() {});
                                                                           },
                                                                           child:
-                                                                          Container(
+                                                                              Container(
                                                                             decoration:
-                                                                            BoxDecoration(
+                                                                                BoxDecoration(
                                                                               borderRadius: BorderRadius.circular(12.0),
                                                                               border: Border.all(
                                                                                 color: const Color(0xFF4E4E4E),
                                                                               ),
                                                                             ),
                                                                             child:
-                                                                            Align(
+                                                                                Align(
                                                                               alignment: const AlignmentDirectional(0.0, 0.0),
                                                                               child: Padding(
                                                                                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 14.0),
                                                                                 child: Text(
                                                                                   'Cancel',
                                                                                   style: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                                    font: GoogleFonts.poppins(
-                                                                                      fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                      fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                    ),
-                                                                                    color: Colors.white,
-                                                                                    letterSpacing: 0.0,
-                                                                                    fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                    fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                  ),
+                                                                                        font: GoogleFonts.poppins(
+                                                                                          fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                          fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                        ),
+                                                                                        color: Colors.white,
+                                                                                        letterSpacing: 0.0,
+                                                                                        fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                        fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                      ),
                                                                                 ),
                                                                               ),
                                                                             ),
@@ -1537,13 +1573,13 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                     ),
                                                                     Expanded(
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         height:
-                                                                        54.0,
+                                                                            54.0,
                                                                         decoration:
-                                                                        BoxDecoration(
+                                                                            BoxDecoration(
                                                                           gradient:
-                                                                          const LinearGradient(
+                                                                              const LinearGradient(
                                                                             colors: [
                                                                               Color(0xFFDD7325),
                                                                               Color(0xFFD69E7E),
@@ -1555,27 +1591,28 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                               1.0
                                                                             ],
                                                                             begin:
-                                                                            AlignmentDirectional(0.0, 1.0),
+                                                                                AlignmentDirectional(0.0, 1.0),
                                                                             end:
-                                                                            AlignmentDirectional(0, -1.0),
+                                                                                AlignmentDirectional(0, -1.0),
                                                                           ),
                                                                           borderRadius:
-                                                                          BorderRadius.circular(12.0),
+                                                                              BorderRadius.circular(12.0),
                                                                           border:
-                                                                          Border.all(
+                                                                              Border.all(
                                                                             color:
-                                                                            const Color(0xFF4E4E4E),
+                                                                                const Color(0xFF4E4E4E),
                                                                           ),
                                                                         ),
                                                                         child:
-                                                                        Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                            Padding(
+                                                                          padding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
                                                                               0.0,
                                                                               14.0,
                                                                               0.0,
                                                                               14.0),
                                                                           child:
-                                                                          FFButtonWidget(
+                                                                              FFButtonWidget(
                                                                             onPressed:
                                                                                 () async {
                                                                               _model.isValid = true;
@@ -1747,22 +1784,22 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                               safeSetState(() {});
                                                                             },
                                                                             text:
-                                                                            'Create Now',
+                                                                                'Create Now',
                                                                             options:
-                                                                            FFButtonOptions(
+                                                                                FFButtonOptions(
                                                                               padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                                                                               iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                                                               color: const Color(0x00CD4A20),
                                                                               textStyle: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                                font: GoogleFonts.poppins(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                ),
-                                                                                color: Colors.white,
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                              ),
+                                                                                    font: GoogleFonts.poppins(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                    ),
+                                                                                    color: Colors.white,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                  ),
                                                                               elevation: 0.0,
                                                                               borderRadius: BorderRadius.circular(8.0),
                                                                             ),
@@ -1784,70 +1821,72 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                 Expanded(
                                                   child: Container(
                                                     height: MediaQuery.sizeOf(
-                                                        context)
-                                                        .height *
+                                                                context)
+                                                            .height *
                                                         0.4,
-                                                    decoration: const BoxDecoration(),
+                                                    decoration:
+                                                        const BoxDecoration(),
                                                     child: Visibility(
                                                       visible:
-                                                      !_model.isEnabled,
+                                                          !_model.isEnabled,
                                                       child: Builder(
                                                         builder: (context) {
                                                           final teamList =
                                                               DashboardGroup
-                                                                  .getteamdetailCall
-                                                                  .teamList(
-                                                                tabBarGetteamdetailResponse
-                                                                    .jsonBody,
-                                                              )
-                                                                  ?.toList() ??
+                                                                      .getteamdetailCall
+                                                                      .teamList(
+                                                                        tabBarGetteamdetailResponse
+                                                                            .jsonBody,
+                                                                      )
+                                                                      ?.toList() ??
                                                                   [];
                                                           _model.debugGeneratorVariables[
-                                                          'teamList${teamList.length > 100 ? ' (first 100)' : ''}'] =
+                                                                  'teamList${teamList.length > 100 ? ' (first 100)' : ''}'] =
                                                               debugSerializeParam(
-                                                                teamList.take(100),
-                                                                ParamType.JSON,
-                                                                isList: true,
-                                                                link:
+                                                            teamList.take(100),
+                                                            ParamType.JSON,
+                                                            isList: true,
+                                                            link:
                                                                 'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=PlayWithFriends',
-                                                                name: 'dynamic',
-                                                                nullable: false,
-                                                              );
+                                                            name: 'dynamic',
+                                                            nullable: false,
+                                                          );
                                                           debugLogWidgetClass(
                                                               _model);
 
                                                           return ListView
                                                               .builder(
                                                             padding:
-                                                            EdgeInsets.zero,
+                                                                EdgeInsets.zero,
                                                             shrinkWrap: true,
                                                             scrollDirection:
-                                                            Axis.vertical,
+                                                                Axis.vertical,
                                                             itemCount:
-                                                            teamList.length,
+                                                                teamList.length,
                                                             itemBuilder: (context,
                                                                 teamListIndex) {
                                                               final teamListItem =
-                                                              teamList[
-                                                              teamListIndex];
+                                                                  teamList[
+                                                                      teamListIndex];
                                                               return Padding(
-                                                                padding: const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                    0.0,
-                                                                    14.0,
-                                                                    0.0,
-                                                                    14.0),
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        0.0,
+                                                                        14.0,
+                                                                        0.0,
+                                                                        14.0),
                                                                 child: InkWell(
                                                                   splashColor:
-                                                                  Colors
-                                                                      .transparent,
+                                                                      Colors
+                                                                          .transparent,
                                                                   focusColor: Colors
                                                                       .transparent,
                                                                   hoverColor: Colors
                                                                       .transparent,
                                                                   highlightColor:
-                                                                  Colors
-                                                                      .transparent,
+                                                                      Colors
+                                                                          .transparent,
                                                                   onTap:
                                                                       () async {
                                                                     context
@@ -1855,9 +1894,9 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                       TeamDetailsWidget
                                                                           .routeName,
                                                                       queryParameters:
-                                                                      {
+                                                                          {
                                                                         'teamIndex':
-                                                                        serializeParam(
+                                                                            serializeParam(
                                                                           teamListIndex,
                                                                           ParamType
                                                                               .int,
@@ -1866,50 +1905,51 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                     );
                                                                   },
                                                                   child:
-                                                                  Container(
+                                                                      Container(
                                                                     width: double
                                                                         .infinity,
                                                                     decoration:
-                                                                    BoxDecoration(
+                                                                        BoxDecoration(
                                                                       color: Theme.of(context).brightness ==
-                                                                          Brightness
-                                                                              .dark
+                                                                              Brightness
+                                                                                  .dark
                                                                           ? const Color(
-                                                                          0xFF1C1C22)
+                                                                              0xFF1C1C22)
                                                                           : Colors
-                                                                          .white,
+                                                                              .white,
                                                                       borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          15.0),
+                                                                          BorderRadius.circular(
+                                                                              15.0),
                                                                       border:
-                                                                      Border
-                                                                          .all(
+                                                                          Border
+                                                                              .all(
                                                                         color: Theme.of(context).brightness ==
-                                                                            Brightness.dark
+                                                                                Brightness.dark
                                                                             ? const Color(0xFF4E4E4E)
                                                                             : Colors.white,
                                                                       ),
                                                                     ),
                                                                     child:
-                                                                    Column(
+                                                                        Column(
                                                                       mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
+                                                                          MainAxisSize
+                                                                              .max,
                                                                       children: [
                                                                         Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          padding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
                                                                               14.0,
                                                                               14.0,
                                                                               14.0,
                                                                               14.0),
                                                                           child:
-                                                                          Row(
+                                                                              Row(
                                                                             mainAxisSize:
-                                                                            MainAxisSize.max,
+                                                                                MainAxisSize.max,
                                                                             mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
+                                                                                MainAxisAlignment.start,
                                                                             crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
+                                                                                CrossAxisAlignment.center,
                                                                             children: [
                                                                               Column(
                                                                                 mainAxisSize: MainAxisSize.max,
@@ -1960,14 +2000,14 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                               r'''$.title''',
                                                                                             ).toString(),
                                                                                             style: FlutterFlowTheme.of(context).titleLarge.override(
-                                                                                              font: GoogleFonts.poppins(
-                                                                                                fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                              ),
-                                                                                              letterSpacing: 0.0,
-                                                                                              fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                              fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                                            ),
+                                                                                                  font: GoogleFonts.poppins(
+                                                                                                    fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                                    fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                                  ),
+                                                                                                  letterSpacing: 0.0,
+                                                                                                  fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                                                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                                                ),
                                                                                           ),
                                                                                         ],
                                                                                       ),
@@ -1995,15 +2035,15 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                   ).toString()}  Member',
                                                                                                   textAlign: TextAlign.start,
                                                                                                   style: FlutterFlowTheme.of(context).bodySmall.override(
-                                                                                                    font: GoogleFonts.poppins(
-                                                                                                      fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                                      fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                                                    ),
-                                                                                                    color: FlutterFlowTheme.of(context).tertiary,
-                                                                                                    letterSpacing: 0.0,
-                                                                                                    fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                                    fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                                                  ),
+                                                                                                        font: GoogleFonts.poppins(
+                                                                                                          fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                                                          fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                                                        ),
+                                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                                        letterSpacing: 0.0,
+                                                                                                        fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                                                        fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                                                      ),
                                                                                                 ),
                                                                                               ),
                                                                                             ],
@@ -2026,15 +2066,15 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                   'Ranking Complete',
                                                                                                   textAlign: TextAlign.start,
                                                                                                   style: FlutterFlowTheme.of(context).bodySmall.override(
-                                                                                                    font: GoogleFonts.poppins(
-                                                                                                      fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                                      fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                                                    ),
-                                                                                                    color: FlutterFlowTheme.of(context).tertiary,
-                                                                                                    letterSpacing: 0.0,
-                                                                                                    fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                                    fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                                                  ),
+                                                                                                        font: GoogleFonts.poppins(
+                                                                                                          fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                                                          fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                                                        ),
+                                                                                                        color: FlutterFlowTheme.of(context).tertiary,
+                                                                                                        letterSpacing: 0.0,
+                                                                                                        fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                                                        fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                                                      ),
                                                                                                 ),
                                                                                               ),
                                                                                             ],
@@ -2049,17 +2089,18 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                           ),
                                                                         ),
                                                                         Padding(
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          padding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
                                                                               10.0,
                                                                               4.0,
                                                                               10.0,
                                                                               10.0),
                                                                           child:
-                                                                          Row(
+                                                                              Row(
                                                                             mainAxisSize:
-                                                                            MainAxisSize.max,
+                                                                                MainAxisSize.max,
                                                                             mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                                MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Builder(
                                                                                 builder: (context) => InkWell(
@@ -2160,7 +2201,9 @@ I'd like to invite you to join and discover your favorite basketball legends!
 Use my invite code $inviteCode to sign up and start exploring.
 
 Download the app now and join the fun!
-You can download it here: $appLink''';
+You can download it here
+Android: https://play.google.com/store/apps/details?id=com.voteforgoat.app
+iOS: $appLink''';
                                                                                         } else {
                                                                                           customInviteMessage = '''Hey!
 Do you know the Vote The Goat app?
@@ -2185,7 +2228,7 @@ Download the app now and join the fun!''';
 
                                                                                       // Share the message
                                                                                       unawaited(
-                                                                                            () async {
+                                                                                        () async {
                                                                                           await Share.share(
                                                                                             customInviteMessage,
                                                                                             sharePositionOrigin: getWidgetBoundingBox(context),
@@ -2209,66 +2252,61 @@ Download the app now and join the fun!''';
                                                                                       );
                                                                                     }
                                                                                   },
+
                                                                                   ///
 
-                                                                                  child:
-
-
-                                                                                  getJsonField(
-                                                                                    teamListItem,
-                                                                                    r'''$.is_invite''',
-                                                                                  ) == 0 ?  const SizedBox()  :
-
-                                                                                  Container(
-                                                                                    width: MediaQuery.sizeOf(context).width * 0.42,
-                                                                                    decoration: BoxDecoration(
-                                                                                      gradient: const LinearGradient(
-                                                                                        colors: [
-                                                                                          Color(0xFFDD7325),
-                                                                                          Color(0xFFD69E7E),
-                                                                                          Color(0xFFDD7325)
-                                                                                        ],
-                                                                                        stops: [
-                                                                                          0.0,
-                                                                                          0.5,
-                                                                                          1.0
-                                                                                        ],
-                                                                                        begin: AlignmentDirectional(0.0, 1.0),
-                                                                                        end: AlignmentDirectional(0, -1.0),
-                                                                                      ),
-                                                                                      borderRadius: BorderRadius.circular(12.0),
-                                                                                    ),
-                                                                                    child: Padding(
-                                                                                      padding: const EdgeInsetsDirectional.fromSTEB(10.0, 6.0, 10.0, 6.0),
-                                                                                      child: Row(
-                                                                                        mainAxisSize: MainAxisSize.max,
-                                                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                                                        children: [
-                                                                                          const Icon(
-                                                                                            Icons.share_sharp,
-                                                                                            color: Colors.white,
-                                                                                            size: 16.0,
+                                                                                  child: getJsonField(
+                                                                                            teamListItem,
+                                                                                            r'''$.is_invite''',
+                                                                                          ) ==
+                                                                                          0
+                                                                                      ? const SizedBox()
+                                                                                      : Container(
+                                                                                          width: MediaQuery.sizeOf(context).width * 0.42,
+                                                                                          decoration: BoxDecoration(
+                                                                                            gradient: const LinearGradient(
+                                                                                              colors: [
+                                                                                                Color(0xFFDD7325),
+                                                                                                Color(0xFFD69E7E),
+                                                                                                Color(0xFFDD7325)
+                                                                                              ],
+                                                                                              stops: [0.0, 0.5, 1.0],
+                                                                                              begin: AlignmentDirectional(0.0, 1.0),
+                                                                                              end: AlignmentDirectional(0, -1.0),
+                                                                                            ),
+                                                                                            borderRadius: BorderRadius.circular(12.0),
                                                                                           ),
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                                                                                            child: Text(
-                                                                                              'Invite Friends',
-                                                                                              style: FlutterFlowTheme.of(context).titleMedium.override(
-                                                                                                font: GoogleFonts.poppins(
-                                                                                                  fontWeight: FontWeight.w500,
-                                                                                                  fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsetsDirectional.fromSTEB(10.0, 6.0, 10.0, 6.0),
+                                                                                            child: Row(
+                                                                                              mainAxisSize: MainAxisSize.max,
+                                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                                              children: [
+                                                                                                const Icon(
+                                                                                                  Icons.share_sharp,
+                                                                                                  color: Colors.white,
+                                                                                                  size: 16.0,
                                                                                                 ),
-                                                                                                color: Colors.white,
-                                                                                                letterSpacing: 0.0,
-                                                                                                fontWeight: FontWeight.w500,
-                                                                                                fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                                              ),
+                                                                                                Padding(
+                                                                                                  padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                                                                                                  child: Text(
+                                                                                                    'Invite Friends',
+                                                                                                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                                          font: GoogleFonts.poppins(
+                                                                                                            fontWeight: FontWeight.w500,
+                                                                                                            fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                                          ),
+                                                                                                          color: Colors.white,
+                                                                                                          letterSpacing: 0.0,
+                                                                                                          fontWeight: FontWeight.w500,
+                                                                                                          fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                                        ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ],
                                                                                             ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
+                                                                                        ),
                                                                                 ),
                                                                               ),
                                                                               Align(
@@ -2305,7 +2343,6 @@ Download the app now and join the fun!''';
                                                                                       }.withoutNulls,
                                                                                     );
                                                                                   },
-
 
                                                                                   child: Container(
                                                                                     width: MediaQuery.sizeOf(context).width * 0.42,
@@ -2346,15 +2383,15 @@ Download the app now and join the fun!''';
                                                                                                 child: Text(
                                                                                                   'Ranking',
                                                                                                   style: FlutterFlowTheme.of(context).titleMedium.override(
-                                                                                                    font: GoogleFonts.poppins(
-                                                                                                      fontWeight: FontWeight.w500,
-                                                                                                      fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                                                    ),
-                                                                                                    color: Colors.white,
-                                                                                                    letterSpacing: 0.0,
-                                                                                                    fontWeight: FontWeight.w500,
-                                                                                                    fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                                                  ),
+                                                                                                        font: GoogleFonts.poppins(
+                                                                                                          fontWeight: FontWeight.w500,
+                                                                                                          fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                                        ),
+                                                                                                        color: Colors.white,
+                                                                                                        letterSpacing: 0.0,
+                                                                                                        fontWeight: FontWeight.w500,
+                                                                                                        fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                                      ),
                                                                                                 ),
                                                                                               ),
                                                                                             ),
@@ -2382,27 +2419,19 @@ Download the app now and join the fun!''';
                                                 ),
                                             ],
                                           ),
-
-
-
-
-
-
-
-
                                           if (!_model.isEnabled)
-                                            Align(
-                                              alignment:  AlignmentDirectional(
-                                                  1.0,
-                                                  MediaQuery.of(context).size.width >= 600 ? 1 : 0.88
-
-                                              ),
+                                            Positioned(
+                                              right: 0.0,
+                                              bottom: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.09,
                                               child: InkWell(
                                                 splashColor: Colors.transparent,
                                                 focusColor: Colors.transparent,
                                                 hoverColor: Colors.transparent,
                                                 highlightColor:
-                                                Colors.transparent,
+                                                    Colors.transparent,
                                                 onTap: () async {
                                                   _model.isEnabled = true;
                                                   safeSetState(() {});
@@ -2411,30 +2440,31 @@ Download the app now and join the fun!''';
                                                   width: 47.0,
                                                   height: 47.0,
                                                   decoration: BoxDecoration(
-                                                    gradient: const LinearGradient(
+                                                    gradient:
+                                                        const LinearGradient(
                                                       colors: [
                                                         Color(0xFFDD7325),
                                                         Color(0xFFDD7325)
                                                       ],
                                                       stops: [0.0, 1.0],
                                                       begin:
-                                                      AlignmentDirectional(
-                                                          1.0, -0.98),
+                                                          AlignmentDirectional(
+                                                              1.0, -0.98),
                                                       end: AlignmentDirectional(
                                                           -1.0, 0.98),
                                                     ),
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        12.0),
+                                                        BorderRadius.circular(
+                                                            12.0),
                                                   ),
                                                   child: const Padding(
                                                     padding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        14.0,
-                                                        14.0,
-                                                        14.0,
-                                                        14.0),
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                14.0,
+                                                                14.0,
+                                                                14.0,
+                                                                14.0),
                                                     child: Icon(
                                                       Icons.add_sharp,
                                                       color: Colors.white,
@@ -2452,27 +2482,30 @@ Download the app now and join the fun!''';
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, -1.0),
+                                                alignment:
+                                                    const AlignmentDirectional(
+                                                        0.0, -1.0),
                                                 child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                      0.0, 20.0, 0.0, 0.0),
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
+                                                          0.0, 20.0, 0.0, 0.0),
                                                   child: Container(
                                                     width: double.infinity,
                                                     decoration: BoxDecoration(
                                                       color: (Theme.of(context)
-                                                          .brightness ==
-                                                          Brightness
-                                                              .dark) ==
-                                                          true
-                                                          ? const Color(0x26FFFFFF)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .dark) ==
+                                                              true
+                                                          ? const Color(
+                                                              0x26FFFFFF)
                                                           : Colors.white,
                                                       boxShadow: const [
                                                         BoxShadow(
                                                           blurRadius: 10.0,
                                                           color:
-                                                          Color(0x33000000),
+                                                              Color(0x33000000),
                                                           offset: Offset(
                                                             0.0,
                                                             2.0,
@@ -2480,224 +2513,221 @@ Download the app now and join the fun!''';
                                                         )
                                                       ],
                                                       borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                          BorderRadius.circular(
+                                                              10.0),
                                                     ),
                                                     child: Form(
                                                       key: _model.formKey2,
                                                       autovalidateMode:
-                                                      AutovalidateMode
-                                                          .disabled,
+                                                          AutovalidateMode
+                                                              .disabled,
                                                       child: Padding(
                                                         padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                            3.0,
-                                                            5.0,
-                                                            3.0,
-                                                            0.0),
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(3.0,
+                                                                5.0, 3.0, 0.0),
                                                         child: Column(
                                                           mainAxisSize:
-                                                          MainAxisSize.min,
+                                                              MainAxisSize.min,
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                  0.0,
-                                                                  3.0,
-                                                                  0.0,
-                                                                  0.0),
+                                                                  const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                      0.0,
+                                                                      3.0,
+                                                                      0.0,
+                                                                      0.0),
                                                               child: SizedBox(
                                                                 width: double
                                                                     .infinity,
                                                                 child:
-                                                                TextFormField(
+                                                                    TextFormField(
                                                                   controller: _model
                                                                       .teamNameTextController2,
                                                                   focusNode: _model
                                                                       .teamNameFocusNode2,
                                                                   autofocus:
-                                                                  false,
+                                                                      false,
                                                                   obscureText:
-                                                                  false,
+                                                                      false,
                                                                   decoration:
-                                                                  InputDecoration(
+                                                                      InputDecoration(
                                                                     isDense:
-                                                                    true,
+                                                                        true,
                                                                     labelStyle: FlutterFlowTheme.of(
-                                                                        context)
+                                                                            context)
                                                                         .labelMedium
                                                                         .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontStyle,
-                                                                    ),
+                                                                          font:
+                                                                              GoogleFonts.poppins(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontStyle,
+                                                                        ),
                                                                     hintText:
-                                                                    'Enter Invite Code\n',
+                                                                        'Enter Invite Code\n',
                                                                     hintStyle: FlutterFlowTheme.of(
-                                                                        context)
+                                                                            context)
                                                                         .labelMedium
                                                                         .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontStyle,
-                                                                    ),
+                                                                          font:
+                                                                              GoogleFonts.poppins(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontStyle,
+                                                                        ),
                                                                     enabledBorder:
-                                                                    OutlineInputBorder(
+                                                                        OutlineInputBorder(
                                                                       borderSide:
-                                                                      const BorderSide(
+                                                                          const BorderSide(
                                                                         color: Color(
                                                                             0x00000000),
                                                                         width:
-                                                                        1.0,
+                                                                            1.0,
                                                                       ),
                                                                       borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          8.0),
+                                                                          BorderRadius.circular(
+                                                                              8.0),
                                                                     ),
                                                                     focusedBorder:
-                                                                    OutlineInputBorder(
+                                                                        OutlineInputBorder(
                                                                       borderSide:
-                                                                      const BorderSide(
+                                                                          const BorderSide(
                                                                         color: Color(
                                                                             0x00000000),
                                                                         width:
-                                                                        1.0,
+                                                                            1.0,
                                                                       ),
                                                                       borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          8.0),
+                                                                          BorderRadius.circular(
+                                                                              8.0),
                                                                     ),
                                                                     errorBorder:
-                                                                    OutlineInputBorder(
+                                                                        OutlineInputBorder(
                                                                       borderSide:
-                                                                      BorderSide(
+                                                                          BorderSide(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .error,
                                                                         width:
-                                                                        1.0,
+                                                                            1.0,
                                                                       ),
                                                                       borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          8.0),
+                                                                          BorderRadius.circular(
+                                                                              8.0),
                                                                     ),
                                                                     focusedErrorBorder:
-                                                                    OutlineInputBorder(
+                                                                        OutlineInputBorder(
                                                                       borderSide:
-                                                                      BorderSide(
+                                                                          BorderSide(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .error,
                                                                         width:
-                                                                        1.0,
+                                                                            1.0,
                                                                       ),
                                                                       borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          8.0),
+                                                                          BorderRadius.circular(
+                                                                              8.0),
                                                                     ),
                                                                     filled:
-                                                                    true,
+                                                                        true,
                                                                     fillColor: (Theme.of(context).brightness == Brightness.dark) ==
-                                                                        true
+                                                                            true
                                                                         ? const Color(
-                                                                        0x80050505)
+                                                                            0x80050505)
                                                                         : const Color(
-                                                                        0x2E050505),
+                                                                            0x2E050505),
                                                                     prefixIcon:
-                                                                    Icon(
+                                                                        Icon(
                                                                       FontAwesomeIcons
                                                                           .basketballBall,
                                                                       color: FlutterFlowTheme.of(
-                                                                          context)
+                                                                              context)
                                                                           .tertiary,
                                                                       size:
-                                                                      24.0,
+                                                                          24.0,
                                                                     ),
                                                                   ),
                                                                   style: FlutterFlowTheme.of(
-                                                                      context)
+                                                                          context)
                                                                       .labelMedium
                                                                       .override(
-                                                                    font: GoogleFonts
-                                                                        .poppins(
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .labelMedium
-                                                                          .fontStyle,
-                                                                    ),
-                                                                    letterSpacing:
-                                                                    0.0,
-                                                                    fontWeight: FlutterFlowTheme.of(context)
-                                                                        .labelMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(context)
-                                                                        .labelMedium
-                                                                        .fontStyle,
-                                                                  ),
+                                                                        font: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .labelMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .labelMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .labelMedium
+                                                                            .fontStyle,
+                                                                      ),
                                                                   cursorColor:
-                                                                  FlutterFlowTheme.of(
-                                                                      context)
-                                                                      .primaryText,
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
                                                                   validator: _model
                                                                       .teamNameTextController2Validator
                                                                       .asValidator(
-                                                                      context),
+                                                                          context),
                                                                 ),
                                                               ),
                                                             ),
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                  16.0,
-                                                                  25.0,
-                                                                  16.0,
-                                                                  25.0),
+                                                                  const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                      16.0,
+                                                                      25.0,
+                                                                      16.0,
+                                                                      25.0),
                                                               child: Row(
                                                                 mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
+                                                                    MainAxisSize
+                                                                        .max,
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
                                                                 children: [
                                                                   Expanded(
                                                                     child:
-                                                                    Container(
+                                                                        Container(
                                                                       width: double
                                                                           .infinity,
                                                                       height:
-                                                                      47.0,
+                                                                          47.0,
                                                                       decoration:
-                                                                      BoxDecoration(
+                                                                          BoxDecoration(
                                                                         gradient:
-                                                                        LinearGradient(
+                                                                            LinearGradient(
                                                                           colors: [
                                                                             FlutterFlowTheme.of(context).peach,
                                                                             const Color(0xFFE09B6E)
@@ -2714,10 +2744,10 @@ Download the app now and join the fun!''';
                                                                               1.0),
                                                                         ),
                                                                         borderRadius:
-                                                                        BorderRadius.circular(12.0),
+                                                                            BorderRadius.circular(12.0),
                                                                       ),
                                                                       child:
-                                                                      FFButtonWidget(
+                                                                          FFButtonWidget(
                                                                         // onPressed:
                                                                         //     () async {
                                                                         //   _model.apiResult5di = await DashboardGroup
@@ -2796,15 +2826,19 @@ Download the app now and join the fun!''';
                                                                         //           () {});
                                                                         // },
 
-                                                                        onPressed: () async {
+                                                                        onPressed:
+                                                                            () async {
                                                                           _model.apiResult5di = await DashboardGroup
                                                                               .joinTeamCall
                                                                               .call(
-                                                                            authToken: FFAppState().authToken,
-                                                                            inviteCode: _model.teamNameTextController2.text,
+                                                                            authToken:
+                                                                                FFAppState().authToken,
+                                                                            inviteCode:
+                                                                                _model.teamNameTextController2.text,
                                                                           );
 
-                                                                          if ((_model.apiResult5di?.succeeded ?? true)) {
+                                                                          if ((_model.apiResult5di?.succeeded ??
+                                                                              true)) {
                                                                             _model.teamNameTextController2?.clear();
 
                                                                             await showDialog(
@@ -2818,20 +2852,18 @@ Download the app now and join the fun!''';
                                                                                     shape: RoundedRectangleBorder(
                                                                                       borderRadius: BorderRadius.circular(16),
                                                                                       side: BorderSide(
-                                                                                        color: (Theme.of(context).brightness == Brightness.dark)
-                                                                                            ? const Color(0xFF4E4E4E)
-                                                                                            : Colors.transparent,
+                                                                                        color: (Theme.of(context).brightness == Brightness.dark) ? const Color(0xFF4E4E4E) : Colors.transparent,
                                                                                         width: 1,
                                                                                       ),
                                                                                     ),
                                                                                     title: Text(
                                                                                       'Success',
                                                                                       style: FlutterFlowTheme.of(context).headlineMedium.override(
-                                                                                        fontFamily: 'Poppins',
-                                                                                        color: FlutterFlowTheme.of(context).primaryText,
-                                                                                        fontSize: 20,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
+                                                                                            fontFamily: 'Poppins',
+                                                                                            color: FlutterFlowTheme.of(context).primaryText,
+                                                                                            fontSize: 20,
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ),
                                                                                     ),
                                                                                     content: Text(
                                                                                       getJsonField(
@@ -2839,10 +2871,10 @@ Download the app now and join the fun!''';
                                                                                         r'''$.message''',
                                                                                       ).toString(),
                                                                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                        fontFamily: 'Poppins',
-                                                                                        color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                        fontSize: 14,
-                                                                                      ),
+                                                                                            fontFamily: 'Poppins',
+                                                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                            fontSize: 14,
+                                                                                          ),
                                                                                     ),
                                                                                     actions: [
                                                                                       TextButton(
@@ -2856,11 +2888,11 @@ Download the app now and join the fun!''';
                                                                                           child: Text(
                                                                                             'OK',
                                                                                             style: FlutterFlowTheme.of(context).titleSmall.override(
-                                                                                              fontFamily: 'Poppins',
-                                                                                              color: Colors.white,
-                                                                                              fontSize: 14,
-                                                                                              fontWeight: FontWeight.w500,
-                                                                                            ),
+                                                                                                  fontFamily: 'Poppins',
+                                                                                                  color: Colors.white,
+                                                                                                  fontSize: 14,
+                                                                                                  fontWeight: FontWeight.w500,
+                                                                                                ),
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -2871,7 +2903,8 @@ Download the app now and join the fun!''';
                                                                               },
                                                                             );
 
-                                                                            _model.foundTeam = await queryTeamsRecordOnce(
+                                                                            _model.foundTeam =
+                                                                                await queryTeamsRecordOnce(
                                                                               queryBuilder: (teamsRecord) => teamsRecord.where(
                                                                                 'inviteCode',
                                                                                 isEqualTo: _model.teamNameTextController2.text,
@@ -2879,7 +2912,8 @@ Download the app now and join the fun!''';
                                                                               limit: 1,
                                                                             );
 
-                                                                            if (_model.foundTeam != null && (_model.foundTeam)!.isNotEmpty) {
+                                                                            if (_model.foundTeam != null &&
+                                                                                (_model.foundTeam)!.isNotEmpty) {
                                                                               await _model.foundTeam!.firstOrNull!.reference.update({
                                                                                 ...mapToFirestore({
                                                                                   'members': FieldValue.arrayUnion([
@@ -2903,20 +2937,18 @@ Download the app now and join the fun!''';
                                                                                     shape: RoundedRectangleBorder(
                                                                                       borderRadius: BorderRadius.circular(16),
                                                                                       side: BorderSide(
-                                                                                        color: (Theme.of(context).brightness == Brightness.dark)
-                                                                                            ? const Color(0xFF4E4E4E)
-                                                                                            : Colors.transparent,
+                                                                                        color: (Theme.of(context).brightness == Brightness.dark) ? const Color(0xFF4E4E4E) : Colors.transparent,
                                                                                         width: 1,
                                                                                       ),
                                                                                     ),
                                                                                     title: Text(
                                                                                       'Error',
                                                                                       style: FlutterFlowTheme.of(context).headlineMedium.override(
-                                                                                        fontFamily: 'Poppins',
-                                                                                        color: FlutterFlowTheme.of(context).primaryText,
-                                                                                        fontSize: 20,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
+                                                                                            fontFamily: 'Poppins',
+                                                                                            color: FlutterFlowTheme.of(context).primaryText,
+                                                                                            fontSize: 20,
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ),
                                                                                     ),
                                                                                     content: Text(
                                                                                       getJsonField(
@@ -2924,10 +2956,10 @@ Download the app now and join the fun!''';
                                                                                         r'''$.message''',
                                                                                       ).toString(),
                                                                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                        fontFamily: 'Poppins',
-                                                                                        color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                        fontSize: 14,
-                                                                                      ),
+                                                                                            fontFamily: 'Poppins',
+                                                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                            fontSize: 14,
+                                                                                          ),
                                                                                     ),
                                                                                     actions: [
                                                                                       TextButton(
@@ -2941,11 +2973,11 @@ Download the app now and join the fun!''';
                                                                                           child: Text(
                                                                                             'OK',
                                                                                             style: FlutterFlowTheme.of(context).titleSmall.override(
-                                                                                              fontFamily: 'Poppins',
-                                                                                              color: Colors.white,
-                                                                                              fontSize: 14,
-                                                                                              fontWeight: FontWeight.w500,
-                                                                                            ),
+                                                                                                  fontFamily: 'Poppins',
+                                                                                                  color: Colors.white,
+                                                                                                  fontSize: 14,
+                                                                                                  fontWeight: FontWeight.w500,
+                                                                                                ),
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -2957,42 +2989,45 @@ Download the app now and join the fun!''';
                                                                             );
                                                                           }
 
-                                                                          safeSetState(() {});
+                                                                          safeSetState(
+                                                                              () {});
                                                                         },
                                                                         text:
-                                                                        'Join Team',
+                                                                            'Join Team',
                                                                         options:
-                                                                        FFButtonOptions(
+                                                                            FFButtonOptions(
                                                                           height:
-                                                                          40.0,
-                                                                          padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                              40.0,
+                                                                          padding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
                                                                               16.0,
                                                                               0.0,
                                                                               16.0,
                                                                               0.0),
-                                                                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          iconPadding: const EdgeInsetsDirectional
+                                                                              .fromSTEB(
                                                                               0.0,
                                                                               0.0,
                                                                               0.0,
                                                                               0.0),
                                                                           color:
-                                                                          const Color(0x00CD4A20),
+                                                                              const Color(0x00CD4A20),
                                                                           textStyle: FlutterFlowTheme.of(context)
                                                                               .titleSmall
                                                                               .override(
-                                                                            font: GoogleFonts.poppins(
-                                                                              fontWeight: FontWeight.w500,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                            ),
-                                                                            color: Colors.white,
-                                                                            letterSpacing: 0.0,
-                                                                            fontWeight: FontWeight.w500,
-                                                                            fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                          ),
+                                                                                font: GoogleFonts.poppins(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                ),
+                                                                                color: Colors.white,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                              ),
                                                                           elevation:
-                                                                          0.0,
+                                                                              0.0,
                                                                           borderRadius:
-                                                                          BorderRadius.circular(8.0),
+                                                                              BorderRadius.circular(8.0),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -3007,386 +3042,365 @@ Download the app now and join the fun!''';
                                                   ),
                                                 ),
                                               ),
-
-
-                                              FFAppState().isRead ?
-
-
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, -1.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                      0.0, 28.0, 0.0, 0.0),
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: (Theme.of(context)
-                                                          .brightness ==
-                                                          Brightness
-                                                              .dark) ==
-                                                          true
-                                                          ? const Color(0x26FFFFFF)
-                                                          : const Color(0xD6FFFFFF),
-                                                      boxShadow: const [
-                                                        BoxShadow(
-                                                          blurRadius: 10.0,
-                                                          color:
-                                                          Color(0x33000000),
-                                                          offset: Offset(
-                                                            0.0,
-                                                            2.0,
+                                              FFAppState().isRead
+                                                  ? Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, -1.0),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(0.0,
+                                                                28.0, 0.0, 0.0),
+                                                        child: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: (Theme.of(context)
+                                                                            .brightness ==
+                                                                        Brightness
+                                                                            .dark) ==
+                                                                    true
+                                                                ? const Color(
+                                                                    0x26FFFFFF)
+                                                                : const Color(
+                                                                    0xD6FFFFFF),
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                blurRadius:
+                                                                    10.0,
+                                                                color: Color(
+                                                                    0x33000000),
+                                                                offset: Offset(
+                                                                  0.0,
+                                                                  2.0,
+                                                                ),
+                                                              )
+                                                            ],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
                                                           ),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        16.0,
+                                                                        13.0,
+                                                                        16.0,
+                                                                        15.0),
+                                                                child: Text(
+                                                                  'How to Join a Team',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .headlineLarge
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .headlineLarge
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .headlineLarge
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .headlineLarge
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .headlineLarge
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        16.0,
+                                                                        0.0,
+                                                                        16.0,
+                                                                        10.0),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Container(
+                                                                      width:
+                                                                          4.0,
+                                                                      height:
+                                                                          4.0,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .tertiary,
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsetsDirectional
+                                                                            .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Ask for an invitation link from a team member',
+                                                                          maxLines:
+                                                                              2,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .override(
+                                                                                font: GoogleFonts.poppins(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              // Padding(
+                                                              //   padding:
+                                                              //   const EdgeInsetsDirectional
+                                                              //       .fromSTEB(
+                                                              //       16.0,
+                                                              //       0.0,
+                                                              //       16.0,
+                                                              //       10.0),
+                                                              //   child: Row(
+                                                              //     mainAxisSize:
+                                                              //     MainAxisSize
+                                                              //         .max,
+                                                              //     children: [
+                                                              //       Container(
+                                                              //         width: 4.0,
+                                                              //         height: 4.0,
+                                                              //         decoration:
+                                                              //         BoxDecoration(
+                                                              //           color: FlutterFlowTheme.of(
+                                                              //               context)
+                                                              //               .tertiary,
+                                                              //           shape: BoxShape
+                                                              //               .circle,
+                                                              //         ),
+                                                              //       ),
+                                                              //       Expanded(
+                                                              //         child: Padding(
+                                                              //           padding: const EdgeInsetsDirectional
+                                                              //               .fromSTEB(
+                                                              //               10.0,
+                                                              //               0.0,
+                                                              //               0.0,
+                                                              //               0.0),
+                                                              //           child: Text(
+                                                              //             'Complete Your Ranking first',
+                                                              //             maxLines: 2,
+                                                              //             style: FlutterFlowTheme.of(
+                                                              //                 context)
+                                                              //                 .titleMedium
+                                                              //                 .override(
+                                                              //               font:
+                                                              //               GoogleFonts.poppins(
+                                                              //                 fontWeight:
+                                                              //                 FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                              //                 fontStyle:
+                                                              //                 FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                              //               ),
+                                                              //               letterSpacing:
+                                                              //               0.0,
+                                                              //               fontWeight: FlutterFlowTheme.of(context)
+                                                              //                   .titleMedium
+                                                              //                   .fontWeight,
+                                                              //               fontStyle: FlutterFlowTheme.of(context)
+                                                              //                   .titleMedium
+                                                              //                   .fontStyle,
+                                                              //             ),
+                                                              //           ),
+                                                              //         ),
+                                                              //       ),
+                                                              //     ],
+                                                              //   ),
+                                                              // ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        16.0,
+                                                                        0.0,
+                                                                        16.0,
+                                                                        10.0),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Container(
+                                                                      width:
+                                                                          4.0,
+                                                                      height:
+                                                                          4.0,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .tertiary,
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsetsDirectional
+                                                                            .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Enter the invitation code to join the team',
+                                                                          maxLines:
+                                                                              2,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .override(
+                                                                                font: GoogleFonts.poppins(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                        16.0,
+                                                                        0.0,
+                                                                        16.0,
+                                                                        30.0),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Container(
+                                                                      width:
+                                                                          4.0,
+                                                                      height:
+                                                                          4.0,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .tertiary,
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsetsDirectional
+                                                                            .fromSTEB(
+                                                                            10.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Start collaborating on team rankings',
+                                                                          maxLines:
+                                                                              2,
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .titleMedium
+                                                                              .override(
+                                                                                font: GoogleFonts.poppins(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleMedium.fontStyle,
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox(
+                                                      height: 0.0,
+                                                      width: 0.0,
                                                     ),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                      MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              16.0,
-                                                              13.0,
-                                                              16.0,
-                                                              15.0),
-                                                          child: Text(
-                                                            'How to Join a Team',
-                                                            style: FlutterFlowTheme
-                                                                .of(context)
-                                                                .headlineLarge
-                                                                .override(
-                                                              font: GoogleFonts
-                                                                  .poppins(
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                    context)
-                                                                    .headlineLarge
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                    context)
-                                                                    .headlineLarge
-                                                                    .fontStyle,
-                                                              ),
-                                                              letterSpacing:
-                                                              0.0,
-                                                              fontWeight: FlutterFlowTheme.of(
-                                                                  context)
-                                                                  .headlineLarge
-                                                                  .fontWeight,
-                                                              fontStyle: FlutterFlowTheme.of(
-                                                                  context)
-                                                                  .headlineLarge
-                                                                  .fontStyle,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              16.0,
-                                                              0.0,
-                                                              16.0,
-                                                              10.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .max,
-                                                            children: [
-                                                              Container(
-                                                                width: 4.0,
-                                                                height: 4.0,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                      context)
-                                                                      .tertiary,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                      10.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                                  child: Text(
-                                                                    'Ask for an invitation link from a team member',
-                                                                    maxLines: 2,
-                                                                    style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                        .titleMedium
-                                                                        .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontStyle,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        // Padding(
-                                                        //   padding:
-                                                        //   const EdgeInsetsDirectional
-                                                        //       .fromSTEB(
-                                                        //       16.0,
-                                                        //       0.0,
-                                                        //       16.0,
-                                                        //       10.0),
-                                                        //   child: Row(
-                                                        //     mainAxisSize:
-                                                        //     MainAxisSize
-                                                        //         .max,
-                                                        //     children: [
-                                                        //       Container(
-                                                        //         width: 4.0,
-                                                        //         height: 4.0,
-                                                        //         decoration:
-                                                        //         BoxDecoration(
-                                                        //           color: FlutterFlowTheme.of(
-                                                        //               context)
-                                                        //               .tertiary,
-                                                        //           shape: BoxShape
-                                                        //               .circle,
-                                                        //         ),
-                                                        //       ),
-                                                        //       Expanded(
-                                                        //         child: Padding(
-                                                        //           padding: const EdgeInsetsDirectional
-                                                        //               .fromSTEB(
-                                                        //               10.0,
-                                                        //               0.0,
-                                                        //               0.0,
-                                                        //               0.0),
-                                                        //           child: Text(
-                                                        //             'Complete Your Ranking first',
-                                                        //             maxLines: 2,
-                                                        //             style: FlutterFlowTheme.of(
-                                                        //                 context)
-                                                        //                 .titleMedium
-                                                        //                 .override(
-                                                        //               font:
-                                                        //               GoogleFonts.poppins(
-                                                        //                 fontWeight:
-                                                        //                 FlutterFlowTheme.of(context).titleMedium.fontWeight,
-                                                        //                 fontStyle:
-                                                        //                 FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                        //               ),
-                                                        //               letterSpacing:
-                                                        //               0.0,
-                                                        //               fontWeight: FlutterFlowTheme.of(context)
-                                                        //                   .titleMedium
-                                                        //                   .fontWeight,
-                                                        //               fontStyle: FlutterFlowTheme.of(context)
-                                                        //                   .titleMedium
-                                                        //                   .fontStyle,
-                                                        //             ),
-                                                        //           ),
-                                                        //         ),
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-                                                        Padding(
-                                                          padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              16.0,
-                                                              0.0,
-                                                              16.0,
-                                                              10.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .max,
-                                                            children: [
-                                                              Container(
-                                                                width: 4.0,
-                                                                height: 4.0,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                      context)
-                                                                      .tertiary,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                      10.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                                  child: Text(
-                                                                    'Enter the invitation code to join the team',
-                                                                    maxLines: 2,
-                                                                    style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                        .titleMedium
-                                                                        .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontStyle,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              16.0,
-                                                              0.0,
-                                                              16.0,
-                                                              30.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .max,
-                                                            children: [
-                                                              Container(
-                                                                width: 4.0,
-                                                                height: 4.0,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  color: FlutterFlowTheme.of(
-                                                                      context)
-                                                                      .tertiary,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                      10.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                                  child: Text(
-                                                                    'Start collaborating on team rankings',
-                                                                    maxLines: 2,
-                                                                    style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                        .titleMedium
-                                                                        .override(
-                                                                      font:
-                                                                      GoogleFonts.poppins(
-                                                                        fontWeight:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontWeight,
-                                                                        fontStyle:
-                                                                        FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                      0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(context)
-                                                                          .titleMedium
-                                                                          .fontStyle,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )    : const SizedBox(
-                                                height: 0.0,
-                                                width: 0.0,
-                                              ),
                                             ],
                                           ),
-                                          Align(
-                                            alignment:
-                                            const AlignmentDirectional(1.0, 1.0),
-                                            child: Padding(
-                                              padding:  EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                  0.0, 0.0, 0.0,
-
-                                                  MediaQuery.of(context).size.width >= 600 ? 0 :
-
-
-                                                  34.0),
-                                              child: Container(
-                                                width: 47.0,
-                                                height: 47.0,
-                                                decoration: BoxDecoration(
-                                                  gradient: const LinearGradient(
-                                                    colors: [
-                                                      Color(0xFFDD7325),
-                                                      Color(0xFFDD7325)
-                                                    ],
-                                                    stops: [0.0, 1.0],
-                                                    begin: AlignmentDirectional(
-                                                        1.0, -0.98),
-                                                    end: AlignmentDirectional(
-                                                        -1.0, 0.98),
-                                                  ),
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      12.0),
+                                          Positioned(
+                                            right: 0.0,
+                                            bottom: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.09,
+                                            child: Container(
+                                              width: 47.0,
+                                              height: 47.0,
+                                              decoration: BoxDecoration(
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFDD7325),
+                                                    Color(0xFFDD7325)
+                                                  ],
+                                                  stops: [0.0, 1.0],
+                                                  begin: AlignmentDirectional(
+                                                      1.0, -0.98),
+                                                  end: AlignmentDirectional(
+                                                      -1.0, 0.98),
                                                 ),
-                                                child: const Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(14.0, 14.0,
-                                                      14.0, 14.0),
-                                                  child: Icon(
-                                                    Icons.add_sharp,
-                                                    color: Colors.white,
-                                                    size: 20.0,
-                                                  ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              child: const Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        14.0, 14.0, 14.0, 14.0),
+                                                child: Icon(
+                                                  Icons.add_sharp,
+                                                  color: Colors.white,
+                                                  size: 20.0,
                                                 ),
                                               ),
                                             ),
@@ -3420,14 +3434,14 @@ Download the app now and join the fun!''';
                   width: double.infinity,
                   height: 500.0,
                   child: Padding(
-                    padding:
-                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 40.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 40.0),
                     child: PageView(
                       controller: _model.pageViewController ??=
-                      PageController(initialPage: 0)
-                        ..addListener(() {
-                          debugLogWidgetClass(_model);
-                        }),
+                          PageController(initialPage: 0)
+                            ..addListener(() {
+                              debugLogWidgetClass(_model);
+                            }),
                       scrollDirection: Axis.horizontal,
                       children: [
                         Column(
@@ -3440,8 +3454,8 @@ Download the app now and join the fun!''';
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x26FFFFFF)
                                       : const Color(0xFFC2C4C2),
                                   boxShadow: const [
@@ -3460,41 +3474,43 @@ Download the app now and join the fun!''';
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 16.0, 12.0, 16.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12.0, 16.0, 12.0, 16.0),
                                       child: Text(
                                         'A Game Within the Game\nPlay with Friends is a playful spin-off of VOTE THE GOAT, designed for private fun, not to be confused with the Goat Global Ranking ',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .fontStyle,
-                                          ),
-                                          color:
-                                          FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .fontStyle,
-                                        ),
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiary,
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 8.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 8.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             '1 ',
@@ -3502,30 +3518,33 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              // color: FlutterFlowTheme.of(
-                                              //     context)
-                                              //     .peach,
-                                              color:                 Theme.of(context).brightness == Brightness.dark  ?   Colors.white :
-                                                FlutterFlowTheme.of(
-                                                  context)
-                                                  .peach,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  // color: FlutterFlowTheme.of(
+                                                  //     context)
+                                                  //     .peach,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .peach,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                           Text(
                                             ' / 5',
@@ -3533,26 +3552,26 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .tertiary,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .tertiary,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -3573,8 +3592,8 @@ Download the app now and join the fun!''';
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x26FFFFFF)
                                       : const Color(0xFFC2C4C2),
                                   boxShadow: const [
@@ -3593,41 +3612,43 @@ Download the app now and join the fun!''';
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 16.0, 12.0, 16.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12.0, 16.0, 12.0, 16.0),
                                       child: Text(
                                         'Your Team, Your Rules\nPlay whenever you want, with whomever you want: friends, family, classmates, teammates, colleagues. Just create a private Team and start the game.',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .fontStyle,
-                                          ),
-                                          color:
-                                          FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .fontStyle,
-                                        ),
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiary,
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 8.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 8.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             '2',
@@ -3635,27 +3656,30 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color:                 Theme.of(context).brightness == Brightness.dark  ?   Colors.white :
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .peach,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .peach,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                           Text(
                                             ' / 5',
@@ -3663,26 +3687,26 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .tertiary,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .tertiary,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -3703,8 +3727,8 @@ Download the app now and join the fun!''';
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x26FFFFFF)
                                       : const Color(0xFFC2C4C2),
                                   boxShadow: const [
@@ -3723,41 +3747,43 @@ Download the app now and join the fun!''';
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 16.0, 12.0, 16.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12.0, 16.0, 12.0, 16.0),
                                       child: Text(
                                         'Set the Deadline\nOnce your Team is ready, choose a deadline (day and time). The app will automatically collect the positions from each participant’s Your Ranking screen at that moment.',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .fontStyle,
-                                          ),
-                                          color:
-                                          FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .fontStyle,
-                                        ),
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiary,
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 8.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 8.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             '3',
@@ -3765,27 +3791,30 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color:                 Theme.of(context).brightness == Brightness.dark  ?   Colors.white :
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .peach,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .peach,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                           Text(
                                             ' / 5',
@@ -3793,26 +3822,26 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .tertiary,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .tertiary,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -3833,8 +3862,8 @@ Download the app now and join the fun!''';
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x26FFFFFF)
                                       : const Color(0xFFC2C4C2),
                                   boxShadow: const [
@@ -3853,41 +3882,43 @@ Download the app now and join the fun!''';
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 16.0, 12.0, 16.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12.0, 16.0, 12.0, 16.0),
                                       child: Text(
                                         'No Need to Finalize\nImportant: neither you nor your friends need to finalize Your Ranking to join the Team! The app works with whatever is already there.\n',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .fontStyle,
-                                          ),
-                                          color:
-                                          FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .fontStyle,
-                                        ),
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiary,
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 8.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 8.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             '4',
@@ -3895,27 +3926,30 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color:                 Theme.of(context).brightness == Brightness.dark  ?   Colors.white :
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .peach,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .peach,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                           Text(
                                             ' / 5',
@@ -3923,26 +3957,26 @@ Download the app now and join the fun!''';
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                FlutterFlowTheme.of(
-                                                    context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                              ),
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .tertiary,
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                              FlutterFlowTheme.of(
-                                                  context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                            ),
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodySmall
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .tertiary,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodySmall
+                                                          .fontStyle,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -3963,8 +3997,8 @@ Download the app now and join the fun!''';
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
+                                              Brightness.dark) ==
+                                          true
                                       ? const Color(0x26FFFFFF)
                                       : const Color(0xFFC2C4C2),
                                   boxShadow: const [
@@ -3983,39 +4017,40 @@ Download the app now and join the fun!''';
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 16.0, 12.0, 16.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12.0, 16.0, 12.0, 16.0),
                                       child: Text(
                                         'Your Team, Your Goat\nThe result? A Goat ranking from your group alone!',
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodySmall
-                                                .fontStyle,
-                                          ),
-                                          color:
-                                          FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          fontSize: 14.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .fontStyle,
-                                        ),
+                                              font: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiary,
+                                              fontSize: 14.0,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .fontStyle,
+                                            ),
                                       ),
                                     ),
                                     Container(
                                       decoration: const BoxDecoration(),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 18.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 18.0),
                                         child: InkWell(
                                           splashColor: Colors.transparent,
                                           focusColor: Colors.transparent,

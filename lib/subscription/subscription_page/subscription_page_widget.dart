@@ -1,5 +1,7 @@
 library;
 
+import 'dart:io';
+
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../custom_code/widgets/cube_grid_loader.dart' as custom_widgets;
@@ -117,20 +119,43 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                 ),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            '• Payment will be charged to your Apple ID account at confirmation of purchase\n'
-            '• Subscription automatically renews unless canceled at least 24 hours before the end of the current period\n'
-            '• Your account will be charged for renewal within 24 hours prior to the end of the current period\n'
-            '• You can manage or cancel your subscription in your App Store account settings after purchase\n'
-            '• Any unused portion of a free trial period will be forfeited when you purchase a subscription',
-            style: FlutterFlowTheme.of(context).bodySmall.override(
 
-                  font: GoogleFonts.poppins(),
-                  fontSize: 11.0,
-                  letterSpacing: 0.0,
-                  // height: 1.5,
-                ),
+
+
+          // Text(
+          //   '• Payment will be charged to your Apple ID account at confirmation of purchase\n'
+          //   '• Subscription automatically renews unless canceled at least 24 hours before the end of the current period\n'
+          //   '• Your account will be charged for renewal within 24 hours prior to the end of the current period\n'
+          //   '• You can manage or cancel your subscription in your App Store account settings after purchase\n'
+          //   '• Any unused portion of a free trial period will be forfeited when you purchase a subscription',
+          //   style: FlutterFlowTheme.of(context).bodySmall.override(
+          //
+          //         font: GoogleFonts.poppins(),
+          //         fontSize: 11.0,
+          //         letterSpacing: 0.0,
+          //         // height: 1.5,
+          //       ),
+          // ),
+
+          Text(
+            Platform.isIOS
+                ? '• Payment will be charged to your Apple ID account at confirmation of purchase\n'
+                '• Subscription automatically renews unless canceled at least 24 hours before the end of the current period\n'
+                '• Your account will be charged for renewal within 24 hours prior to the end of the current period\n'
+                '• You can manage or cancel your subscription in your App Store account settings after purchase\n'
+                '• Any unused portion of a free trial period will be forfeited when you purchase a subscription'
+                : '• Payment will be charged to your Google Play account at confirmation of purchase\n'
+                '• Subscription automatically renews unless canceled at least 24 hours before the end of the current period\n'
+                '• Your account will be charged for renewal within 24 hours prior to the end of the current period\n'
+                '• You can manage or cancel your subscription in your Google Play account settings after purchase\n'
+                '• Any unused portion of a free trial period will be forfeited when you purchase a subscription',
+            style: FlutterFlowTheme.of(context).bodySmall.override(
+              font: GoogleFonts.poppins(),
+              fontSize: 11.0,
+              letterSpacing: 0.0,
+            ),
           ),
+
         ],
       ),
     );
@@ -734,7 +759,10 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                             _buildPlanCard(
                               title: 'Basic',
                               subtitle:
-                                  'Includes ads • Extra-Vote available for in-app purchase \n• No Access To Comparison Tracking Tool',
+                                  // 'Includes ads • Extra-Vote available for in-app purchase \n• No Access To Comparison Tracking Tool',
+
+                             ' • Includes ads\n• Extra-Vote available for in-app purchase\n• No access to Comparison tracking tool',
+
                               price: 'Free',
                               duration: '',
                               // No duration for free plan
@@ -746,7 +774,10 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                             _buildPlanCard(
                               title: 'Explorer',
                               subtitle:
-                                  'No Ads • Extra-Vote at discounted price (save \$2 vs Basic) \n• Comparison Tracking Tool',
+                                  // 'No Ads• Save 30% vs the Basic plan when purchasing an Extra-Vote',
+                              '• No ads\n• Save 30% vs the Basic plan when purchasing an Extra-Vote\n• No access to Comparison tracking tool',
+
+
                               price:
                                   '${_model.getFormattedPrice(SubscriptionPageModel.explorerPlanId)}/month',
                               duration:
@@ -759,7 +790,7 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
 // Master Plan
                             _buildPlanCard(
                               title: 'Master',
-                              subtitle: 'No Ads • Unlimited Extra-Votes \n• Comparison Tracking Tool',
+                              subtitle: '• No Ads\n• Unlimited Extra-Vote \n• Comparison Tracking Tool',
                               price:
                                   '${_model.getFormattedPrice(SubscriptionPageModel.masterPlanId)}/month',
                               duration:
@@ -769,7 +800,6 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                               productId: SubscriptionPageModel.masterPlanId,
                             ),
 
-                            _buildSubscriptionDisclosure(),
 
                             // Extra Vote Purchase Button
                             if (_model.currentPlan != 'master')
@@ -818,6 +848,10 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                                   ),
                                 ),
                               ),
+
+
+                            _buildSubscriptionDisclosure(),
+
 
                             // Terms and Privacy
                             Padding(
@@ -872,7 +906,8 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                                                 builder: (context) =>
                                                     const WebViewScreen(
                                                   url:
-                                                      'https://votethegoat.ezxdemo.com/page/terms-conditions',
+                                                  "https://admin.votethegoat.app/page/terms-conditions",
+                                                      // 'https://votethegoat.ezxdemo.com/page/terms-conditions',
                                                   title: 'Terms of Service',
                                                 ),
                                               ),
@@ -909,7 +944,8 @@ class _SubscriptionPageWidgetState extends State<SubscriptionPageWidget>
                                                 builder: (context) =>
                                                     const WebViewScreen(
                                                   url:
-                                                      'https://votethegoat.ezxdemo.com/page/privacy-policy',
+                                                 "https://admin.votethegoat.app/page/privacy-policy",
+                                                      // 'https://votethegoat.ezxdemo.com/page/privacy-policy',
                                                   title: 'Privacy Policy',
                                                 ),
                                               ),

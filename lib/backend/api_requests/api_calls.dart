@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
@@ -1911,30 +1912,123 @@ class PlayerBioStatsCall {
   }
 }
 
+// class EnableNotificationCall {
+//   Future<ApiCallResponse> call({
+//     required String authToken,
+//   }) async {
+//     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+//
+//     return ApiManager.instance.makeApiCall(
+//       callName: 'enableNotification',
+//       apiUrl: '$baseUrl/enable-notification',
+//       callType: ApiCallType.POST,
+//       headers: {
+//         'Authorization': 'Bearer $authToken',
+//       },
+//       params: {},
+//       returnBody: true,
+//       encodeBodyUtf8: false,
+//       decodeUtf8: false,
+//       cache: false,
+//       isStreamingApi: false,
+//       alwaysAllowBody: false,
+//     );
+//   }
+// }
+
+
+
 class EnableNotificationCall {
   Future<ApiCallResponse> call({
     required String authToken,
   }) async {
+    // Debug: Input validation
+    if (kDebugMode) {
+      print('========== Enable Notification API Call ==========');
+      print('Auth Token provided: ${authToken.isNotEmpty}');
+      if (authToken.isNotEmpty) {
+        print('Auth Token (first 10 chars): ${authToken.substring(0, math.min(10, authToken.length))}...');
+      }
+      print('Timestamp: ${DateTime.now().toIso8601String()}');
+    }
+
     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
 
-    return ApiManager.instance.makeApiCall(
-      callName: 'enableNotification',
-      apiUrl: '$baseUrl/enable-notification',
-      callType: ApiCallType.POST,
-      headers: {
-        'Authorization': 'Bearer $authToken',
-      },
-      params: {},
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
-    );
+    // Debug: URL construction
+    if (kDebugMode) {
+      print('Base URL: $baseUrl');
+      print('Full API URL: $baseUrl/enable-notification');
+      print('HTTP Method: POST');
+      print('Headers: Authorization: Bearer ${authToken.isNotEmpty ? '***' : 'EMPTY'}');
+    }
+
+    try {
+      // Debug: Making API call
+      if (kDebugMode) {
+        print('Making API call to enable notifications...');
+      }
+
+      final response = await ApiManager.instance.makeApiCall(
+        callName: 'enableNotification',
+        apiUrl: '$baseUrl/enable-notification',
+        callType: ApiCallType.POST,
+        headers: {
+          'Authorization': 'Bearer $authToken',
+        },
+        params: {},
+        returnBody: true,
+        encodeBodyUtf8: false,
+        decodeUtf8: false,
+        cache: false,
+        isStreamingApi: false,
+        alwaysAllowBody: false,
+      );
+
+      // Debug: Response analysis
+      if (kDebugMode) {
+        print('========== Enable Notification API Response ==========');
+        print('API call completed');
+        print('Success: ${response.succeeded}');
+        print('Status Code: ${response.statusCode}');
+        print('Response Body: ${response.bodyText}');
+        print('JSON Body: ${response.jsonBody}');
+        print('Error Message: ${response.exceptionMessage ?? 'None'}');
+        print('Response Headers: ${response.headers}');
+
+        // Parse specific response fields if available
+        if (response.succeeded && response.jsonBody != null) {
+          try {
+            final message = getJsonField(response.jsonBody, r'$.message');
+            final status = getJsonField(response.jsonBody, r'$.status');
+            final data = getJsonField(response.jsonBody, r'$.data');
+
+            print('Response Message: $message');
+            print('Response Status: $status');
+            print('Response Data: $data');
+          } catch (e) {
+            print('Error parsing response fields: $e');
+          }
+        }
+
+        print('========================================');
+      }
+
+      return response;
+    } catch (e, stackTrace) {
+      // Debug: Exception handling
+      if (kDebugMode) {
+        print('========== Enable Notification API Exception ==========');
+        print('Exception occurred: $e');
+        print('Stack trace: $stackTrace');
+        print('Exception type: ${e.runtimeType}');
+        print('========================================');
+      }
+
+      // Re-throw the exception to maintain original behavior
+      rethrow;
+    }
   }
 }
-
 ///subscription
 
 ///1

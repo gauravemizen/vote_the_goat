@@ -29,7 +29,7 @@ class AdService {
     if (Platform.isAndroid) {
       return kDebugMode
           ? 'ca-app-pub-3940256099942544/1033173712'
-          : 'ca-app-pub-7068447670600610/1583126082';
+          : 'ca-app-pub-7068447607600610/9304224423';
     } else if (Platform.isIOS) {
       return kDebugMode
           ? 'ca-app-pub-3940256099942544/4411468910'
@@ -45,7 +45,7 @@ class AdService {
   Timer? _interstitialTimer;
   DateTime? _lastAdShown;
   String? _currentPage;
-  static const int _adIntervalMinutes = 3;
+  static const int _adIntervalMinutes =3;
 
   Future<bool> shouldShowAds() async {
     try {

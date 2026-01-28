@@ -280,7 +280,9 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
       AdService().startPageTimer('eligiblePlayers');
 
       // Preload interstitial ad (will check subscription status internally)
-      await SmartInterstitialManager().preloadInterstitial();
+
+      // await SmartInterstitialManager().preloadInterstitial();
+
 
       // Only show ad if still mounted and ads are enabled
       if (mounted && FFAppState().advertisementStatus != 0) {

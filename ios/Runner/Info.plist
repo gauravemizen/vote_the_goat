@@ -65,8 +65,7 @@
 		<string>In order to upload data, this app requires permission to access the photo library.</string>
 		<key>PermissionGroupNotification</key>
 		<string>Allow Notifications</string>
-		<key>NSUserTrackingUsageDescription</key>
-		<string>This identifier will be used to deliver personalized ads.</string>
+
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
