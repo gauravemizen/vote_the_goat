@@ -27,6 +27,9 @@ class AuthGroup {
 }
 
 class LogInCall {
+
+
+
   Future<ApiCallResponse> call({
     String? email = '',
     String? password = '',
