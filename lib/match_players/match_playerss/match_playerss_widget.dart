@@ -494,14 +494,14 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                           if (!_model.isLoading)
                             Builder(
                               builder: (context) {
-                                final options = getJsonField(
+                                final options = (getJsonField(
                                   DashboardGroup.matchPlayersCall
                                       .questions(
                                         (_model.matchMinionRes?.jsonBody ?? ''),
                                       )
                                       ?.elementAtOrNull(_model.questionIndex),
                                   r'''$.options''',
-                                ).toList();
+                                ) as List?)?.toList() ?? [];
 
                                 if (options.isEmpty) {
                                   return const Center(

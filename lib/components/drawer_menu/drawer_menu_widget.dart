@@ -227,9 +227,11 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
 
                               ///2
                                 Image.network(
-                                  FFAppState().userImage.isNotEmpty
-                                      ? FFAppState().userImage
-                                      : 'assets/images/error_image.web',
+                                  safeImageUrl(
+                                    FFAppState().userImage.isNotEmpty
+                                        ? FFAppState().userImage
+                                        : null,
+                                  ),
                                   errorBuilder: (context, error, stackTrace) => Image.asset(
                                     'assets/images/error_image.webp',
                                     fit: BoxFit.cover,
@@ -303,14 +305,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                             const AlignmentDirectional(0.0, 0.0)
                                                 .resolve(
                                                     Directionality.of(dialogContext)),
-                                        child: WebViewAware(
-                                          child: SizedBox(
-                                            height: MediaQuery.sizeOf(dialogContext)
-                                                    .height *
-                                                0.33,
-                                            child: const LogOutWidget(),
-                                          ),
-                                        ),
+                        child: WebViewAware(
+                          child: const LogOutWidget(),
+                        ),
                                       );
                                     },
                                   );

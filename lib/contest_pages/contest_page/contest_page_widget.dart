@@ -1,4 +1,3 @@
-import 'package:http/http.dart' as http;
 import 'package:vote_for_goat/custom_code/widgets/cube_grid_loader.dart';
 
 import '../../flutter_flow/flutter_flow_widgets.dart';
@@ -801,10 +800,12 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
                                                                                 child: Image.network(
                                                                                   errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/error_image.webp', fit: BoxFit.cover),
                                                                                   // 'https://picsum.photos/seed/248/600',
-                                                                                  getJsonField(
-                                                                                    contestListItem,
-                                                                                    r'''$.logo''',
-                                                                                  ).toString(),
+                                                                                  safeImageUrl(
+                                                                                    getJsonField(
+                                                                                      contestListItem,
+                                                                                      r'''$.logo''',
+                                                                                    )?.toString(),
+                                                                                  ),
                                                                                   fit: BoxFit.cover,
                                                                                 ),
                                                                               ),
@@ -1600,10 +1601,12 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
                                                                                   ,
 
                                                                                   // 'https://picsum.photos/seed/248/600',
-                                                                                  '${getJsonField(
-                                                                                    completedContestListItem,
-                                                                                    r'''$.logo''',
-                                                                                  )}',
+                                                                                  safeImageUrl(
+                                                                                    getJsonField(
+                                                                                      completedContestListItem,
+                                                                                      r'''$.logo''',
+                                                                                    )?.toString(),
+                                                                                  ),
                                                                                   fit: BoxFit.cover,
                                                                                 ),
                                                                               ),
@@ -2624,21 +2627,16 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
         ),
       );
 
-      final response = await http.post(
-        // Uri.parse('https://votethegoat.ezxdemo.com/api/contest-join'),
-        Uri.parse('https://admin.votethegoat.app/api/contest-join'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken',
-        },
-        body: '{"contest_id": $contestId}',
+      final response = await DashboardGroup.contestJoinCall.call(
+        contestId: contestId,
+        authToken: authToken,
       );
 
       // Hide loading indicator
       Navigator.of(context).pop();
 
-      if (response.statusCode == 200) {
-        print('Join successful: ${response.body}');
+      if (response.succeeded) {
+        print('Join successful: ${response.jsonBody}');
 
         // Navigate to contest questions
         context.pushNamed(
@@ -2651,7 +2649,7 @@ class _ContestPageWidgetState extends State<ContestPageWidget>
           }.withoutNulls,
         );
       } else {
-        print('Join failed: ${response.body}');
+        print('Join failed: ${response.jsonBody}');
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

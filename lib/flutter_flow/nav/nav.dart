@@ -732,6 +732,7 @@
 //2
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../filter/filter_result/filter_result_widget.dart';
@@ -905,13 +906,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
   debugLogDiagnostics: true,
   refreshListenable: appStateNotifier,
   navigatorKey: appNavigatorKey,
+  errorBuilder: (context, state) => const SplashWidget(),
   routes: [
-    // FFRoute(
-    //   name: '_initialize',
-    //   path: '/',
-    //   builder: (context, _) =>
-    //   appStateNotifier.loggedIn ? NavWidget() : SplashWidget(),
-    // ),
+    FFRoute(
+      name: '_initialize',
+      path: '/',
+      builder: (context, _) =>
+          appStateNotifier.loggedIn ? const NavWidget() : const SplashWidget(),
+    ),
     FFRoute(
       name: SplashWidget.routeName,
       path: SplashWidget.routePath,
@@ -1224,7 +1226,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     )
 
   ].map((r) => r.toRoute(appStateNotifier)).toList(),
-  observers: [routeObserver],
+  observers: [
+    routeObserver,
+    FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+  ],
 );
 
 extension NavParamExtensions on Map<String, String?> {
@@ -1483,10 +1488,14 @@ class RootPageContext {
 
 extension GoRouterLocationExtension on GoRouter {
   String getCurrentLocation() {
-    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final configuration = routerDelegate.currentConfiguration;
+    if (configuration.matches.isEmpty) {
+      return '/';
+    }
+    final RouteMatch lastMatch = configuration.last;
     final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
         ? lastMatch.matches
-        : routerDelegate.currentConfiguration;
+        : configuration;
     return matchList.uri.toString();
   }
 }

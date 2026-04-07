@@ -24,6 +24,7 @@ class AuthGroup {
   static ResetPasswordCall resetPasswordCall = ResetPasswordCall();
   static ChangePasswordCall changePasswordCall = ChangePasswordCall();
   static LogOutCall logOutCall = LogOutCall();
+  static ResendOtpCall resendOtpCall = ResendOtpCall();
 }
 
 class LogInCall {
@@ -266,10 +267,38 @@ class LogOutCall {
       apiUrl: '$baseUrl/logout',
       callType: ApiCallType.POST,
       headers: {
-        'Authorization': 'Bearer {{auth_token}}',
+        'Authorization': 'Bearer $authToken',
       },
       params: {},
       bodyType: BodyType.NONE,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class ResendOtpCall {
+  Future<ApiCallResponse> call({
+    String? email = '',
+  }) async {
+    final baseUrl = AuthGroup.getBaseUrl();
+
+    final ffApiRequestBody = '''
+{
+  "email": "${escapeStringForJson(email)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'resendOtp',
+      apiUrl: '$baseUrl/resend-otp',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -325,6 +354,8 @@ class DashboardGroup {
   static MatchPlayersCall matchPlayersCall = MatchPlayersCall();
   static ApplyrankingCall applyrankingCall = ApplyrankingCall();
   static FinalizeRankingCall finalizeRankingCall = FinalizeRankingCall();
+  static GlobalRankingCall globalRankingCall = GlobalRankingCall();
+  static VersionCheckCall versionCheckCall = VersionCheckCall();
   static MinionPlayerScoreCall minionPlayerScoreCall = MinionPlayerScoreCall();
   static SubmitMinionCall submitMinionCall = SubmitMinionCall();
   static AutoAssociateCall autoAssociateCall = AutoAssociateCall();
@@ -355,6 +386,11 @@ class DashboardGroup {
       TeamMemberChatNotificationCall();
   static EnableNotificationCall enableNotificationCall =
       EnableNotificationCall();
+  static IsFinalizeCall isFinalizeCall = IsFinalizeCall();
+  static DeleteUserCall deleteUserCall = DeleteUserCall();
+  static ContestJoinCall contestJoinCall = ContestJoinCall();
+  static FilterPlayersDynamicCall filterPlayersDynamicCall =
+      FilterPlayersDynamicCall();
 }
 
 class EligblePlayersCall {
@@ -1544,64 +1580,6 @@ class ApplyrankingCall {
   }
 }
 
-
-
-
-
-
-
-
-
-
-class EnableRankingsCall {
-  Future<ApiCallResponse> call({
-    String? authToken,
-  }) async {
-    authToken ??= '';
-    final baseUrl = DashboardGroup.getBaseUrl(
-      authToken: authToken,
-    );
-
-    return ApiManager.instance.makeApiCall(
-      callName: 'enableRankings',
-      apiUrl: '$baseUrl/enable-rankings',
-      callType: ApiCallType.GET,
-      headers: {
-        'Authorization': 'Bearer $authToken',
-      },
-      params: {},
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
-    );
-  }
-
-  bool? isEnabled(dynamic response) => getJsonField(
-    response,
-    r'$.is_enabled',
-  ) as bool?;
-
-  String? message(dynamic response) => getJsonField(
-    response,
-    r'$.message',
-  ) as String?;
-
-  String? status(dynamic response) => getJsonField(
-    response,
-    r'$.status',
-  ) as String?;
-
-  int? statusCode(dynamic response) => getJsonField(
-    response,
-    r'$.status_code',
-  ) as int?;
-}
-
-
-
 class FinalizeRankingCall {
   Future<ApiCallResponse> call({
     String? authToken,
@@ -1628,6 +1606,80 @@ class FinalizeRankingCall {
       alwaysAllowBody: false,
     );
   }
+}
+
+class GlobalRankingCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'globalRanking',
+      apiUrl: '$baseUrl/global_ranking',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? rankingData(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+}
+
+class VersionCheckCall {
+  Future<ApiCallResponse> call({
+    required String platform,
+    required int currentVersionCode,
+  }) async {
+    
+    debugPrint('api url: ${DashboardGroup.getBaseUrl()}/check-app-version');
+    
+    final baseUrl = DashboardGroup.getBaseUrl();
+    final params = {
+      'platform': platform,
+      'current_version_code': currentVersionCode.toString(),
+    };
+    return ApiManager.instance.makeApiCall(
+      callName: 'versionCheck',
+      apiUrl: '$baseUrl/check-app-version',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: params,
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  // Helper methods to extract data from API response
+  static String? platform(dynamic response) => castToType<String>(getJsonField(response, r'$.data.platform'));
+  static String? latestVersionName(dynamic response) => castToType<String>(getJsonField(response, r'$.data.latest_version_name'));
+  static int? latestVersionCode(dynamic response) => castToType<int>(getJsonField(response, r'$.data.latest_version_code'));
+  static bool? forceUpdate(dynamic response) => castToType<bool>(getJsonField(response, r'$.data.force_update'));
+  static String? updateUrl(dynamic response) => castToType<String>(getJsonField(response, r'$.data.update_url'));
+  static String? releaseNotes(dynamic response) => castToType<String>(getJsonField(response, r'$.data.release_notes'));
+  static bool? isMaintenance(dynamic response) => castToType<bool>(getJsonField(response, r'$.data.is_maintenance'));
+  static String? maintenanceMessage(dynamic response) => castToType<String>(getJsonField(response, r'$.data.maintenance_message'));
+  static bool? needsUpdate(dynamic response) => castToType<bool>(getJsonField(response, r'$.data.needs_update'));
 }
 
 class MinionPlayerScoreCall {
@@ -1797,12 +1849,8 @@ class SocialloginCall {
     String? email = '',
     String? providerName = '',
     String? deviceId = '',
-
     String? authToken,
   }) async {
-
-    print('device id in api call: $deviceId');
-
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(
       authToken: authToken,
@@ -1816,19 +1864,8 @@ class SocialloginCall {
   "name": "${escapeStringForJson(name)}",
   "email": "${escapeStringForJson(email)}",
   "provider_name": "${escapeStringForJson(providerName)}",
-    "device_id": "${escapeStringForJson(deviceId)}"
-
+  "device_id": "${escapeStringForJson(deviceId)}"
 }''';
-
-
-
-
-
-    print('=== Social Login API Request Body ===');
-    print(ffApiRequestBody);
-    print('=====================================');
-
-
     return ApiManager.instance.makeApiCall(
       callName: 'sociallogin',
       apiUrl: '$baseUrl/social-login',
@@ -1915,299 +1952,6 @@ class PlayerBioStatsCall {
   }
 }
 
-// class EnableNotificationCall {
-//   Future<ApiCallResponse> call({
-//     required String authToken,
-//   }) async {
-//     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
-//
-//     return ApiManager.instance.makeApiCall(
-//       callName: 'enableNotification',
-//       apiUrl: '$baseUrl/enable-notification',
-//       callType: ApiCallType.POST,
-//       headers: {
-//         'Authorization': 'Bearer $authToken',
-//       },
-//       params: {},
-//       returnBody: true,
-//       encodeBodyUtf8: false,
-//       decodeUtf8: false,
-//       cache: false,
-//       isStreamingApi: false,
-//       alwaysAllowBody: false,
-//     );
-//   }
-// }
-
-
-
-class EnableNotificationCall {
-  Future<ApiCallResponse> call({
-    required String authToken,
-  }) async {
-    // Debug: Input validation
-    if (kDebugMode) {
-      print('========== Enable Notification API Call ==========');
-      print('Auth Token provided: ${authToken.isNotEmpty}');
-      if (authToken.isNotEmpty) {
-        print('Auth Token (first 10 chars): ${authToken.substring(0, math.min(10, authToken.length))}...');
-      }
-      print('Timestamp: ${DateTime.now().toIso8601String()}');
-    }
-
-    final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
-
-    // Debug: URL construction
-    if (kDebugMode) {
-      print('Base URL: $baseUrl');
-      print('Full API URL: $baseUrl/enable-notification');
-      print('HTTP Method: POST');
-      print('Headers: Authorization: Bearer ${authToken.isNotEmpty ? '***' : 'EMPTY'}');
-    }
-
-    try {
-      // Debug: Making API call
-      if (kDebugMode) {
-        print('Making API call to enable notifications...');
-      }
-
-      final response = await ApiManager.instance.makeApiCall(
-        callName: 'enableNotification',
-        apiUrl: '$baseUrl/enable-notification',
-        callType: ApiCallType.POST,
-        headers: {
-          'Authorization': 'Bearer $authToken',
-        },
-        params: {},
-        returnBody: true,
-        encodeBodyUtf8: false,
-        decodeUtf8: false,
-        cache: false,
-        isStreamingApi: false,
-        alwaysAllowBody: false,
-      );
-
-      // Debug: Response analysis
-      if (kDebugMode) {
-        print('========== Enable Notification API Response ==========');
-        print('API call completed');
-        print('Success: ${response.succeeded}');
-        print('Status Code: ${response.statusCode}');
-        print('Response Body: ${response.bodyText}');
-        print('JSON Body: ${response.jsonBody}');
-        print('Error Message: ${response.exceptionMessage ?? 'None'}');
-        print('Response Headers: ${response.headers}');
-
-        // Parse specific response fields if available
-        if (response.succeeded && response.jsonBody != null) {
-          try {
-            final message = getJsonField(response.jsonBody, r'$.message');
-            final status = getJsonField(response.jsonBody, r'$.status');
-            final data = getJsonField(response.jsonBody, r'$.data');
-
-            print('Response Message: $message');
-            print('Response Status: $status');
-            print('Response Data: $data');
-          } catch (e) {
-            print('Error parsing response fields: $e');
-          }
-        }
-
-        print('========================================');
-      }
-
-      return response;
-    } catch (e, stackTrace) {
-      // Debug: Exception handling
-      if (kDebugMode) {
-        print('========== Enable Notification API Exception ==========');
-        print('Exception occurred: $e');
-        print('Stack trace: $stackTrace');
-        print('Exception type: ${e.runtimeType}');
-        print('========================================');
-      }
-
-      // Re-throw the exception to maintain original behavior
-      rethrow;
-    }
-  }
-}
-///subscription
-
-///1
-///
-// class UserSubscriptionCall {
-//   Future<ApiCallResponse> call({
-//     String? planId = '',
-//     String? planName = '',
-//     String? price = '',
-//     String? duration = '',
-//     String? transactionId = '',
-//     String? purchaseToken = '',
-//     String? platform = '',
-//     String? purchaseTime = '',
-//     String? productId = '',
-//     String? autoRenewing = '',
-//     String? isAcknowledged = '',
-//     String? platformVersion = '',
-//     String? rawResponse = '{}',
-//     String? authToken,
-//   }) async {
-//     authToken ??= '';
-//     final baseUrl = DashboardGroup.getBaseUrl(
-//       authToken: authToken,
-//     );
-//
-// //     final ffApiRequestBody = '''
-// // {
-// //   "plan_id": "${escapeStringForJson(planId)}",
-// //   "plan_name": "${escapeStringForJson(planName)}",
-// //   "price": "${escapeStringForJson(price)}",
-// //   "duration": "${escapeStringForJson(duration)}",
-// //   "transaction_id": "${escapeStringForJson(transactionId)}",
-// //   "purchase_token": "${escapeStringForJson(purchaseToken)}",
-// //   "platform": "${escapeStringForJson(platform)}",
-// //   "purchase_time": "${escapeStringForJson(purchaseTime)}"
-// // }''';
-//
-//     final ffApiRequestBody = '''
-// {
-//   "plan_id": "${escapeStringForJson(planId)}",
-//   "plan_name": "${escapeStringForJson(planName)}",
-//   "price": "${escapeStringForJson(price)}",
-//   "duration": "${escapeStringForJson(duration)}",
-//
-//   "transaction_id": "${escapeStringForJson(transactionId)}",
-//   "order_id": "${escapeStringForJson(transactionId)}",
-//   "product_id": "${escapeStringForJson(productId)}",
-//   "package_name": "com.voteforgoat.app",
-//
-//   "purchase_token": "${escapeStringForJson(purchaseToken)}",
-//   "platform": "${escapeStringForJson(platform)}",
-//   "platform_version": "${escapeStringForJson(platformVersion)}",
-//
-//   "currency": "INR",
-//   "auto_renewing": "${escapeStringForJson(autoRenewing)}",
-//   "is_acknowledged": "${escapeStringForJson(isAcknowledged)}",
-//
-//   "purchase_time": "${escapeStringForJson(purchaseTime)}",
-//   "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
-//
-//   "raw_response": ${rawResponse}
-// }
-// ''';
-//
-//
-//     return ApiManager.instance.makeApiCall(
-//       callName: 'userSubscription',
-//       apiUrl: '$baseUrl/user/subscriptions',
-//       callType: ApiCallType.POST,
-//       headers: {
-//         'Authorization': 'Bearer $authToken',
-//         'Content-Type': 'application/json',
-//       },
-//       params: {},
-//       body: ffApiRequestBody,
-//       bodyType: BodyType.JSON,
-//       returnBody: true,
-//       encodeBodyUtf8: false,
-//       decodeUtf8: false,
-//       cache: false,
-//       isStreamingApi: false,
-//       alwaysAllowBody: false,
-//     );
-//   }
-//
-//   dynamic subscriptionData(dynamic response) => getJsonField(
-//     response,
-//     r'''$.data''',
-//   );
-// }
-
-///2
-///
-class UserSubscriptionCall {
-  Future<ApiCallResponse> call({
-    String? planId = '',
-    String? planName = '',
-    String? price = '',
-    int? duration = 1,
-    String? transactionId = '',
-    String? purchaseToken = '',
-    String? platform = '',
-    int? purchaseTime,
-    String? productId = '',
-    bool? autoRenewing,
-    bool? isAcknowledged,
-    String? platformVersion = '',
-    String? rawResponse = '{}',
-    String? authToken,
-  }) async {
-    authToken ??= '';
-    final baseUrl = DashboardGroup.getBaseUrl(
-      authToken: authToken,
-    );
-
-    final ffApiRequestBody = '''
-{
-  "plan_id": "${escapeStringForJson(planId)}",
-  "plan_name": "${escapeStringForJson(planName)}",
-  "price": "${escapeStringForJson(price)}",
-  "duration": ${duration ?? 1},
-
-  "transaction_id": "${escapeStringForJson(transactionId)}",
-  "order_id": "${escapeStringForJson(transactionId)}",
-  "product_id": "${escapeStringForJson(productId)}",
-  "package_name": "com.voteforgoat.app",
-
-  "purchase_token": "${escapeStringForJson(purchaseToken)}",
-  "platform": "${escapeStringForJson(platform)}",
-  "platform_version": "${escapeStringForJson(platformVersion)}",
-
-  "currency": "INR",
-  "auto_renewing": ${autoRenewing ?? false},
-  "is_acknowledged": ${isAcknowledged ?? false},
-
-  "purchase_time": ${purchaseTime ?? 0},
-  "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
-
-  "raw_response": $rawResponse
-}
-''';
-
-    // Print the body data
-    print('=== Subscription API Request Body ===');
-    print(ffApiRequestBody);
-    print('=====================================');
-
-    return ApiManager.instance.makeApiCall(
-      callName: 'userSubscription',
-      apiUrl: '$baseUrl/user/subscriptions',
-      callType: ApiCallType.POST,
-      headers: {
-        'Authorization': 'Bearer $authToken',
-        'Content-Type': 'application/json',
-      },
-      params: {},
-      body: ffApiRequestBody,
-      bodyType: BodyType.JSON,
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
-    );
-  }
-
-  dynamic subscriptionData(dynamic response) => getJsonField(
-        response,
-        r'''$.data''',
-      );
-}
-
-///
-
 class FilterplayersCall {
   Future<ApiCallResponse> call({
     String? titles = '',
@@ -2251,7 +1995,33 @@ class FilterplayersCall {
   }
 }
 
-///
+class EnableRankingsCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'enableRankings',
+      apiUrl: '$baseUrl/enable-rankings',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 class CheckMinionStatusCall {
   Future<ApiCallResponse> call({
     String? authToken,
@@ -2279,7 +2049,6 @@ class CheckMinionStatusCall {
   }
 }
 
-///
 class ContestLeaderboardCall {
   Future<ApiCallResponse> call({
     String? authToken,
@@ -2311,20 +2080,12 @@ class ContestLeaderboardCall {
       ) as List?;
 }
 
-
 class AppLinkCall {
   static Future<ApiCallResponse> call({
     String? authToken = '',
   }) async {
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
-
-    // Debug print: Request details
-    debugPrint('========== AppLink API Call ==========');
-    debugPrint('URL: $baseUrl/app-link');
-    debugPrint('Method: GET');
-    debugPrint('Auth Token: $authToken');
-    debugPrint('Headers: Authorization: Bearer $authToken');
 
     final response = await ApiManager.instance.makeApiCall(
       callName: 'appLink',
@@ -2342,15 +2103,6 @@ class AppLinkCall {
       alwaysAllowBody: false,
     );
 
-    // Debug print: Response details
-    debugPrint('========== AppLink API Response ==========');
-    debugPrint('Status Code: ${response.statusCode}');
-    debugPrint('Success: ${response.succeeded}');
-    debugPrint('Response Body: ${response.bodyText}');
-    debugPrint('JSON Body: ${response.jsonBody}');
-    debugPrint('App URL Link: ${appUrlLink(response.jsonBody)}');
-    debugPrint('========================================');
-
     return response;
   }
 
@@ -2359,18 +2111,79 @@ class AppLinkCall {
       response,
       r'''$.data.app_url_link''',
     ));
-    debugPrint('Extracted appUrlLink: $link');
     return link;
   }
 }
 
+class UserSubscriptionCall {
+  Future<ApiCallResponse> call({
+    String? planId = '',
+    String? planName = '',
+    String? price = '',
+    int? duration = 1,
+    String? transactionId = '',
+    String? purchaseToken = '',
+    String? platform = '',
+    int? purchaseTime,
+    String? productId = '',
+    bool? autoRenewing,
+    bool? isAcknowledged,
+    String? platformVersion = '',
+    String? rawResponse = '{}',
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
 
+    final ffApiRequestBody = '''
+{
+  "plan_id": "${escapeStringForJson(planId)}",
+  "plan_name": "${escapeStringForJson(planName)}",
+  "price": "${escapeStringForJson(price)}",
+  "duration": ${duration ?? 1},
+  "transaction_id": "${escapeStringForJson(transactionId)}",
+  "order_id": "${escapeStringForJson(transactionId)}",
+  "product_id": "${escapeStringForJson(productId)}",
+  "package_name": "com.voteforgoat.app",
+  "purchase_token": "${escapeStringForJson(purchaseToken)}",
+  "platform": "${escapeStringForJson(platform)}",
+  "platform_version": "${escapeStringForJson(platformVersion)}",
+  "currency": "INR",
+  "auto_renewing": ${autoRenewing ?? false},
+  "is_acknowledged": ${isAcknowledged ?? false},
+  "purchase_time": ${purchaseTime ?? 0},
+  "server_time": "${escapeStringForJson(DateTime.now().toIso8601String())}",
+  "raw_response": $rawResponse
+}
+''';
 
+    return ApiManager.instance.makeApiCall(
+      callName: 'userSubscription',
+      apiUrl: '$baseUrl/user/subscriptions',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
 
-
-
-
-///
+  dynamic subscriptionData(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+      );
+}
 
 class TeamMemberChatNotificationCall {
   Future<ApiCallResponse> call({
@@ -2378,7 +2191,6 @@ class TeamMemberChatNotificationCall {
     required int senderId,
     String? authToken,
   }) async {
-    print('yha tk shi aa rhi hai team id>>>$teamId');
     authToken ??= '';
     final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
 
@@ -2400,6 +2212,36 @@ class TeamMemberChatNotificationCall {
       isStreamingApi: false,
       alwaysAllowBody: false,
     );
+  }
+}
+
+class EnableNotificationCall {
+  Future<ApiCallResponse> call({
+    required String authToken,
+  }) async {
+    final baseUrl = DashboardGroup.getBaseUrl(authToken: authToken);
+
+    try {
+      final response = await ApiManager.instance.makeApiCall(
+        callName: 'enableNotification',
+        apiUrl: '$baseUrl/enable-notification',
+        callType: ApiCallType.POST,
+        headers: {
+          'Authorization': 'Bearer $authToken',
+        },
+        params: {},
+        returnBody: true,
+        encodeBodyUtf8: false,
+        decodeUtf8: false,
+        cache: false,
+        isStreamingApi: false,
+        alwaysAllowBody: false,
+      );
+
+      return response;
+    } catch (e, stackTrace) {
+      rethrow;
+    }
   }
 }
 
@@ -2450,6 +2292,135 @@ String _serializeJson(dynamic jsonVar, [bool isList = false]) {
     }
     return isList ? '[]' : '{}';
   }
+}
+
+class IsFinalizeCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'isFinalize',
+      apiUrl: '$baseUrl/is-finalize',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  bool? isFinalized(dynamic response) => getJsonField(
+        response,
+        r'''$.is_finalized''',
+      ) as bool?;
+}
+
+class DeleteUserCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'deleteUser',
+      apiUrl: '$baseUrl/delete-user',
+      callType: ApiCallType.DELETE,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class ContestJoinCall {
+  Future<ApiCallResponse> call({
+    int? contestId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "contest_id": $contestId
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'contestJoin',
+      apiUrl: '$baseUrl/contest-join',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class FilterPlayersDynamicCall {
+  Future<ApiCallResponse> call({
+    Map<String, dynamic>? payload,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'filterplayersDynamic',
+      apiUrl: '$baseUrl/filter-players',
+      callType: ApiCallType.POST,
+      headers: {
+        if (authToken.isNotEmpty) 'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      body: json.encode(payload ?? {}),
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? data(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
 }
 
 String? escapeStringForJson(String? input) {

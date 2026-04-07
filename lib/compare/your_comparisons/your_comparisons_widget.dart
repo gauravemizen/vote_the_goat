@@ -1451,7 +1451,7 @@ class _YourComparisonsWidgetState extends State<YourComparisonsWidget>
                                                     clipBehavior: Clip.antiAlias,
                                                     decoration: const BoxDecoration(shape: BoxShape.circle),
                                                     child: Image.network(
-                                                      getJsonField(coparisonListItem, r'''$.player_image''').toString(),
+                                                      safeImageUrl(getJsonField(coparisonListItem, r'''$.player_image''')?.toString()),
                                                       fit: BoxFit.cover,
                                                       errorBuilder: (context, error, stackTrace) => Image.asset(
                                                         'assets/images/error_image.webp',

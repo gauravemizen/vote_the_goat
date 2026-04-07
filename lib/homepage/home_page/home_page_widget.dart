@@ -730,7 +730,7 @@ class HomePageWidget extends StatefulWidget {
 //                                       ),
 //                                     ),
 //                                   ],
-//                                 ),
+//                                 },
 //                               ),
 //                             ),
 //                           ),
@@ -880,7 +880,6 @@ class HomePageWidget extends StatefulWidget {
 //                                 focusColor: Colors.transparent,
 //                                 hoverColor: Colors.transparent,
 //                                 highlightColor: Colors.transparent,
-//
 //                                 onTap: () async {
 //                                   context.pushNamed(
 //                                     NavWidget.routeName,
@@ -889,8 +888,9 @@ class HomePageWidget extends StatefulWidget {
 //                                     }, // Pass initialTab as 1 for TabNotifications
 //                                   );
 //                                 },
-//
-//                                 child: Column(
+//                                 child: FittedBox(
+//                                   fit: BoxFit.scaleDown,
+//                                   child: Column(
 //                                   mainAxisSize: MainAxisSize.max,
 //                                   mainAxisAlignment: MainAxisAlignment.center,
 //                                   children: [
@@ -998,8 +998,6 @@ class HomePageWidget extends StatefulWidget {
 //                                 focusColor: Colors.transparent,
 //                                 hoverColor: Colors.transparent,
 //                                 highlightColor: Colors.transparent,
-//
-//
 //                                 onTap: () async {
 //                                   context.pushNamed(
 //                                     NavWidget.routeName,
@@ -1015,8 +1013,7 @@ class HomePageWidget extends StatefulWidget {
 //                                       width: 50.0,
 //                                       height: 50.0,
 //                                       decoration: BoxDecoration(
-//                                         color: FlutterFlowTheme
-//                                             .of(context)
+//                                         color: FlutterFlowTheme.of(context)
 //                                             .brownColor,
 //                                         boxShadow: const [
 //                                           BoxShadow(
@@ -1053,8 +1050,7 @@ class HomePageWidget extends StatefulWidget {
 //                                             0.0, 4.0, 0.0, 0.0),
 //                                         child: Text(
 //                                           'Play with friends',
-//                                           style: FlutterFlowTheme
-//                                               .of(context)
+//                                           style: FlutterFlowTheme.of(context)
 //                                               .headlineLarge
 //                                               .override(
 //                                             font: GoogleFonts.poppins(
@@ -1115,8 +1111,7 @@ class HomePageWidget extends StatefulWidget {
 //                                       width: 50.0,
 //                                       height: 50.0,
 //                                       decoration: BoxDecoration(
-//                                         color: FlutterFlowTheme
-//                                             .of(context)
+//                                         color: FlutterFlowTheme.of(context)
 //                                             .brownColor,
 //                                         boxShadow: const [
 //                                           BoxShadow(
@@ -1153,8 +1148,7 @@ class HomePageWidget extends StatefulWidget {
 //                                             0.0, 4.0, 0.0, 0.0),
 //                                         child: Text(
 //                                           'Contests',
-//                                           style: FlutterFlowTheme
-//                                               .of(context)
+//                                           style: FlutterFlowTheme.of(context)
 //                                               .headlineLarge
 //                                               .override(
 //                                             font: GoogleFonts.poppins(
@@ -1213,56 +1207,55 @@ class HomePageWidget extends StatefulWidget {
 //                               mainAxisSize: MainAxisSize.max,
 //                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                               children: [
-//                                 Padding(
+//                                 Expanded(
+//                                   child: Padding(
 //                                   padding: const EdgeInsetsDirectional.fromSTEB(
 //                                       14.0, 10.0, 14.0, 10.0),
 //                                   child: Row(
-//                                     mainAxisSize: MainAxisSize.max,
+//                                     mainAxisSize: MainAxisSize.min,
 //                                     children: [
-//                                       Text(
+//                                       Flexible(
+//                                         child: Text(
 //                                         'ABOUT VOTE THE GOAT',
-//                                         style: FlutterFlowTheme
-//                                             .of(context)
+//                                         style: FlutterFlowTheme.of(context)
 //                                             .titleMedium
 //                                             .override(
-//                                           font: GoogleFonts.poppins(
-//                                             fontWeight:
-//                                             FlutterFlowTheme
-//                                                 .of(context)
-//                                                 .titleMedium
-//                                                 .fontWeight,
-//                                             fontStyle:
-//                                             FlutterFlowTheme
-//                                                 .of(context)
-//                                                 .titleMedium
-//                                                 .fontStyle,
-//                                           ),
-//                                           letterSpacing: 0.0,
-//                                           fontWeight:
-//                                           FlutterFlowTheme
-//                                               .of(context)
-//                                               .titleMedium
-//                                               .fontWeight,
-//                                           fontStyle:
-//                                           FlutterFlowTheme
-//                                               .of(context)
-//                                               .titleMedium
-//                                               .fontStyle,
-//                                         ),
-//                                       ),
-//                                       const Padding(
-//                                         padding: EdgeInsetsDirectional.fromSTEB(
-//                                             8.0, 0.0, 0.0, 0.0),
-//                                         child: Icon(
-//                                           Icons.info_outline,
-//                                           color: Color(0x78FFFFFF),
-//                                           size: 16.0,
-//                                         ),
-//                                       ),
-//                                     ],
-//                                   ),
-//                                 ),
-//                                 Padding(
+//                                               font: GoogleFonts.poppins(
+//                                                 fontWeight:
+//                                                     FlutterFlowTheme.of(context)
+//                                                         .titleMedium
+//                                                         .fontWeight,
+//                                                 fontStyle:
+//                                                     FlutterFlowTheme.of(context)
+//                                                         .titleMedium
+//                                                         .fontStyle,
+//                                               ),
+//                                               letterSpacing: 0.0,
+//                                               fontWeight:
+//                                                   FlutterFlowTheme.of(context)
+//                                                       .titleMedium
+//                                                       .fontWeight,
+//                                               fontStyle:
+//                                                   FlutterFlowTheme.of(context)
+//                                                       .titleMedium
+//                                                       .fontStyle,
+//                                             ),
+//                                      ),
+//                                      ), // close Flexible
+//                                      const Padding(
+//                                        padding: EdgeInsetsDirectional.fromSTEB(
+//                                            8.0, 0.0, 0.0, 0.0),
+//                                        child: Icon(
+//                                          Icons.info_outline,
+//                                          color: Color(0x78FFFFFF),
+//                                          size: 16.0,
+//                                        ),
+//                                      ),
+//                                    ],
+//                                  ),
+//                                ),
+//                                ), // close Expanded
+//                                Padding(
 //                                   padding: const EdgeInsetsDirectional.fromSTEB(
 //                                       0.0, 0.0, 14.0, 0.0),
 //                                   child: Container(
@@ -1294,8 +1287,7 @@ class HomePageWidget extends StatefulWidget {
 //                     ),
 //                     Flexible(
 //                       child: Padding(
-//                         padding:
-//                         const EdgeInsetsDirectional.fromSTEB(
+//                         padding: const EdgeInsetsDirectional.fromSTEB(
 //                             0.0, 14.0, 0.0, 0.0),
 //                         child: Container(
 //                           width: double.infinity,
@@ -1328,8 +1320,7 @@ class HomePageWidget extends StatefulWidget {
 //                                     children: [
 //                                       Text(
 //                                         'PREMIUM PLANS',
-//                                         style: FlutterFlowTheme
-//                                             .of(context)
+//                                         style: FlutterFlowTheme.of(context)
 //                                             .titleMedium
 //                                             .override(
 //                                           font: GoogleFonts.poppins(
@@ -1401,8 +1392,7 @@ class HomePageWidget extends StatefulWidget {
 //                     ),
 //                     Flexible(
 //                       child: Padding(
-//                         padding:
-//                         const EdgeInsetsDirectional.fromSTEB(
+//                         padding: const EdgeInsetsDirectional.fromSTEB(
 //                             0.0, 14.0, 0.0, 0.0),
 //                         child: Container(
 //                           width: double.infinity,
@@ -1434,8 +1424,7 @@ class HomePageWidget extends StatefulWidget {
 //                                     children: [
 //                                       Text(
 //                                         'LEGAL & PRIVACY',
-//                                         style: FlutterFlowTheme
-//                                             .of(context)
+//                                         style: FlutterFlowTheme.of(context)
 //                                             .titleMedium
 //                                             .override(
 //                                           font: GoogleFonts.poppins(
@@ -1540,8 +1529,7 @@ class HomePageWidget extends StatefulWidget {
 //                                     children: [
 //                                       Text(
 //                                         'CONTACT & SUPPORT',
-//                                         style: FlutterFlowTheme
-//                                             .of(context)
+//                                         style: FlutterFlowTheme.of(context)
 //                                             .titleMedium
 //                                             .override(
 //                                           font: GoogleFonts.poppins(
@@ -1932,9 +1920,14 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     _model = createModel(context, () => HomePageModel());
     debugPrint('[HomePage] initState');
 
+
+
+
+
+
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // Start page timer for 5-minute interval ads
-
+      if (!mounted) return;
       AdService().startPageTimer('homePage');
 
 
@@ -1948,6 +1941,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       // await SmartInterstitialManager().preloadInterstitial();
 
       // Call profile validation - this will handle redirection if needed
+      if (!mounted) return;
       await _loadProfileOrRedirect();
 
       // Only continue with ads if we're still mounted (profile validation succeeded)
@@ -1965,13 +1959,14 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
   @override
   void dispose() {
-    // Stop the page timer when leaving the page
-    AdService().stopInterstitialTimer();
-
-    SmartInterstitialManager().resetForNewPage();
-    AdService().stopInterstitialTimer();
-    super.dispose();
-    routeObserver.unsubscribe(this);
+    try {
+      // Stop the page timer when leaving the page
+      AdService().stopInterstitialTimer();
+      SmartInterstitialManager().resetForNewPage();
+    } catch (_) {}
+    try {
+      routeObserver.unsubscribe(this);
+    } catch (_) {}
     _model.dispose();
     super.dispose();
   }
@@ -2020,7 +2015,6 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     // Stop timer when leaving the page
     AdService().stopInterstitialTimer();
   }
-
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
@@ -2029,7 +2023,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    DebugFlutterFlowModelContext.maybeOf(context)
+    DebugFlutterFlowModelContext
+        .maybeOf(context)
         ?.parentModelCallback
         ?.call(_model);
     context.watch<FFAppState>();
@@ -2041,7 +2036,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).oposite,
+        backgroundColor: FlutterFlowTheme
+            .of(context)
+            .oposite,
         drawer: Drawer(
           elevation: 16.0,
           child: WebViewAware(
@@ -2076,8 +2073,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                  16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -2211,9 +2208,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
+                              // context.pushNamed(EligiblePlayerWidget.routeName);
                               context.pushNamed(
                                 NavWidget.routeName,
-                                queryParameters: {'initialTab': '1'},
+                                queryParameters: {
+                                  'initialTab': '1'
+                                }, // Pass initialTab as 1 for TabNotifications
                               );
                             },
                             child: Container(
@@ -2258,11 +2258,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Eligible Players',
                                           style: FlutterFlowTheme.of(context)
@@ -2342,11 +2343,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Players Bio',
                                           style: FlutterFlowTheme.of(context)
@@ -2405,6 +2407,10 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  // context
+                                  //     .pushNamed(RankingPageWidget.routeName);
+//
+//
                                   context.pushNamed(
                                     NavWidget.routeName,
                                     queryParameters: {'initialTab': '2'},
@@ -2415,8 +2421,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 50.0,
-                                      height: 50.0,
+                                      width: 46.0,
+                                      height: 46.0,
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .brownColor,
@@ -2441,11 +2447,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(0.0, 2.0, 0.0, 0.0),
                                         child: Text(
                                           'Your Ranking',
                                           style: FlutterFlowTheme.of(context)
@@ -2499,7 +2505,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     queryParameters: {'initialTab': '3'},
                                   );
                                 },
-                                child: Column(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -2530,11 +2538,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'The GOAT\nGlobal Ranking',
                                           textAlign: TextAlign.center,
@@ -2562,6 +2571,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     ),
                                   ],
                                 ),
+                                ), // close FittedBox
                               ),
                             ),
                           ),
@@ -2595,7 +2605,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 onTap: () async {
                                   context.pushNamed(
                                     NavWidget.routeName,
-                                    queryParameters: {'initialTab': '4'},
+                                    queryParameters: {
+                                      'initialTab': '4'
+                                    }, // Pass initialTab as 1 for TabNotifications
                                   );
                                 },
                                 child: Column(
@@ -2628,11 +2640,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Play with friends',
                                           style: FlutterFlowTheme.of(context)
@@ -2713,11 +2726,12 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Contests',
                                           style: FlutterFlowTheme.of(context)
@@ -2752,7 +2766,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding:
+                        const EdgeInsetsDirectional.fromSTEB(
                             0.0, 20.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
@@ -2774,13 +2789,15 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
+                                Expanded(
+                                  child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       14.0, 10.0, 14.0, 10.0),
                                   child: Row(
-                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(
+                                      Flexible(
+                                        child: Text(
                                         'ABOUT VOTE THE GOAT',
                                         style: FlutterFlowTheme.of(context)
                                             .titleMedium
@@ -2806,6 +2823,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                                       .fontStyle,
                                             ),
                                       ),
+                                      ), // close Flexible
                                       const Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             8.0, 0.0, 0.0, 0.0),
@@ -2818,6 +2836,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                     ],
                                   ),
                                 ),
+                                ), // close Expanded
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 14.0, 0.0),
@@ -2829,9 +2848,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              6.0, 6.0, 6.0, 6.0),
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
+                                          6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -2927,9 +2946,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              6.0, 6.0, 6.0, 6.0),
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
+                                          6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -3024,9 +3043,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              6.0, 6.0, 6.0, 6.0),
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
+                                          6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -3122,9 +3141,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              6.0, 6.0, 6.0, 6.0),
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(
+                                          6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)

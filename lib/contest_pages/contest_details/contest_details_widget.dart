@@ -338,13 +338,15 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                   ),
                                   child: Image.network(
 
-                                    getJsonField(
-                                      DashboardGroup.comlpleteContestDetailsCall
-                                          .contestResult(
-                                        (_model.apiResult5ic?.jsonBody ?? ''),
-                                      ),
-                                      r'''$.logo''',
-                                    )?.toString()??'',
+                                    safeImageUrl(
+                                      getJsonField(
+                                        DashboardGroup.comlpleteContestDetailsCall
+                                            .contestResult(
+                                          (_model.apiResult5ic?.jsonBody ?? ''),
+                                        ),
+                                        r'''$.logo''',
+                                      )?.toString(),
+                                    ),
                                     fit: BoxFit.cover,
                                     errorBuilder:
                                         (context, error, stackTrace) =>
@@ -1897,10 +1899,12 @@ class _ContestDetailsWidgetState extends State<ContestDetailsWidget>
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Image.network(
-                                                      getJsonField(
-                                                        usersRankItem,
-                                                        r'''$.profile_image''',
-                                                      ).toString(),
+                                                      safeImageUrl(
+                                                        getJsonField(
+                                                          usersRankItem,
+                                                          r'''$.profile_image''',
+                                                        )?.toString(),
+                                                      ),
                                                       fit: BoxFit.cover,
                                                       errorBuilder: (context,
                                                               error,

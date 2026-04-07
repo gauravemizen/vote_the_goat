@@ -1526,6 +1526,7 @@
 // lib/ranking_pages/your_final_ranking/your_final_ranking_widget.dart
 import 'package:vote_for_goat/custom_code/widgets/cube_grid_loader.dart';
 
+import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -1536,8 +1537,6 @@ import 'package:webviewx_plus/webviewx_plus.dart';
 import 'your_final_ranking_model.dart';
 export 'your_final_ranking_model.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class YourFinalRankingWidget extends StatefulWidget {
   const YourFinalRankingWidget({super.key});
@@ -1568,18 +1567,15 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
   Future<void> fetchRankings() async {
     final authToken = FFAppState().authToken;
 
-    // const url = 'https://votethegoat.ezxdemo.com/api/global_ranking';
-    const url = 'https://admin.votethegoat.app/api/global_ranking';
     try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {'Authorization': 'Bearer $authToken'},
+      final response = await DashboardGroup.globalRankingCall.call(
+        authToken: authToken,
       );
-      print('API response: ${response.body}'); // Print the raw response
 
-      if (response.statusCode == 200) {
-        final decoded = json.decode(response.body);
-        final List<dynamic> data = decoded['data'] ?? [];
+      print('API response: ${response.jsonBody}'); // Print the raw response
+
+      if (response.succeeded) {
+        final List<dynamic> data = response.jsonBody['data'] ?? [];
         final list = data.map((e) => PlayerRanking.fromJson(e)).toList();
         if (!mounted) return;
         setState(() {

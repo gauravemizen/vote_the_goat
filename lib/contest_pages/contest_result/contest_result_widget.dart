@@ -369,13 +369,15 @@ class _ContestResultWidgetState extends State<ContestResultWidget>
                                             Image.asset(
                                                 'assets/images/error_image.webp',
                                                 fit: BoxFit.fill),
-                                        getJsonField(
-                                          DashboardGroup.contestfinaldetailsCall
-                                              .contestDetail(
-                                            (_model.contestRes?.jsonBody ?? ''),
-                                          ),
-                                          r'''$.profile_image''',
-                                        ).toString(),
+                                        safeImageUrl(
+                                          getJsonField(
+                                            DashboardGroup.contestfinaldetailsCall
+                                                .contestDetail(
+                                              (_model.contestRes?.jsonBody ?? ''),
+                                            ),
+                                            r'''$.profile_image''',
+                                          )?.toString(),
+                                        ),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -1200,10 +1202,12 @@ class _ContestResultWidgetState extends State<ContestResultWidget>
                                                             'assets/images/error_image.webp',
                                                             fit: BoxFit.cover,
                                                           ),
-                                                          getJsonField(
-                                                            userListItem,
-                                                            r'''$.profile_image''',
-                                                          )?.toString()??"",
+                                                          safeImageUrl(
+                                                            getJsonField(
+                                                              userListItem,
+                                                              r'''$.profile_image''',
+                                                            )?.toString(),
+                                                          ),
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),

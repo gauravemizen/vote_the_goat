@@ -25,46 +25,50 @@
 //   }
 // }
 
-
-
-
-
-///2
+/// SmartInterstitialManager v3 — Global Timer Edition
 ///
+/// Now a thin wrapper around AdService. All timing, cooldowns, and preloading
+/// are handled by AdService's single global timer.
+///
+/// Kept for backward compatibility with page widgets that call
+/// showInterstitialIfAllowed() and allowAdsAfterInitialDelay().
+
 import 'package:flutter/cupertino.dart';
 import 'ad_service.dart';
 
 class SmartInterstitialManager {
   static final SmartInterstitialManager _instance =
-  SmartInterstitialManager._internal();
+      SmartInterstitialManager._internal();
   factory SmartInterstitialManager() => _instance;
   SmartInterstitialManager._internal();
 
-  /// Flag to block ads immediately after page load
-  bool _blockInitialAd = true;
-
-  /// Call this when page is ready (after load)
-  void allowAdsAfterInitialDelay({Duration delay = const Duration(minutes: 3)}) {
-    Future.delayed(delay, () {
-      _blockInitialAd = false;
-      debugPrint('[SmartInterstitialManager] Initial ad block released');
-    });
+  /// @deprecated No-op — initial cooldown is now built into AdService's
+  /// global timer (_initialCooldownMinutes). Kept for backward compatibility.
+  void allowAdsAfterInitialDelay({
+    Duration delay = const Duration(minutes: 3),
+  }) {
+    // No-op — AdService global timer handles initial cooldown automatically
+    debugPrint('[SmartInterstitialManager] allowAdsAfterInitialDelay() → '
+        'no-op (global timer handles cooldown)');
   }
 
+  /// Preload an interstitial ad so it's ready in memory.
   Future<void> preloadInterstitial() async {
     try {
-      await AdService().loadInterstitialAd();
+      await AdService().preloadInterstitialAd();
     } catch (e) {
       debugPrint('[SmartInterstitialManager] Preload error: $e');
     }
   }
 
+  /// Show an interstitial ad if one is preloaded and the user is on free plan.
+  /// The global timer handles periodic showing automatically, but this can be
+  /// called for on-demand showing (e.g., on page navigation).
   Future<bool> showInterstitialIfAllowed() async {
     try {
-      // 🚫 Prevent page-load ads
-      if (_blockInitialAd) {
-        debugPrint(
-            '[SmartInterstitialManager] Ad blocked (page just loaded)');
+      if (!AdService().isAdReady) {
+        debugPrint('[SmartInterstitialManager] ⏳ Ad not ready yet — preloading');
+        AdService().preloadInterstitialAd();
         return false;
       }
 
@@ -75,8 +79,8 @@ class SmartInterstitialManager {
     }
   }
 
-  /// Optional: Reset when navigating to a new page
+  /// @deprecated No-op — global timer doesn't reset on navigation.
   void resetForNewPage() {
-    _blockInitialAd = true;
+    debugPrint('[SmartInterstitialManager] resetForNewPage() → no-op');
   }
 }

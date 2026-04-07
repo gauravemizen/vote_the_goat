@@ -621,7 +621,7 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
+import '/backend/api_requests/api_calls.dart';
 import 'delete_account_model.dart';
 export 'delete_account_model.dart';
 
@@ -885,19 +885,14 @@ class _DeleteAccountWidgetState extends State<DeleteAccountWidget> with RouteAwa
                       child: FFButtonWidget(
                         onPressed: !_isChecked ? null : () async {
                           try {
-                            final response = await http.delete(
-                              // Uri.parse('https://votethegoat.ezxdemo.com/api/delete-user'),
-                              Uri.parse('https://admin.votethegoat.app/api/delete-user'),
-                              headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ${FFAppState().authToken}',
-                              },
+                            final response = await DashboardGroup.deleteUserCall.call(
+                              authToken: FFAppState().authToken,
                             );
 
-                            print('🗑️ Delete Account Response: ${response.body}');
+                            print('🗑️ Delete Account Response: ${response.jsonBody}');
                             print('Status Code: ${response.statusCode}');
 
-                            if (response.statusCode == 200) {
+                            if (response.succeeded) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(

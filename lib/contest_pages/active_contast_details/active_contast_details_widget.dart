@@ -480,16 +480,18 @@ class _ActiveContastDetailsWidgetState extends State<ActiveContastDetailsWidget>
                                                 fit: BoxFit.fill,
                                                 alignment: const Alignment(0.0, 0.0),
                                               ),
-                                              getJsonField(
-                                                DashboardGroup
-                                                    .contestDetailsCall
-                                                    .contestDetails(
-                                                  (_model.apiResult9k2
-                                                          ?.jsonBody ??
-                                                      ''),
-                                                ),
-                                                r'''$.logo''',
-                                              ).toString(),
+                                              safeImageUrl(
+                                                getJsonField(
+                                                  DashboardGroup
+                                                      .contestDetailsCall
+                                                      .contestDetails(
+                                                    (_model.apiResult9k2
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ),
+                                                  r'''$.logo''',
+                                                )?.toString(),
+                                              ),
                                               fit: BoxFit.cover,
                                             ),
                                           ),

@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import 'otp_model.dart';
 export 'otp_model.dart';
 
@@ -71,15 +70,12 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
     });
 
     try {
-      final response = await http.post(
-        // Uri.parse('https://votethegoat.ezxdemo.com/api/resend-otp'),
-        Uri.parse('https://admin.votethegoat.app/api/resend-otp'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': widget.email}),
+      final response = await AuthGroup.resendOtpCall.call(
+        email: widget.email,
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+      if (response.succeeded) {
+        final data = response.jsonBody;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(data['message'] ?? 'OTP resent successfully'
@@ -94,7 +90,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
           _showResend = false;
         });
       } else {
-        final data = jsonDecode(response.body);
+        final data = response.jsonBody;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(data['message'] ?? 'Failed to resend OTP'),

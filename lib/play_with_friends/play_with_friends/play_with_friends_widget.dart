@@ -1820,10 +1820,6 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                               if (FFAppState().isRead)
                                                 Expanded(
                                                   child: Container(
-                                                    height: MediaQuery.sizeOf(
-                                                                context)
-                                                            .height *
-                                                        0.4,
                                                     decoration:
                                                         const BoxDecoration(),
                                                     child: Visibility(
@@ -1933,7 +1929,7 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                         Column(
                                                                       mainAxisSize:
                                                                           MainAxisSize
-                                                                              .max,
+                                                                              .min,
                                                                       children: [
                                                                         Padding(
                                                                           padding: const EdgeInsetsDirectional
@@ -1972,10 +1968,12 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                       child: CachedNetworkImage(
                                                                                         fadeInDuration: const Duration(milliseconds: 500),
                                                                                         fadeOutDuration: const Duration(milliseconds: 500),
-                                                                                        imageUrl: getJsonField(
-                                                                                          teamListItem,
-                                                                                          r'''$.logo''',
-                                                                                        ).toString(),
+                                                                                        imageUrl: safeImageUrl(
+                                                                                          getJsonField(
+                                                                                            teamListItem,
+                                                                                            r'''$.logo''',
+                                                                                          )?.toString(),
+                                                                                        ),
                                                                                         fit: BoxFit.cover,
                                                                                       ),
                                                                                     ),
@@ -2015,10 +2013,11 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                     Row(
                                                                                       mainAxisSize: MainAxisSize.max,
                                                                                       children: [
-                                                                                        Padding(
+                                                                                        Flexible(
+                                                                                          child: Padding(
                                                                                           padding: const EdgeInsetsDirectional.fromSTEB(10.0, 4.0, 0.0, 0.0),
                                                                                           child: Row(
-                                                                                            mainAxisSize: MainAxisSize.max,
+                                                                                            mainAxisSize: MainAxisSize.min,
                                                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                                                             children: [
                                                                                               Icon(
@@ -2026,7 +2025,8 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                 color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFC0C0C0) : const Color(0xFF4D4D4D),
                                                                                                 size: 18.0,
                                                                                               ),
-                                                                                              Padding(
+                                                                                              Flexible(
+                                                                                                child: Padding(
                                                                                                 padding: const EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
                                                                                                 child: Text(
                                                                                                   '${getJsonField(
@@ -2034,6 +2034,7 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                     r'''$.members_count''',
                                                                                                   ).toString()}  Member',
                                                                                                   textAlign: TextAlign.start,
+                                                                                                  overflow: TextOverflow.ellipsis,
                                                                                                   style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                                         font: GoogleFonts.poppins(
                                                                                                           fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
@@ -2044,15 +2045,18 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                         fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
                                                                                                         fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
                                                                                                       ),
-                                                                                                ),
-                                                                                              ),
+                                                                                                 ),
+                                                                                               ),
+                                                                                               ), // close Flexible around Text
                                                                                             ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        Padding(
-                                                                                          padding: const EdgeInsetsDirectional.fromSTEB(20.0, 4.0, 0.0, 0.0),
-                                                                                          child: Row(
-                                                                                            mainAxisSize: MainAxisSize.max,
+                                                                                           ),
+                                                                                         ),
+                                                                                         ), // close Flexible around first Padding
+                                                                                        Flexible(
+                                                                                          child: Padding(
+                                                                                           padding: const EdgeInsetsDirectional.fromSTEB(20.0, 4.0, 0.0, 0.0),
+                                                                                           child: Row(
+                                                                                            mainAxisSize: MainAxisSize.min,
                                                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                                                             children: [
                                                                                               Icon(
@@ -2060,11 +2064,13 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                 color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFC0C0C0) : const Color(0xFF4D4D4D),
                                                                                                 size: 16.0,
                                                                                               ),
-                                                                                              Padding(
+                                                                                              Flexible(
+                                                                                                child: Padding(
                                                                                                 padding: const EdgeInsetsDirectional.fromSTEB(1.0, 0.0, 0.0, 0.0),
                                                                                                 child: Text(
                                                                                                   'Ranking Complete',
                                                                                                   textAlign: TextAlign.start,
+                                                                                                  overflow: TextOverflow.ellipsis,
                                                                                                   style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                                         font: GoogleFonts.poppins(
                                                                                                           fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
@@ -2076,13 +2082,15 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                                                                                                         fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
                                                                                                       ),
                                                                                                 ),
-                                                                                              ),
+                                                                                               ),
+                                                                                               ), // close Flexible around Ranking Complete text
                                                                                             ],
-                                                                                          ),
-                                                                                        ),
+                                                                                           ),
+                                                                                         ),
+                                                                                         ), // close Flexible around second Padding
                                                                                       ],
-                                                                                    ),
-                                                                                  ],
+                                                                                     ),
+                                                                                   ],
                                                                                 ),
                                                                               ),
                                                                             ],

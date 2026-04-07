@@ -990,10 +990,12 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                 BoxShape.circle,
                                                           ),
                                                           child: Image.network(
-                                                            getJsonField(
-                                                              playerListItem,
-                                                              r'''$.image''',
-                                                            ).toString(),
+                                                            safeImageUrl(
+                                                              getJsonField(
+                                                                playerListItem,
+                                                                r'''$.image''',
+                                                              )?.toString(),
+                                                            ),
                                                             fit: BoxFit.cover,
                                                             errorBuilder: (context,
                                                                     error,
@@ -1009,7 +1011,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                     Expanded(
                                                       child: Column(
                                                         mainAxisSize:
-                                                            MainAxisSize.max,
+                                                            MainAxisSize.min,
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
@@ -1033,7 +1035,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
-                                                                Text(
+                                                                Flexible(
+                                                                  child: Text(
                                                                   '${getJsonField(
                                                                     playerListItem,
                                                                     r'''$.first_name ''',
@@ -1076,10 +1079,11 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                             .fontStyle,
                                                                       ),
                                                                 ),
+                                                                ),
                                                                 Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
-                                                                          .max,
+                                                                          .min,
                                                                   children: [
                                                                     Text(
                                                                       'Age :',

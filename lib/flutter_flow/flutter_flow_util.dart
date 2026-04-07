@@ -44,6 +44,19 @@ final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
 
+/// Returns a valid image URL or a transparent 1x1 pixel placeholder.
+/// Prevents _HttpClient.getUrl crashes from empty/null/malformed URLs.
+String safeImageUrl(String? url) {
+  if (url == null || url.isEmpty || url == 'null' || url == '""' || url == '\"\"') {
+    return 'https://via.placeholder.com/1x1/00000000/00000000.png';
+  }
+  final uri = Uri.tryParse(url);
+  if (uri == null || !uri.hasScheme || !uri.hasAuthority) {
+    return 'https://via.placeholder.com/1x1/00000000/00000000.png';
+  }
+  return url;
+}
+
 String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
   if (dateTime == null) {
     return '';

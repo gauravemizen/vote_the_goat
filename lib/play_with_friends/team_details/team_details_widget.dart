@@ -310,7 +310,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 30.0, 0.0, 10.0),
+                            0.0, 16.0, 0.0, 10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -329,7 +329,7 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Image.network(
-                                  valueOrDefault<String>(
+                                  safeImageUrl(
                                     getJsonField(
                                       DashboardGroup.getteamdetailCall
                                           .teamList(
@@ -339,7 +339,6 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                           ?.elementAtOrNull(widget.teamIndex),
                                       r'''$.logo''',
                                     )?.toString(),
-                                    '\"\"',
                                   ),
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
@@ -413,45 +412,19 @@ class _TeamDetailsWidgetState extends State<TeamDetailsWidget> with RouteAware {
                                             3.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       '${valueOrDefault<String>(
-                                        (getJsonField(
-                                                  DashboardGroup
-                                                      .getteamdetailCall
-                                                      .teamList(
-                                                        (_model.apiResultr60
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      )
-                                                      ?.elementAtOrNull(
-                                                          widget.teamIndex),
-                                                  r'''$.members''',
-                                                )
-                                                            .toList()
-                                                            .map<ToProgressStruct?>(
-                                                                ToProgressStruct
-                                                                    .maybeFromMap)
-                                                            .toList()
-                                                        as Iterable<
-                                                            ToProgressStruct?>)
-                                                    .withoutNulls
-                                                    .length ==
-                                                null
-                                            ? 'No data found'
-                                            : valueOrDefault<String>(
-                                                getJsonField(
-                                                  DashboardGroup
-                                                      .getteamdetailCall
-                                                      .teamList(
-                                                        (_model.apiResultr60
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      )
-                                                      ?.elementAtOrNull(
-                                                          widget.teamIndex),
-                                                  r'''$.members_count''',
-                                                )?.toString(),
-                                                '[ ]',
-                                              ),
-                                        '[ ]',
+                                        getJsonField(
+                                          DashboardGroup
+                                              .getteamdetailCall
+                                              .teamList(
+                                                (_model.apiResultr60
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              )
+                                              ?.elementAtOrNull(
+                                                  widget.teamIndex),
+                                          r'''$.members_count''',
+                                        )?.toString(),
+                                        '0',
                                       )} Members',
                                       textAlign: TextAlign.start,
                                       style: FlutterFlowTheme.of(context)
@@ -877,16 +850,15 @@ You can download it here: [APP_DOWNLOAD_LINK]
                             ),
 
 
-                            Padding(
+                            Expanded(
+                              child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 30.0, 0.0, 0.0),
+                                  0.0, 16.0, 0.0, 0.0),
                               child: Container(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.44,
                                 decoration: const BoxDecoration(),
                                 child: Builder(
                                   builder: (context) {
-                                    final teamMembers = getJsonField(
+                                    final membersJson = getJsonField(
                                       DashboardGroup.getteamdetailCall
                                           .teamList(
                                             (_model.apiResultr60?.jsonBody ??
@@ -894,7 +866,8 @@ You can download it here: [APP_DOWNLOAD_LINK]
                                           )
                                           ?.elementAtOrNull(widget.teamIndex),
                                       r'''$.members''',
-                                    ).toList();
+                                    );
+                                    final teamMembers = membersJson is List ? membersJson : <dynamic>[];
                                     _model.debugGeneratorVariables[
                                             'teamMembers${teamMembers.length > 100 ? ' (first 100)' : ''}'] =
                                         debugSerializeParam(
@@ -949,10 +922,12 @@ You can download it here: [APP_DOWNLOAD_LINK]
                                                           const Duration(
                                                               milliseconds:
                                                                   500),
-                                                      imageUrl: getJsonField(
-                                                        teamMembersItem,
-                                                        r'''$.user.image''',
-                                                      ).toString(),
+                                                      imageUrl: safeImageUrl(
+                                                        getJsonField(
+                                                          teamMembersItem,
+                                                          r'''$.user.image''',
+                                                        )?.toString(),
+                                                      ),
                                                       fit: BoxFit.cover,
                                                       errorWidget: (context,
                                                               error,
@@ -1023,6 +998,7 @@ You can download it here: [APP_DOWNLOAD_LINK]
                                 ),
                               ),
                             ),
+                            ), // close Expanded for members list
                           ],
                         ),
                       ),

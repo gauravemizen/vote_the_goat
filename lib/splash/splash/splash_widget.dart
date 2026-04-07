@@ -1,22 +1,16 @@
 library;
 
-
-
-
-
-
 ///1
 // ---------persisted ios issue---------//
 
-
 // 4 done by umar
 import '../../backend/api_requests/api_calls.dart';
+import '../../backend/app_update_service.dart';
 import '../../nav/nav_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import '/components/conectivilty/conectivilty_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -119,6 +113,7 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
 
   void _proceedToNextScreen() async {
+    // Set flag immediately to prevent multiple concurrent executions
     if (_navigationCompleted) return;
     _navigationCompleted = true;
 
@@ -130,25 +125,18 @@ class _SplashWidgetState extends State<SplashWidget> {
       // ---------------------------------------------------------
       if (FFAppState().isFirstInstall) {
         print('🧹 [Splash] First install detected. Clearing persisted values...');
-        
         print('this one is called');
-
-        // Clear ALL persisted values here
         FFAppState().authToken = '';
-        // Add any additional persisted vars you want to clear
-        // FFAppState().userId = '';
-        // FFAppState().profileData = null;
-
-        // Mark as no longer first install
         FFAppState().isFirstInstall = false;
-
-        // Redirect to login
         if (mounted) {
           context.goNamed(LogInWidget.routeName);
         }
-        return; // stop here
+        return;
       }
+
       // ---------------------------------------------------------
+
+
 
       // Check connectivity
       final isConnected = await actions.connect();
@@ -156,6 +144,7 @@ class _SplashWidgetState extends State<SplashWidget> {
 
       if (!isConnected) {
         print('🚫 [Splash] No internet connection.');
+        _navigationCompleted = false; // Reset to allow retry after dialog
         if (mounted) {
           await showDialog(
             context: context,
@@ -170,50 +159,72 @@ class _SplashWidgetState extends State<SplashWidget> {
         return;
       }
 
-      // Ensure minimum splash duration (reduced since video handles timing)
       await Future.delayed(const Duration(milliseconds: 1000));
-
       if (!mounted) return;
 
-      // Check authentication
-      final authToken = FFAppState().authToken;
-      print('🔑 [Splash] Token: "$authToken"');
-
-      if (authToken.isEmpty) {
-        print('🔐 [Splash] No token. Going to login.');
-        context.goNamed(LogInWidget.routeName);
-        return;
-      }
-
-      // Validate profile
-      print('🔍 [Splash] Validating profile...');
-      final profileRes = await DashboardGroup.getProfileCall.call(
-        authToken: authToken,
-      );
-
-      if (!mounted) return;
-
-      if (profileRes.succeeded) {
-        final isAttempt = getJsonField(
-          profileRes.jsonBody,
-          r'$.data.is_attempt',
+      print('🔍 [Splash] Checking for app updates (all users)...');
+      try {
+        final canProceed = await AppUpdateService().checkForUpdates(
+          context: context,
+          showOptionalUpdates: true,
         );
-        print('🎯 [Splash] is_attempt: $isAttempt');
-
-        if (isAttempt == 0) {
-          context.goNamed(HomeOnboardingWidget.routeName);
-        } else {
-          context.goNamed(NavWidget.routeName);
+        print('✅ [Splash] App update check completed');
+        if (!canProceed) {
+          print('🛑 [Splash] Navigation blocked - retrying...');
+          _navigationCompleted = false; // Reset to allow retry
+          _proceedToNextScreen();
+          return;
         }
-      } else {
-        print('❌ [Splash] Profile validation failed.');
-        context.goNamed(LogInWidget.routeName);
+      } catch (e) {
+        print('⚠️ [Splash] App update check failed: $e');
       }
+      // ===== END UPDATE CHECK =====
+
+      if (!mounted) return;
+
+      print('🚀 [Splash] Proceeding to navigation...');
+      _continueSplashNavigation();
     } catch (e) {
       print('❌ [Splash] Error: $e');
       if (mounted) {
         context.goNamed(LogInWidget.routeName);
       }
+    }
+  }
+
+  void _continueSplashNavigation() async {
+    if (!mounted) return;
+    final authToken = FFAppState().authToken;
+    print('🔑 [Splash] Token: "$authToken"');
+
+    if (authToken.isEmpty) {
+      print('🔐 [Splash] No token. Going to login.');
+      context.goNamed(LogInWidget.routeName);
+      return;
+    }
+
+    print('🔍 [Splash] Validating profile...');
+    final profileRes = await DashboardGroup.getProfileCall.call(
+      authToken: authToken,
+    );
+
+    if (!mounted) return;
+
+    if (profileRes.succeeded) {
+      final isAttempt = getJsonField(
+        profileRes.jsonBody,
+        r'$.data.is_attempt',
+      );
+      print('🎯 [Splash] is_attempt: $isAttempt');
+
+      if (isAttempt == 0) {
+        context.goNamed(HomeOnboardingWidget.routeName);
+      } else {
+        context.goNamed(NavWidget.routeName);
+      }
+    } else {
+      print('❌ [Splash] Profile validation failed.');
+      context.goNamed(LogInWidget.routeName);
     }
   }
 

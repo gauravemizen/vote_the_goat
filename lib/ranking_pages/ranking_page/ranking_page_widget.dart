@@ -589,10 +589,14 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                             ],
                           ),
                         ),
+                        if (_model.isLoading)
+                          const Expanded(
+                            child: SizedBox.shrink(),
+                          ),
                         if (!_model.isLoading)
                           Expanded(
                             child: ReorderableListView.builder(
-                              padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.only(bottom: 140.0),
                               proxyDecorator: (Widget child, int index,
                                   Animation<double> animation) =>
                                   Material(
@@ -1187,7 +1191,6 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                             ),
                           ),
 
-                        const SizedBox(height: 140,)
                       ],
                     ),
                   ),

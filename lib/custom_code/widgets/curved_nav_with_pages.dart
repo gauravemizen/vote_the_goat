@@ -6,11 +6,10 @@ import '../../homepage/home_page/home_page_widget.dart';
 import '../../play_with_friends/play_with_friends/play_with_friends_widget.dart';
 import '../../ranking_pages/ranking_page/ranking_page_widget.dart';
 import '../../ranking_pages/your_final_ranking/your_final_ranking_widget.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../ranking_pages/save_progress/save_progress_ranking_widget.dart';
 
 // Begin custom widget code
@@ -62,28 +61,26 @@ class _TabExploreState extends State<TabExplore> {
 
   Future<void> _fetchIsFinalized() async {
     try {
-      final response = await http.get(
-        // Uri.parse('https://votethegoat.ezxdemo.com/api/is-finalize'),
-        Uri.parse('https://admin.votethegoat.app/api/is-finalize'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${FFAppState().authToken}',
-        },
+      final response = await DashboardGroup.isFinalizeCall.call(
+        authToken: FFAppState().authToken,
       );
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      if (response.succeeded) {
+        final data = response.jsonBody;
+        if (!mounted) return;
         setState(() {
           isFinalized = data['is_finalized'] == true;
           loading = false;
         });
       } else {
+        if (!mounted) return;
         setState(() {
           isFinalized = false;
           loading = false;
         });
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         isFinalized = false;
         loading = false;

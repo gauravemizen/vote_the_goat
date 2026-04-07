@@ -3176,8 +3176,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> with RouteAware {
     return StreamBuilder<List<TeamsRecord>>(
       stream: queryTeamsRecord(
         queryBuilder: (teams) => teams
-            .where('uid', isEqualTo: widget.teamId.toString())
-            .orderBy('createdAt', descending: true),
+            .where('uid', isEqualTo: widget.teamId.toString()),
         singleRecord: true,
       ),
 

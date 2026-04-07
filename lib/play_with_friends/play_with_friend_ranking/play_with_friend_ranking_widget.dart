@@ -2099,7 +2099,9 @@ class _PlayWithFriendRankingWidgetState
                                       shape: BoxShape.circle,
                                     ),
                                     child: Image.network(
-                                      '${getJsonField(_model.apiResultk4i?.jsonBody, r'$.logo')}',
+                                      safeImageUrl(
+                                        getJsonField(_model.apiResultk4i?.jsonBody, r'$.logo')?.toString(),
+                                      ),
                                       errorBuilder: (context, error,
                                           stackTrace) =>
                                           Image.asset(

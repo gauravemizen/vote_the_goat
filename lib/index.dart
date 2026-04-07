@@ -65,3 +65,7 @@ export '/play_with_friends/play_with_friend_ranking/play_with_friend_ranking_wid
 export '/play_with_friends/chat_page/chat_page_widget.dart' show ChatPageWidget;
 export '/filter/filter_result/filter_result_widget.dart'
     show FilterResultWidget;
+
+// Export components
+export '/components/app_update_dialog/app_update_dialog_widget.dart'
+    show AppUpdateDialogWidget;

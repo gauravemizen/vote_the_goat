@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
 class FFDevEnvironmentValues {
-  static const String currentEnvironment = 'dev';
+  static const String currentEnvironment = 'production';
   static const String environmentValuesPath =
       'assets/environment_values/environment.json';
 

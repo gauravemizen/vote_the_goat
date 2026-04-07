@@ -498,6 +498,21 @@ class ApiManager {
       apiUrl = 'https://$apiUrl';
     }
 
+    // Validate URL has a valid host
+    try {
+      final uri = Uri.parse(apiUrl);
+      if (uri.host.isEmpty) {
+        return ApiCallResponse(
+          null,
+          {},
+          -1,
+          exception: ArgumentError('Invalid URL: No host specified in $apiUrl'),
+        );
+      }
+    } catch (e) {
+      return ApiCallResponse(null, {}, -1, exception: e);
+    }
+
     // If we've already made this exact call before and caching is on,
     // return the cached result.
     if (cache && _apiCache.containsKey(callOptions)) {

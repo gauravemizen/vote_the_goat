@@ -764,7 +764,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:convert';
-import '../../backend/api_requests/api_manager.dart';
+import '/backend/api_requests/api_calls.dart';
 
 class FilteredResultsWidget extends StatefulWidget {
   const FilteredResultsWidget({
@@ -924,19 +924,9 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
     try {
       final payload = _filtersPayload ?? {};
       debugPrint('Result screen fetching players with payload: ${const JsonEncoder.withIndent('  ').convert(payload)}');
-      final resp = await ApiManager.instance.makeApiCall(
-        callName: 'filterplayersDynamic',
-        // apiUrl: 'https://votethegoat.ezxdemo.com/api/filter-players',
-        apiUrl: 'https://admin.votethegoat.app/api/filter-players',
-        callType: ApiCallType.POST,
-        headers: {
-          if (FFAppState().authToken.isNotEmpty)
-            'Authorization': 'Bearer ${FFAppState().authToken}'
-        },
-        params: {},
-        body: json.encode(payload),
-        bodyType: BodyType.JSON,
-        returnBody: true,
+      final resp = await DashboardGroup.filterPlayersDynamicCall.call(
+        payload: payload,
+        authToken: FFAppState().authToken,
       );
       debugPrint('Results API response success=${resp.succeeded} body=${resp.bodyText}');
       if (resp.succeeded) {
@@ -1031,31 +1021,22 @@ class _FilteredResultsWidgetState extends State<FilteredResultsWidget> {
                             ),
                           ),
                         ),
-                        SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.sizeOf(context).width * 0.7,
-                                child: Text(
-                                  _filterType?.toUpperCase().replaceAll('_', ' ') ?? 'RESULTS',
-                                  maxLines: 3,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: FlutterFlowTheme.of(context).customTextStyle1.override(
-                                    fontFamily: 'good times',
-                                    color: FlutterFlowTheme.of(context).tertiary,
-                                    fontSize: 24.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ],
+                        Expanded(
+                          child: Text(
+                            _filterType?.toUpperCase().replaceAll('_', ' ') ?? 'RESULTS',
+                            maxLines: 3,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: FlutterFlowTheme.of(context).customTextStyle1.override(
+                              fontFamily: 'good times',
+                              color: FlutterFlowTheme.of(context).tertiary,
+                              fontSize: 24.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
-                        Container(width: 40.0),
+                        const SizedBox(width: 40.0),
                       ],
                     ),
 

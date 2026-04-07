@@ -118,109 +118,122 @@ class _LogOutWidgetState extends State<LogOutWidget> with RouteAware {
           ),
           child: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0.0, 0.0),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 12.0),
-                          child: Icon(
-                            Icons.logout_rounded,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            size: 44.0,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 16.0, 24.0, 16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: const AlignmentDirectional(0.0, 0.0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 12.0),
+                            child: Icon(
+                              Icons.logout_rounded,
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryText,
+                              size: 44.0,
+                            ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(0.0, 0.0),
-                        child: Text(
-                          'Log Out',
-                          textAlign: TextAlign.center,
-                          style: FlutterFlowTheme.of(context)
-                              .headlineMedium
-                              .override(
-                                font: GoogleFonts.poppins(
+                        Align(
+                          alignment: const AlignmentDirectional(0.0, 0.0),
+                          child: Text(
+                            'Log Out',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .headlineMedium
+                                .override(
+                                  font: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .headlineMedium
+                                        .fontStyle,
+                                  ),
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FlutterFlowTheme.of(context)
                                       .headlineMedium
                                       .fontStyle,
                                 ),
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .headlineMedium
-                                    .fontStyle,
-                              ),
+                          ),
                         ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(0.0, 0.0),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 12.0, 0.0, 0.0),
-                          child: Text(
-                            'Are you sure you want to log out from your account?',
-                            style: FlutterFlowTheme.of(context)
-                                .headlineLarge
-                                .override(
-                                  font: GoogleFonts.poppins(
+                        Align(
+                          alignment: const AlignmentDirectional(0.0, 0.0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 12.0, 0.0, 0.0),
+                            child: Text(
+                              'Are you sure you want to log out from your account?',
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineLarge
+                                  .override(
+                                    font: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.normal,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .headlineLarge
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.black,
+                                    fontSize: 16.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .headlineLarge
                                         .fontStyle,
                                   ),
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.normal,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontStyle,
-                                ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 10.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            Navigator.pop(context);
-                          },
-                          text: 'Cancel',
-                          options: FFButtonOptions(
-                            height: 40.0,
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                20.0, 0.0, 20.0, 0.0),
-                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: Colors.white,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .headlineLarge
-                                .override(
-                                  font: GoogleFonts.poppins(
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 0.0, 24.0, 10.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 12.0, 0.0),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                            },
+                            text: 'Cancel',
+                            options: FFButtonOptions(
+                              height: 40.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 0.0, 20.0, 0.0),
+                              iconPadding:
+                                  const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                              color: Colors.white,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .headlineLarge
+                                  .override(
+                                    font: GoogleFonts.poppins(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .headlineLarge
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .headlineLarge
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.black,
+                                    fontSize: 16.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .headlineLarge
                                         .fontWeight,
@@ -228,219 +241,79 @@ class _LogOutWidgetState extends State<LogOutWidget> with RouteAware {
                                         .headlineLarge
                                         .fontStyle,
                                   ),
-                                  color: Colors.black,
+                              elevation: 0.0,
+                              borderRadius: BorderRadius.circular(40.0),
+                            ),
+                          ),
+                        ),
+                        FFButtonWidget(
+                          onPressed: () async {
+                            _model.apiResult93l =
+                                await DashboardGroup.logoutCall.call(
+                              authToken: FFAppState().authToken,
+                            );
+
+                            if (!mounted) return;
+
+                            final message = getJsonField(
+                              (_model.apiResult93l?.jsonBody ?? ''),
+                              r'''$.message''',
+                            ).toString();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  message,
+                                  style: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
+                                ),
+                                duration:
+                                    const Duration(milliseconds: 1700),
+                                backgroundColor: Colors.black,
+                              ),
+                            );
+
+                            if ((_model.apiResult93l?.succeeded ?? true)) {
+                              await Future.delayed(
+                                  const Duration(milliseconds: 200));
+
+                              if (!mounted) return;
+
+                              FFAppState().deleteAuthToken();
+                              FFAppState().authToken = '';
+                              FFAppState().navigationType = 1;
+
+                              context.goNamed(LogInWidget.routeName);
+                            }
+                          },
+                          text: 'LogOut',
+                          options: FFButtonOptions(
+                            height: 40.0,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0),
+                            color: FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .headlineLarge
+                                .override(
+                                  fontFamily: 'Poppins',
                                   fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .fontStyle,
+                                  color: Colors.white,
                                 ),
                             elevation: 0.0,
+                            borderSide: const BorderSide(
+                                color: Colors.transparent),
                             borderRadius: BorderRadius.circular(40.0),
                           ),
                         ),
-                      ),
-                      // FFButtonWidget(
-                      //   onPressed: () async {
-                      //     var _shouldSetState = false;
-                      //     _model.apiResult93l =
-                      //         await DashboardGroup.logoutCall.call(
-                      //       authToken: FFAppState().authToken,
-                      //     );
-                      //
-                      //     _shouldSetState = true;
-                      //     if ((_model.apiResult93l?.succeeded ?? true)) {
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //         SnackBar(
-                      //           content: Text(
-                      //             getJsonField(
-                      //               (_model.apiResult93l?.jsonBody ?? ''),
-                      //               r'''$.message''',
-                      //             ).toString(),
-                      //             style: FlutterFlowTheme.of(context)
-                      //                 .titleMedium
-                      //                 .override(
-                      //                   font: GoogleFonts.poppins(
-                      //                     fontWeight:
-                      //                         FlutterFlowTheme.of(context)
-                      //                             .titleMedium
-                      //                             .fontWeight,
-                      //                     fontStyle:
-                      //                         FlutterFlowTheme.of(context)
-                      //                             .titleMedium
-                      //                             .fontStyle,
-                      //                   ),
-                      //                   color: Colors.white,
-                      //                   letterSpacing: 0.0,
-                      //                   fontWeight: FlutterFlowTheme.of(context)
-                      //                       .titleMedium
-                      //                       .fontWeight,
-                      //                   fontStyle: FlutterFlowTheme.of(context)
-                      //                       .titleMedium
-                      //                       .fontStyle,
-                      //                 ),
-                      //           ),
-                      //           duration: Duration(milliseconds: 1700),
-                      //           backgroundColor: Colors.black,
-                      //         ),
-                      //       );
-                      //       await Future.delayed(
-                      //         Duration(
-                      //           milliseconds: 200,
-                      //         ),
-                      //       );
-                      //
-                      //       context.goNamed(LogInWidget.routeName);
-                      //     } else {
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //         SnackBar(
-                      //           content: Text(
-                      //             getJsonField(
-                      //               (_model.apiResult93l?.jsonBody ?? ''),
-                      //               r'''$.message''',
-                      //             ).toString(),
-                      //             style: FlutterFlowTheme.of(context)
-                      //                 .titleMedium
-                      //                 .override(
-                      //                   font: GoogleFonts.poppins(
-                      //                     fontWeight:
-                      //                         FlutterFlowTheme.of(context)
-                      //                             .titleMedium
-                      //                             .fontWeight,
-                      //                     fontStyle:
-                      //                         FlutterFlowTheme.of(context)
-                      //                             .titleMedium
-                      //                             .fontStyle,
-                      //                   ),
-                      //                   color: Colors.white,
-                      //                   letterSpacing: 0.0,
-                      //                   fontWeight: FlutterFlowTheme.of(context)
-                      //                       .titleMedium
-                      //                       .fontWeight,
-                      //                   fontStyle: FlutterFlowTheme.of(context)
-                      //                       .titleMedium
-                      //                       .fontStyle,
-                      //                 ),
-                      //           ),
-                      //           duration: Duration(milliseconds: 1850),
-                      //           backgroundColor: Colors.black,
-                      //         ),
-                      //       );
-                      //       if (_shouldSetState) safeSetState(() {});
-                      //       return;
-                      //     }
-                      //
-                      //     await Future.wait([
-                      //       Future(() async {
-                      //         FFAppState().deleteAuthToken();
-                      //         FFAppState().authToken = '';
-                      //
-                      //         FFAppState().navigationType = 1;
-                      //       }),
-                      //       Future(() async {}),
-                      //     ]);
-                      //     if (_shouldSetState) safeSetState(() {});
-                      //   },
-                      //   text: 'LogOut',
-                      //   options: FFButtonOptions(
-                      //     height: 40.0,
-                      //     padding: EdgeInsetsDirectional.fromSTEB(
-                      //         20.0, 0.0, 20.0, 0.0),
-                      //     iconPadding: EdgeInsetsDirectional.fromSTEB(
-                      //         0.0, 0.0, 0.0, 0.0),
-                      //     color: FlutterFlowTheme.of(context).primary,
-                      //     textStyle: FlutterFlowTheme.of(context)
-                      //         .headlineLarge
-                      //         .override(
-                      //           font: GoogleFonts.poppins(
-                      //             fontWeight: FlutterFlowTheme.of(context)
-                      //                 .headlineLarge
-                      //                 .fontWeight,
-                      //             fontStyle: FlutterFlowTheme.of(context)
-                      //                 .headlineLarge
-                      //                 .fontStyle,
-                      //           ),
-                      //           color: Colors.white,
-                      //           fontSize: 16.0,
-                      //           letterSpacing: 0.0,
-                      //           fontWeight: FlutterFlowTheme.of(context)
-                      //               .headlineLarge
-                      //               .fontWeight,
-                      //           fontStyle: FlutterFlowTheme.of(context)
-                      //               .headlineLarge
-                      //               .fontStyle,
-                      //         ),
-                      //     elevation: 0.0,
-                      //     borderSide: BorderSide(
-                      //       color: Colors.transparent,
-                      //     ),
-                      //     borderRadius: BorderRadius.circular(40.0),
-                      //   ),
-                      // ),
-
-
-                      FFButtonWidget(
-                        onPressed: () async {
-                          // 1️⃣ Call logout API
-                          _model.apiResult93l = await DashboardGroup.logoutCall.call(
-                            authToken: FFAppState().authToken,
-                          );
-
-                          // 2️⃣ Show SnackBar with API message
-                          final message = getJsonField(
-                            (_model.apiResult93l?.jsonBody ?? ''),
-                            r'''$.message''',
-                          ).toString();
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                message,
-                                style: FlutterFlowTheme.of(context).titleMedium.override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
-                              ),
-                              duration: const Duration(milliseconds: 1700),
-                              backgroundColor: Colors.black,
-                            ),
-                          );
-
-                          // 3️⃣ Wait for SnackBar to show
-                          await Future.delayed(const Duration(milliseconds: 1800));
-
-                          // 4️⃣ Clear auth state
-                          FFAppState().deleteAuthToken();
-                          FFAppState().authToken = '';
-                          FFAppState().navigationType = 1;
-
-                          // 5️⃣ Navigate to Login
-                          context.goNamed(LogInWidget.routeName);
-                        },
-                        text: 'LogOut',
-                        options: FFButtonOptions(
-                          height: 40.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          color: FlutterFlowTheme.of(context).primary,
-                          textStyle: FlutterFlowTheme.of(context).headlineLarge.override(
-                            fontFamily: 'Poppins',
-                            fontSize: 16.0,
-                            color: Colors.white,
-                          ),
-                          elevation: 0.0,
-                          borderSide: const BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(40.0),
-                        ),
-                      ),
-
-
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

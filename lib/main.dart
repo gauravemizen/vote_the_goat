@@ -462,7 +462,6 @@
 // }
 
 ///working  main.dart
-library;
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -480,11 +479,12 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-import 'theme_controller.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
 import '/flutter_flow/admob_util.dart';
+import '/subscription/ad_service.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -503,11 +503,16 @@ void main() async {
 
   await initFirebase();
 
+  // Enable Firebase Analytics
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+  await FirebaseAnalytics.instance.logAppOpen();
+
   // Start initial custom actions code
   await actions.lockPortraitOrientation();
   await actions.connect();
   await actions.setupForegroundNotifications();
   // End initial custom actions code
+
 
   await FlutterFlowTheme.initialize();
   adMobRequestConsent();
@@ -517,13 +522,24 @@ void main() async {
   await appState.initializePersistedState();
   await appState.initializeSubscriptionState();
 
+  // Preload the first interstitial ad and start global ad timer
+  AdService().initialize();
+
   debugLogAppState(appState);
   appState.addListener(() {
     debugLogAppState(appState);
   });
 
   if (!kIsWeb) {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      // Layout overflows are non-fatal — don't report them as crashes
+      final isOverflow = details.exceptionAsString().contains('overflowed');
+      if (isOverflow) {
+        FirebaseCrashlytics.instance.recordFlutterError(details);
+      } else {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+      }
+    };
   }
 
   final originalErrorWidgetBuilder = ErrorWidget.builder;
@@ -618,12 +634,18 @@ class _MyAppState extends State<MyApp> {
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
 
+  // Firebase Analytics
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   String getRoute([RouteMatch? routeMatch]) {
-    final RouteMatch lastMatch =
-        routeMatch ?? _router.routerDelegate.currentConfiguration.last;
+    final configuration = _router.routerDelegate.currentConfiguration;
+    if (configuration.matches.isEmpty) {
+      return '/';
+    }
+    final RouteMatch lastMatch = routeMatch ?? configuration.last;
     final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
         ? lastMatch.matches
-        : _router.routerDelegate.currentConfiguration;
+        : configuration;
     return matchList.uri.toString();
   }
 
@@ -646,6 +668,15 @@ class _MyAppState extends State<MyApp> {
       ..listen((user) {
         _appStateNotifier.update(user);
         debugLogAuthenticatedUser();
+        // Set analytics user ID for conversion tracking
+        final uid = user.uid;
+        if (uid != null && uid.isNotEmpty) {
+          analytics.setUserId(id: uid);
+          analytics.setUserProperty(name: 'logged_in', value: 'true');
+        } else {
+          analytics.setUserId(id: null);
+          analytics.setUserProperty(name: 'logged_in', value: 'false');
+        }
       });
     jwtTokenStream.listen((_) {});
     // Keep native splash visible until video splash is ready
