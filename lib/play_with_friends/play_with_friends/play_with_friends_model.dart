@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 class PlayWithFriendsModel extends FlutterFlowModel<PlayWithFriendsWidget> {
   ///  Local state fields for this page.
 
+  bool isGuestUser = false;
+  bool isProfileLoaded = false;
 
   ///
   ///

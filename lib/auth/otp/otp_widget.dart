@@ -15,6 +15,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'otp_model.dart';
+import 'package:vote_for_goat/subscription/ad_service.dart';
 export 'otp_model.dart';
 
 class OtpWidget extends StatefulWidget {
@@ -44,6 +45,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
   @override
   void initState() {
     super.initState();
+    AdService().setAuthScreen(true);
     _model = createModel(context, () => OtpModel());
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -58,6 +60,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
 
   @override
   void dispose() {
+    AdService().setAuthScreen(false);
     routeObserver.unsubscribe(this);
     _model.dispose();
     super.dispose();

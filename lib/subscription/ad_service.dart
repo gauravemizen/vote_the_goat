@@ -19,6 +19,19 @@ class AdService {
 
   bool get isAdReady => _isAdLoaded;
 
+  // ── Auth screen suppression ──
+  // When the user is on an auth screen (login, signup, OTP, forgot password),
+  // ads must never be shown.
+  bool _isOnAuthScreen = false;
+
+  /// Call with `true` when entering an auth screen, `false` when leaving.
+  void setAuthScreen(bool value) {
+    _isOnAuthScreen = value;
+    debugPrint('[AdService] Auth screen active: $_isOnAuthScreen');
+  }
+
+  bool get isOnAuthScreen => _isOnAuthScreen;
+
   // Banner Ad Unit IDs
   static String get _bannerAdUnitId {
     if (Platform.isAndroid) {
@@ -115,6 +128,12 @@ class AdService {
   /// Called every tick. Decides whether to show an ad.
   Future<void> _onGlobalTimerTick() async {
     try {
+      // 0. Never show ads on auth screens
+      if (_isOnAuthScreen) {
+        debugPrint('[AdService] ⏱️ Tick — on auth screen, skipping');
+        return;
+      }
+
       // 1. Check if user should see ads at all
       if (!await shouldShowAds()) {
         debugPrint('[AdService] User on paid plan — stopping global timer');
@@ -238,6 +257,12 @@ class AdService {
   //  STEP 3: Show instantly when needed
   // ──────────────────────────────────────────────
   Future<bool> showInterstitialAd() async {
+    // Never show ads on auth screens
+    if (_isOnAuthScreen) {
+      debugPrint('[AdService] 🚫 Blocked — on auth screen');
+      return false;
+    }
+
     if (!await shouldShowAds()) return false;
 
     // ── Enforce initial cooldown ──

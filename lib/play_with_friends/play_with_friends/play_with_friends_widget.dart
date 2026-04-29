@@ -1,4 +1,5 @@
 import '../../custom_code/widgets/cube_grid_loader.dart' as custom_widgets;
+import '../../nav/nav_widget.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/components/button_small/button_small_widget.dart';
@@ -101,6 +102,22 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
         (res.jsonBody ?? ''),
         r'$.name',
       ).toString();
+
+      // Extract and store is_guest flag
+      final isGuestValue = getJsonField(
+        (res.jsonBody ?? ''),
+        r'$.data.is_guest',
+      );
+      _model.isGuestUser = isGuestValue == 1 || isGuestValue == true;
+      _model.isProfileLoaded = true;
+      debugPrint('[PlayWithFriends] getProfile: isGuestUser=${_model.isGuestUser}');
+
+      if (_model.isGuestUser && mounted) {
+        safeSetState(() {});
+        return;
+      }
+
+
       debugPrint(
           '[EligiblePlayer] getProfile: success, userName=${FFAppState().userName}');
       safeSetState(() {});
@@ -158,6 +175,72 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
           ],
         );
       },
+    );
+  }
+
+  Widget _buildGuestSignUpView() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+      child: SizedBox(
+        height: MediaQuery.sizeOf(context).height * 0.7,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.lock_outline_rounded,
+                  size: 60,
+                  color: FlutterFlowTheme.of(context).tertiary.withValues(alpha: 0.6),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  // 'To access this feature, you need to\nsign up in the app.',
+                  'Assemble Your Crew!\nTo create your team and challenge your friends, the database needs to secure your private room.Please sign up to start the game!',
+                  textAlign: TextAlign.center,
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Poppins',
+                    color: FlutterFlowTheme.of(context).tertiary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 28),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    context.pushNamed(SignUpWidget.routeName, queryParameters: {
+                      'showBackButton': serializeParam(true, ParamType.bool),
+                    });
+                  },
+                  child: Container(
+                    width: 180,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEB6027),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Text(
+                      'Sign Up',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -245,6 +328,11 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
 
       // Start timer when page is pushed
       AdService().startPageTimer('playWithFriends');
+
+      // Re-check guest user status when returning from another screen
+      if (_model.isGuestUser) {
+        _loadProfileOrRedirect();
+      }
     }
   }
 
@@ -448,6 +536,9 @@ class _PlayWithFriendsWidgetState extends State<PlayWithFriendsWidget>
                         ),
                       ],
                     ),
+                    if (_model.isGuestUser)
+                      _buildGuestSignUpView()
+                    else
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(
                           0.0, 10.0, 0.0, 0.0),
@@ -3428,7 +3519,7 @@ Download the app now and join the fun!''';
                 ),
               ),
             ),
-            if (!FFAppState().isRead)
+            if (_model.isProfileLoaded && !_model.isGuestUser && !FFAppState().isRead)
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(
                     0.0,

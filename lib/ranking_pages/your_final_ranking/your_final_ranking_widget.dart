@@ -1524,7 +1524,9 @@
 ///2
 ///
 // lib/ranking_pages/your_final_ranking/your_final_ranking_widget.dart
+import 'package:flutter/foundation.dart';
 import 'package:vote_for_goat/custom_code/widgets/cube_grid_loader.dart';
+import 'package:vote_for_goat/ranking_pages/your_final_ranking/your_final_ranking_v2_widget.dart';
 
 import '/backend/api_requests/api_calls.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
@@ -1859,7 +1861,7 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                                                               FontWeight.normal,
                                                         ),
                                               ),
-                                              TextSpan(
+                                          TextSpan(
                                                 text: ' ranking',
                                                 style: FlutterFlowTheme.of(
                                                         context)
@@ -1875,7 +1877,33 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                                                       fontWeight:
                                                           FontWeight.normal,
                                                     ),
+                                              ),
+
+
+                                              /// redirection to test new ui, remove when not needed
+
+                                              kDebugMode
+                                                  ? WidgetSpan(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    context.pushNamed(YourFinalRankingV2Widget.routeName);
+                                                  },
+                                                  child: Text(
+                                                    '  [new ui]',
+                                                    style: FlutterFlowTheme.of(context)
+                                                        .customTextStyle1
+                                                        .override(
+                                                      fontFamily: 'good times',
+                                                      color: const Color(0xFFEB6027),
+                                                      fontSize: 10.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight: FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ),
                                               )
+                                                  : const TextSpan(text: ''),
+
                                             ],
                                             style: FlutterFlowTheme.of(context)
                                                 .customTextStyle1
@@ -2563,7 +2591,7 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                                                             child: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
-                                                                      .max,
+                                                                      .min,
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .center,
@@ -2581,6 +2609,10 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                                                                     textAlign:
                                                                         TextAlign
                                                                             .center,
+                                                                    maxLines: 2,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .titleMedium
@@ -2596,6 +2628,8 @@ class _YourFinalRankingWidgetState extends State<YourFinalRankingWidget>
                                                                               FlutterFlowTheme.of(context).tertiary,
                                                                           letterSpacing:
                                                                               0.0,
+                                                                          fontSize:
+                                                                              12.0,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                           fontStyle: FlutterFlowTheme.of(context)

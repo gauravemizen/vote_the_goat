@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vote_for_goat/subscription/ad_service.dart';
 import 'forgot_password_model.dart';
 export 'forgot_password_model.dart';
 
@@ -27,6 +28,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
   @override
   void initState() {
     super.initState();
+    AdService().setAuthScreen(true);
     _model = createModel(context, () => ForgotPasswordModel());
 
     _model.mailTextController ??= TextEditingController()
@@ -38,6 +40,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
 
   @override
   void dispose() {
+    AdService().setAuthScreen(false);
     routeObserver.unsubscribe(this);
 
     _model.dispose();

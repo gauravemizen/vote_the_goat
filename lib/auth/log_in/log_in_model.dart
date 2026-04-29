@@ -123,6 +123,15 @@ class LogInModel extends FlutterFlowModel<LogInWidget> {
 
   ApiCallResponse? get googleLogIn => _googleLogIn;
 
+  // Stores action output result for [Backend Call - API (guestLogin)] action in Container widget.
+  ApiCallResponse? _guestLoginRes;
+  set guestLoginRes(ApiCallResponse? value) {
+    _guestLoginRes = value;
+    debugLogWidgetClass(this);
+  }
+
+  ApiCallResponse? get guestLoginRes => _guestLoginRes;
+
   final Map<String, DebugDataField> debugGeneratorVariables = {};
   final Map<String, DebugDataField> debugBackendQueries = {};
   final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
@@ -237,6 +246,14 @@ class LogInModel extends FlutterFlowModel<LogInWidget> {
           ),
           'googleLogIn': debugSerializeParam(
             googleLogIn,
+            ParamType.ApiResponse,
+            link:
+                'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=logIn',
+            name: 'ApiCallResponse',
+            nullable: true,
+          ),
+          'guestLoginRes': debugSerializeParam(
+            guestLoginRes,
             ParamType.ApiResponse,
             link:
                 'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=logIn',

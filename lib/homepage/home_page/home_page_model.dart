@@ -17,6 +17,9 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   ApiCallResponse? get getProfileRes => _getProfileRes;
 
+  // Stores whether the current user is a guest user (from getProfile API response).
+  bool isGuestUser = false;
+
   // Stores action output result for [AdMob - Show Interstitial Ad] action in homePage widget.
   bool? _interstitialAdSuccess;
   set interstitialAdSuccess(bool? value) {

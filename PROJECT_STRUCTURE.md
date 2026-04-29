@@ -31,6 +31,13 @@ vote_for_goat/
 ├── pubspec.yaml                  # Project dependencies and metadata
 ├── pubspec.lock                  # Locked dependency versions
 ├── README.md                     # Project readme
+├── AD_FLOW_DOCUMENTATION.md      # Ad flow documentation
+├── AD_SCREENS_MAP.md             # Ad screens mapping
+├── APP_UPDATE_IMPLEMENTATION.md  # App update implementation guide
+├── APP_UPDATE_UNIVERSAL_ACCESS.md # App update universal access docs
+├── CHANGES_APRIL_7_2026.md       # Changelog for April 7, 2026
+├── VERSION_UPDATE_CHANGELOG.md   # Version update changelog
+├── flutter_run_output.log        # Flutter run output log
 │
 ├── android/                      # Android platform-specific code
 │   ├── app/
@@ -87,6 +94,7 @@ vote_for_goat/
 └── lib/                          # Main Dart source code
     ├── main.dart                 # App entry point
     ├── app_state.dart            # Global app state (Provider)
+    ├── app_version.dart          # Hardcoded app version info (Android/iOS)
     ├── index.dart                # Library exports
     ├── environment_values.dart   # Environment configuration
     ├── theme_controller.dart     # Theme mode controller

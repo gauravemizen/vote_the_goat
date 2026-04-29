@@ -100,6 +100,15 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
         (res.jsonBody ?? ''),
         r'$.name',
       ).toString();
+
+      // Extract and store is_guest flag
+      final isGuestValue = getJsonField(
+        (res.jsonBody ?? ''),
+        r'$.data.is_guest',
+      );
+      _model.isGuestUser = isGuestValue == 1 || isGuestValue == true;
+      debugPrint('[RankingPage] getProfile: isGuestUser=${_model.isGuestUser}');
+
       debugPrint('[RankingPage] getProfile: success, userName=${FFAppState().userName}');
       safeSetState(() {});
     } catch (e, st) {
@@ -481,7 +490,10 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                                   0.0,
                                 )),
                             child: Text(
-                              'Drag & Drop the Players and release them\nin the desired ranking position',
+                              // 'Drag & Drop the Players and release them\nin the desired ranking position',
+
+                              "Drag & Drop to rank the players you know.\nRank as many as you want. There is no need to move them all.",
+
                               textAlign: TextAlign.center,
                               style: FlutterFlowTheme.of(context)
                                   .titleMedium
@@ -510,85 +522,85 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                             ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16, 10, 0, 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Please select how many players you want to rank',
-                                style: FlutterFlowTheme.of(context)
-                                    .titleMedium
-                                    .override(
-                                  font: GoogleFonts.poppins(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                                  color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
-                                      ? Colors.white
-                                      : const Color(0xBF000000),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [10, 25, 50]
-                                    .map(
-                                      (count) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Row(
-                                      children: [
-                                        Radio<int>(
-                                          value: count,
-                                          groupValue:
-                                          _model.selectedPlayerCount,
-                                          activeColor:
-                                          FlutterFlowTheme.of(context)
-                                              .primary,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _model.selectedPlayerCount =
-                                                  value;
-                                            });
-                                          },
-                                        ),
-                                        Text(
-                                          count.toString(),
-                                          style:
-                                          FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                            fontFamily: 'Poppins',
-                                            color:
-                                            FlutterFlowTheme.of(
-                                                context)
-                                                .primaryText,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                        ),
+                        //  Container(
+                        //   padding: const EdgeInsetsDirectional.fromSTEB(
+                        //       16, 10, 0, 10),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Text(
+                        //         'Please select how many players you want to rank',
+                        //         style: FlutterFlowTheme.of(context)
+                        //             .titleMedium
+                        //             .override(
+                        //           font: GoogleFonts.poppins(
+                        //             fontWeight: FlutterFlowTheme.of(context)
+                        //                 .titleMedium
+                        //                 .fontWeight,
+                        //             fontStyle: FlutterFlowTheme.of(context)
+                        //                 .titleMedium
+                        //                 .fontStyle,
+                        //           ),
+                        //           color: (Theme.of(context).brightness ==
+                        //               Brightness.dark) ==
+                        //               true
+                        //               ? Colors.white
+                        //               : const Color(0xBF000000),
+                        //           letterSpacing: 0.0,
+                        //           fontWeight: FlutterFlowTheme.of(context)
+                        //               .titleMedium
+                        //               .fontWeight,
+                        //           fontStyle: FlutterFlowTheme.of(context)
+                        //               .titleMedium
+                        //               .fontStyle,
+                        //         ),
+                        //       ),
+                        //       const SizedBox(height: 12),
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         children: [10, 25, 50]
+                        //             .map(
+                        //               (count) => Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 10),
+                        //             child: Row(
+                        //               children: [
+                        //                 Radio<int>(
+                        //                   value: count,
+                        //                   groupValue:
+                        //                   _model.selectedPlayerCount,
+                        //                   activeColor:
+                        //                   FlutterFlowTheme.of(context)
+                        //                       .primary,
+                        //                   onChanged: (value) {
+                        //                     setState(() {
+                        //                       _model.selectedPlayerCount =
+                        //                           value;
+                        //                     });
+                        //                   },
+                        //                 ),
+                        //                 Text(
+                        //                   count.toString(),
+                        //                   style:
+                        //                   FlutterFlowTheme.of(context)
+                        //                       .bodyMedium
+                        //                       .override(
+                        //                     fontFamily: 'Poppins',
+                        //                     color:
+                        //                     FlutterFlowTheme.of(
+                        //                         context)
+                        //                         .primaryText,
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         )
+                        //             .toList(),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         if (_model.isLoading)
                           const Expanded(
                             child: SizedBox.shrink(),
@@ -1937,94 +1949,178 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                             ),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                if (_model.selectedPlayerCount == null) {
-                                  await showDialog(
+
+                                // Guest user check
+                                if (_model.isGuestUser) {
+                                  await showDialog<void>(
                                     context: context,
-                                    barrierDismissible: false,
-                                    builder: (alertDialogContext) {
-                                      return BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 5, sigmaY: 5),
-                                        child: AlertDialog(
-                                          backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(16),
-                                            side: BorderSide(
-                                              color: (Theme.of(context)
-                                                  .brightness ==
-                                                  Brightness.dark)
-                                                  ? const Color(0xFF4E4E4E)
-                                                  : Colors.transparent,
-                                              width: 1,
-                                            ),
+                                    barrierDismissible: true,
+                                    builder: (BuildContext dialogContext) {
+                                      return AlertDialog(
+                                        backgroundColor: const Color(0xFFFFFFFF),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        elevation: 5,
+                                        title: const Text(
+                                          'Sign Up Required',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF14181B),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
                                           ),
-                                          title: Text(
-                                            'Selection Required',
-                                            style: FlutterFlowTheme.of(context)
-                                                .headlineMedium
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .primaryText,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                        ),
+                                        content: const Text(
+                                          // 'To finalize your ranking, you need to sign up in the app first.',
+
+                                          "One Head, One Vote.\nThis is a certified Global Census.\nTo prevent spam and count your specific ranking, you need to sign up before finalizing.",
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF57636C),
+                                            fontSize: 14,
                                           ),
-                                          content: Text(
-                                            'Please select how many players you want to rank',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              color: FlutterFlowTheme.of(
-                                                  context)
-                                                  .secondaryText,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext),
-                                              child: Container(
-                                                padding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 16,
-                                                    vertical: 8),
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                      context)
-                                                      .primary,
-                                                  borderRadius:
-                                                  BorderRadius.circular(8),
-                                                ),
-                                                child: Text(
-                                                  'OK',
-                                                  style: FlutterFlowTheme.of(
-                                                      context)
-                                                      .titleSmall
-                                                      .override(
-                                                    fontFamily: 'Poppins',
-                                                    color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                    FontWeight.w500,
-                                                  ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(dialogContext).pop(),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF57636C).withValues(alpha: 0.12),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  color: Color(0xFF57636C),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                          elevation: 5,
-                                        ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(dialogContext).pop();
+                                              context.pushNamed(SignUpWidget.routeName, queryParameters: {
+                                                'showBackButton': serializeParam(true, ParamType.bool),
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFEB6027),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Text(
+                                                'Sign Up',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   );
                                   return;
                                 }
+
+                                /// commenting for new app flow
+                                // if (_model.selectedPlayerCount == null) {
+                                //   await showDialog(
+                                //     context: context,
+                                //     barrierDismissible: false,
+                                //     builder: (alertDialogContext) {
+                                //       return BackdropFilter(
+                                //         filter: ImageFilter.blur(
+                                //             sigmaX: 5, sigmaY: 5),
+                                //         child: AlertDialog(
+                                //           backgroundColor:
+                                //           FlutterFlowTheme.of(context)
+                                //               .secondaryBackground,
+                                //           shape: RoundedRectangleBorder(
+                                //             borderRadius:
+                                //             BorderRadius.circular(16),
+                                //             side: BorderSide(
+                                //               color: (Theme.of(context)
+                                //                   .brightness ==
+                                //                   Brightness.dark)
+                                //                   ? const Color(0xFF4E4E4E)
+                                //                   : Colors.transparent,
+                                //               width: 1,
+                                //             ),
+                                //           ),
+                                //           title: Text(
+                                //             'Selection Required',
+                                //             style: FlutterFlowTheme.of(context)
+                                //                 .headlineMedium
+                                //                 .override(
+                                //               fontFamily: 'Poppins',
+                                //               color: FlutterFlowTheme.of(
+                                //                   context)
+                                //                   .primaryText,
+                                //               fontSize: 20,
+                                //               fontWeight: FontWeight.w600,
+                                //             ),
+                                //           ),
+                                //           content: Text(
+                                //             'Please select how many players you want to rank',
+                                //             style: FlutterFlowTheme.of(context)
+                                //                 .bodyMedium
+                                //                 .override(
+                                //               fontFamily: 'Poppins',
+                                //               color: FlutterFlowTheme.of(
+                                //                   context)
+                                //                   .secondaryText,
+                                //               fontSize: 14,
+                                //             ),
+                                //           ),
+                                //           actions: [
+                                //             TextButton(
+                                //               onPressed: () => Navigator.pop(
+                                //                   alertDialogContext),
+                                //               child: Container(
+                                //                 padding:
+                                //                 const EdgeInsets.symmetric(
+                                //                     horizontal: 16,
+                                //                     vertical: 8),
+                                //                 decoration: BoxDecoration(
+                                //                   color: FlutterFlowTheme.of(
+                                //                       context)
+                                //                       .primary,
+                                //                   borderRadius:
+                                //                   BorderRadius.circular(8),
+                                //                 ),
+                                //                 child: Text(
+                                //                   'OK',
+                                //                   style: FlutterFlowTheme.of(
+                                //                       context)
+                                //                       .titleSmall
+                                //                       .override(
+                                //                     fontFamily: 'Poppins',
+                                //                     color: Colors.white,
+                                //                     fontSize: 14,
+                                //                     fontWeight:
+                                //                     FontWeight.w500,
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ],
+                                //           elevation: 5,
+                                //         ),
+                                //       );
+                                //     },
+                                //   );
+                                //   return;
+                                // }
 
 
 
@@ -2426,6 +2522,13 @@ class _RankingPageWidgetState extends State<RankingPageWidget> with RouteAware {
                                                         height: 48.0,
                                                         child: FFButtonWidget(
                                                           onPressed: () async {
+
+
+
+
+
+
+
                                                             _model.apiResultxjo = await DashboardGroup.finalizeRankingCall.call(
                                                               authToken: FFAppState().authToken,
                                                             );

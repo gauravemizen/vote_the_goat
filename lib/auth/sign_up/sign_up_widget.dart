@@ -1352,10 +1352,16 @@ import 'sign_up_model.dart';
 export 'sign_up_model.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import '../services/device_id_service.dart';
+import 'package:vote_for_goat/subscription/ad_service.dart';
 
 
 class SignUpWidget extends StatefulWidget {
-  const SignUpWidget({super.key});
+  const SignUpWidget({
+    super.key,
+    this.showBackButton = false,
+  });
+
+  final bool showBackButton;
 
   static String routeName = 'signUp';
   static String routePath = '/signUp';
@@ -1375,7 +1381,7 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
 
 
 
-
+    AdService().setAuthScreen(true);
     _model = createModel(context, () => SignUpModel());
 
     _model.nameFieldTextController ??= TextEditingController()
@@ -1405,6 +1411,7 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
 
   @override
   void dispose() {
+    AdService().setAuthScreen(false);
     routeObserver.unsubscribe(this);
     _model.dispose();
     super.dispose();
@@ -1499,6 +1506,28 @@ class _SignUpWidgetState extends State<SignUpWidget> with RouteAware {
                 fit: BoxFit.cover,
               ),
             ),
+            // Positioned scrollable container
+            if (widget.showBackButton)
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 12.0,
+                left: 16.0,
+                child: GestureDetector(
+                  onTap: () => context.safePop(),
+                  child: Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: Colors.white,
+                      size: 24.0,
+                    ),
+                  ),
+                ),
+              ),
             // Positioned scrollable container
             Positioned(
               top: MediaQuery.sizeOf(context).height * 0.44,

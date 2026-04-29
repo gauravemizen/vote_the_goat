@@ -211,6 +211,18 @@ class _SplashWidgetState extends State<SplashWidget> {
     if (!mounted) return;
 
     if (profileRes.succeeded) {
+      final isGuest = getJsonField(
+        profileRes.jsonBody,
+        r'$.data.is_guest',
+      );
+      print('👤 [Splash] is_guest: $isGuest');
+
+      if (isGuest == 1) {
+        print('🎭 [Splash] Guest user detected. Going to NavWidget.');
+        context.goNamed(NavWidget.routeName);
+        return;
+      }
+
       final isAttempt = getJsonField(
         profileRes.jsonBody,
         r'$.data.is_attempt',

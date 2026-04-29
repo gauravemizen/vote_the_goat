@@ -5,6 +5,7 @@ import '../../eligible_players/eligible_player/eligible_player_widget.dart';
 import '../../homepage/home_page/home_page_widget.dart';
 import '../../play_with_friends/play_with_friends/play_with_friends_widget.dart';
 import '../../ranking_pages/ranking_page/ranking_page_widget.dart';
+import '../../ranking_pages/your_final_ranking/your_final_ranking_v2_widget.dart';
 import '../../ranking_pages/your_final_ranking/your_final_ranking_widget.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -111,7 +112,8 @@ class _TabExploreState extends State<TabExplore> {
 class TabAccount extends StatelessWidget {
   const TabAccount({super.key});
   @override
-  Widget build(BuildContext context) =>const YourFinalRankingWidget();
+  // Widget build(BuildContext context) =>const YourFinalRankingWidget();
+  Widget build(BuildContext context) =>const YourFinalRankingV2Widget();
 
 }
 

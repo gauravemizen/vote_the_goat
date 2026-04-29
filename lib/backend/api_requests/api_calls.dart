@@ -13,7 +13,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start auth Group Code
 
 class AuthGroup {
-  // static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
+  //static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
   static String getBaseUrl() => 'https://admin.votethegoat.app/api';
   static Map<String, String> headers = {};
   static LogInCall logInCall = LogInCall();
@@ -25,6 +25,7 @@ class AuthGroup {
   static ChangePasswordCall changePasswordCall = ChangePasswordCall();
   static LogOutCall logOutCall = LogOutCall();
   static ResendOtpCall resendOtpCall = ResendOtpCall();
+  static GuestLoginCall guestLoginCall = GuestLoginCall();
 }
 
 class LogInCall {
@@ -309,6 +310,38 @@ class ResendOtpCall {
   }
 }
 
+class GuestLoginCall {
+  Future<ApiCallResponse> call({
+    String? fcmToken = '',
+    String? deviceType = '',
+    String? deviceId = '',
+  }) async {
+    final baseUrl = AuthGroup.getBaseUrl();
+
+    final ffApiRequestBody = '''
+{
+  "fcm_token": "${escapeStringForJson(fcmToken)}",
+  "device_type": "${escapeStringForJson(deviceType)}",
+  "device_id": "${escapeStringForJson(deviceId)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'guestLogin',
+      apiUrl: '$baseUrl/guest-login',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 /// End auth Group Code
 
 /// Start dashboard Group Code
@@ -318,8 +351,7 @@ class DashboardGroup {
     String? authToken,
   }) {
     authToken ??= '';
-    // return 'https://votethegoat.ezxdemo.com/api';
-    return 'https://admin.votethegoat.app/api';
+     return 'https://admin.votethegoat.app/api';
   }
 
   static Map<String, String> headers = {};

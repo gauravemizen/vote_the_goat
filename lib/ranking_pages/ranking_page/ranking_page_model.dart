@@ -13,6 +13,8 @@ class RankingPageModel extends FlutterFlowModel<RankingPageWidget> {
 
   int? selectedPlayerCount;
 
+  bool isGuestUser = false;
+
 
   set isLoading(bool value) {
     _isLoading = value;

@@ -1790,10 +1790,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       final unauthorized = status == 401 || status == 403;
 
       // Check for various failure conditions
-      if (!succeeded ||
-          unauthorized ||
-          status < 200 ||
-          status >= 300) {
+      if (!succeeded || unauthorized || status < 200 || status >= 300) {
         debugPrint(
             '[HomePage] getProfile: failed/unauthorized -> redirecting to login');
         debugPrint(
@@ -1815,7 +1812,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
         r'$.name',
       ).toString();
 
-
+      // Extract and store is_guest flag
+      final isGuestValue = getJsonField(
+        (res.jsonBody ?? ''),
+        r'$.data.is_guest',
+      );
+      _model.isGuestUser = isGuestValue == 1 || isGuestValue == true;
+      debugPrint('[HomePage] getProfile: isGuestUser=${_model.isGuestUser}');
 
       // Extract and update advertisement status
       final advertisementStatus = getJsonField(
@@ -1827,13 +1830,13 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
         FFAppState().advertisementStatus = advertisementStatus is int
             ? advertisementStatus
             : int.tryParse(advertisementStatus.toString()) ?? 1;
-        debugPrint('[HomePage] getProfile: advertisementStatus=${FFAppState().advertisementStatus}');
+        debugPrint(
+            '[HomePage] getProfile: advertisementStatus=${FFAppState().advertisementStatus}');
       } else {
         FFAppState().advertisementStatus = 1; // default to enabled
-        debugPrint('[HomePage] getProfile: advertisementStatus not found in response, defaulting to 1');
+        debugPrint(
+            '[HomePage] getProfile: advertisementStatus not found in response, defaulting to 1');
       }
-
-
 
       debugPrint(
           '[HomePage] getProfile: success, userName=${FFAppState().userName}');
@@ -1920,22 +1923,15 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     _model = createModel(context, () => HomePageModel());
     debugPrint('[HomePage] initState');
 
-
-
-
-
-
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       // Start page timer for 5-minute interval ads
       if (!mounted) return;
       AdService().startPageTimer('homePage');
 
-
       // Allow ads only AFTER interval
       SmartInterstitialManager().allowAdsAfterInitialDelay(
         delay: const Duration(minutes: 3),
       );
-
 
       // Preload interstitial ad (will check subscription status internally)
       // await SmartInterstitialManager().preloadInterstitial();
@@ -1946,13 +1942,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
       // Only continue with ads if we're still mounted (profile validation succeeded)
       if (mounted) {
-
-
-
-        FFAppState().advertisementStatus==0 ? null :
-
-        await SmartInterstitialManager().showInterstitialIfAllowed();
-
+        FFAppState().advertisementStatus == 0
+            ? null
+            : await SmartInterstitialManager().showInterstitialIfAllowed();
       }
     });
   }
@@ -2015,6 +2007,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
     // Stop timer when leaving the page
     AdService().stopInterstitialTimer();
   }
+
   @override
   void didPushNext() {
     _model.isRouteVisible = false;
@@ -2023,8 +2016,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    DebugFlutterFlowModelContext
-        .maybeOf(context)
+    DebugFlutterFlowModelContext.maybeOf(context)
         ?.parentModelCallback
         ?.call(_model);
     context.watch<FFAppState>();
@@ -2036,9 +2028,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme
-            .of(context)
-            .oposite,
+        backgroundColor: FlutterFlowTheme.of(context).oposite,
         drawer: Drawer(
           elevation: 16.0,
           child: WebViewAware(
@@ -2073,8 +2063,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                  16.0, 40.0, 16.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -2258,12 +2248,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
+                                      alignment:
+                                          const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Eligible Players',
                                           style: FlutterFlowTheme.of(context)
@@ -2343,12 +2332,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
+                                      alignment:
+                                          const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Players Bio',
                                           style: FlutterFlowTheme.of(context)
@@ -2447,8 +2435,8 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
+                                      alignment:
+                                          const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0.0, 2.0, 0.0, 0.0),
@@ -2508,49 +2496,58 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 50.0,
-                                      height: 50.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .brownColor,
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            blurRadius: 4.0,
-                                            color: Color(0x335D4E4E),
-                                            offset: Offset(0.0, 2.0),
-                                          )
-                                        ],
-                                        shape: BoxShape.circle,
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .brownColor,
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              blurRadius: 4.0,
+                                              color: Color(0x335D4E4E),
+                                              offset: Offset(0.0, 2.0),
+                                            )
+                                          ],
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.format_list_bulleted,
+                                          color:
+                                              (Theme.of(context).brightness ==
+                                                          Brightness.dark) ==
+                                                      true
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .lightPeach
+                                                  : Colors.white,
+                                          size: 24.0,
+                                        ),
                                       ),
-                                      child: Icon(
-                                        Icons.format_list_bulleted,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark) ==
-                                                true
-                                            ? FlutterFlowTheme.of(context)
-                                                .lightPeach
-                                            : Colors.white,
-                                        size: 24.0,
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0.0, 4.0, 0.0, 0.0),
-                                        child: Text(
-                                          'The GOAT\nGlobal Ranking',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .headlineLarge
-                                              .override(
-                                                font: GoogleFonts.poppins(
+                                      Align(
+                                        alignment: const AlignmentDirectional(
+                                            0.0, 0.0),
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                          child: Text(
+                                            'The GOAT\nGlobal Ranking',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineLarge
+                                                .override(
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .headlineLarge
+                                                            .fontStyle,
+                                                  ),
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -2558,19 +2555,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                                           .headlineLarge
                                                           .fontStyle,
                                                 ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                                 ), // close FittedBox
                               ),
                             ),
@@ -2603,6 +2592,108 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  // if (_model.isGuestUser) {
+                                  //   // Show guest user dialog
+                                  //   await showDialog<void>(
+                                  //     context: context,
+                                  //     barrierDismissible: true,
+                                  //     builder: (BuildContext dialogContext) {
+                                  //       return AlertDialog(
+                                  //         // Always use light theme colors
+                                  //         backgroundColor:
+                                  //             const Color(0xFFFFFFFF),
+                                  //         shape: RoundedRectangleBorder(
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(16),
+                                  //         ),
+                                  //         elevation: 5,
+                                  //         title: const Text(
+                                  //           'Sign Up Required',
+                                  //           style: TextStyle(
+                                  //             fontFamily: 'Poppins',
+                                  //             color: Color(0xFF14181B),
+                                  //             fontSize: 20,
+                                  //             fontWeight: FontWeight.w600,
+                                  //           ),
+                                  //         ),
+                                  //         content: Text(
+                                  //           'To use this feature, please sign up in the app first.',
+                                  //           style: const TextStyle(
+                                  //             fontFamily: 'Poppins',
+                                  //             color: Color(0xFF57636C),
+                                  //             fontSize: 14,
+                                  //           ),
+                                  //         ),
+                                  //         actions: [
+                                  //           TextButton(
+                                  //             onPressed: () =>
+                                  //                 Navigator.of(dialogContext)
+                                  //                     .pop(),
+                                  //             child: Container(
+                                  //               padding:
+                                  //                   const EdgeInsets.symmetric(
+                                  //                       horizontal: 16,
+                                  //                       vertical: 8),
+                                  //               decoration: BoxDecoration(
+                                  //                 color: const Color(0xFF57636C)
+                                  //                     .withValues(alpha: 0.12),
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(8),
+                                  //               ),
+                                  //               child: const Text(
+                                  //                 'Cancel',
+                                  //                 style: TextStyle(
+                                  //                   fontFamily: 'Poppins',
+                                  //                   color: Color(0xFF57636C),
+                                  //                   fontSize: 14,
+                                  //                   fontWeight: FontWeight.w500,
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //           TextButton(
+                                  //             onPressed: () {
+                                  //               Navigator.of(dialogContext)
+                                  //                   .pop();
+                                  //               context.pushNamed(
+                                  //                   SignUpWidget.routeName);
+                                  //             },
+                                  //             child: Container(
+                                  //               padding:
+                                  //                   const EdgeInsets.symmetric(
+                                  //                       horizontal: 16,
+                                  //                       vertical: 8),
+                                  //               decoration: BoxDecoration(
+                                  //                 color:
+                                  //                     const Color(0xFFEB6027),
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(8),
+                                  //               ),
+                                  //               child: const Text(
+                                  //                 'Sign Up',
+                                  //                 style: TextStyle(
+                                  //                   fontFamily: 'Poppins',
+                                  //                   color: Colors.white,
+                                  //                   fontSize: 14,
+                                  //                   fontWeight: FontWeight.w500,
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       );
+                                  //     },
+                                  //   );
+                                  // } else {
+                                  //   context.pushNamed(
+                                  //     NavWidget.routeName,
+                                  //     queryParameters: {
+                                  //       'initialTab': '4'
+                                  //     }, // Pass initialTab as 1 for TabNotifications
+                                  //   );
+                                  // }
+
+
                                   context.pushNamed(
                                     NavWidget.routeName,
                                     queryParameters: {
@@ -2640,12 +2731,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
+                                      alignment:
+                                          const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Play with friends',
                                           style: FlutterFlowTheme.of(context)
@@ -2693,8 +2783,112 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  context
-                                      .pushNamed(ContestPageWidget.routeName);
+                                  if (_model.isGuestUser) {
+                                    // Show guest user dialog
+                                    await showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext dialogContext) {
+                                        return AlertDialog(
+                                          // Always use light theme colors
+                                          backgroundColor:
+                                              const Color(0xFFFFFFFF),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          elevation: 5,
+                                          title: const Text(
+                                            'Sign Up Required',
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Color(0xFF14181B),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          content: Text(
+                                            'To use this feature, please sign up in the app first.',
+                                            style: const TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Color(0xFF57636C),
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(dialogContext)
+                                                      .pop(),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFF57636C)
+                                                      .withValues(alpha: 0.12),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: Color(0xFF57636C),
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                                context.pushNamed(
+                                                    SignUpWidget.routeName,
+                                                    queryParameters: {
+                                                      'showBackButton': serializeParam(true, ParamType.bool),
+                                                    });
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xFFEB6027),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: const Text(
+                                                  'Sign Up',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    // context.pushNamed(
+                                    //   NavWidget.routeName,
+                                    //   queryParameters: {
+                                    //     'initialTab': '4'
+                                    //   }, // Pass initialTab as 1 for TabNotifications
+                                    // );
+
+                                    context
+                                        .pushNamed(ContestPageWidget.routeName);
+                                  }
                                 },
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -2726,12 +2920,11 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     Align(
-                                      alignment: const AlignmentDirectional(
-                                          0.0, 0.0),
+                                      alignment:
+                                          const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0.0, 4.0, 0.0, 0.0),
+                                            .fromSTEB(0.0, 4.0, 0.0, 0.0),
                                         child: Text(
                                           'Contests',
                                           style: FlutterFlowTheme.of(context)
@@ -2766,8 +2959,7 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                     ),
                     Flexible(
                       child: Padding(
-                        padding:
-                        const EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 20.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
@@ -2791,51 +2983,57 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      14.0, 10.0, 14.0, 10.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                        'ABOUT VOTE THE GOAT',
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleMedium
-                                            .override(
-                                              font: GoogleFonts.poppins(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                      ), // close Flexible
-                                      const Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            8.0, 0.0, 0.0, 0.0),
-                                        child: Icon(
-                                          Icons.info_outline,
-                                          color: Color(0x78FFFFFF),
-                                          size: 16.0,
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            14.0, 10.0, 14.0, 10.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'ABOUT VOTE THE GOAT',
+                                            style: FlutterFlowTheme.of(context)
+                                                .titleMedium
+                                                .override(
+                                                  font: GoogleFonts.poppins(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ), // close Flexible
+                                        const Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  8.0, 0.0, 0.0, 0.0),
+                                          child: Icon(
+                                            Icons.info_outline,
+                                            color: Color(0x78FFFFFF),
+                                            size: 16.0,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
                                 ), // close Expanded
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -2848,9 +3046,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(
-                                          6.0, 6.0, 6.0, 6.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -2884,8 +3082,95 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
-                              context
-                                  .pushNamed(SubscriptionPageWidget.routeName);
+                              if (_model.isGuestUser) {
+                                await showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext dialogContext) {
+                                    return AlertDialog(
+                                      // Always use light theme colors
+                                      backgroundColor: const Color(0xFFFFFFFF),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      elevation: 5,
+                                      title: const Text(
+                                        'Sign Up Required',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF14181B),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      content: const Text(
+                                        'To access premium plans ,please sign up in the app first.',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF57636C),
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(dialogContext).pop(),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 8),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF57636C)
+                                                  .withValues(alpha: 0.12),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: const Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                color: Color(0xFF57636C),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(dialogContext).pop();
+                                            context.pushNamed(
+                                                SignUpWidget.routeName,
+                                                queryParameters: {
+                                                  'showBackButton': serializeParam(true, ParamType.bool),
+                                                });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 8),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFEB6027),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: const Text(
+                                              'Sign Up',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                context.pushNamed(
+                                    SubscriptionPageWidget.routeName);
+                              }
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -2946,9 +3231,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(
-                                          6.0, 6.0, 6.0, 6.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -3043,9 +3328,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(
-                                          6.0, 6.0, 6.0, 6.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)
@@ -3141,9 +3426,9 @@ class _HomePageWidgetState extends State<HomePageWidget> with RouteAware {
                                       ),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(
-                                          6.0, 6.0, 6.0, 6.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              6.0, 6.0, 6.0, 6.0),
                                       child: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         color: FlutterFlowTheme.of(context)

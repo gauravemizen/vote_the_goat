@@ -56,6 +56,13 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
           r'''$.data.image''',
         ).toString();
 
+        // Check if user is a guest
+        final isGuestValue = getJsonField(
+          (_model.getProfileRes?.jsonBody ?? ''),
+          r'''$.data.is_guest''',
+        );
+        _model.isGuestUser = isGuestValue == 1 || isGuestValue == true;
+        debugPrint('[DrawerMenu] isGuestUser: ${_model.isGuestUser}');
 
         // Get notification status from API response
         final notificationEnabled = getJsonField(
@@ -293,6 +300,12 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  if (_model.isGuestUser) {
+                                    Navigator.pop(context);
+                                    context.pushNamed(SignUpWidget.routeName, queryParameters: {
+                                      'showBackButton': serializeParam(true, ParamType.bool),
+                                    });
+                                  } else {
                                   Navigator.pop(context);
                                   await showDialog(
                                     context: context,
@@ -305,12 +318,13 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                             const AlignmentDirectional(0.0, 0.0)
                                                 .resolve(
                                                     Directionality.of(dialogContext)),
-                        child: WebViewAware(
-                          child: const LogOutWidget(),
+                        child: const WebViewAware(
+                          child: LogOutWidget(),
                         ),
                                       );
                                     },
                                   );
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -328,7 +342,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         8.0, 8.0, 8.0, 8.0),
                                     child: Icon(
-                                      Icons.logout_rounded,
+                                      _model.isGuestUser
+                                          ? Icons.person_add_outlined
+                                          : Icons.logout_rounded,
                                       color:
                                           FlutterFlowTheme.of(context).tertiary,
                                       size: 24.0,
@@ -342,12 +358,13 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 2.0, 0.0, 0.0),
                             child: Text(
-                              'Logout',
+                              _model.isGuestUser ? 'Sign Up Now' : 'Logout',
                               style: FlutterFlowTheme.of(context)
                                   .titleMedium
                                   .override(
                                     font: GoogleFonts.poppins(
                                       fontWeight: FlutterFlowTheme.of(context)
+
                                           .titleMedium
                                           .fontWeight,
                                       fontStyle: FlutterFlowTheme.of(context)
@@ -588,6 +605,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   ],
                 ),
               ),
+              if (!_model.isGuestUser) ...[
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                 child: Divider(
@@ -808,7 +826,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   thickness: 1.0,
                 ),
               ),
+              ], // end notifications guest check
 
+              if (!_model.isGuestUser) ...[
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: InkWell(
@@ -876,6 +896,8 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   ),
                 ),
               ),
+              ], // end my profile guest check
+
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                 child: Divider(
@@ -1379,6 +1401,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                 ),
               ),
 
+              if (!_model.isGuestUser) ...[
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                 child: Divider(
@@ -1539,6 +1562,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   ),
                 ),
               ),
+              ], // end premium plans guest check
 
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
@@ -1747,6 +1771,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                 ),
               ),
 
+              if (!_model.isGuestUser) ...[
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                 child: Divider(
@@ -2057,6 +2082,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                   thickness: 1.0,
                 ),
               ),
+              ], // end delete account guest check
             ],
           ),
         ),

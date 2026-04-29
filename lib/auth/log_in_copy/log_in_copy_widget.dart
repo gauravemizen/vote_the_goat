@@ -5,6 +5,7 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vote_for_goat/subscription/ad_service.dart';
 import 'log_in_copy_model.dart';
 export 'log_in_copy_model.dart';
 
@@ -26,6 +27,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
   @override
   void initState() {
     super.initState();
+    AdService().setAuthScreen(true);
     _model = createModel(context, () => LogInCopyModel());
 
     _model.emailFieldTextController ??= TextEditingController()
@@ -43,6 +45,7 @@ class _LogInCopyWidgetState extends State<LogInCopyWidget> with RouteAware {
 
   @override
   void dispose() {
+    AdService().setAuthScreen(false);
     routeObserver.unsubscribe(this);
 
     _model.dispose();

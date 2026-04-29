@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 class AboutScreenModel extends FlutterFlowModel<AboutScreenWidget> {
   ///  State fields for stateful widgets in this page.
 
+  bool isGuestUser = false;
+  bool isGuestStatusLoading = true;
+
   // Model for gradientButtonCustom component.
   late GradientButtonCustomModel gradientButtonCustomModel;
 

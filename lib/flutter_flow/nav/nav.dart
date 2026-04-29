@@ -744,6 +744,9 @@ import '/backend/schema/structs/index.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
+import '../../ranking_pages/your_final_ranking/your_final_ranking_v2_widget.dart';
+
+
 import '/backend/push_notifications/push_notifications_handler.dart'
     show PushNotificationsHandler;
 import '/flutter_flow/flutter_flow_util.dart';
@@ -927,7 +930,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
     FFRoute(
       name: SignUpWidget.routeName,
       path: SignUpWidget.routePath,
-      builder: (context, params) => const SignUpWidget(),
+      builder: (context, params) => SignUpWidget(
+        showBackButton: params.getParam('showBackButton', ParamType.bool) ?? false,
+      ),
     ),
     FFRoute(
       name: ForgotPasswordWidget.routeName,
@@ -1046,6 +1051,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       path: YourFinalRankingWidget.routePath,
       builder: (context, params) => const YourFinalRankingWidget(),
     ),
+
+
+    // ADD THIS BELOW 👇
+    FFRoute(
+      name: YourFinalRankingV2Widget.routeName,
+      path: YourFinalRankingV2Widget.routePath,
+      builder: (context, params) => const YourFinalRankingV2Widget(),
+    ),
+
+
     FFRoute(
       name: SubscriptionPageWidget.routeName,
       path: SubscriptionPageWidget.routePath,

@@ -996,7 +996,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                 r'''$.image''',
                                                               )?.toString(),
                                                             ),
-                                                            fit: BoxFit.cover,
+                                                            // fit: BoxFit.cover,
+                                                            fit: BoxFit.contain,
                                                             errorBuilder: (context,
                                                                     error,
                                                                     stackTrace) =>

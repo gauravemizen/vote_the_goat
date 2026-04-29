@@ -15,6 +15,13 @@ class DrawerMenuModel extends FlutterFlowModel<DrawerMenuWidget> {
 
   ApiCallResponse? get getProfileRes => _getProfileRes;
 
+  bool _isGuestUser = false;
+  set isGuestUser(bool value) {
+    _isGuestUser = value;
+    debugLogWidgetClass(this);
+  }
+  bool get isGuestUser => _isGuestUser;
+
   // State field(s) for Switch widget.
   bool? _switchValue1;
   set switchValue1(bool? value) {

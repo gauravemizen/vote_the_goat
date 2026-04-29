@@ -30,10 +30,42 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Future<void> _loadGuestUserStatus() async {
+    _model.isGuestStatusLoading = true;
+
+    final token = FFAppState().authToken;
+    if (token.isEmpty) {
+      _model.isGuestStatusLoading = false;
+      if (mounted) {
+        safeSetState(() {});
+      }
+      return;
+    }
+
+    try {
+      final res = await DashboardGroup.getProfileCall.call(authToken: token);
+      if (res.succeeded == true) {
+        final isGuestValue = getJsonField(
+          (res.jsonBody ?? ''),
+          r'$.data.is_guest',
+        );
+        _model.isGuestUser = isGuestValue == 1 || isGuestValue == true;
+      }
+    } catch (_) {
+      // Keep existing behavior on API failure.
+    } finally {
+      _model.isGuestStatusLoading = false;
+      if (mounted) {
+        safeSetState(() {});
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => AboutScreenModel());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadGuestUserStatus());
   }
 
   @override
@@ -65,6 +97,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
   void didPopNext() {
     if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
       setState(() => _model.isRouteVisible = true);
+      _loadGuestUserStatus();
       debugLogWidgetClass(_model);
     }
   }
@@ -102,7 +135,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).oposite,
-        body: SafeArea(top: false,
+        body: SafeArea(
+          top: false,
           bottom: true,
           child: Stack(
             children: [
@@ -117,7 +151,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                 child: SingleChildScrollView(
                   primary: false,
                   child: Column(
@@ -178,7 +213,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Align(
-                                    alignment: const AlignmentDirectional(0.0, 0.0),
+                                    alignment:
+                                        const AlignmentDirectional(0.0, 0.0),
                                     child: Text(
                                       'About Vote',
                                       style: FlutterFlowTheme.of(context)
@@ -198,7 +234,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Align(
-                                        alignment: const AlignmentDirectional(0.0, 0.0),
+                                        alignment: const AlignmentDirectional(
+                                            0.0, 0.0),
                                         child: Text(
                                           'The',
                                           style: FlutterFlowTheme.of(context)
@@ -213,7 +250,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                         ),
                                       ),
                                       Align(
-                                        alignment: const AlignmentDirectional(0.0, 0.0),
+                                        alignment: const AlignmentDirectional(
+                                            0.0, 0.0),
                                         child: Text(
                                           ' Goat',
                                           style: FlutterFlowTheme.of(context)
@@ -281,7 +319,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                               nullable: false,
                             );
                             debugLogWidgetClass(_model);
-          
+
                             return Builder(
                               builder: (context) {
                                 final listItems =
@@ -309,7 +347,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                   nullable: false,
                                 );
                                 debugLogWidgetClass(_model);
-          
+
                                 return ListView.builder(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
@@ -319,14 +357,15 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                     final listItemsItem =
                                         listItems[listItemsIndex];
                                     return Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 8.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 8.0, 0.0, 0.0),
                                       child: Container(
                                         width: double.infinity,
                                         decoration: const BoxDecoration(),
                                         child: Padding(
-                                          padding: const EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 30.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0.0, 30.0, 0.0, 0.0),
                                           child: ExpandableNotifier(
                                             initialExpanded: false,
                                             child: ExpandablePanel(
@@ -335,7 +374,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                 width: double.infinity,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(12.0),
+                                                      BorderRadius.circular(
+                                                          12.0),
                                                   border: Border.all(
                                                     color: FlutterFlowTheme.of(
                                                             context)
@@ -343,7 +383,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                   ),
                                                 ),
                                                 child: Row(
-                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
@@ -351,11 +392,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                     Padding(
                                                       padding:
                                                           const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  14.0,
-                                                                  10.0,
-                                                                  14.0,
-                                                                  10.0),
+                                                              .fromSTEB(14.0,
+                                                              10.0, 14.0, 10.0),
                                                       child: Text(
                                                         getJsonField(
                                                           listItemsItem,
@@ -398,8 +436,8 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                     Padding(
                                                       padding:
                                                           const EdgeInsetsDirectional
-                                                              .fromSTEB(0.0, 0.0,
-                                                                  14.0, 0.0),
+                                                              .fromSTEB(0.0,
+                                                              0.0, 14.0, 0.0),
                                                       child: Icon(
                                                         Icons.add,
                                                         color:
@@ -424,14 +462,16 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                                     Brightness
                                                                         .dark) ==
                                                                 false
-                                                            ? const Color(0xFFFFEDDF)
-                                                            : Colors.transparent,
+                                                            ? const Color(
+                                                                0xFFFFEDDF)
+                                                            : Colors
+                                                                .transparent,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10.0),
+                                                            BorderRadius
+                                                                .circular(10.0),
                                                         border: Border.all(
-                                                          color:
-                                                              const Color(0x2AFFFFFF),
+                                                          color: const Color(
+                                                              0x2AFFFFFF),
                                                         ),
                                                       ),
                                                       child: Column(
@@ -442,10 +482,10 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                             padding:
                                                                 const EdgeInsetsDirectional
                                                                     .fromSTEB(
-                                                                        14.0,
-                                                                        10.0,
-                                                                        14.0,
-                                                                        0.0),
+                                                                    14.0,
+                                                                    10.0,
+                                                                    14.0,
+                                                                    0.0),
                                                             child: Row(
                                                               mainAxisSize:
                                                                   MainAxisSize
@@ -482,12 +522,10 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                                         ),
                                                                         letterSpacing:
                                                                             0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(
-                                                                                context)
+                                                                        fontWeight: FlutterFlowTheme.of(context)
                                                                             .titleMedium
                                                                             .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(
-                                                                                context)
+                                                                        fontStyle: FlutterFlowTheme.of(context)
                                                                             .titleMedium
                                                                             .fontStyle,
                                                                       ),
@@ -497,26 +535,30 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                                       BoxDecoration(
                                                                     shape: BoxShape
                                                                         .circle,
-                                                                    border: Border
-                                                                        .all(
+                                                                    border:
+                                                                        Border
+                                                                            .all(
                                                                       color: const Color(
                                                                           0xFF2F2F2F),
                                                                     ),
                                                                   ),
-                                                                  child: Padding(
+                                                                  child:
+                                                                      Padding(
                                                                     padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0,
-                                                                            4.0),
-                                                                    child: FaIcon(
+                                                                        4.0,
+                                                                        4.0,
+                                                                        4.0,
+                                                                        4.0),
+                                                                    child:
+                                                                        FaIcon(
                                                                       FontAwesomeIcons
                                                                           .minus,
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .tertiary,
-                                                                      size: 12.0,
+                                                                      size:
+                                                                          12.0,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -567,24 +609,37 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                                                           //         ),
                                                           //   ),
                                                           // ),
-          
+
                                                           Padding(
-                                                            padding:  const EdgeInsetsDirectional.fromSTEB(14.0, 10.0, 14.0, 10.0),
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                    14.0,
+                                                                    10.0,
+                                                                    14.0,
+                                                                    10.0),
                                                             child: Html(
-                                                              data: getJsonField(
+                                                              data:
+                                                                  getJsonField(
                                                                 listItemsItem,
                                                                 r'''$.description''',
                                                               ).toString(),
                                                               style: {
                                                                 "body": Style(
-                                                                  color: FlutterFlowTheme.of(context).lightWhite,
-                                                                  fontSize: FontSize(FlutterFlowTheme.of(context).bodySmall.fontSize ??12),
-                                                                  fontFamily: 'Poppins',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .lightWhite,
+                                                                  fontSize: FontSize(
+                                                                      FlutterFlowTheme.of(context)
+                                                                              .bodySmall
+                                                                              .fontSize ??
+                                                                          12),
+                                                                  fontFamily:
+                                                                      'Poppins',
                                                                 ),
                                                               },
                                                             ),
                                                           ),
-          
                                                         ],
                                                       ),
                                                     ),
@@ -616,37 +671,38 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> with RouteAware {
                   ),
                 ),
               ),
-              Align(
-                alignment: const AlignmentDirectional(0.0, 1.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(SubscriptionPageWidget.routeName);
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 20.0),
-                      child: wrapWithModel(
-                        model: _model.gradientButtonCustomModel,
-                        updateCallback: () => safeSetState(() {}),
-                        child: Builder(builder: (_) {
-                          return DebugFlutterFlowModelContext(
-                            rootModel: _model.rootModel,
-                            child: const GradientButtonCustomWidget(
-                              text: 'PREMIUM PLANS',
-                            ),
-                          );
-                        }),
+              if (!_model.isGuestStatusLoading && !_model.isGuestUser)
+                Align(
+                  alignment: const AlignmentDirectional(0.0, 1.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      context.pushNamed(SubscriptionPageWidget.routeName);
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            16.0, 0.0, 16.0, 20.0),
+                        child: wrapWithModel(
+                          model: _model.gradientButtonCustomModel,
+                          updateCallback: () => safeSetState(() {}),
+                          child: Builder(builder: (_) {
+                            return DebugFlutterFlowModelContext(
+                              rootModel: _model.rootModel,
+                              child: const GradientButtonCustomWidget(
+                                text: 'PREMIUM PLANS',
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

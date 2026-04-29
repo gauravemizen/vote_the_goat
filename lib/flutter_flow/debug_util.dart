@@ -30,8 +30,13 @@ class DebugFlutterFlowModelContext extends InheritedWidget {
   final Function(FlutterFlowModel)? parentModelCallback;
 
   static DebugFlutterFlowModelContext? maybeOf(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<DebugFlutterFlowModelContext>();
+    try {
+      if (context is Element && !context.mounted) return null;
+      return context
+          .dependOnInheritedWidgetOfExactType<DebugFlutterFlowModelContext>();
+    } catch (_) {
+      return null;
+    }
   }
 
   static DebugFlutterFlowModelContext of(BuildContext context) {

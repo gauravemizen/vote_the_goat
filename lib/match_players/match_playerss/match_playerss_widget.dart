@@ -260,41 +260,47 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (_model.questionIndex > 0)
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 2.0, 0.0),
-                                child: InkWell(
-                                  onTap: () async {
-                                    _model.questionIndex -= 1;
-                                    _model.questionNo = _model.questionNo! - 1;
-                                    _model.selectedIndex = _model
-                                        .selectedIndices[_model.questionIndex];
-                                    safeSetState(() {});
-                                  },
-                                  child: Container(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      color: (Theme.of(context).brightness ==
-                                              Brightness.dark)
-                                          ? Colors.white
-                                          : const Color(0xFFA1A1A1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
-                                      child: Icon(
-                                        Icons.arrow_back_ios_new_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .oposite,
-                                        size: 20.0,
+                            Opacity(
+                              opacity: _model.questionIndex > 0 ? 1.0 : 0.0,
+                              child: IgnorePointer(
+                                ignoring: _model.questionIndex == 0,
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 2.0, 0.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      _model.questionIndex -= 1;
+                                      _model.questionNo =
+                                          _model.questionNo! - 1;
+                                      _model.selectedIndex = _model
+                                          .selectedIndices[_model.questionIndex];
+                                      safeSetState(() {});
+                                    },
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: (Theme.of(context).brightness ==
+                                                Brightness.dark)
+                                            ? Colors.white
+                                            : const Color(0xFFA1A1A1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Align(
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 0.0),
+                                        child: Icon(
+                                          Icons.arrow_back_ios_new_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .oposite,
+                                          size: 20.0,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
+                            ),
                             Column(
                               children: [
                                 Column(
@@ -302,7 +308,8 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Minion',
+                                      // 'Minion',
+                                      'LEGENDS',
                                       style: FlutterFlowTheme.of(context)
                                           .customTextStyle1
                                           .override(
@@ -315,7 +322,8 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                           ),
                                     ),
                                     Text(
-                                      'goats',
+                                      // 'goats',
+                                      'GAME',
                                       style: FlutterFlowTheme.of(context)
                                           .customTextStyle1
                                           .override(
@@ -447,37 +455,37 @@ class _MatchPlayerssWidgetState extends State<MatchPlayerssWidget>
                                       safeSetState(() {});
                                     }
                                   },
-                                  child: _model.questionIndex ==
-                                          totalQuestions - 1
-
-                                      // _model.questionIndex == 49
-                                      ? const SizedBox(
-                                          width: 40,
-                                        )
-                                      : Container(
-                                          width: 40.0,
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                (Theme.of(context).brightness ==
-                                                        Brightness.dark)
-                                                    ? Colors.white
-                                                    : const Color(0xFFA1A1A1),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Align(
-                                            alignment:
-                                                const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                            child: Icon(
-                                              Icons.arrow_forward_ios_rounded,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .oposite,
-                                              size: 20.0,
-                                            ),
+                                  child: Opacity(
+                                    opacity: _model.questionIndex ==
+                                            totalQuestions - 1
+                                        ? 0.0
+                                        : 1.0,
+                                    child: IgnorePointer(
+                                      ignoring: _model.questionIndex ==
+                                          totalQuestions - 1,
+                                      child: Container(
+                                        width: 40.0,
+                                        height: 40.0,
+                                        decoration: BoxDecoration(
+                                          color: (Theme.of(context).brightness ==
+                                                  Brightness.dark)
+                                              ? Colors.white
+                                              : const Color(0xFFA1A1A1),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Align(
+                                          alignment:
+                                              const AlignmentDirectional(0.0, 0.0),
+                                          child: Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .oposite,
+                                            size: 20.0,
                                           ),
                                         ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
