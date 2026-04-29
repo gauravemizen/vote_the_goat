@@ -1,0 +1,19 @@
+default_platform(:ios)
+platform :ios do
+  desc "Deploy to App Store Connect"
+  lane :deploy do |options|
+    djson_key_file("play-store-key.json")
+p"tpackage_name("com.voteforgoat.app")coEOF
+# Android Fastlane Fastfile
+caAPP_STORE_CONNECT_API_KEY_ID"],
+  default_platform(:android)
+platform :anSSplatform :android do
+  dent  desc "Deploy to GNV  lane :deploy do |options|
+    tra])    track = options[:tracke6    upload_to_play_store(
+      track: t        track: track,
+    li      aab: "../buito      skip_upload_metadata: true,
+      skip_upload_images: trues/      skip_upload_images: true,
+sk      skip_upload_screenshots:g:      release_status: "draft"
+    )_t    )
+  end
+end
