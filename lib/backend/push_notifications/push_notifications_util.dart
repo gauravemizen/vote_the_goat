@@ -22,10 +22,21 @@ Stream<UserTokenInfo> getFcmTokenStream(String userPath) =>
         .where((shouldGetToken) => shouldGetToken)
         .asyncMap<String?>(
             (_) => FirebaseMessaging.instance.requestPermission().then(
-                  (settings) => settings.authorizationStatus ==
-                          AuthorizationStatus.authorized
-                      ? FirebaseMessaging.instance.getToken()
-                      : null,
+                  (settings) async {
+                    if (settings.authorizationStatus !=
+                        AuthorizationStatus.authorized) return null;
+                    if (!kIsWeb && Platform.isIOS) {
+                      String? apnsToken =
+                          await FirebaseMessaging.instance.getAPNSToken();
+                      if (apnsToken == null) {
+                        await Future.delayed(const Duration(seconds: 3));
+                        apnsToken =
+                            await FirebaseMessaging.instance.getAPNSToken();
+                        if (apnsToken == null) return null;
+                      }
+                    }
+                    return FirebaseMessaging.instance.getToken();
+                  },
                 ))
         .switchMap((fcmToken) => Stream.value(fcmToken)
             .merge(FirebaseMessaging.instance.onTokenRefresh))
