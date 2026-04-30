@@ -242,7 +242,7 @@ flutter:
   fonts:
     - family: 'goodTImes'
       fonts:
-        - asset: assets/fonts/Good_Times_Rg.otf
+        - asset: assets/fonts/GOOD_TIMES_RG.otf
     - family: 'goodtimes'
       fonts:
         - asset: assets/fonts/GOOD_TIMES_RG.otf
