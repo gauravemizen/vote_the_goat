@@ -5,75 +5,64 @@
 The Android CI/CD pipeline is defined in `.github/workflows/android-deploy.yml`.  
 It builds a signed release AAB and deploys it to the **Google Play Store** using **Fastlane**.
 
+> ✅ **This project is already live in production.** The keystore (`vtg_key.jks`) and all signing credentials are already in place. You just need to add them as **GitHub Secrets** once, then trigger the pipeline anytime.
+
 ---
 
-## ✅ Prerequisites
-
-### 1. GitHub Secrets — Must be configured before triggering
+## ✅ Step 1 — Add GitHub Secrets (One-Time Setup)
 
 Go to: **GitHub Repo → Settings → Secrets and variables → Actions → New repository secret**
 
-| Secret Name | Description | How to get it |
-|---|---|---|
-| `KEYSTORE_BASE64` | Base64-encoded `vtg_key.jks` keystore | Run: `base64 -i android/app/vtg_key.jks` |
-| `STORE_PASSWORD` | Keystore store password | From `android/key.properties` |
-| `KEY_PASSWORD` | Key entry password | From `android/key.properties` |
-| `KEY_ALIAS` | Key alias name | From `android/key.properties` |
-| `PLAY_STORE_SERVICE_ACCOUNT_JSON` | Base64-encoded Google Play service account JSON | Run: `base64 -i your-service-account.json` |
+### Secrets to add:
 
-#### Commands to encode secrets locally:
+| Secret Name | Value |
+|---|---|
+| `KEYSTORE_BASE64` | *(run command below to get it)* |
+| `STORE_PASSWORD` | `123456` |
+| `KEY_PASSWORD` | `123456` |
+| `KEY_ALIAS` | `vtg_alias` |
+| `PLAY_STORE_SERVICE_ACCOUNT_JSON` | *(run command below to get it)* |
+
+### Commands to generate the Base64 secrets (run from project root):
+
 ```bash
-# Encode keystore
+# 1. Encode the keystore and copy to clipboard
 base64 -i android/app/vtg_key.jks | pbcopy
-# ☝️ This copies it to clipboard — paste directly into GitHub secret
+# ☝️ Now paste this value into the KEYSTORE_BASE64 secret on GitHub
 
-# Encode Play Store service account JSON
-base64 -i path/to/play-store-service-account.json | pbcopy
+# 2. Encode the Play Store service account JSON and copy to clipboard
+base64 -i android/fastlane/play-store-key.json | pbcopy
+# ☝️ Now paste this value into the PLAY_STORE_SERVICE_ACCOUNT_JSON secret on GitHub
 ```
+
+> 💡 `pbcopy` automatically copies the output to your clipboard. Just go to GitHub and paste.
 
 ---
 
-## 🔁 How to Trigger the Pipeline
+## 🔁 Step 2 — Trigger the Pipeline
 
-### Option 1: GitHub Website (Manual Trigger)
-1. Go to: `https://github.com/gauravemizen/vote_the_goat/actions`
-2. Click **"Deploy Android to Play Store"** workflow
-3. Click **"Run workflow"** button (top right)
-4. Select the branch (e.g., `1.0.2-cicd-pipeline-setup` or `main`)
+### Option 1: GitHub Website (Easiest)
+1. Go to: **https://github.com/gauravemizen/vote_the_goat/actions**
+2. Click **"Deploy Android to Play Store"** in the left sidebar
+3. Click **"Run workflow"** (top right of the runs list)
+4. Select the branch: `main` (or `1.0.2-cicd-pipeline-setup` for testing)
 5. Choose the **track**:
-   - `internal` — for internal testing (default)
-   - `alpha` — for alpha testers
-   - `beta` — for beta testers
-   - `production` — for public release
-6. Click **"Run workflow"**
+   - `internal` — internal testing ✅ *(use this for test runs)*
+   - `alpha` — alpha testers
+   - `beta` — beta testers
+   - `production` — live on Play Store
+6. Click **"Run workflow"** ✅
 
 ---
 
 ### Option 2: GitHub CLI (Terminal)
 
-#### Install GitHub CLI (if not installed):
 ```bash
-brew install gh
-```
-
-#### Login:
-```bash
-gh auth login
-```
-
-#### Trigger the pipeline:
-```bash
-# Deploy to internal track (default)
+# Deploy to internal track (recommended for testing the pipeline)
 gh workflow run android-deploy.yml \
   --repo gauravemizen/vote_the_goat \
   --ref main \
   -f track=internal
-
-# Deploy to beta track
-gh workflow run android-deploy.yml \
-  --repo gauravemizen/vote_the_goat \
-  --ref main \
-  -f track=beta
 
 # Deploy to production
 gh workflow run android-deploy.yml \
@@ -82,15 +71,15 @@ gh workflow run android-deploy.yml \
   -f track=production
 ```
 
-#### Check pipeline status:
+#### Monitor the run:
 ```bash
-# List recent runs
+# List recent pipeline runs
 gh run list --repo gauravemizen/vote_the_goat --workflow android-deploy.yml
 
-# Watch a specific run in real-time (replace RUN_ID)
+# Watch live logs (replace RUN_ID with the number from the list above)
 gh run watch RUN_ID --repo gauravemizen/vote_the_goat
 
-# View logs of a run
+# View full logs after completion
 gh run view RUN_ID --log --repo gauravemizen/vote_the_goat
 ```
 
@@ -122,9 +111,9 @@ curl -X POST \
         ↓
 5. Extract version from pubspec.yaml
         ↓
-6. Decode keystore from KEYSTORE_BASE64 secret → android/app/vtg_key.jks
+6. Decode KEYSTORE_BASE64 secret → android/app/vtg_key.jks
         ↓
-7. Create android/key.properties with signing credentials
+7. Create android/key.properties (storePassword, keyPassword, keyAlias)
         ↓
 8. flutter build appbundle --release  (builds signed .aab)
         ↓
@@ -132,51 +121,49 @@ curl -X POST \
         ↓
 10. bundle install  (installs Fastlane)
         ↓
-11. Decode Play Store key → android/fastlane/play-store-key.json
+11. Decode PLAY_STORE_SERVICE_ACCOUNT_JSON → android/fastlane/play-store-key.json
         ↓
 12. bundle exec fastlane deploy track:<selected_track>
         ↓
-13. Upload AAB as build artifact (downloadable from GitHub)
+13. Upload AAB as downloadable artifact on GitHub
 ```
 
 ---
 
 ## 📦 Build Output
 
-- **AAB location (in CI):** `build/app/outputs/bundle/release/app-release.aab`
-- **GitHub Artifact:** Available under the workflow run → **Artifacts** section
-- **Play Store:** Uploaded as a **draft** to the selected track
+- **AAB file (in CI):** `build/app/outputs/bundle/release/app-release.aab`
+- **GitHub Artifact:** Go to the workflow run → scroll to **Artifacts** section → download
+- **Play Store:** Uploaded as a **draft** to the selected track (you must manually publish from Play Console if using `production`)
 
 ---
 
-## 🛠 Run Locally (Test Build Without Deploying)
+## 🛠 Test the Build Locally (Without Deploying)
 
 ```bash
-# From project root
+# From project root — just build the AAB
 flutter pub get
 flutter build appbundle --release
 
-# Verify the AAB was created
+# Confirm the file exists
 ls build/app/outputs/bundle/release/app-release.aab
 ```
 
-#### To test Fastlane deploy locally:
+#### Test Fastlane locally:
 ```bash
 cd android
-
-# Make sure play-store-key.json is present
-# Make sure key.properties is configured
-
 bundle install
 bundle exec fastlane deploy track:internal
 ```
 
 ---
 
-## 🔗 Useful Links
+## 🔗 Quick Links
 
-- **GitHub Actions:** https://github.com/gauravemizen/vote_the_goat/actions
-- **Play Console:** https://play.google.com/console
-- **Workflow File:** `.github/workflows/android-deploy.yml`
-- **Fastfile:** `android/fastlane/Fastfile`
-
+| Resource | Link |
+|---|---|
+| GitHub Actions (view runs) | https://github.com/gauravemizen/vote_the_goat/actions |
+| Google Play Console | https://play.google.com/console |
+| Workflow File | `.github/workflows/android-deploy.yml` |
+| Fastfile | `android/fastlane/Fastfile` |
+| Appfile | `android/fastlane/Appfile` |
