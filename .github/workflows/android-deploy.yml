@@ -82,7 +82,7 @@ jobs:
           bundle install
 
       - name: Decode Play Store service account key
-        run: echo "${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/fastlane/play-store-key.json
+        run: echo "${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/play-store-key.json
 
       - name: Deploy to Play Store
         working-directory: android
