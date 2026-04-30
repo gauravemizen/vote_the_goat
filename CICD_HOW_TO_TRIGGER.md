@@ -105,7 +105,7 @@ curl -X POST \
         ↓
 2. Set up Java 17 (Temurin)
         ↓
-3. Set up Flutter 3.24.5 (stable)
+2. Set up Flutter 3.27.4 (stable)
         ↓
 4. flutter pub get  (install dependencies)
         ↓
