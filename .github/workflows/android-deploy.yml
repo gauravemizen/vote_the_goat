@@ -82,13 +82,11 @@ jobs:
           bundle install
 
       - name: Decode Play Store service account key
-        run: echo "${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/play-store-key.json
+        run: echo "${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/fastlane/play-store-key.json
 
       - name: Deploy to Play Store
         working-directory: android
         run: bundle exec fastlane deploy track:${{ github.event.inputs.track }}
-        env:
-          PLAY_STORE_JSON_KEY: play-store-key.json
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
