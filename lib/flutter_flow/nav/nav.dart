@@ -1225,6 +1225,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       },
     ),
 
+    FFRoute(
+      name: NotificationsPageWidget.routeName,
+      path: NotificationsPageWidget.routePath,
+      builder: (context, params) => const NotificationsPageWidget(),
+    ),
+
     // FFRoute(
     //   name: NavWidget.routeName,
     //   path: NavWidget.routePath,

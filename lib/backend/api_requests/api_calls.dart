@@ -13,8 +13,8 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start auth Group Code
 
 class AuthGroup {
-  //static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
-  static String getBaseUrl() => 'https://admin.votethegoat.app/api';
+  static String getBaseUrl() => 'https://votethegoat.ezxdemo.com/api';
+  // static String getBaseUrl() => 'https://admin.votethegoat.app/api';
   static Map<String, String> headers = {};
   static LogInCall logInCall = LogInCall();
   static SignUpCall signUpCall = SignUpCall();
@@ -351,7 +351,8 @@ class DashboardGroup {
     String? authToken,
   }) {
     authToken ??= '';
-     return 'https://admin.votethegoat.app/api';
+     // return 'https://admin.votethegoat.app/api';
+     return 'https://votethegoat.ezxdemo.com/api';
   }
 
   static Map<String, String> headers = {};
@@ -423,6 +424,8 @@ class DashboardGroup {
   static ContestJoinCall contestJoinCall = ContestJoinCall();
   static FilterPlayersDynamicCall filterPlayersDynamicCall =
       FilterPlayersDynamicCall();
+  static NotificationsCall notificationsCall = NotificationsCall();
+  static MarkNotificationReadCall markNotificationReadCall = MarkNotificationReadCall();
 }
 
 class EligblePlayersCall {
@@ -2465,3 +2468,68 @@ String? escapeStringForJson(String? input) {
       .replaceAll('\n', '\\n')
       .replaceAll('\t', '\\t');
 }
+
+class NotificationsCall {
+  Future<ApiCallResponse> call({
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'notifications',
+      apiUrl: '$baseUrl/notifications',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List? notificationsList(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
+
+  String? message(dynamic response) =>
+      castToType<String>(getJsonField(response, r'''$.message'''));
+}
+
+class MarkNotificationReadCall {
+  Future<ApiCallResponse> call({
+    required int notificationId,
+    String? authToken,
+  }) async {
+    authToken ??= '';
+    final baseUrl = DashboardGroup.getBaseUrl(
+      authToken: authToken,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'markNotificationRead',
+      apiUrl: '$baseUrl/notifications/$notificationId/read',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer $authToken',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+

@@ -66,6 +66,9 @@ export '/play_with_friends/chat_page/chat_page_widget.dart' show ChatPageWidget;
 export '/filter/filter_result/filter_result_widget.dart'
     show FilterResultWidget;
 
+export '/notifications/notifications_page_widget.dart'
+    show NotificationsPageWidget;
+
 // Export components
 export '/components/app_update_dialog/app_update_dialog_widget.dart'
     show AppUpdateDialogWidget;
