@@ -41,6 +41,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+
       _model.getProfileRes = await DashboardGroup.getProfileCall.call(
         authToken: FFAppState().authToken,
       );
@@ -233,18 +234,19 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
 
 
                               ///2
-                                Image.network(
-                                  safeImageUrl(
-                                    FFAppState().userImage.isNotEmpty
-                                        ? FFAppState().userImage
-                                        : null,
-                                  ),
-                                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                                    'assets/images/error_image.webp',
-                                    fit: BoxFit.cover,
-                                  ),
-                                  fit: BoxFit.cover,
-                                )
+                                (FFAppState().userImage.isNotEmpty && FFAppState().userImage != 'null')
+                                    ? Image.network(
+                                        safeImageUrl(FFAppState().userImage),
+                                        errorBuilder: (context, error, stackTrace) => Image.asset(
+                                          'assets/images/error_image.webp',
+                                          fit: BoxFit.cover,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        'assets/images/error_image.webp',
+                                        fit: BoxFit.cover,
+                                      )
 
                               ),
                             ),
@@ -254,7 +256,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> with RouteAware {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 16.0, 0.0, 0.0),
                                 child: Text(
-                                  FFAppState().userName,
+                                  (FFAppState().userName.isNotEmpty && FFAppState().userName != 'null')
+                                      ? FFAppState().userName
+                                      : '',
                                   style: FlutterFlowTheme.of(context)
                                       .displayMedium
                                       .override(

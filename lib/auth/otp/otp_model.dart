@@ -97,8 +97,13 @@ class OtpModel extends FlutterFlowModel<OtpWidget> {
 
   @override
   void dispose() {
+    try {
+      pinCodeFocusNode?.unfocus();
+    } catch (_) {}
     pinCodeFocusNode?.dispose();
+    pinCodeFocusNode = null;
     pinCodeController?.dispose();
+    pinCodeController = null;
 
     timerController.dispose();
   }

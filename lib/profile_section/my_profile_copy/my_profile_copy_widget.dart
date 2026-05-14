@@ -953,6 +953,18 @@ class _MyProfileCopyWidgetState extends State<MyProfileCopyWidget>
 
                                         if ((_model.apiResultz40?.succeeded ??
                                             true)) {
+                                          // Update cached app state with new values
+                                           FFAppState().userName = _model
+                                              .nameFieldTextController.text;
+                                          final updatedImage = getJsonField(
+                                            (_model.apiResultz40?.jsonBody ?? ''),
+                                            r'''$.data.image''',
+                                          )?.toString() ?? '';
+                                          if (updatedImage.isNotEmpty && updatedImage != 'null') {
+                                            FFAppState().userImage = updatedImage;
+                                          }
+                                          FFAppState().update(() {});
+
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
@@ -974,9 +986,6 @@ class _MyProfileCopyWidgetState extends State<MyProfileCopyWidget>
                                           );
 
                                           safeSetState(() {});
-
-                                          // context.goNamed(
-                                          //     HomePageWidget.routeName);
 
 
                                           context.goNamed(

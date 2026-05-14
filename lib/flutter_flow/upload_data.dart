@@ -130,7 +130,7 @@ Future<List<SelectedFile>?> selectMediaWithSourceBottomSheet({
               createUploadMediaListTile('Camera', MediaSource.camera),
               const Divider(),
             ],
-            const SizedBox(height: 10),
+            SizedBox(height: 10 + MediaQuery.of(context).viewPadding.bottom),
           ],
         );
       });

@@ -35,7 +35,9 @@ vote_for_goat/
 ├── AD_SCREENS_MAP.md             # Ad screens mapping
 ├── APP_UPDATE_IMPLEMENTATION.md  # App update implementation guide
 ├── APP_UPDATE_UNIVERSAL_ACCESS.md # App update universal access docs
-├── CHANGES_APRIL_7_2026.md       # Changelog for April 7, 2026
+├── CHANGES_APRIL_7_2026.md       # Changelog for April 7 & April 30, 2026
+├── CICD_HOW_TO_TRIGGER.md        # CI/CD trigger instructions
+├── CICD_SETUP.md                 # CI/CD setup guide
 ├── VERSION_UPDATE_CHANGELOG.md   # Version update changelog
 ├── flutter_run_output.log        # Flutter run output log
 │
@@ -47,10 +49,14 @@ vote_for_goat/
 │   │   ├── vtg_key.jks           # Keystore for signing
 │   │   └── src/                  # Android source files
 │   ├── build.gradle              # Project-level Gradle config
+│   ├── Gemfile                   # Ruby dependencies (Fastlane)
 │   ├── gradle.properties         # Gradle properties
 │   ├── key.properties            # Signing key properties
 │   ├── local.properties          # Local SDK paths
-│   └── settings.gradle           # Gradle settings
+│   ├── settings.gradle           # Gradle settings
+│   └── fastlane/                 # Fastlane deployment config
+│       ├── Appfile               # App identifier config
+│       └── Fastfile              # Deployment lanes
 │
 ├── ios/                          # iOS platform-specific code
 │   ├── Podfile                   # CocoaPods dependencies
@@ -112,6 +118,7 @@ vote_for_goat/
     ├── homepage/                 # Home-related pages
     ├── match_players/            # Match players feature
     ├── nav/                      # Navigation components
+    ├── notifications/            # Notifications page
     ├── play_with_friends/        # Social play feature
     ├── player_bio/               # Player biography pages
     ├── profile_section/          # User profile pages
@@ -142,13 +149,14 @@ vote_for_goat/
 | `homepage/` | Home page, onboarding, about screen, and players list. |
 | `match_players/` | Match players functionality screens. |
 | `nav/` | Main navigation widget and model. |
+| `notifications/` | Notifications page for displaying in-app notifications. |
 | `play_with_friends/` | Social play feature with chat, team details, and friend rankings. |
 | `player_bio/` | Player biography and details pages. |
 | `profile_section/` | User profile, profile editing, and password reset. |
 | `ranking_pages/` | User rankings, final rankings, and progress saving. |
 | `setting/` | Settings page and password management. |
 | `splash/` | Splash screen implementation. |
-| `subscription/` | Subscription management, ad services, and premium features. |
+| `subscription/` | Subscription management, ad services (global preload-and-show pattern with singleton AdService), and premium features. |
 
 ---
 
@@ -264,11 +272,18 @@ lib/custom_code/
 
 ```
 lib/subscription/
-├── ad_service.dart               # Ad management
-├── page_timer_mixin.dart         # Timer for ad display
+├── ad_service.dart               # Global ad management (singleton, preload→show→reload pattern, global timer)
+├── page_timer_mixin.dart         # Timer mixin (legacy, now no-ops via AdService)
 ├── smart_ad_banner_widget.dart   # Banner ad widget
-├── smart_interstitial_manager.dart # Interstitial ad manager
+├── smart_interstitial_manager.dart # Interstitial ad manager (thin wrapper over AdService)
 └── subscription_page/            # Subscription UI
+```
+
+### AdMob Utilities
+
+```
+lib/flutter_flow/
+├── admob_util.dart               # AdMob SDK wrapper (consent, config, load/show ads, isInterstitialAdLoaded, loadInterstitialAdAsync)
 ```
 
 ---
@@ -362,8 +377,9 @@ This project follows a **FlutterFlow-generated architecture** which combines:
 | **API Layer** | Custom API manager with HTTP client |
 | **Authentication** | Firebase Auth with multiple providers |
 | **Theming** | Custom FlutterFlowTheme with light/dark support |
-| **Ads** | Google Mobile Ads (AdMob) integration |
+| **Ads** | Google Mobile Ads (AdMob) — global preload→show→reload pattern with singleton AdService |
 | **Push Notifications** | Firebase Cloud Messaging (FCM) |
+| **CI/CD** | GitHub Actions + Fastlane (Android & iOS) |
 
 ### File Naming Conventions
 
@@ -408,5 +424,5 @@ This project follows a **FlutterFlow-generated architecture** which combines:
 
 ---
 
-*Last Updated: February 2026*
+*Last Updated: May 2026*
 

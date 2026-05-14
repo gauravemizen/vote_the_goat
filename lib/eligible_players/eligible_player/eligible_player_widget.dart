@@ -427,10 +427,10 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
 
     return FutureBuilder<ApiCallResponse>(
       future: (_model.apiRequestCompleter ??= Completer<ApiCallResponse>()
-            ..complete(DashboardGroup.eligblePlayersCall.call(
-              authToken: FFAppState().authToken,
-              search: _model.searchFieldTextController.text,
-            )))
+        ..complete(DashboardGroup.eligblePlayersCall.call(
+          authToken: FFAppState().authToken,
+          search: _model.searchFieldTextController.text,
+        )))
           .future,
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -452,25 +452,25 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
         }
         final eligiblePlayerEligblePlayersResponse = snapshot.data!;
         _model.debugBackendQueries[
-                'DashboardGroup.eligblePlayersCall_statusCode_Scaffold_rltv3q3c'] =
+        'DashboardGroup.eligblePlayersCall_statusCode_Scaffold_rltv3q3c'] =
             debugSerializeParam(
-          eligiblePlayerEligblePlayersResponse.statusCode,
-          ParamType.int,
-          link:
+              eligiblePlayerEligblePlayersResponse.statusCode,
+              ParamType.int,
+              link:
               'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=eligible_player',
-          name: 'int',
-          nullable: false,
-        );
+              name: 'int',
+              nullable: false,
+            );
         _model.debugBackendQueries[
-                'DashboardGroup.eligblePlayersCall_responseBody_Scaffold_rltv3q3c'] =
+        'DashboardGroup.eligblePlayersCall_responseBody_Scaffold_rltv3q3c'] =
             debugSerializeParam(
-          eligiblePlayerEligblePlayersResponse.bodyText,
-          ParamType.String,
-          link:
+              eligiblePlayerEligblePlayersResponse.bodyText,
+              ParamType.String,
+              link:
               'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=eligible_player',
-          name: 'String',
-          nullable: false,
-        );
+              name: 'String',
+              nullable: false,
+            );
         debugLogWidgetClass(_model);
 
         return GestureDetector(
@@ -511,7 +511,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                 ),
                 Padding(
                   padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 40.0, 16.0, 0.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -545,8 +545,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                 borderRadius: BorderRadius.circular(12.0),
                                 border: Border.all(
                                   color: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
+                                      Brightness.dark) ==
+                                      true
                                       ? Colors.black
                                       : const Color(0xD5999999),
                                 ),
@@ -568,25 +568,25 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   style: FlutterFlowTheme.of(context)
                                       .customTextStyle1
                                       .override(
-                                        fontFamily: 'good times',
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiary,
-                                        fontSize: 28.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                                    fontFamily: 'good times',
+                                    color: FlutterFlowTheme.of(context)
+                                        .tertiary,
+                                    fontSize: 28.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
                                 Text(
                                   'PLAYERS',
                                   style: FlutterFlowTheme.of(context)
                                       .customTextStyle1
                                       .override(
-                                        fontFamily: 'good times',
-                                        color: const Color(0xFFEB6027),
-                                        fontSize: 28.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                                    fontFamily: 'good times',
+                                    color: const Color(0xFFEB6027),
+                                    fontSize: 28.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
                               ],
                             ),
@@ -607,7 +607,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                 height: 40.0,
                                 decoration: BoxDecoration(
                                   color:
-                                      FlutterFlowTheme.of(context).backBtnClr,
+                                  FlutterFlowTheme.of(context).backBtnClr,
                                   boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 4.0,
@@ -621,8 +621,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   borderRadius: BorderRadius.circular(12.0),
                                   border: Border.all(
                                     color: (Theme.of(context).brightness ==
-                                                Brightness.dark) ==
-                                            true
+                                        Brightness.dark) ==
+                                        true
                                         ? Colors.black
                                         : const Color(0xD5999999),
                                   ),
@@ -639,7 +639,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                       ),
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -660,24 +660,24 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   style: FlutterFlowTheme.of(context)
                                       .titleMedium
                                       .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleMedium
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleMedium
-                                            .fontStyle,
-                                      ),
+                                    font: GoogleFonts.poppins(
+                                      fontWeight:
+                                      FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontWeight,
+                                      fontStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontStyle,
+                                  ),
                                 ),
                               ),
                             ),
@@ -696,9 +696,9 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                 onChanged: (_) => EasyDebounce.debounce(
                                   '_model.searchFieldTextController',
                                   const Duration(milliseconds: 2000),
-                                  () async {
+                                      () async {
                                     safeSetState(() =>
-                                        _model.apiRequestCompleter = null);
+                                    _model.apiRequestCompleter = null);
                                     await _model.waitForApiRequestCompleted();
                                   },
                                 ),
@@ -709,46 +709,46 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
+                                    font: GoogleFonts.poppins(
+                                      fontWeight:
+                                      FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   hintText: 'Search player...',
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
+                                    font: GoogleFonts.poppins(
+                                      fontWeight:
+                                      FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   enabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0x00000000),
@@ -799,38 +799,38 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   ),
                                   filled: true,
                                   fillColor: (Theme.of(context).brightness ==
-                                              Brightness.dark) ==
-                                          true
-                                      ? const Color(0x80050505)
+                                      Brightness.dark) ==
+                                      true
+                                      ? const Color(0xff000000)
                                       : const Color(0xFFE6E6E6),
                                   prefixIcon: Icon(
                                     Icons.search_rounded,
                                     color:
-                                        FlutterFlowTheme.of(context).tertiary,
+                                    FlutterFlowTheme.of(context).tertiary,
                                     size: 22.0,
                                   ),
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
-                                      font: GoogleFonts.poppins(
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
+                                  font: GoogleFonts.poppins(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
                                 cursorColor:
-                                    FlutterFlowTheme.of(context).primaryText,
+                                FlutterFlowTheme.of(context).primaryText,
                                 validator: _model
                                     .searchFieldTextControllerValidator
                                     .asValidator(context),
@@ -863,21 +863,21 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                     style: FlutterFlowTheme.of(context)
                                         .bodySmall
                                         .override(
-                                          font: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmall
-                                                    .fontStyle,
-                                          ),
-                                          color: Colors.white,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodySmall
-                                                  .fontStyle,
-                                        ),
+                                      font: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle:
+                                        FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontStyle,
+                                      ),
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontStyle,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -894,11 +894,11 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                               builder: (context) {
                                 final playerList =
                                     DashboardGroup.eligblePlayersCall
-                                            .playerList(
-                                              eligiblePlayerEligblePlayersResponse
-                                                  .jsonBody,
-                                            )
-                                            ?.toList() ??
+                                        .playerList(
+                                      eligiblePlayerEligblePlayersResponse
+                                          .jsonBody,
+                                    )
+                                        ?.toList() ??
                                         [];
                                 if (playerList.isEmpty) {
                                   return const Center(
@@ -906,16 +906,16 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   );
                                 }
                                 _model.debugGeneratorVariables[
-                                        'playerList${playerList.length > 100 ? ' (first 100)' : ''}'] =
+                                'playerList${playerList.length > 100 ? ' (first 100)' : ''}'] =
                                     debugSerializeParam(
-                                  playerList.take(100),
-                                  ParamType.JSON,
-                                  isList: true,
-                                  link:
+                                      playerList.take(100),
+                                      ParamType.JSON,
+                                      isList: true,
+                                      link:
                                       'https://app.flutterflow.io/project/vote-for-goatbackup-wupd2r?tab=uiBuilder&page=eligible_player',
-                                  name: 'dynamic',
-                                  nullable: false,
-                                );
+                                      name: 'dynamic',
+                                      nullable: false,
+                                    );
                                 debugLogWidgetClass(_model);
 
                                 return ListView.builder(
@@ -925,7 +925,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                   itemCount: playerList.length,
                                   itemBuilder: (context, playerListIndex) {
                                     final playerListItem =
-                                        playerList[playerListIndex];
+                                    playerList[playerListIndex];
                                     return Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           0.0, 14.0, 0.0, 14.0),
@@ -952,7 +952,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                             border: Border.all(
                                               color: const Color(0xFF4E4E4E),
                                             ),
@@ -963,31 +963,31 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                               Padding(
                                                 padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
-                                                        14.0, 14.0, 14.0, 14.0),
+                                                    14.0, 14.0, 14.0, 14.0),
                                                 child: Row(
                                                   mainAxisSize:
-                                                      MainAxisSize.max,
+                                                  MainAxisSize.max,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                                   children: [
                                                     Column(
                                                       mainAxisSize:
-                                                          MainAxisSize.max,
+                                                      MainAxisSize.max,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      MainAxisAlignment
+                                                          .center,
                                                       children: [
                                                         Container(
                                                           width: 60.0,
                                                           height: 60.0,
                                                           clipBehavior:
-                                                              Clip.antiAlias,
+                                                          Clip.antiAlias,
                                                           decoration:
-                                                              const BoxDecoration(
+                                                          const BoxDecoration(
                                                             shape:
-                                                                BoxShape.circle,
+                                                            BoxShape.circle,
                                                           ),
                                                           child: Image.network(
                                                             safeImageUrl(
@@ -999,12 +999,12 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                             // fit: BoxFit.cover,
                                                             fit: BoxFit.contain,
                                                             errorBuilder: (context,
-                                                                    error,
-                                                                    stackTrace) =>
+                                                                error,
+                                                                stackTrace) =>
                                                                 Image.asset(
-                                                              'assets/images/error_image.webp',
-                                                              fit: BoxFit.cover,
-                                                            ),
+                                                                  'assets/images/error_image.webp',
+                                                                  fit: BoxFit.cover,
+                                                                ),
                                                           ),
                                                         ),
                                                       ],
@@ -1012,66 +1012,57 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                     Expanded(
                                                       child: Column(
                                                         mainAxisSize:
-                                                            MainAxisSize.min,
+                                                        MainAxisSize.min,
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        10.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0),
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                10.0,
+                                                                0.0,
+                                                                0.0,
+                                                                0.0),
                                                             child: Row(
                                                               mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
+                                                              MainAxisSize
+                                                                  .max,
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                               children: [
                                                                 Flexible(
                                                                   child: Text(
-                                                                  '${getJsonField(
-                                                                    playerListItem,
-                                                                    r'''$.first_name ''',
-                                                                  ).toString()} ${getJsonField(
-                                                                    playerListItem,
-                                                                    r'''$.last_name''',
-                                                                  ).toString()}'
-                                                                      .maybeHandleOverflow(
-                                                                    // maxChars:
-                                                                    //     18,
+                                                                    '${getJsonField(
+                                                                      playerListItem,
+                                                                      r'''$.first_name ''',
+                                                                    ).toString()} ${getJsonField(
+                                                                      playerListItem,
+                                                                      r'''$.last_name''',
+                                                                    ).toString()}'
+                                                                        .maybeHandleOverflow(
+                                                                      // maxChars:
+                                                                      //     18,
 
 
-                                                                    maxChars: MediaQuery.sizeOf(context).width > 600 ? 30 : 18,
+                                                                      maxChars: MediaQuery.sizeOf(context).width > 600 ? 30 : 18,
 
 
-                                                                    replacement:
-                                                                        '…',
-                                                                  ),
-                                                                  maxLines: 2,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleLarge
-                                                                      .override(
-                                                                        font: GoogleFonts
-                                                                            .poppins(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleLarge
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleLarge
-                                                                              .fontStyle,
-                                                                        ),
-                                                                        letterSpacing:
-                                                                            0.0,
+                                                                      replacement:
+                                                                      '…',
+                                                                    ),
+                                                                    maxLines: 2,
+                                                                    style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                        .titleLarge
+                                                                        .override(
+                                                                      font: GoogleFonts
+                                                                          .poppins(
                                                                         fontWeight: FlutterFlowTheme.of(context)
                                                                             .titleLarge
                                                                             .fontWeight,
@@ -1079,34 +1070,43 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                             .titleLarge
                                                                             .fontStyle,
                                                                       ),
-                                                                ),
+                                                                      letterSpacing:
+                                                                      0.0,
+                                                                      fontWeight: FlutterFlowTheme.of(context)
+                                                                          .titleLarge
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(context)
+                                                                          .titleLarge
+                                                                          .fontStyle,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                                 Row(
                                                                   mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
+                                                                  MainAxisSize
+                                                                      .min,
                                                                   children: [
                                                                     Text(
                                                                       'Age :',
                                                                       style: FlutterFlowTheme.of(
-                                                                              context)
+                                                                          context)
                                                                           .titleLarge
                                                                           .override(
-                                                                            font:
-                                                                                GoogleFonts.poppins(
-                                                                              fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                            ),
-                                                                            color: (Theme.of(context).brightness == Brightness.dark) == true
-                                                                                ? const Color(0xFFCDCDCD)
-                                                                                : Colors.black,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                          ),
+                                                                        font:
+                                                                        GoogleFonts.poppins(
+                                                                          fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                        ),
+                                                                        color: (Theme.of(context).brightness == Brightness.dark) == true
+                                                                            ? const Color(0xFFCDCDCD)
+                                                                            : Colors.black,
+                                                                        letterSpacing:
+                                                                        0.0,
+                                                                        fontWeight:
+                                                                        FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                        fontStyle:
+                                                                        FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                      ),
                                                                     ),
                                                                     Padding(
                                                                       padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1115,7 +1115,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                           0.0,
                                                                           0.0),
                                                                       child:
-                                                                          Text(
+                                                                      Text(
                                                                         getJsonField(
                                                                           playerListItem,
                                                                           r'''$.age''',
@@ -1123,15 +1123,15 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .titleLarge
                                                                             .override(
-                                                                              font: GoogleFonts.poppins(
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                              ),
-                                                                              color: (Theme.of(context).brightness == Brightness.dark) == true ? const Color(0xFFCDCDCD) : Colors.black,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                                                                            ),
+                                                                          font: GoogleFonts.poppins(
+                                                                            fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                            fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                          ),
+                                                                          color: (Theme.of(context).brightness == Brightness.dark) == true ? const Color(0xFFCDCDCD) : Colors.black,
+                                                                          letterSpacing: 0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -1141,49 +1141,49 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        10.0,
-                                                                        4.0,
-                                                                        0.0,
-                                                                        0.0),
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                10.0,
+                                                                4.0,
+                                                                0.0,
+                                                                0.0),
                                                             child: Row(
                                                               mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
+                                                              MainAxisSize
+                                                                  .max,
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                               children: [
                                                                 Text(
                                                                   'Position : ',
                                                                   textAlign:
-                                                                      TextAlign
-                                                                          .start,
+                                                                  TextAlign
+                                                                      .start,
                                                                   style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                      context)
                                                                       .bodySmall
                                                                       .override(
-                                                                        font: GoogleFonts
-                                                                            .poppins(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .bodySmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .bodySmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .bodySmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .bodySmall
-                                                                            .fontStyle,
-                                                                      ),
+                                                                    font: GoogleFonts
+                                                                        .poppins(
+                                                                      fontWeight: FlutterFlowTheme.of(context)
+                                                                          .bodySmall
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(context)
+                                                                          .bodySmall
+                                                                          .fontStyle,
+                                                                    ),
+                                                                    color: FlutterFlowTheme.of(context)
+                                                                        .tertiary,
+                                                                    letterSpacing:
+                                                                    0.0,
+                                                                    fontWeight: FlutterFlowTheme.of(context)
+                                                                        .bodySmall
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(context)
+                                                                        .bodySmall
+                                                                        .fontStyle,
+                                                                  ),
                                                                 ),
                                                                 Text(
                                                                   getJsonField(
@@ -1191,52 +1191,52 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                     r'''$.position_name''',
                                                                   ).toString(),
                                                                   textAlign:
-                                                                      TextAlign
-                                                                          .start,
+                                                                  TextAlign
+                                                                      .start,
                                                                   style: FlutterFlowTheme.of(
-                                                                          context)
+                                                                      context)
                                                                       .bodySmall
                                                                       .override(
-                                                                        font: GoogleFonts
-                                                                            .poppins(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .bodySmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .bodySmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .bodySmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .bodySmall
-                                                                            .fontStyle,
-                                                                      ),
+                                                                    font: GoogleFonts
+                                                                        .poppins(
+                                                                      fontWeight: FlutterFlowTheme.of(context)
+                                                                          .bodySmall
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(context)
+                                                                          .bodySmall
+                                                                          .fontStyle,
+                                                                    ),
+                                                                    color: FlutterFlowTheme.of(context)
+                                                                        .tertiary,
+                                                                    letterSpacing:
+                                                                    0.0,
+                                                                    fontWeight: FlutterFlowTheme.of(context)
+                                                                        .bodySmall
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(context)
+                                                                        .bodySmall
+                                                                        .fontStyle,
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        10.0,
-                                                                        4.0,
-                                                                        0.0,
-                                                                        0.0),
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                10.0,
+                                                                4.0,
+                                                                0.0,
+                                                                0.0),
                                                             child: Row(
 
                                                               mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
+                                                              MainAxisSize
+                                                                  .max,
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
+                                                              MainAxisAlignment
+                                                                  .end,
                                                               children: [
                                                                 // Row(
                                                                 //   mainAxisSize:
@@ -1299,39 +1299,39 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                 // ),
                                                                 Align(
                                                                   alignment:
-                                                                      const AlignmentDirectional(
-                                                                          1.0,
-                                                                          0.0),
+                                                                  const AlignmentDirectional(
+                                                                      1.0,
+                                                                      0.0),
                                                                   child:
-                                                                      InkWell(
+                                                                  InkWell(
                                                                     splashColor:
-                                                                        Colors
-                                                                            .transparent,
+                                                                    Colors
+                                                                        .transparent,
                                                                     focusColor:
-                                                                        Colors
-                                                                            .transparent,
+                                                                    Colors
+                                                                        .transparent,
                                                                     hoverColor:
-                                                                        Colors
-                                                                            .transparent,
+                                                                    Colors
+                                                                        .transparent,
                                                                     highlightColor:
-                                                                        Colors
-                                                                            .transparent,
+                                                                    Colors
+                                                                        .transparent,
                                                                     onTap:
                                                                         () async {
                                                                       if (_model
-                                                                              .selectedItems
-                                                                              .contains(getJsonField(
-                                                                            playerListItem,
-                                                                            r'''$.id''',
-                                                                          )) ==
+                                                                          .selectedItems
+                                                                          .contains(getJsonField(
+                                                                        playerListItem,
+                                                                        r'''$.id''',
+                                                                      )) ==
                                                                           true) {
                                                                         _model.removeFromSelectedItems(
                                                                             getJsonField(
-                                                                          playerListItem,
-                                                                          r'''$.id''',
-                                                                        ));
+                                                                              playerListItem,
+                                                                              r'''$.id''',
+                                                                            ));
                                                                         safeSetState(
-                                                                            () {});
+                                                                                () {});
                                                                       } else {
                                                                         if (_model.selectedItems.length <
                                                                             2) {
@@ -1341,7 +1341,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                             r'''$.id''',
                                                                           ));
                                                                           safeSetState(
-                                                                              () {});
+                                                                                  () {});
                                                                         } else {
                                                                           ScaffoldMessenger.of(context)
                                                                               .showSnackBar(
@@ -1360,9 +1360,9 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                       }
                                                                     },
                                                                     child:
-                                                                        Container(
+                                                                    Container(
                                                                       decoration:
-                                                                          BoxDecoration(
+                                                                      BoxDecoration(
                                                                         color: _model.selectedItems.contains(getJsonField(
                                                                           playerListItem,
                                                                           r'''$.id''',
@@ -1370,35 +1370,35 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                                             ? const Color(0xFF398638)
                                                                             : const Color(0x00000000),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(12.0),
+                                                                        BorderRadius.circular(12.0),
                                                                         border:
-                                                                            Border.all(
+                                                                        Border.all(
                                                                           color:
-                                                                              const Color(0xFF4E4E4E),
+                                                                          const Color(0xFF4E4E4E),
                                                                         ),
                                                                       ),
                                                                       child:
-                                                                          Padding(
+                                                                      Padding(
                                                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                                                             8.0,
                                                                             4.0,
                                                                             8.0,
                                                                             4.0),
                                                                         child:
-                                                                            Text(
+                                                                        Text(
                                                                           'Compare',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodySmall
                                                                               .override(
-                                                                                font: GoogleFonts.poppins(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                                ),
-                                                                                color: FlutterFlowTheme.of(context).tertiary,
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
-                                                                              ),
+                                                                            font: GoogleFonts.poppins(
+                                                                              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                            ),
+                                                                            color: FlutterFlowTheme.of(context).tertiary,
+                                                                            letterSpacing: 0.0,
+                                                                            fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
+                                                                            fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -1416,7 +1416,7 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                               Padding(
                                                 padding: const EdgeInsetsDirectional
                                                     .fromSTEB(
-                                                        0.0, 0.0, 0.0, 14.0),
+                                                    0.0, 0.0, 0.0, 14.0),
                                                 child: Container(
                                                   width: double.infinity,
                                                   height: 1.0,
@@ -1435,8 +1435,8 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                                                         1.0
                                                       ],
                                                       begin:
-                                                          AlignmentDirectional(
-                                                              1.0, 0.0),
+                                                      AlignmentDirectional(
+                                                          1.0, 0.0),
                                                       end: AlignmentDirectional(
                                                           -1.0, 0),
                                                     ),
@@ -2094,19 +2094,19 @@ class _EligiblePlayerWidgetState extends State<EligiblePlayerWidget>
                               style: FlutterFlowTheme.of(context)
                                   .bodySmall
                                   .override(
-                                    font: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .fontStyle,
-                                    ),
-                                    color: Colors.white,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodySmall
-                                        .fontStyle,
-                                  ),
+                                font: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodySmall
+                                      .fontStyle,
+                                ),
+                                color: Colors.white,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .fontStyle,
+                              ),
                             ),
                           ),
                         ),

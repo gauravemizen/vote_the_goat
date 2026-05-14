@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/flutter_flow/admob_util.dart' as admob;
+import '/app_state.dart';
 import 'dart:async';
 
 class AdService {
@@ -166,10 +167,22 @@ class AdService {
       final prefs = await SharedPreferences.getInstance();
       final currentPlan = prefs.getString('current_plan') ?? 'free';
 
-      bool showAds = currentPlan == 'free';
+      // Condition 1: Paid plan → NO ads, no matter what
+      if (currentPlan != 'free') {
+        debugPrint('[AdService] shouldShowAds: paid plan ($currentPlan) → NO ads');
+        return false;
+      }
 
-      debugPrint('[AdService] shouldShowAds: plan=$currentPlan, showAds=$showAds');
-      return showAds;
+      // Condition 2: Free plan but advertisement_status = 0 → NO ads
+      final adStatus = FFAppState().advertisementStatus;
+      if (adStatus == 0) {
+        debugPrint('[AdService] shouldShowAds: free plan but advertisement_status=0 → NO ads');
+        return false;
+      }
+
+      // Condition 3: Free plan + advertisement_status = 1 → SHOW ads
+      debugPrint('[AdService] shouldShowAds: free plan + advertisement_status=$adStatus → SHOW ads');
+      return true;
     } catch (e) {
       debugPrint('[AdService] shouldShowAds error: $e');
       return true; // Default to showing ads if error

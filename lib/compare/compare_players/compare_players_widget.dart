@@ -763,6 +763,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player1.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -1041,6 +1043,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player2.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -2990,6 +2994,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player1.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -3268,6 +3274,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player2.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -5104,6 +5112,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player1.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -5382,6 +5392,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player2.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -7601,6 +7613,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player1.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge
@@ -7879,6 +7893,8 @@ class _ComparePlayersWidgetState extends State<ComparePlayersWidget>
                                                           ),
                                                           r'''$.player2.name''',
                                                         ).toString(),
+                                                        textAlign: TextAlign.center,
+
                                                         style: FlutterFlowTheme
                                                             .of(context)
                                                             .headlineLarge

@@ -62,6 +62,8 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
   void dispose() {
     AdService().setAuthScreen(false);
     routeObserver.unsubscribe(this);
+    // Stop the timer WITHOUT notifying listeners to avoid setState-after-dispose.
+    _model.timerController.timer.onStopTimer();
     _model.dispose();
     super.dispose();
   }
@@ -325,6 +327,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
                               return;
                             }
 
+                            _model.timerController.onStopTimer();
                             context.goNamed(
                               ChangePasswordWidget.routeName,
                               queryParameters: {
@@ -389,6 +392,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
                               return;
                             }
 
+                            _model.timerController.onStopTimer();
                             context.goNamed(HomeOnboardingWidget.routeName);
 
                             if (shouldSetState) safeSetState(() {});
@@ -452,7 +456,7 @@ class _OtpWidgetState extends State<OtpWidget> with RouteAware {
                               (value, displayTime, shouldUpdate) {
                             _model.timerMilliseconds = value;
                             _model.timerValue = displayTime;
-                            if (shouldUpdate) safeSetState(() {});
+                            if (shouldUpdate && mounted) safeSetState(() {});
                           },
                           onEnded: () {
                             setState(() {

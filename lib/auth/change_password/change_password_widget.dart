@@ -801,49 +801,49 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            context.safePop();
-                          },
-                          child: Container(
-                            width: 40.0,
-                            height: 40.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).oposite,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: (Theme.of(context).brightness ==
-                                      Brightness.dark) ==
-                                      true
-                                      ? const Color(0x00000000)
-                                      : Colors.white,
-                                  offset: const Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(
-                                color: (Theme.of(context).brightness ==
-                                    Brightness.dark) ==
-                                    true
-                                    ? Colors.black
-                                    : const Color(0xD5999999),
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_back_rounded,
-                              color: FlutterFlowTheme.of(context).tertiary,
-                              size: 24.0,
-                            ),
-                          ),
-                        ),
+                        // InkWell(
+                        //   splashColor: Colors.transparent,
+                        //   focusColor: Colors.transparent,
+                        //   hoverColor: Colors.transparent,
+                        //   highlightColor: Colors.transparent,
+                        //   onTap: () async {
+                        //     context.safePop();
+                        //   },
+                        //   child: Container(
+                        //     width: 40.0,
+                        //     height: 40.0,
+                        //     decoration: BoxDecoration(
+                        //       color: FlutterFlowTheme.of(context).oposite,
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           blurRadius: 4.0,
+                        //           color: (Theme.of(context).brightness ==
+                        //               Brightness.dark) ==
+                        //               true
+                        //               ? const Color(0x00000000)
+                        //               : Colors.white,
+                        //           offset: const Offset(
+                        //             0.0,
+                        //             2.0,
+                        //           ),
+                        //         )
+                        //       ],
+                        //       borderRadius: BorderRadius.circular(12.0),
+                        //       border: Border.all(
+                        //         color: (Theme.of(context).brightness ==
+                        //             Brightness.dark) ==
+                        //             true
+                        //             ? Colors.black
+                        //             : const Color(0xD5999999),
+                        //       ),
+                        //     ),
+                        //     child: Icon(
+                        //       Icons.arrow_back_rounded,
+                        //       color: FlutterFlowTheme.of(context).tertiary,
+                        //       size: 24.0,
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: Align(
                             alignment: const AlignmentDirectional(0.0, 0.0),
@@ -1184,8 +1184,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget>
                           child: Container(
                             decoration: const BoxDecoration(),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 40.0),
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 40.0 + MediaQuery.of(context).viewPadding.bottom),
                               child: InkWell(
                                 splashColor: Colors.transparent,
                                 focusColor: Colors.transparent,

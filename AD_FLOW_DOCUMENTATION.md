@@ -1,6 +1,6 @@
 # 📢 Ad Flow Documentation — Vote For Goat
 
-> Last updated: April 7, 2026
+> Last updated: May 12, 2026
 
 ---
 
@@ -181,7 +181,8 @@ Every 60 seconds, the timer runs `_onGlobalTimerTick()`:
 _onGlobalTimerTick()
   │
   ├── 1. shouldShowAds()?
-  │     └── NO (paid plan) → stop timer entirely
+  │     ├── NO (paid plan)              → stop timer entirely
+  │     └── NO (advertisement_status=0) → skip this tick
   │
   ├── 2. Ad loaded?
   │     └── NO → preloadInterstitialAd() → try next tick
@@ -199,7 +200,8 @@ navigation — goes through this ONE method.** It enforces all timing rules:
 showInterstitialAd()
   │
   ├── 1. shouldShowAds()?
-  │     └── NO → return false
+  │     ├── paid plan            → return false (no ads ever)
+  │     └── advertisement_status=0 → return false (admin disabled)
   │
   ├── 2. Initial cooldown passed?
   │     └── now() - _globalTimerStartedAt >= 3 minutes?
@@ -282,8 +284,11 @@ AdService().shouldShowAds()
   │
   ├── Read SharedPreferences → current_plan
   │
-  ├── plan == 'free'  → return true  (show ads)
-  ├── plan != 'free'  → return false (no ads)
+  ├── plan != 'free' → return false  (PAID USER — no ads, timer stops)
+  │
+  ├── plan == 'free' → check FFAppState().advertisementStatus
+  │     ├── advertisement_status == 0 → return false  (admin disabled ads)
+  │     └── advertisement_status == 1 → return true   (show ads)
   │
   └── On error → return true (default to showing ads)
 
@@ -295,6 +300,18 @@ AdService().updateAdSettingsForPlan(plan)
   ├── plan != 'free' → _stopGlobalTimer() (kill everything)
   └── plan == 'free'  → preload + _startGlobalTimer() (resume)
 ```
+
+### Ad Visibility Summary
+
+| User Plan | `advertisement_status` | Ads Shown? |
+|-----------|----------------------|------------|
+| Paid (any) | any | ❌ No |
+| Free | 0 | ❌ No |
+| Free | 1 | ✅ Yes |
+
+> `advertisement_status` comes from the `/profile` API response and is stored
+> in `FFAppState().advertisementStatus`. It is read fresh on every timer tick
+> via `shouldShowAds()`. No restart needed — changes take effect on next tick.
 
 ---
 
